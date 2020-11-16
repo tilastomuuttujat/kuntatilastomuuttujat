@@ -1,0 +1,2 @@
+# kuntatilastomuuttujat
+Kuntakohtaisten 100 tilastomuuttujan korrelaatiomatriisi
