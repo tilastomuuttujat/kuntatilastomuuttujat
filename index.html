@@ -453,7 +453,7 @@ function valinnat(items) {
 //console.log(items);
 //d3.json(items, function(json) {
 	    for ( x = 0; x < items.length; x++ ) {
-	    var fitems = "F"+items[x]+".json";
+	    var fitems = "data/F"+items[x]+".json";
 	    d3.json(fitems, function(lson) {
 	    for ( y = 0; y < lson.links.length; y++ ) {
 	    if (lson.links[y].value < minval*-1 || lson.links[y].value > minval) {
