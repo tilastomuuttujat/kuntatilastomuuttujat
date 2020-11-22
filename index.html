@@ -9,5 +9,493 @@
 
   gtag('config', 'UA-134541058-1');
 </script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<link rel="stylesheet" type="text/css" href="multi.min.css">
+<script src="multi.min.js"></script>
+<script>$(document).ready(function() {$('select').multi({search_placeholder: 'Hae muuttuja...',});});</script>
+<style>
+body {
+  background-color:#e2e2e2;
+  font-family: 'Roboto',sans-serif;
+      }
+
+.container {
+  box-sizing: border-box;;
+  margin: 10px auto;
+  max-width: 960px;
+  padding: 0 0px;
+  width: 100%;
+      }
+h2 { color:#fff;}
+
+.link {
+  stroke: white;
+  stroke-width: 1px;
+}
+.licensing {
+  fill: none;
+}
+.suit {
+  fill: #0772A1;
+}
+.resolved {
+  fill: #FF8700;
+}
+.node {
+  fill: lightgray;
+  stroke: black;
+  stroke-width: 1px;
+}
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+html {
+  font-family: "Gudea", Helvetica, sans-serif;
+  height: 100%;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+.switch {
+  position: relative;
+  margin: 10px auto;
+  width: 180px;
+  height: 30px;
+  border: 3px solid #717171;
+  color: #ececec;
+  font-size: 20px;
+  border-radius: 10px;
+}
+
+.quality {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  line-height: 30px;
+}
+.quality:first-child label {
+  border-radius: 5px 0 0 5px;
+}
+.quality:last-child label {
+  border-radius: 0 5px 5px 0;
+}
+.quality label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-style: italic;
+  text-align: center;
+  transition: transform 0.4s, color 0.4s, background-color 0.4s;
+}
+.quality input[type="radio"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.quality input[type="radio"]:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.quality input[type="radio"]:checked ~ label {
+  background-color: #8b8b8b;
+  color: #111;
+}
+.quality input[type="radio"]:active ~ label {
+  transform: scale(1.05);
+}
+
+h1 {
+  margin: 0 0 1em;
+}
+
+.group {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  margin-bottom: 2em;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+label {
+  position: relative;
+  margin-right: 1em;
+  padding-left: 2em;
+  padding-right: 1em;
+  line-height: 2;
+  cursor: pointer;
+}
+label:before {
+  box-sizing: border-box;
+  content: "";
+  position: absolute;
+  top: 0.3em;
+  left: 0;
+  display: block;
+  width: 1.4em;
+  height: 1.4em;
+  border: 2px solid gray;
+  border-radius: .25em;
+  z-index: -1;
+}
+
+input[type="radio"] + label::before {
+  border-radius: 1em;
+}
+
+input[type="checkbox"]:checked + label,
+input[type="radio"]:checked + label {
+  padding-left: 1em;
+  color: #7f7f7f;
+}
+input[type="checkbox"]:checked + label:before,
+input[type="radio"]:checked + label:before {
+  top: 0;
+  width: 100%;
+  height: 2em;
+  background: white;
+}
+
+label,
+label::before {
+  -webkit-transition: .25s all ease;
+  transition: .25s all ease;
+}
+</style>
 </head>
+<body>
+    <select multiple="multiple" name="statistical_areas" id="area_select" onchange="valinnat($(this).val())">
+    <option value="51">1. desiilin palkat</option>
+    <option value="52">9. desiilin palkat</option>
+    <option value="5">Aikuisten mielenterveyden avohoitokäynnit</option>
+    <option value="30a">Alkutuotannon työlliset</option>
+    <option value="32">Alueen SOTE -työlliset</option>
+    <option value="31">Asuinkunnassaan työssäkäyvät</option>
+    <option value="70">Avioliiton solmineet miehet 20-39</option>
+    <option value="71">Avioliiton solmineet naiset 20-39</option>
+    <option value="63">Aviopari, lapset 0-17</option>
+    <option value="62">Avopari, lapset 0-17</option>
+    <option value="74">Eduskuntavaalit keskustan kannatus</option>
+    <option value="75">Eduskuntavaalit oikeiston kannatus</option>
+    <option value="73">Eduskuntavaalit vasemmiston kannatus</option>
+    <option value="12">Ei perusasteen jälkeistä tutkintoa, 20+ -vuotiaat miehet</option>
+    <option value="13">Ei perusasteen jälkeistä tutkintoa, 20+ -vuotiaat naiset</option>
+    <option value="84">Eläkeläiset</option>
+    <option value="8">Erikoissairaanhoidon nettokäyttökustannukset</option>
+    <option value="11">Henkilöautot</option>
+    <option value="21">Informaatiosektorin työpaikat</option>
+    <option value="65">Isä, lapset 0-17</option>
+    <option value="30b">Jalostuksen työlliset</option>
+    <option value="61">Kahden vanhemman perheet, lapset 0-17</option>
+    <option value="22">Kaupan työpaikat</option>
+    <option value="82">Käytettävissä oleva mediaanirahatulo</option>
+    <option value="81">Kelan maksamat tuet</option>
+    <option value="49">Keskituloisin 10 %</option>
+    <option value="16">Korkea-asteen tutkinnon suorittaneet, 20+ -vuotiaat miehet</option>
+    <option value="17">Korkea-asteen tutkinnon suorittaneet, 20+ -vuotiaat naiset</option>
+    <option value="7">Kotimaiset kielet yhteensä</option>
+    <option value="23">Koulutuksen työpaikat</option>
+    <option value="83">Koulutustasomittain</option>
+    <option value="77">Kunnallisvaalit keskustan kannatus</option>
+    <option value="78">Kunnallisvaalit oikeiston kannatus</option>
+    <option value="76">Kunnallisvaalit vasemmiston kannatus</option>
+    <option value="19">Kunta ja valtio työllistäjänä</option>
+    <option value="85">Kuntien välinen lähtömuutto</option>
+    <option value="86">Kuntien välinen tulomuutto</option>
+    <option value="10">Kuntoutuspalvelukustannukset</option>
+    <option value="103">Kuollutta / 1000 asukasta</option>
+    <option value="88">Lapsilisät</option>
+    <option value="89">Lasten kotihoidontuet</option>
+    <option value="87">Lastenhoidon tuet</option>
+    <option value="3">Liikennerikokset 25-54</option>
+    <option value="56">Liikkeen- ja ammatinharjoittajan tulo</option>
+    <option value="105">Maahanmuuttaneet</option>
+    <option value="106">Maastamuuttaneet</option>
+    <option value="54">Maatalouden jaettava tulo</option>
+    <option value="93">Maksetut tulonsiirrot, keskiarvo</option>
+    <option value="50">Mediaanipalkka</option>
+    <option value="55">Metsätalouden tulo</option>
+    <option value="68">MYEL-työtulo</option>
+    <option value="91">Nuorisotoiminnan avustukset</option>
+    <option value="1">Omaisuusrikokset 25-54</option>
+    <option value="44">Omaisuustulot, keskiarvo</option>
+    <option value="30">Omassa seutukunnassa työssäkäyvät</option>
+    <option value="94">Opiskelijat</option>
+    <option value="53">Osingot, brutto </option>
+    <option value="95">Ostovoima</option>
+    <option value="90">Päivä- ja äitiyspäivärahat</option>
+    <option value="41">Palkkatulot, ei perusasteen tutkintoa</option>
+    <option value="42">Palkkatulot, keskiarvo</option>
+    <option value="40">Palkkatulot, tutkinnon suorittaneet</option>
+    <option value="30c">Palvelutoimialojen työlliset</option>
+    <option value="59">Perheet, joissa alle 3-vuotiaita lapsia</option>
+    <option value="97">Peruskoulun oppilaat</option>
+    <option value="9">Perusterveydenhuollon nettokäyttökustannukset</option>
+    <option value="96">Pienituloinen asuntoväestö</option>
+    <option value="48">Pienituloisin 10 %</option>
+    <option value="98">Pienituloisten henkilöiden lukumäärä asuntoväestössä</option>
+    <option value="24">Rakentamisen työpaikat</option>
+    <option value="92">Saadut tulonsiirrot, keskiarvo</option>
+    <option value="79">Sisäänpendelöinti</option>
+    <option value="47">Suurituloisin 10 %</option>
+    <option value="57">Syntyneet, äiti 20-29 -vuotias</option>
+    <option value="58">Syntyneet, äiti 30-39 -vuotias</option>
+    <option value="102">Syntyneitä / 1000 asukasta</option>
+    <option value="25">Teollisuuden työpaikat</option>
+    <option value="26">Terveys- ja sosiaalipalvelujen työpaikat</option>
+    <option value="6">THL:n sairastavuusindeksi</option>
+    <option value="99">Toimeentulotukea yksin asuvat miehet</option>
+    <option value="100">Toimeentulotukea yksin asuvat naiset</option>
+    <option value="14">Toisen asteen tutkinnon suorittaneet, 20+ -vuotiaat miehet</option>
+    <option value="15">Toisen asteen tutkinnon suorittaneet, 20+ -vuotiaat naiset</option>
+    <option value="45">Tuotannontekijätulot, keskiarvo</option>
+    <option value="39">Työlliset, 18-24 -vuotiaat</option>
+    <option value="38">Työlliset, 25-34 -vuotiaat</option>
+    <option value="37">Työlliset, 35-44 -vuotiaat</option>
+    <option value="36">Työlliset, 45-54 -vuotiaat</option>
+    <option value="35">Työlliset, 55-59 -vuotiaat</option>
+    <option value="34">Työlliset, 60-64 -vuotiaat</option>
+    <option value="29">Työlliset, korkea-asteen koulutus</option>
+    <option value="27">Työlliset, perusasteen koulutus</option>
+    <option value="28">Työlliset, toisen asteen koulutus</option>
+    <option value="101">Työttömyysetuudet</option>
+    <option value="80">Ulospendelöinti</option>
+    <option value="72">Uudet henkilö- ja pakettiautokortit (B)</option>
+    <option value="2">Väkivaltarikokset</option>
+    <option value="46">Veronalaiset mediaanitulot</option>
+    <option value="7a">Vieraskieliset</option>
+    <option value="4">Viranomaisten tehtävät</option>
+    <option value="20">Voittoa tavoittelemattomien yhteisöjen työpaikat</option>
+    <option value="104">Väestölisäys</option>
+    <option value="67">YEL-työtulo</option>
+    <option value="60">Yhden vanhemman perheet, lapset 0-17</option>
+    <option value="18">Yksityisen sektorin työpaikat</option>
+    <option value="33">Yrittäjät, miehet</option>
+    <option value="69">Yrittäjät, naiset</option>
+    <option value="43">Yrittäjätulot, keskiarvo</option>
+    <option value="64">Äiti, lapset 0-17</option>
+    </select>
+</div>
+
+<div>
+  <div class="group">
+  <td>Sidoksen vahvuus :</td>
+    <input type="radio" name="rb" id="rb1" value="0.15" onclick="threshold(0.15)"/>
+    <label for="rb1"> min 15%</label>
+    <input type="radio" name="rb" id="rb2" value="0.25" onclick="threshold(0.25)"/>
+    <label for="rb2"> min 25%</label>
+    <input type="radio" name="rb" id="rb3" value="0.35" onclick="threshold(0.35)"/>
+    <label for="rb3"> min 35%</label>
+    <td>valituista muuttujista</td>
+  </div>
+</div>
+
+
+<div id="d3-kunta"></div>
+<script>
+var konsoli=[];
+var sidos=[];
+var minval = 0.15;
+var width  = 960,
+    height = 700;
+var force = d3.layout.force()
+    .charge(-3000)
+    .gravity(.8)
+    .size([width, height]);
+
+var nodes = force.nodes(),
+links = force.links();
+
+var znodes, zlinks;
+var svgNodes, svgLinks, svgTexts;
+var svg = d3.select("#d3-kunta").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+//step1();
+//init();
+
+
+//var force = d3.layout.force()
+//    .nodes(JSON.parse(JSON.stringify(data)))
+
+function draw() {
+//console.log(konsoli);
+d3.selectAll("#d3-kunta > *").remove();
+svg = d3.select("#d3-kunta").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+    
+force = d3.layout.force()
+    .charge(-3000)
+    .gravity(.8)
+    .size([width, height]);
+//     .nodes(JSON.parse(JSON.stringify(konsoli)));
+nodes = force.nodes();
+links = force.links();
+
+//links = konsoli.filter(function(d){return d.value < minval*-1 || d.value > minval;});
+links=konsoli;
+konsoli = [];
+links.forEach(function (link) {
+link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, linkCount: link.value});
+link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, linkCount: link.value});
+});
+
+nodes = d3.values(nodes)
+links.forEach(function (link) {
+  link.linkWidth  = 3;
+  link.headLength = 15;
+  link.headWidth  = 5;
+});
+
+force
+    .nodes(nodes)
+    .links(links)
+    .on("tick", tick)
+    .start();
+
+nodes.forEach(function(node) {node.r = 3 + 1.1 * node.weight })
+
+svgLinks = svg.selectAll(".link").data(links)
+  .enter().append("polygon")
+    .attr("class", function (d) { 
+    if (d.value>minval*-1 && d.value<minval) {
+    return "link licensing";
+    } else {
+    if (d.value<0) {
+    return "link suit"
+    }
+    if (d.value>0) {
+    return "link resolved"
+    }}
+    });
+    
+svgNodes = svg.selectAll(".node").data(nodes)
+  .enter().append("circle")
+    .attr("class", "node")
+    .attr("r", function (d) {return d.r})
+    .call(force.drag);
+
+svgTexts = svg.selectAll("text").data(nodes)
+  .enter().append("text")
+    .attr("y", ".31em")
+    .text(function(d) {return d.name});
+}
+
+function tick() {
+  svgNodes.attr("transform", translate);
+  svgTexts.attr("transform", translate);
+  svgLinks.attr("points", calculatePolygon);
+}
+
+function translate (d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+function calculatePolygon(d) {
+  var p2  = d.source,
+      w   = diff(d.target, p2),
+      wl  = length(w),
+      v1  = scale(w, (wl - d.target.r) / wl),
+      p1  = sum(p2, v1),
+      v2  = scale(rotate90(w), d.linkWidth / length(w)),
+      p3  = sum(p2, v2),
+      v1l = length(v1),
+      v3  = scale(v1, (v1l - d.headLength) / v1l),
+      p4  = sum(p3, v3),
+      v2l = length(v2),
+      v4  = scale(v2, d.headWidth / v2l),
+      p5  = sum(p4, v4);
+  return pr(p1) +" "+ pr(p2) +" "+ pr(p3) +" "+ pr(p4) +" "+ pr(p5);
+  
+  function length(v) {return Math.sqrt(v.x * v.x + v.y * v.y)}
+  function diff(v, w) {return {x: v.x - w.x, y: v.y - w.y}}
+  function sum(v, w) {return {x: v.x + w.x, y: v.y + w.y}}
+  function scale(v, f) {return {x: f * v.x, y: f * v.y}}
+  function rotate90(v) {return {x: v.y, y: -v.x}}
+  function pr(v) {return v.x +","+ v.y}
+}
+
+function threshold(thresh) {
+minval=thresh;
+//konsoli=sidos;
+//console.log(sidos);
+/*
+svgNodes.remove();
+svgLinks.remove();
+svgTexts.remove();
+nodes = [];
+links = [];
+*/
+//draw();
+}
+
+function valinnat(items) {
+//items=$('#area_select').val();
+//items=$(this).val()
+//console.log(items);
+//d3.json(items, function(json) {
+	    for ( x = 0; x < items.length; x++ ) {
+	    var fitems = "F"+items[x]+".json";
+	    d3.json(fitems, function(lson) {
+	    for ( y = 0; y < lson.links.length; y++ ) {
+	    if (lson.links[y].value < minval*-1 || lson.links[y].value > minval) {
+	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});
+	    	}
+	    }})}
+	    links=konsoli;
+	    //konsoli=[];
+	    //console.log(konsoli);
+	    sidos=konsoli;
+	    draw();
+	}
+
+function init() {
+//items=$('#area_select').val();
+//console.log(items);
+	d3.json(items, function(json) {
+	    for ( x = 0; x < items.length; x++ ) {
+	    var fitems = "F"+items[x]+".json";
+	    d3.json(fitems, function(lson) {
+	    for ( x = 0; x < lson.links.length; x++ ) {
+	    	konsoli.push({source: lson.links[x].source, target: lson.links[x].target, value: lson.links[x].value});
+	    }})}
+	});
+	}
+
+function step0(fitems) {
+	d3.json(fitems, function(json) {
+	    for ( x = 0; x < json.links.length; x++ ) {
+	    	konsoli.push({source: json.links[x].source, target: json.links[x].target, value: json.links[x].value});
+	    }
+	}
+	)}
+
+function step1() {
+	d3.json("F1.json", function(json) {
+	    for ( x = 0; x < json.links.length; x++ ) {
+	    	konsoli.push({source: json.links[x].source, target: json.links[x].target, value: json.links[x].value});
+	    }
+	  draw();
+	}
+	)}
+</script>
+</body>
 </html>
