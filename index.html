@@ -438,11 +438,29 @@ draw();
 function selection(items) {
 	    for ( x = 0; x < items.length; x++ ) {
 	    var fitems = "data/F"+items[x]+".json";
+		    
+		    $.ajax({
+  dataType: "json",
+  url: fitems,
+  data: links,
+  async: false, 
+  success: function(data) {
+      for ( y = 0; y < data.links.length; y++ ) {
+	    	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	    	
+	    }
+  }
+});  
+		    
+		    
+	/*	    
+		    
 	    d3.json(fitems, function(lson) {
 	    for ( y = 0; y < lson.links.length; y++ ) {
 	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});	
 	    }
-	    }) 
+	    });
+	*/
 	    }
 	    draw();
 	}
