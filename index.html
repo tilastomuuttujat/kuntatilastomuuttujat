@@ -328,15 +328,8 @@ var svgNodes, svgLinks, svgTexts;
 var svg = d3.select("#d3-kunta").append("svg")
     .attr("width", width)
     .attr("height", height);
-//step1();
-//init();
-
-
-//var force = d3.layout.force()
-//    .nodes(JSON.parse(JSON.stringify(data)))
 
 function draw() {
-//console.log(konsoli);
 d3.selectAll("#d3-kunta > *").remove();
 svg = d3.select("#d3-kunta").append("svg")
     .attr("width", width)
@@ -435,23 +428,9 @@ function calculatePolygon(d) {
 
 function threshold(thresh) {
 minval=thresh;
-//konsoli=sidos;
-//console.log(sidos);
-/*
-svgNodes.remove();
-svgLinks.remove();
-svgTexts.remove();
-nodes = [];
-links = [];
-*/
-//draw();
 }
 
 function valinnat(items) {
-//items=$('#area_select').val();
-//items=$(this).val()
-//console.log(items);
-//d3.json(items, function(json) {
 	    for ( x = 0; x < items.length; x++ ) {
 	    var fitems = "data/F"+items[x]+".json";
 	    d3.json(fitems, function(lson) {
@@ -460,10 +439,7 @@ function valinnat(items) {
 	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});
 	    	}
 	    }})}
-	    links=konsoli;
-	    //konsoli=[];
-	    //console.log(konsoli);
-	    sidos=konsoli;
+	   // links=konsoli;
 	    draw();
 	}
 
