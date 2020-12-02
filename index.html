@@ -181,7 +181,7 @@ label::before {
 </style>
 </head>
 <body>
-    <select multiple="multiple" name="statistical_areas" id="area_select" onchange="valinnat($(this).val())">
+    <select multiple="multiple" name="statistical_areas" id="area_select" onchange="selection($(this).val())">
     <option value="51">1. desiilin palkat</option>
     <option value="52">9. desiilin palkat</option>
     <option value="5">Aikuisten mielenterveyden avohoitokäynnit</option>
@@ -435,9 +435,9 @@ links = [];
 draw();
 }
 
-function valinnat(items) {
+function selection(items) {
 	    for ( x = 0; x < items.length; x++ ) {
-	    var fitems = "F"+items[x]+".json";
+	    var fitems = "data/F"+items[x]+".json";
 	    d3.json(fitems, function(lson) {
 	    for ( y = 0; y < lson.links.length; y++ ) {
 	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});	
