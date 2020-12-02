@@ -370,8 +370,8 @@ label::before {
 <script>
 var konsoli=[];
 var sidos=[];
-var minval = 0.1;
-var width  = 960,
+var minval = 0.2;
+var width  = 1200,
     height = 900;
 var force = d3.layout.force()
     .charge(-3000)
@@ -381,7 +381,6 @@ var force = d3.layout.force()
 var nodes = force.nodes(),
 links = force.links();
 
-var znodes, zlinks;
 var svgNodes, svgLinks, svgTexts;
 var svg = d3.select("#d3-kunta").append("svg")
     .attr("width", width)
@@ -494,9 +493,8 @@ draw();
 
 function selection(items) {
 	    for ( x = 0; x < items.length; x++ ) {
-	    var fitems = "data/F"+items[x]+".json";
-		    
-		    $.ajax({
+	    var fitems = "data/F"+items[x]+".json";    
+	    $.ajax({
   dataType: "json",
   url: fitems,
   data: links,
@@ -504,24 +502,11 @@ function selection(items) {
   success: function(data) {
       for ( y = 0; y < data.links.length; y++ ) {
 	    	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
-	    	
-	    }
-  }
+      }}
 });  
-		    
-		    
-	/*	    
-		    
-	    d3.json(fitems, function(lson) {
-	    for ( y = 0; y < lson.links.length; y++ ) {
-	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});	
 	    }
-	    });
-	*/
-	    }
-	    draw();
+	draw();
 	}
-
 </script>
 </body>
 </html>
