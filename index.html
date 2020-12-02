@@ -309,12 +309,13 @@ label::before {
 
 
 <div id="d3-kunta"></div>
+
 <script>
 var konsoli=[];
 var sidos=[];
-var minval = 0.15;
+var minval = 0.2;
 var width  = 960,
-    height = 700;
+    height = 900;
 var force = d3.layout.force()
     .charge(-3000)
     .gravity(.8)
@@ -339,12 +340,10 @@ force = d3.layout.force()
     .charge(-3000)
     .gravity(.8)
     .size([width, height]);
-//     .nodes(JSON.parse(JSON.stringify(konsoli)));
 nodes = force.nodes();
 links = force.links();
 
-//links = konsoli.filter(function(d){return d.value < minval*-1 || d.value > minval;});
-links=konsoli;
+links = konsoli.filter(function(d){return d.value < minval*-1 || d.value > minval;});
 konsoli = [];
 links.forEach(function (link) {
 link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, linkCount: link.value});
@@ -427,51 +426,27 @@ function calculatePolygon(d) {
 }
 
 function threshold(thresh) {
-minval=thresh;
+minval=thresh/10;
+svgNodes.remove();
+svgLinks.remove();
+svgTexts.remove();
+nodes = [];
+links = [];
+draw();
 }
 
 function valinnat(items) {
 	    for ( x = 0; x < items.length; x++ ) {
-	    var fitems = "data/F"+items[x]+".json";
+	    var fitems = "F"+items[x]+".json";
 	    d3.json(fitems, function(lson) {
 	    for ( y = 0; y < lson.links.length; y++ ) {
-	    if (lson.links[y].value < minval*-1 || lson.links[y].value > minval) {
-	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});
-	    	}
-	    }})}
-	   // links=konsoli;
+	    	konsoli.push({source: lson.links[y].source, target: lson.links[y].target, value: lson.links[y].value});	
+	    }
+	    }) 
+	    }
 	    draw();
 	}
 
-function init() {
-//items=$('#area_select').val();
-//console.log(items);
-	d3.json(items, function(json) {
-	    for ( x = 0; x < items.length; x++ ) {
-	    var fitems = "F"+items[x]+".json";
-	    d3.json(fitems, function(lson) {
-	    for ( x = 0; x < lson.links.length; x++ ) {
-	    	konsoli.push({source: lson.links[x].source, target: lson.links[x].target, value: lson.links[x].value});
-	    }})}
-	});
-	}
-
-function step0(fitems) {
-	d3.json(fitems, function(json) {
-	    for ( x = 0; x < json.links.length; x++ ) {
-	    	konsoli.push({source: json.links[x].source, target: json.links[x].target, value: json.links[x].value});
-	    }
-	}
-	)}
-
-function step1() {
-	d3.json("F1.json", function(json) {
-	    for ( x = 0; x < json.links.length; x++ ) {
-	    	konsoli.push({source: json.links[x].source, target: json.links[x].target, value: json.links[x].value});
-	    }
-	  draw();
-	}
-	)}
 </script>
 </body>
 </html>
