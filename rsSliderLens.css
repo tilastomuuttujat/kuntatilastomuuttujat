@@ -177,7 +177,7 @@ pre mark {
 }
 
 #cssfun2:before {
-    content: 'Setting minimum correlation';
+    content: 'Aseta korrelaatiokertoimeksi vähintään';
     margin-left: 7em;
 }
 
