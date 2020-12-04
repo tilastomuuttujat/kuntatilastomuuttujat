@@ -11,7 +11,6 @@
 
   gtag('config', 'UA-134541058-1');
 </script>
-
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <link rel="stylesheet" type="text/css" href="multi.min.css">
@@ -216,8 +215,6 @@ Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/t
 </h6>
 </div>
     <script>
-        
-
 var konsoli=[];
 var minval = -0.2,
     maxval = 0.2;
@@ -386,8 +383,7 @@ var $inputs = $("input[type=range], span.slider"),
                 $(event.currentTarget).parent("div").next("label").text(value);
             };
 
-
-        $inputs.eq(0).rsSliderLens({
+    $inputs.eq(0).rsSliderLens({
             paddingStart: .075,
             paddingEnd: .075,
             value: [-20, 20],
@@ -413,7 +409,7 @@ var $inputs = $("input[type=range], span.slider"),
                 } else {
                 maxval = value/100;
                 }
-                valinnat(sitems);
+                setTimeout(function () {valinnat(sitems)}, 2000);
             }
         });
 </script>
