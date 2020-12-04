@@ -1,5 +1,7 @@
+<!doctype html>
 <html>
 <head>
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="xhttps://www.googletagmanager.com/gtag/js?id=UA-134541058-1"></script>
 <script>
@@ -51,6 +53,8 @@ text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
+h6 { color: #7c795d; font-family: 'Source Sans Pro', sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0 0 24px; }
+
 </style>
 
 </head>
@@ -173,27 +177,40 @@ text {
     </div>
     <section id="cssfun2">
         <label></label>
-        <!-- 24 -->
         <input type="range">
         <label></label>
     </section>
 <div id="d3-kunta">
-Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muuttujien välisistä korrelaatiokertoimista, jonka avulla voi havainnollistaa muutoksiin kytkeytyviä heijastevaikutuksia.
+</div>
+<h6>
+Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muuttujien v&auml;lisist&auml; korrelaatiokertoimista. Sen avulla voi havainnollistaa muutoksiin liittyvi&auml; heijastevaikutuksia.
 
-Lähdeaineisto on koottu pääosin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista. Korrelaatiot on laskettu vuosien 2014 ja 2018 välisestä muutoksesta, tai kyseistä ajanjaksoa lähimmiltä vuosilta, kuten esimerkiksi kunnallis- ja eduskuntavaaleihin liittyvät tiedot. 
+L&auml;hdeaineisto on koottu p&auml;&auml;osin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista.
 
-Tällä hetkellä vertailumuuttujia on runsaat sata. Lähdeaineistoille on laskettu myös niiden tilastollista luotettavuutta kuvaavia indikaattoreita. Lähdeaineisto on excel-taulukkona, ja laitetaan saataville myöhemmin.
+Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis- ja eduskuntavaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailumuuttujia on runsaat sata.
 
-Aineisto on ehkä parhaimmillaan jonkinlaisena vihjetietokantana, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien välisiä suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelkän tietokannan perusteella ei kuitenkaan tule tehdä kovin pitkälle meneviä johtopäätöksiä, vaan se toimii pikemmin kannusteena tutkimuksille.
+L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto on saatavilla  my&ouml;hemmin Excel-taulukkona.
 
-Kuinka tietokantaa käytetään?
-1. Rajaa hakusanaa, esimerkiksi vero, 0-, naiset, työ, jne...
-2. Valitse ja hylkää muuttujia nimikettä klikkaamalla
-3. Säädä korrelaatiokertoimien minimiarvoja 
-4. Liikuttele alle ilmestyvää kuviota
-5. Kuviossa näkyy myös korrelaatiokertoimet
+Aineisto on tarkoitettu vihjetietokannaksi, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien v&auml;lisi&auml; suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelk&auml;n tietokannan perusteella ei kuitenkaan tule tehd&auml; kovin pitk&auml;lle menevi&auml; johtop&auml;&auml;t&ouml;ksi&auml;, vaan sen tarkoituksena on pikemmin toimia kannusteena varsinaiselle tutkimukselle.
 
-Tietokanta on julkaistu avoimena lähdekoodina GitHub-verkkopalvelussa. Avoimella lähdekoodilla tarkoitetaan ohjelmistoa, jota käyttäjä voi vapaasti hyödyntää, muokata, sekä jaella uudestaan.
+Kuinka tietokantaa k&auml;ytet&auml;&auml;n?
+
+<ol>
+
+<li>Rajaa hakusanalla, esimerkiksi vero, 0-, naiset, ty&ouml;, jne...</li>
+
+<li>Valitse ja hylk&auml;&auml; muuttujia, nimikett&auml; klikkaamalla</li>
+
+<li>S&auml;&auml;d&auml; korrelaatiokertoimien minimiarvoja</li>
+
+<li>Liikuttele alle ilmestyv&auml;&auml; kuviota</li>
+
+<li>Kuviossa n&auml;kyv&auml;t my&ouml;s korrelaatiokertoimet</li>
+
+</ol>
+
+Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/tilastomuuttujat/kuntatilastomuuttujat">GitHub</a>-verkkopalvelussa. Avoimella l&auml;hdekoodilla tarkoitetaan ohjelmistoa, jota k&auml;ytt&auml;j&auml; voi vapaasti hy&ouml;dynt&auml;&auml;, muokata, sek&auml; jaella uudestaan.
+</h6>
 </div>
     <script>
         
@@ -212,7 +229,7 @@ var force = d3.layout.force()
 var nodes = force.nodes(),
 links = force.links();
 
-var svgNodes, svgLinks, svgTexts;
+var svgNodes, svgLinks, svgTexts, labels;
 var svg = d3.select("#d3-kunta").append("svg")
     .attr("width", width)
     .attr("height", height);
@@ -276,12 +293,49 @@ svgTexts = svg.selectAll("text").data(nodes)
   .enter().append("text")
     .attr("y", ".31em")
     .text(function(d) {return d.name});
+
+edgepaths = svg.selectAll(".edgepath")
+            .data(links)
+            .enter()
+            .append('path')
+            .attr({
+                'class': 'edgepath',
+                'fill-opacity': 0,
+                'stroke-opacity': 0,
+                'id': function (d, i) {return 'edgepath' + i}
+            })
+            .style("pointer-events", "none");
+
+edgelabels = svg.selectAll(".edgelabel")
+            .data(links)
+            .enter()
+            .append('text')
+            .style("pointer-events", "none")
+            .attr({
+                'class': 'edgelabel',
+                'id': function (d, i) {return 'edgelabel' + i},
+                'font-size': 10,
+                'fill': '#aaa'
+            });
+
+edgelabels.append('textPath')
+            .attr('xlink:href', function (d, i) {return '#edgepath' + i})
+            .style("text-anchor", "middle")
+            .style("pointer-events", "none")
+            .attr("startOffset", "50%")
+            .text(function (d) {return d.value.toLocaleString({minimumFractionDigits: 2,})});
 }
 
 function tick() {
   svgNodes.attr("transform", translate);
   svgTexts.attr("transform", translate);
   svgLinks.attr("points", calculatePolygon);
+  
+  
+  edgepaths.attr('d', function (d) {
+            return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
+        });
+
 }
 
 function translate (d) {
@@ -356,7 +410,6 @@ var $inputs = $("input[type=range], span.slider"),
                 } else {
                 maxval = value/100;
                 }
-                console.log(sitems);
                 valinnat(sitems);
             }
         });
