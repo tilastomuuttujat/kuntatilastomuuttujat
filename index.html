@@ -195,11 +195,11 @@ Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muut
 
 L&auml;hdeaineisto on koottu p&auml;&auml;osin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista.
 
-Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis- ja eduskuntavaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailumuuttujia on runsaat sata.
+Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis-, eduskunta- ja eurovaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailussa on runsaat sata muuttujaa.
 
-L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto on saatavilla  my&ouml;hemmin Excel-taulukkona.
+L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto julkaistaan myöhemmin Excel-taulukkona.
 
-Aineisto on tarkoitettu vihjetietokannaksi, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien v&auml;lisi&auml; suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelk&auml;n tietokannan perusteella ei kuitenkaan tule tehd&auml; kovin pitk&auml;lle menevi&auml; johtop&auml;&auml;t&ouml;ksi&auml;, vaan sen tarkoituksena on pikemmin toimia kannusteena varsinaiselle tutkimukselle.
+Aineisto on tarkoitettu ensisijaisesti vihjetietokannaksi, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien v&auml;lisi&auml; suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelk&auml;n tietokannan perusteella ei kuitenkaan tule tehd&auml; kovin pitk&auml;lle menevi&auml; johtop&auml;&auml;t&ouml;ksi&auml;, vaan sen tarkoituksena on toimia pikemmin kannusteena varsinaiselle tutkimukselle.
 
 Näin k&auml;yt&auml;t tietokantaa:
 
@@ -224,8 +224,8 @@ Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/t
 var konsoli=[];
 var minval = -0.2,
     maxval = 0.2;
-var width  = 960,
-    height = 800;
+var width  = 1200,
+    height = 900;
 var sitems=[];
 var force = d3.layout.force()
     .charge(-3000)
