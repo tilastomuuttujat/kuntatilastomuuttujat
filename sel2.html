@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<style>
+.container {
+  font: 12px sans-serif;
+  box-sizing: border-box;
+  margin: 10px auto;
+  max-width: 1000px;
+  padding: 0 ppx;
+  width: 100%;
+      }
+h2 { color:#fff;}
+
+.link {
+  stroke: white;
+  stroke-width: 1px;
+}
+.licensing {
+  fill: none;
+}
+.suit {
+  fill: #0772A1;
+}
+.resolved {
+  fill: #FF8700;
+}
+.node {
+  fill: lightgray;
+  stroke: black;
+  stroke-width: 1px;
+}
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+h6 { color: #7c795d; font-family: 'Source Sans Pro', sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0 0 24px; }
+</style>
+</head>
+<body>
+<div id="d3-kunta">
+</div>
+<h6>
+Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muuttujien v&auml;lisist&auml; korrelaatiokertoimista. Sen avulla voi havainnollistaa muutoksiin liittyvi&auml; heijastevaikutuksia.
+
+L&auml;hdeaineisto on koottu p&auml;&auml;osin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista.
+
+Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis-, eduskunta- ja eurovaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailussa on runsaat 500 muuttujaa.
+
+L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto julkaistaan myöhemmin Excel-taulukkona.
+
+Aineisto on tarkoitettu ensisijaisesti vihjetietokannaksi, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien v&auml;lisi&auml; suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelk&auml;n tietokannan perusteella ei kuitenkaan tule tehd&auml; kovin pitk&auml;lle menevi&auml; johtop&auml;&auml;t&ouml;ksi&auml;, vaan sen tarkoituksena on toimia pikemmin kannusteena varsinaiselle tutkimukselle.
+
+Näin k&auml;yt&auml;t tietokantaa:
+
+<ol>
+
+<li>Rajaa hakusanalla, esimerkiksi vero, 0, naiset, ty&ouml;, jne...</li>
+
+<li>Valitse ja hylk&auml;&auml; muuttujia, nimikett&auml; klikkaamalla</li>
+
+<li>S&auml;&auml;d&auml; korrelaatiokertoimien minimiarvoja</li>
+
+<li>Liikuttele alle ilmestyv&auml;&auml; kuviota</li>
+
+<li>Kuviossa n&auml;kyv&auml;t my&ouml;s korrelaatiokertoimet</li>
+
+</ol>
+
+Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/tilastomuuttujat/kuntatilastomuuttujat">GitHub</a>-verkkopalvelussa. Avoimella l&auml;hdekoodilla tarkoitetaan ohjelmistoa, jota k&auml;ytt&auml;j&auml; voi vapaasti hy&ouml;dynt&auml;&auml;, muokata, sek&auml; jaella uudestaan.
+</h6>
+</div>
+    <script>
+var konsoli=[];
+var minval = -0.3,
+    maxval = 0.3;
+var width  = 1200,
+    height = 900;
+var sitems=[];
+var force = d3.layout.force()
+    .charge(-3000)
+    .gravity(.8)
+    .size([width, height]);
+
+var nodes = force.nodes(),
+links = force.links();
+
+var svgNodes, svgLinks, svgTexts, labels;
+var svg = d3.select("#d3-kunta").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+function draw() {
+d3.selectAll("#d3-kunta > *").remove();
+svg = d3.select("#d3-kunta").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+    
+force = d3.layout.force()
+    .charge(-3000)
+    .gravity(.8)
+    .size([width, height]);
+nodes = force.nodes();
+links = force.links();
+
+links = konsoli.filter(function(d){return d.value < minval || d.value > maxval;});
+konsoli = [];
+links.forEach(function (link) {
+link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, linkCount: link.value});
+link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, linkCount: link.value});
+});
+
+nodes = d3.values(nodes)
+links.forEach(function (link) {
+  link.linkWidth  = 3;
+  link.headLength = 15;
+  link.headWidth  = 5;
+});
+
+force
+    .nodes(nodes)
+    .links(links)
+    .on("tick", tick)
+    .start();
+
+nodes.forEach(function(node) {node.r = 3 + 1.1 * node.weight })
+
+svgLinks = svg.selectAll(".link").data(links)
+  .enter().append("polygon")
+    .attr("class", function (d) { 
+    if (d.value>minval && d.value<maxval) {
+    return "link licensing";
+    } else {
+    if (d.value<0) {
+    return "link suit"
+    }
+    if (d.value>0) {
+    return "link resolved"
+    }}
+    });
+    
+svgNodes = svg.selectAll(".node").data(nodes)
+  .enter().append("circle")
+    .attr("class", "node")
+    .attr("r", function (d) {return d.r})
+    .call(force.drag);
+
+svgTexts = svg.selectAll("text").data(nodes)
+  .enter().append("text")
+    .attr("y", ".31em")
+    .text(function(d) {return d.name});
+
+edgepaths = svg.selectAll(".edgepath")
+            .data(links)
+            .enter()
+            .append('path')
+            .attr({
+                'class': 'edgepath',
+                'fill-opacity': 0,
+                'stroke-opacity': 0,
+                'id': function (d, i) {return 'edgepath' + i}
+            })
+            .style("pointer-events", "none");
+
+edgelabels = svg.selectAll(".edgelabel")
+            .data(links)
+            .enter()
+            .append('text')
+            .style("pointer-events", "none")
+            .attr({
+                'class': 'edgelabel',
+                'id': function (d, i) {return 'edgelabel' + i},
+                'font-size': 10,
+                'fill': '#aaa'
+            });
+
+edgelabels.append('textPath')
+            .attr('xlink:href', function (d, i) {return '#edgepath' + i})
+            .style("text-anchor", "middle")
+            .style("pointer-events", "none")
+            .attr("startOffset", "50%")
+            .text(function (d) {return d.value.toLocaleString({minimumFractionDigits: 2,})});
+}
+
+function tick() {
+  svgNodes.attr("transform", translate);
+  svgTexts.attr("transform", translate);
+  svgLinks.attr("points", calculatePolygon);
+  
+  
+  edgepaths.attr('d', function (d) {
+            return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
+        });
+
+}
+
+function translate (d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+function calculatePolygon(d) {
+  var p2  = d.source,
+      w   = diff(d.target, p2),
+      wl  = length(w),
+      v1  = scale(w, (wl - d.target.r) / wl),
+      p1  = sum(p2, v1),
+      v2  = scale(rotate90(w), d.linkWidth / length(w)),
+      p3  = sum(p2, v2),
+      v1l = length(v1),
+      v3  = scale(v1, (v1l - d.headLength) / v1l),
+      p4  = sum(p3, v3),
+      v2l = length(v2),
+      v4  = scale(v2, d.headWidth / v2l),
+      p5  = sum(p4, v4);
+  return pr(p1) +" "+ pr(p2) +" "+ pr(p3) +" "+ pr(p4) +" "+ pr(p5);
+  
+  function length(v) {return Math.sqrt(v.x * v.x + v.y * v.y)}
+  function diff(v, w) {return {x: v.x - w.x, y: v.y - w.y}}
+  function sum(v, w) {return {x: v.x + w.x, y: v.y + w.y}}
+  function scale(v, f) {return {x: f * v.x, y: f * v.y}}
+  function rotate90(v) {return {x: v.y, y: -v.x}}
+  function pr(v) {return v.x +","+ v.y}
+}
+
+function valinnat(items, mini, maxi) {
+minval=mini;
+maxval=maxi;
+sitems=items;
+	for ( x = 0; x < items.length; x++ ) {
+	var fitems = "../../data/F"+items[x]+".json";
+	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
+    for ( y = 0; y < data.links.length; y++ ) {
+	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	}}});
+	}
+	draw();
+	}
+	
+
+</script>
+</body>
+</html>
