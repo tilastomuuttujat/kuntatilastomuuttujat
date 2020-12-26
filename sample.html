@@ -66,8 +66,6 @@
     <input id="demo_4" type="text" name="" value="" onChange="valitse2($(this).val())">
 </div>
       
-      <p><span class="badge">2</span> Comments:</p><br>
-      
       <div class="row">
         <div class="col-sm-2 text-center">
 
@@ -104,45 +102,14 @@ var filet = [];
 var newarray=[];       
         var data = [];
         var fid = [];
-var konsoli=[];
 var minval = -0.3,
     maxval = 0.3;
     var mini = -0.3;
     var maxi = 0.3;
     var xmini, xmaxi;
-var width  = 1200,
-    height = 900;
-var sitems=[];
-var force = d3.layout.force()
-    .charge(-3000)
-    .gravity(.8)
-    .size([width, height]);
-
-var nodes = force.nodes(),
-links = force.links();
-
-var svgNodes, svgLinks, svgTexts, labels;
-var svg = d3.select("#d3-kunta").append("svg")
-    .attr("width", width)
-    .attr("height", height);
 
     $(document).ready(function () {
-        // allow sorting of checkbox columns
-        // $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, col) {
-        //     return this.api().column(col, {order: 'index'}).nodes().map(function (td, i) {
-        //         return $(td).closest('tr').hasClass('selected') ? '0' : '1';
-        //     });
-        // };
-
-
-/*
-        for (var i = 0; i < 1000; i++) {
-            data.push({"col1": i});
-        }
-        */
-        
         d3.json("arrays.json", function(lson) {
-        
 	    for ( x = 0; x < lson.links.length; x++ ) {
 	    	data.push({"col1":lson.links[x].source,"col2":lson.links[x].value});
 	    fid.push({"col2":lson.links[x].value});
@@ -206,16 +173,12 @@ var svg = d3.select("#d3-kunta").append("svg")
             table
     .order( [ 0, 'desc' ])
     .draw();
-    
-    
-var adata = table.rows({selected:  true}).data();
-var newarray=[];       
+    var adata = table.rows({selected:  true}).data();
+    newarray=[];       
         for (var i=0; i < adata.length ;i++){
            newarray.push(adata[i]["col2"]);
         }
-//console.log(newarray);
-//window.frames['kuvio'].valinnat(newarray);
-valitse1(newarray);
+        valitse1(newarray);
         });
         table.on('deselect', function (e, dt, type, indexes) {
             if (type === 'row') {
@@ -229,15 +192,12 @@ valitse1(newarray);
             table
     .order( [ 0, 'desc' ])
     .draw();
+    var adata = table.rows({selected:  true}).data();
     newarray = [];
-var adata = table.rows({selected:  true}).data();
         for (var i=0; i < adata.length ;i++){
            newarray.push(adata[i]["col2"]);
         }
-//console.log(newarray);
-    
-    
-    
+        valitse1(newarray);
         });
     }
 
@@ -255,27 +215,18 @@ var adata = table.rows({selected:  true}).data();
 });
 
 function valitse1(items) {
-//console.log(items);
-//console.log(items.indexOf(";"));
 filet = items;
 xmini = mini;
 xmaxi = maxi;
-console.log(filet,xmini,xmaxi);
 window.frames['kuvio'].valinnat(filet,mini,maxi);
-//valinnat(filet,mini,maxi);
 }
 
 function valitse2(items) {
 xfilet = filet;
 mini = items.substr(0,items.indexOf(";"));
 maxi = items.substr(items.indexOf(";")+1,4);
-//console.log(xfilet,mini,maxi);
 window.frames['kuvio'].valinnat(xfilet,mini,maxi);
-//valinnat(items,mini,maxi);
 }
-
-
-	
 </script>
 </body>
 </html>
