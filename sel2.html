@@ -43,36 +43,6 @@ h6 { color: #7c795d; font-family: 'Source Sans Pro', sans-serif; font-size: 16px
 <body>
 <div id="d3-kunta">
 </div>
-<h6>
-Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muuttujien v&auml;lisist&auml; korrelaatiokertoimista. Sen avulla voi havainnollistaa muutoksiin liittyvi&auml; heijastevaikutuksia.
-
-L&auml;hdeaineisto on koottu p&auml;&auml;osin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista.
-
-Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis-, eduskunta- ja eurovaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailussa on runsaat 500 muuttujaa.
-
-L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto julkaistaan myöhemmin Excel-taulukkona.
-
-Aineisto on tarkoitettu ensisijaisesti vihjetietokannaksi, joka toivon mukaan auttaa hahmottamaan, ja arvioimaan eri muuttujien v&auml;lisi&auml; suhteita, ja riippuvuuksia visualisoinnin keinoin. Pelk&auml;n tietokannan perusteella ei kuitenkaan tule tehd&auml; kovin pitk&auml;lle menevi&auml; johtop&auml;&auml;t&ouml;ksi&auml;, vaan sen tarkoituksena on toimia pikemmin kannusteena varsinaiselle tutkimukselle.
-
-Näin k&auml;yt&auml;t tietokantaa:
-
-<ol>
-
-<li>Rajaa hakusanalla, esimerkiksi vero, 0, naiset, ty&ouml;, jne...</li>
-
-<li>Valitse ja hylk&auml;&auml; muuttujia, nimikett&auml; klikkaamalla</li>
-
-<li>S&auml;&auml;d&auml; korrelaatiokertoimien minimiarvoja</li>
-
-<li>Liikuttele alle ilmestyv&auml;&auml; kuviota</li>
-
-<li>Kuviossa n&auml;kyv&auml;t my&ouml;s korrelaatiokertoimet</li>
-
-</ol>
-
-Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/tilastomuuttujat/kuntatilastomuuttujat">GitHub</a>-verkkopalvelussa. Avoimella l&auml;hdekoodilla tarkoitetaan ohjelmistoa, jota k&auml;ytt&auml;j&auml; voi vapaasti hy&ouml;dynt&auml;&auml;, muokata, sek&auml; jaella uudestaan.
-</h6>
-</div>
     <script>
 var konsoli=[];
 var minval = -0.3,
@@ -230,7 +200,7 @@ minval=mini;
 maxval=maxi;
 sitems=items;
 	for ( x = 0; x < items.length; x++ ) {
-	var fitems = "data/F"+items[x]+".json";
+	var fitems = "../../data/F"+items[x]+".json";
 	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
     for ( y = 0; y < data.links.length; y++ ) {
 	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});

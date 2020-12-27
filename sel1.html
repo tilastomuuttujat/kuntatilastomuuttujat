@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
+	<script src="colorbrewer.js"></script>
+	<style>
+path {
+	stroke: #000;
+	stroke-width: 0.5px;
+}
+
+path.chord {
+	stroke-width: 0.1px;
+	fill-opacity: 0.8;
+}
+
+.entity-group text {
+	font-family: "Source Sans Pro", "sans serif";
+	font-size: 14px;
+}
+</style>
+</head>
+<body>
+	<div class="erpnext-chord"></div>
+<script>
+var _data = [];
+var konsoli=[];
+var diagram = {
+	set_dimensions: function(width, height, scale) {
+		var width = width || 500,
+			height = height || 500,
+			outer_radius = Math.min(width, height) / 2 - 10.0,
+			scale = scale || 1;
+		
+		diagram.dimensions = {
+			width: width,
+			height: height,
+			
+			outer_radius: outer_radius,
+			inner_radius: outer_radius - 24.0,
+			
+			svg_position_x: width,
+			svg_position_y: height * 0.8,
+			
+			scale: scale,
+		};
+	},
+	
+	opts: {
+		container_class: "erpnext-chord",
+		hw_ratio: 1.0,
+		fade_out_opacity: 0.0,
+		max_no_of_entities: 75,
+		ignore: {
+			entities: [],
+			types: ["System", "Setup", "Other"]
+		},
+		fill: d3.scale.ordinal()
+			.range([]
+				.concat(colorbrewer.BrBG[11])
+				.concat(colorbrewer.Pastel1[9])
+				.concat(colorbrewer.Spectral[11])
+				.concat(colorbrewer.Set3[12])
+				.concat(colorbrewer.PuBuGn[9])
+			),
+		fade: function(opacity) {
+			return function(g) {
+				diagram.elements.svg.selectAll("g.svg-group path.chord")
+					.filter(function(d) {
+						return d.source.index != g.index && d.target.index != g.index;
+					})
+					.transition(0)
+						.delay(opacity==1 ? 100 : 0)
+						.style("opacity", opacity);
+			};
+		},
+	},
+	
+	render: function() {
+		diagram.prepare_data_and_matrix();
+		diagram.elements = {};
+		diagram.make_svg_element();
+		diagram.make_chord_diagram();
+	},
+	
+	prepare_data_and_matrix: function() {
+		diagram.data = diagram.get_data();
+		diagram.initialize_ids_and_matrix();
+		diagram.assign_relationship_values_to_matrix();
+	},
+	
+	make_svg_element: function() {
+		var container = d3.select("." + diagram.opts.container_class);
+		container.selectAll("svg").remove();
+		var target_width = parseFloat(d3.select(container.node().parentNode).style("width")) / 2;
+		var scale = 0.9;
+		diagram.set_dimensions(target_width, diagram.opts.hw_ratio * target_width, scale)
+		diagram.elements.svg = container.append("svg")
+				.attr("width", diagram.dimensions.width * 2 * diagram.dimensions.scale)
+				.attr("height", diagram.dimensions.height * 2 * diagram.dimensions.scale)
+			
+			.append("g") 
+				.attr("class", "svg-group")
+				.attr("transform", "translate(" 
+					+ diagram.dimensions.svg_position_x * diagram.dimensions.scale + ","
+					+ diagram.dimensions.svg_position_y * diagram.dimensions.scale + ")"
+					+ "scale(" + diagram.dimensions.scale + ")"
+				)
+				
+		d3.select(window).on("resize", function() {
+			console.log("resized");
+			diagram.render();
+		});
+	},
+	
+	make_chord_diagram: function() {
+		diagram.prepare_chord_layout();
+		diagram.make_arcs();
+		diagram.make_chords();
+	},
+	
+	initialize_ids_and_matrix: function() {
+		diagram.entity_names = [];
+		diagram.data.forEach(function(relationship) {
+			if(diagram.entity_names.indexOf(relationship.source)===-1)
+				diagram.entity_names.push(relationship.source);
+			
+			if(diagram.entity_names.indexOf(relationship.target)===-1)
+				diagram.entity_names.push(relationship.target);
+			
+		});
+		diagram.entity_names = diagram.entity_names.sort();
+		diagram.entities = {};
+		var n = 0;
+		diagram.entity_names
+			.forEach(function(entity_name) {
+				diagram.entities[entity_name] = { id: n, name: entity_name };
+				n++;
+			});
+		
+		diagram.data.forEach(function(relationship) {
+			relationship.source_id = diagram.entities[relationship.source].id;
+			relationship.target_id = diagram.entities[relationship.target].id;
+		});
+		
+		diagram.matrix = [];
+		for(var i = 0; i < n; i++) {
+			diagram.matrix[i] = [];
+			for(var j = 0; j < n; j++) {
+				diagram.matrix[i][j] = 0;
+			}
+		}
+	},
+	
+	assign_relationship_values_to_matrix: function() {
+		diagram.data.forEach(function(relationship) {
+			diagram.matrix[relationship.source_id][relationship.target_id] = 1.0;
+			diagram.matrix[relationship.target_id][relationship.source_id] = 0.5;
+		});
+	},
+	
+	prepare_chord_layout: function() {
+		diagram.layout = d3.layout.chord()
+			.padding(0.04); 
+		diagram.layout.matrix(diagram.matrix);
+	},
+	
+	make_arcs: function() {
+		var arc = d3.svg.arc()
+			.innerRadius(diagram.dimensions.inner_radius)
+			.outerRadius(diagram.dimensions.outer_radius);
+			
+		diagram.elements.entity_groups = diagram.elements.svg.selectAll("g.entity-group")
+				.data(diagram.layout.groups) 
+			.enter().append("g") 
+				.attr("class", "entity-group");
+				
+		diagram.elements.entity_groups.append("path")
+				.attr("d", arc)
+				.style("fill", function(d) { return diagram.opts.fill(d.index); })
+				.on("mouseover", diagram.opts.fade(diagram.opts.fade_out_opacity))
+				.on("mouseout", diagram.opts.fade(1.0))
+			.append("title")
+				.text(function(d) { return diagram.entity_names[d.index]; });
+		
+		diagram.elements.entity_groups.append("text")
+			.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+			.attr("dy", ".35em")
+			.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end": null; })
+			.attr("transform", function(d) {
+				return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+					+ "translate(" + (diagram.dimensions.outer_radius + 5) + ")"
+					+ (d.angle > Math.PI ? "rotate(180)" : "")
+			})
+			.text(function(d) { return diagram.entity_names[d.index]; });
+	},
+	
+	make_chords: function() {
+		var chord = d3.svg.chord()
+			.radius(diagram.dimensions.inner_radius);
+		
+		diagram.elements.svg.selectAll("path.chord")
+				.data(diagram.layout.chords)
+			.enter().append("path")
+					.attr("class", "chord")
+					.attr("d", chord)
+					.style("fill", function(d) { return diagram.opts.fill(d.source.index); })
+				.append("title")
+					.text(function(d) {
+						return diagram.entity_names[d.source.index] + " is used in "
+							+ diagram.entity_names[d.target.index];
+					});
+	},
+	
+	get_data: function() {
+		var entity_count = {};
+		_data.forEach(function(rel) {
+			if(diagram.opts.ignore.entities.indexOf(rel.source)!==-1 || diagram.opts.ignore.entities.indexOf(rel.target)!==-1)
+				return;
+			if(diagram.opts.ignore.types.indexOf(rel.source_type)!==-1 || diagram.opts.ignore.types.indexOf(rel.target_type)!==-1)
+				return;
+			if(entity_count[rel.source]===undefined)
+				entity_count[rel.source] = 0.0;
+			entity_count[rel.source] += 1;
+			if(entity_count[rel.target]===undefined)
+				entity_count[rel.target] = 0.0;
+			entity_count[rel.target] += 1;
+		});
+		
+		var valid_entities = d3.keys(entity_count).sort(function(a, b) {
+			return entity_count[b] - entity_count[a];
+		});
+		
+		var max_no_of_entities = diagram.opts.max_no_of_entities;
+		var container = d3.select("." + diagram.opts.container_class);
+		if(container.attr("max_no_of_entities")) {
+			max_no_of_entities = parseInt(container.attr("max_no_of_entities"));
+		}
+		
+		valid_entities.splice(max_no_of_entities+1, valid_entities.length);
+
+		var new_data = [];
+		_data.forEach(function(rel) {
+			if(valid_entities.indexOf(rel.source)!==-1 && valid_entities.indexOf(rel.target)!==-1)
+				new_data.push(rel);
+		});
+		
+		return new_data;
+	},
+};
+
+function valinnat(items, mini, maxi) {
+konsoli=[];
+var links =[];
+var minval=mini;
+var maxval=maxi;
+var sitems=items;
+	for ( x = 0; x < items.length; x++ ) {
+	var fitems = "../../data/F"+items[x]+".json";
+	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
+    for ( y = 0; y < data.links.length; y++ ) {
+	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	}}});
+	}
+	links = konsoli.filter(function(d){return d.value < minval || d.value > maxval;});
+	_data = links;
+	diagram.render();
+	}
+</script>
+</body>
+</html>
