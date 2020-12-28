@@ -95,7 +95,7 @@ var diagram = {
 	make_svg_element: function() {
 		var container = d3.select("." + diagram.opts.container_class);
 		container.selectAll("svg").remove();
-		var target_width = parseFloat(d3.select(container.node().parentNode).style("width")) / 1.2;
+		var target_width = parseFloat(d3.select(container.node().parentNode).style("width")) / 1.5;
 		var scale = 0.7;
 		diagram.set_dimensions(target_width, diagram.opts.hw_ratio * target_width, scale)
 		diagram.elements.svg = container.append("svg")
