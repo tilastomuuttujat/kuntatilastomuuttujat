@@ -260,7 +260,7 @@ var minval=mini;
 var maxval=maxi;
 var sitems=items;
 	for ( x = 0; x < items.length; x++ ) {
-	var fitems = "data/F"+items[x]+".json";
+	var fitems = "../../data/F"+items[x]+".json";
 	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
     for ( y = 0; y < data.links.length; y++ ) {
 	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
