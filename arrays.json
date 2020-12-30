@@ -30,6 +30,8 @@
 {"source": "Asuinkunnassaan työssäkäyvien osuus, %", "target": "Työllisyys", "value": "203"},
 {"source": "Asukasluku", "target": "Olosuhteet", "value": "544"},
 {"source": "Asumisen tuet, keskiarvo", "target": "Tulonsiirrot", "value": "378"},
+{"source": "Asumismenot asumistuen jälkeen", "target": "Olosuhteet", "value": "597"},
+{"source": "Asumismenot ennen asumistukea", "target": "Olosuhteet", "value": "596"},
 {"source": "Asuntokunnan koko (1 henkilö)", "target": "Olosuhteet", "value": "262"},
 {"source": "Asuntokunnan koko (2 henkilöä)", "target": "Olosuhteet", "value": "263"},
 {"source": "Asuntokunnan koko (3 henkilöä)", "target": "Olosuhteet", "value": "264"},
