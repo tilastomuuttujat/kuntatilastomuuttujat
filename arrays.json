@@ -141,6 +141,7 @@
 {"source": "Kahden vanhemman perheet, lapset 0-17", "target": "Perhe", "value": "61"},
 {"source": "Kaupan työpaikat", "target": "Työllisyys", "value": "22"},
 {"source": "Kaupan työpaikkojen osuus kaikista työpaikoista, %", "target": "Työllisyys", "value": "230"},
+{"source": "Keskimääräiset asumismenot €/m2/kk", "target": "Olosuhteet", "value": "595"},
 {"source": "Käytettävissä oleva mediaanirahatulo", "target": "Tulot", "value": "82"},
 {"source": "Käytettävissä oleva rahantulo, keskiarvo", "target": "Tulot", "value": "381"},
 {"source": "Käytettävissä oleva rahatulo, mediaani", "target": "Tulot", "value": "382"},
