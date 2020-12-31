@@ -143,7 +143,6 @@
 {"source": "Kahden vanhemman perheet, lapset 0-17", "target": "Perhe", "value": "61"},
 {"source": "Kaupan työpaikat", "target": "Työllisyys", "value": "22"},
 {"source": "Kaupan työpaikkojen osuus kaikista työpaikoista, %", "target": "Työllisyys", "value": "230"},
-{"source": "Keskimääräiset asumismenot €/m2/kk", "target": "Olosuhteet", "value": "595"},
 {"source": "Käytettävissä oleva mediaanirahatulo", "target": "Tulot", "value": "82"},
 {"source": "Käytettävissä oleva rahantulo, keskiarvo", "target": "Tulot", "value": "381"},
 {"source": "Käytettävissä oleva rahatulo, mediaani", "target": "Tulot", "value": "382"},
@@ -152,6 +151,7 @@
 {"source": "Kerrostalokauppojen lukumäärä", "target": "Olosuhteet", "value": "417"},
 {"source": "Kerrostalot neliöhinta (EUR/m2)", "target": "Olosuhteet", "value": "416"},
 {"source": "Kesämökkejä (lkm)", "target": "Olosuhteet", "value": "418"},
+{"source": "Keskimääräiset asumismenot €/m2/kk", "target": "Olosuhteet", "value": "595"},
 {"source": "Kiinteistövero", "target": "Demokratia", "value": "557"},
 {"source": "Kohtalainen tai vaikea ahdistuneisuus, % 8. ja 9. luokan oppilaista", "target": "Hyvinvointi", "value": "245"},
 {"source": "Kokee terveydentilansa keskinkertaiseksi tai huonoksi, % 8. ja 9. luok", "target": "Hyvinvointi", "value": "243"},
@@ -507,8 +507,12 @@
 {"source": "Työkyvyttömyyseläke, mielenterveyden ja käyttäytymisen häiriöt 50-54 v", "target": "Olosuhteet", "value": "586"},
 {"source": "Työkyvyttömyyseläke, mielenterveyden ja käyttäytymisen häiriöt 55-59 v", "target": "Olosuhteet", "value": "585"},
 {"source": "Työkyvyttömyyseläke, mielenterveyden ja käyttäytymisen häiriöt 60-64 v", "target": "Olosuhteet", "value": "584"},
+{"source": "Työkyvyttömyyseläke, tuki- ja liikuntaelinten sairaudet 40-44 v", "target": "Hyvinvointi", "value": "601"},
+{"source": "Työkyvyttömyyseläke, tuki- ja liikuntaelinten sairaudet 45-49 v", "target": "Hyvinvointi", "value": "600"},
+{"source": "Työkyvyttömyyseläke, tuki- ja liikuntaelinten sairaudet 50-54 v", "target": "Hyvinvointi", "value": "599"},
+{"source": "Työkyvyttömyyseläke, tuki- ja liikuntaelinten sairaudet 55-59 v", "target": "Hyvinvointi", "value": "598"},
+{"source": "Työkyvyttömyyseläke, tuki- ja liikuntaelinten sairaudet 60-64 v", "target": "Hyvinvointi", "value": "594"},
 {"source": "Työkyvyttömyysindeksi", "target": "Hyvinvointi", "value": "19"},
-{"source": "Työkyvyyttömyyseläke, tuki- ja liikuntaelinten sairaudet 60-64 v", "target": "Olosuhteet", "value": "594"},
 {"source": "Työlliset, 18-24 -vuotiaat", "target": "Työllisyys", "value": "39"},
 {"source": "Työlliset, 25-34 -vuotiaat", "target": "Työllisyys", "value": "38"},
 {"source": "Työlliset, 35-44 -vuotiaat", "target": "Työllisyys", "value": "37"},
@@ -623,5 +627,5 @@
 {"source": "Yrittäjätulot metsätaloudesta, keskiarvo", "target": "Tulot", "value": "375"},
 {"source": "Yrittäjätulot, keskiarvo", "target": "Tulot", "value": "43"},
 {"source": "Yrittäjien osuus työllisistä, %", "target": "Työllisyys", "value": "212"},
-{"source": "Yrityskanta", "target": "Työllisyys", "value": "116"}
+{"source": "Yrityskanta", "target": "Tulonsiirrot", "value": "116"}
 ]}
