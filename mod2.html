@@ -20,7 +20,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.min.js"></script>
 
 
-	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="xhttps://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="xhttps://code.jquery.com/jquery-3.5.0.js"></script>
 	<link href="xhttps://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
 	<style>
@@ -62,7 +62,7 @@ d3.json("arrays.json", function(lson) {
 
 	for ( x = 0; x < items.length; x++ ) {
 	
-	var fitems = "data/F"+items[x]+".json";
+	var fitems = "../../data/F"+items[x]+".json";
 	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
 	
     for ( y = 0; y < data.links.length; y++ ) {
@@ -94,8 +94,9 @@ d3.json("arrays.json", function(lson) {
 	}
 	
 //console.log(parent.fitems,minval,maxval);
-valinnat(fitems,minval,maxval);
 
+valinnat(fitems,minval,maxval);
+valinnat(["11"],-0.3,0.3);
 </script>
 </body>
 </html>
