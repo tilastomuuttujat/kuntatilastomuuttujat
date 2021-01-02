@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="xhttps://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">
+<link rel="stylesheet" href="xhttps://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="xhttps://dexjs.net/js/dex-jquery.css">
+<link rel="stylesheet" href="xhttps://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
+<link rel="stylesheet" href="xhttps://dexjs.net/js/dex-bootstrap.css">
+<link rel="stylesheet" href="xhttps://dexjs.net/js/dex.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="xhttps://dexjs.net/js/dex-jquery.js"></script>
+<script src="xhttps://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://dexjs.net/js/dex-bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="xhttps://dexjs.net/js/dex-libs.js"></script>
+<script src="dex-libs.js"></script>
+<script src="https://dexjs.net/js/dex.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.min.js"></script>
+
+
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="xhttps://code.jquery.com/jquery-3.5.0.js"></script>
+	<link href="xhttps://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
+	<style>
+html, body, #D3Plus_RingNetwork {
+        height: 100%;
+        min-height: 100%;
+        width: 100%;
+        min-width: 100%;
+}
+</style>
+</head>
+<body>
+	<div id="RingNetwork"></div>
+<script>
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var sitems=[];
+var _data = [];
+var konsoli=[];
+var ringnet =[];
+var playnet=[];
+var obj = {};
+
+
+function valinnat(items, mini, maxi) {
+ringnet =[];
+konsoli=[];
+var links =[];
+minval=mini;
+maxval=maxi;
+sitems=items;
+var liite;
+
+d3.json("arrays.json", function(lson) {
+	    for ( x = 0; x < lson.links.length; x++ ) {
+	    obj[lson.links[x].source] = lson.links[x].target;
+	    }
+
+	for ( x = 0; x < items.length; x++ ) {
+	
+	var fitems = "../../data/F"+items[x]+".json";
+	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
+	
+    for ( y = 0; y < data.links.length; y++ ) {
+	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	}}});
+	}
+	links = konsoli.filter(function(d){return d.value < minval || d.value > maxval;});
+	
+	for ( y = 0; y < links.length; y++ ) {
+	liite = obj[links[y].target];
+	ringnet.push([links[y].target,liite,links[y].source, links[y].value]);
+	
+	}
+	
+	playnet = ringnet;
+
+	var csv = new dex.csv({
+    'header': ["Muuttujat", "Luokka", "Vertailumuuttujat"],
+    'data': playnet
+ });
+
+  var network = dex.charts.d3plus.RingNetwork({
+      'parent': '#RingNetwork',
+      'type': 'rings',
+      'edges': {'arrows': true},
+      'csv': csv
+    }).render();
+	});
+	}
+	
+//console.log(parent.fitems,minval,maxval);
+valinnat(fitems,minval,maxval);
+
+</script>
+</body>
+</html>
