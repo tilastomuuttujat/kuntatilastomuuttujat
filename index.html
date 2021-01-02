@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/1.5.0/css/scroller.dataTables.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.6/css/select.dataTables.css"/>
 <link rel="stylesheet" href="ion.rangeSlider.min.css">
+<script src="defiant.js"></script>
 <script src="ion.rangeSlider.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -46,14 +47,16 @@
   <div class="row content">
     <div class="col-sm-3 sidenav">
     <table id="rulesTable" class="table table-bordered table-striped" width="50%"></table>
-
+<br>
 
   <fieldset>
-    Diagram:
+    - - - - - Select diagram - - - - -<br>
     <label for="radio-1">Chord</label>
     <input type="radio" name="radio-1" id="radio-1" checked onClick="urlChange('sel1.html')">
     <label for="radio-2">Force</label>
-    <input type="radio" name="radio-1" id="radio-2" onClick="urlChange('sel2.html')">
+    <input type="radio" name="radio-1" id="radio-1" onClick="urlChange('sel2.html')">
+    <label for="radio-3">Ringnet</label>
+    <input type="radio" name="radio-1" id="radio-1" onClick="urlChange('mod2.html')">
   </fieldset>
 
 
@@ -63,7 +66,7 @@ Kuntakohtaiset tilastomuuttujat ovat JSON -tiedostomuotoon luotu tietokanta muut
 <br><br>
 L&auml;hdeaineisto on koottu p&auml;&auml;osin Kelan, Tilastokeskuksen, THL:n ja Verohallinnon tilastotietokannoista.
 <br><br>
-Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis-, eduskunta- ja eurovaaleihin liittyv&auml; tieto.
+Korrelaatiot on laskettu vuosien 2014 ja 2018 v&auml;lisest&auml; muutoksesta, tai kyseist&auml; ajanjaksoa l&auml;himmilt&auml; vuosilta, kuten esimerkiksi kunnallis-, eduskunta- ja eurovaaleihin liittyv&auml; tieto. T&auml;ll&auml; hetkell&auml; vertailussa on lähes 600 muuttujaa.
 <br><br>
 L&auml;hdeaineistoille on laskettu my&ouml;s niiden tilastollista luotettavuutta kuvaavia indikaattoreita. L&auml;hdeaineisto julkaistaan myöhemmin Excel-taulukkona.
 <br><br>
@@ -77,7 +80,7 @@ Näin k&auml;yt&auml;t tietokantaa:
 
 <li>Valitse ja hylk&auml;&auml; muuttujia, nimikett&auml; klikkaamalla</li>
 
-<li>Muuta liukus&auml;&auml;timill&auml; korrelaatiokertoimien minimiarvoja. Esimerkiksi, rajaa tarkastelua koskemaan vain negatiivisia korrelaatioita, asettamalla oikean liukus&auml;&auml;timen arvoksi 1.</li>
+<li>S&auml;&auml;d&auml; liukukytkimill&auml; korrelaatiokertoimien minimiarvoja</li>
 
 <li>Piirtyv&auml;t kuviot ovat interaktiivisia</li>
 
@@ -104,23 +107,20 @@ Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/t
   </div>
 </div>
 ​<script>
-
+var fitems = ["11"];
 var xfilet = [];
 var filet = [];
 var newarray=[];       
 var data = [];
-var minval = -0.3,
-    maxval = 0.3;
-    var mini = -0.3;
-    var maxi = 0.3;
-    var xmini, xmaxi;
-
+var minval = -0.3, maxval = 0.3;
+var mini = -0.3, maxi = 0.3;
+var xmini = -0.3, xmaxi = 0.3;
     $(document).ready(function () {
         d3.json("arrays.json", function(lson) {
 	    for ( x = 0; x < lson.links.length; x++ ) {
 	    	data.push({"col1":lson.links[x].source,"col2":lson.links[x].value});
 	    }
-	    showRules(data);
+        showRules(data);
 	});
     });
 
@@ -221,13 +221,16 @@ var minval = -0.3,
 });
 
 function valitse1(items) {
+fitems = items;
 filet = items;
 xmini = mini;
 xmaxi = maxi;
 window.frames['kuvio'].valinnat(filet,xmini,xmaxi);
+//console.log(filet,xmini,xmaxi);
 }
 
 function valitse2(items) {
+fitems = filet;
 xfilet = filet;
 mini = items.substr(0,items.indexOf(";"));
 maxi = items.substr(items.indexOf(";")+1,4);
