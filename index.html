@@ -51,12 +51,14 @@
 
   <fieldset>
     - - - - - Select diagram - - - - -<br>
-    <label for="radio-1">Chord</label>
     <input type="radio" name="radio-1" id="radio-1" checked onClick="urlChange('sel1.html')">
-    <label for="radio-2">Force</label>
-    <input type="radio" name="radio-1" id="radio-1" onClick="urlChange('sel2.html')">
-    <label for="radio-3">RingNetwork</label>
-    <input type="radio" name="radio-1" id="radio-1" onClick="urlChange('mod2.html')">
+    <label for="radio-1">Chord</label><br>
+    <input type="radio" name="radio-1" id="radio-2" onClick="urlChange('sel2.html')">
+    <label for="radio-2">Force</label><br>
+    <input type="radio" name="radio-1" id="radio-3" onClick="urlChange('mod2.html')">
+    <label for="radio-3">RingNetwork</label><br>
+    <input type="radio" name="radio-1" id="radio-4" onClick="urlChange('mod3.html')">
+    <label for="radio-4">Co-occurence</label>
   </fieldset>
 
 
@@ -106,7 +108,7 @@ Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/t
     </div>
   </div>
 </div>
-<script>
+​<script>
 var fitems = [];
 var xfilet = [];
 var filet = [];
@@ -220,13 +222,13 @@ var xmini = -0.3, xmaxi = 0.3;
         });
 });
 
+
 function valitse1(items) {
 fitems = items;
 filet = items;
 xmini = mini;
 xmaxi = maxi;
 window.frames['kuvio'].valinnat(filet,xmini,xmaxi);
-//console.log(filet,xmini,xmaxi);
 }
 
 function valitse2(items) {
@@ -240,6 +242,22 @@ window.frames['kuvio'].valinnat(xfilet,mini,maxi);
 function urlChange(url) {
     document.getElementById('kuvio').src = url;
 }
+
+
+//https://tilastomuuttujat.github.io/kuntatilastomuuttujat/?url=mod3.html&fitems=777&minval=-0.3&maxval=0.3
+//var loco = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/test.html?url=mod2.html&fitems=444&minval=-0.3&maxval=0.5";
+
+urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
+	
+if (urlp.length>1){
+document.getElementById('kuvio').src = urlp['url'];
+document.getElementById('radio-3').checked = true;
+minval=urlp['minval'];
+maxval=urlp['maxval'];
+fitems=urlp['fitems'];
+window.frames['kuvio'].valinnat(fitems,minval,maxval);
+}
+
 </script>
 </body>
 </html>
