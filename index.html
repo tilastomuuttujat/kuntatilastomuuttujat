@@ -106,8 +106,8 @@ Tietokanta on julkaistu avoimena l&auml;hdekoodina <a href="https://github.com/t
     </div>
   </div>
 </div>
-​<script>
-var fitems = ["11"];
+<script>
+var fitems = [];
 var xfilet = [];
 var filet = [];
 var newarray=[];       
@@ -117,11 +117,12 @@ var mini = -0.3, maxi = 0.3;
 var xmini = -0.3, xmaxi = 0.3;
 
 urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
+	
 if (urlp.length>1){
 document.getElementById('kuvio').src = urlp['url'];
 minval=urlp['minval'];
 maxval=urlp['maxval'];
-items=urlp['items'];
+fitems=urlp['items'];
 }
     $(document).ready(function () {
         d3.json("arrays.json", function(lson) {
