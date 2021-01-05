@@ -117,9 +117,10 @@ var mini = -0.3, maxi = 0.3;
 var xmini = -0.3, xmaxi = 0.3;
 
 urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
-alert(urlp['fitems'].length);	
-if (urlp['fitems'].length>1){
+//alert(urlp['fitems'].length);	
+if (urlp['fitems'].length>0){
 document.getElementById('kuvio').src = urlp['url'];
+alert(urlp['url']);
 minval=urlp['minval'];
 maxval=urlp['maxval'];
 fitems=urlp['fitems'];
