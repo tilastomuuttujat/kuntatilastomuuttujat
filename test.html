@@ -116,6 +116,15 @@ var minval = -0.3, maxval = 0.3;
 var mini = -0.3, maxi = 0.3;
 var xmini = -0.3, xmaxi = 0.3;
 
+    $(document).ready(function () {
+        d3.json("arrays.json", function(lson) {
+	    for ( x = 0; x < lson.links.length; x++ ) {
+	    	data.push({"col1":lson.links[x].source,"col2":lson.links[x].value});
+	    }
+        showRules(data);
+	});
+    });
+
 urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
 //alert(urlp['fitems'].length);	
 if (urlp['fitems'].length>0){
@@ -126,16 +135,8 @@ maxval=urlp['maxval'];
 fitems=urlp['fitems'];
 window.frames['kuvio'].valinnat(fitems,minval,maxval);
 }
-    $(document).ready(function () {
-        d3.json("arrays.json", function(lson) {
-	    for ( x = 0; x < lson.links.length; x++ ) {
-	    	data.push({"col1":lson.links[x].source,"col2":lson.links[x].value});
-	    }
-        showRules(data);
-	});
-    });
 
-    function showRules(data) {
+	function showRules(data) {
 
         var columns = [
             {
