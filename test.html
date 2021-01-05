@@ -126,7 +126,7 @@ var xmini = -0.3, xmaxi = 0.3;
     });
 
 urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
-//alert(urlp['fitems'].length);	
+alert(location);	
 if (urlp['fitems'].length>0){
 document.getElementById('kuvio').src = urlp['url'];
 document.getElementById('radio-3').checked = true;
