@@ -115,16 +115,6 @@ var data = [];
 var minval = -0.3, maxval = 0.3;
 var mini = -0.3, maxi = 0.3;
 var xmini = -0.3, xmaxi = 0.3;
-
-urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
-	
-if (urlp.length>1){
-document.getElementById('kuvio').src = urlp['url'];
-minval=urlp['minval'];
-maxval=urlp['maxval'];
-fitems=urlp['fitems'];
-window.frames['kuvio'].valinnat(fitems,minval,maxval);
-}
     $(document).ready(function () {
         d3.json("arrays.json", function(lson) {
 	    for ( x = 0; x < lson.links.length; x++ ) {
