@@ -122,7 +122,8 @@ if (urlp.length>1){
 document.getElementById('kuvio').src = urlp['url'];
 minval=urlp['minval'];
 maxval=urlp['maxval'];
-fitems=urlp['items'];
+fitems=urlp['fitems'];
+window.frames['kuvio'].valinnat(fitems,minval,maxval);
 }
     $(document).ready(function () {
         d3.json("arrays.json", function(lson) {
