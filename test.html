@@ -129,7 +129,8 @@ urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i+
 //alert(urlp['fitems'].length);	
 if (urlp['fitems'].length>0){
 document.getElementById('kuvio').src = urlp['url'];
-alert(urlp['url']);
+document.getElementById('radio-3').checked = true;
+//alert(urlp['url']);
 minval=urlp['minval'];
 maxval=urlp['maxval'];
 fitems=urlp['fitems'];
