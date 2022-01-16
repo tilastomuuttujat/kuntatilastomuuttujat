@@ -2,43 +2,22 @@
 /* global PULI_UTIL, tinyMCE, responsiveVoice */
 
 var _combine_input = function () {
-  // 開頭設定
-  _reset_result();
-  //var _result = "";
-  //var _panel = $(".file-process-framework");
-  _data = {};
-  // ------------------------------------------
-  // 資料處理設定
-
-
-  _calc_pearson_correlation();
-
-  // ------------------------------------------
-  // 結束設定
-
-
-};	// var _combine_input = function () {
-
-_attr_list_count = 0;
+    _reset_result();
+    _data = {};
+    _calc_pearson_correlation();
+};
+    _attr_list_count = 0;
 
 var _calc_pearson_correlation = function () {
-  //var _result = "";
-  var _attr_list = [];
-  _attr_list_count = 0;
-  var _panel = $(".file-process-framework");
-
-  var _csv_lines = _panel.find("#input_data").val().trim().split("\n");
+var _attr_list = [];
+    _attr_list_count = 0;
+var _panel = $(".file-process-framework");
+var _csv_lines = _panel.find("#input_data").val().trim().split("\n");
 
   if (_csv_lines.length === 0) {
     return "";
   }
-
-  //var _data = {};
   var _pair_number;
-  //var _attr_list = [];
-
-  // ----------------------------
-  // load data
 
   for (var _i = 0; _i < _csv_lines.length; _i++) {
     let _line = _csv_lines[_i]
@@ -62,7 +41,6 @@ var _calc_pearson_correlation = function () {
         _attr_list_count++;
       } else {
         if (isNaN(_value)) {
-          //_attr_list.splice(_j, 1);
           continue;
         }
         _value = eval(_value);
@@ -86,7 +64,6 @@ var _calc_pearson_correlation = function () {
 
   //console.log(_attr_list);
   if (_attr_list_count === 1 && $("#input_test_of_trend:checked").length === 1) {
-    // 加入時間序號
     var _value = 'time_index';
     _data[_value] = [];
     _attr_list[_j] = _value;
@@ -94,9 +71,6 @@ var _calc_pearson_correlation = function () {
       _data[_value].push(_t);
     }
   }
-
-  // -----------------------------------
-  // 畫變數表
 
   var _var_container = _panel.find("#variables_container");
   _var_container.empty();
@@ -108,9 +82,7 @@ var _calc_pearson_correlation = function () {
     var _div = $('<div class="field"><div class="ui checkbox">'
             + '<input type="checkbox" name="variables" value="' + _attr + '" id="variables_' + _i + '" checked="checked" /> '
             + '<label for="variables_' + _i + '">'
-            //+ '<i class="resize vertical icon"></i> '
             + '<i class="sort icon"></i>'
-            //+ '<img src="drag_reorder1.png" />'
             + _attr
             + '</label>'
             + '</div></div>');
@@ -118,8 +90,6 @@ var _calc_pearson_correlation = function () {
     _div.find('input').change(_draw_result_table);
     _div.bind('dragstop', _draw_result_table);
   }
-
-  // -----------------------------------
 
   // console.log(_data);
   return _draw_result_table();
@@ -144,16 +114,10 @@ var _draw_result_table = function () {
 
   _reset_result();
   var _result_div = $('<div></div>');
-
   var _attr_list = _get_attr_list();
-
-  // -------------------------------------
-  // 描述性統計量
 
   _result_div.append(_draw_descriptive_table());
 
-  // ------------------------
-  // 先畫表格吧...
   var _result_data = {};
   for (var _i = 0; _i < _attr_list.length; _i++) {
     var _x_attr = _attr_list[_i];
@@ -193,28 +157,32 @@ var _draw_result_table = function () {
   }
 
   //console.log(_result_data);
-  // -----------------------------------
 
   var _precision = $("#input_precise").val();
-  _precision = eval(_precision);
+      _precision = eval(_precision);
 
 
   var _display_detail = ($("#input_display_detail:checked").length === 1);
   var _colspan = 2;
   if (_display_detail === false) {
-    _colspan = 1;
+      _colspan = 1;
   }
+  
+
 
   var _table = $('<div style="display:inline-block;">'
-          + '<div class="caption" style="text-align:center;display:block">Correlation analysis</div>'
-          + '<table border="1" cellpadding="0" cellspacing="0">'
-          //+ '<caption>' + "相關分析" + '</caption>'
-          + '<thead><tr class="x-attr"><th colspan="' + _colspan + '" class="right-border-bold"></th></tr></thead>'
+//          + '<div class="caption" style="text-align:center;display:block">Correlation analysis</div>'
+         + '<table border="1" cellpadding="0" cellspacing="0">'
+//          + '<thead><tr class="x-attr"><th colspan="' + _colspan + '" class="right-border-bold"></th></tr></thead>'
+          //+ '<thead><tr class="x-attr"><th colspan="" class="right-border-bold"></th></tr></thead>'
           + '<tbody></tbody>'
           + '</table><div class="note" style="text-align:left;"></div></div>');
+
+
   if ($("#input_table_style_display:checked").length === 0) {
     _table.addClass("analyze-result");
   }
+
   var _tr_x_attr = _table.find("tr.x-attr");
 
   var _tbody = _table.find("tbody");
@@ -228,7 +196,7 @@ var _draw_result_table = function () {
   for (var _x_attr in _result_data) {
 
     if (_tr_x_attr.find('th[data-attr="' + _x_attr + '"]').length === 0) {
-      _tr_x_attr.append('<th data-attr="' + _x_attr + '">' + _x_attr + '</th>');
+//     _tr_x_attr.append('<th data-attr="' + _x_attr + '">' + _x_attr + '</th>');
     }
     //console.log(['x', _x_attr]);
 
@@ -262,18 +230,20 @@ var _draw_result_table = function () {
           _rowspan = 4;
         }
 
-        _tr_y_attr_r.append('<th class="right-border-none bottom-border-thin" rowspan="' + _rowspan + '" align="left" valign="top">' + _y_attr + '</th>');
+//        _tr_y_attr_r.append('<th class="right-border-none bottom-border-thin" rowspan="' + _rowspan + '" align="left" valign="top">' + _y_attr + '</th>');
 
+
+/*
         if (_display_detail === true) {
-          //_tr_y_attr_r.append('<td class="right-border-bold">Pearson相關<br />顯著性(雙尾)<br />個數</td>');
           _tr_y_attr_r.append('<th class="right-border-bold left-border-none" align="left">Pearson Correlation coefficient r</th>');
           _tr_y_attr_p.append('<th class="right-border-bold left-border-none" align="left">Significance (two-tailed) p-value</th>');
           _tr_y_attr_r2.append('<th class="right-border-bold left-border-none" align="left">decisive factor</th>');
           _tr_y_attr_n.append('<th class="right-border-bold left-border-none bottom-border-thin" align="left">Number</th>');
         }
+*/
       }
 
-      //console.log(['y', _y_attr, _d]);
+//      console.log(['y', _y_attr, _d]);
 
       var _td_r = $('<td align="right"></td>').appendTo(_tr_y_attr_r);
 
@@ -290,7 +260,6 @@ var _draw_result_table = function () {
       }
 
       if (_d !== null) {
-        //var _text = [];
         var _r = precision_string(_d.r, _precision);
         var _origin_r = _r;
         var _r2 = precision_string(_d.r * _d.r, _precision);
@@ -313,25 +282,33 @@ var _draw_result_table = function () {
           var _n = _d.n;
           //_text.push(_n);
         }
-        _td_r.html(_r);
-
-        if (Math.abs(_origin_r) > 0.7) {
+      //  _td_r.html(_r);
+/*
+        if (Math.abs(_origin_r) > 0.4) {
           _td_r.attr("correlation", "high");
         } else if (Math.abs(_origin_r) > 0.4) {
           _td_r.attr("correlation", "middle");
         } else {
           _td_r.attr("correlation", "low");
         }
-
-        if (_d.p < 0.05) {
+ 
+        if (_d.p < 0.0001) {_d.p=0}
+        
+        if (_d.p < 0.01) {
           _td_r.attr("significant", "true");
         } else {
           _td_r.attr("significant", "false");
         }
-
+*/        
+        _td_r.attr("correlation", "high");
+        _td_r.attr("significant", "true");
+        
+//Tämä alue vaikuttaa korrelaatioon ja p arvoon
         _td_r.attr("x_var", _x_attr);
         _td_r.attr("y_var", _y_attr);
         _td_r.attr("r", _origin_r);
+        _td_r.attr("p", _d.p);
+        //console.log(_d.p);
         var _dir = "plus";
         if (_origin_r < 0) {
           _dir = "minus";
@@ -339,9 +316,9 @@ var _draw_result_table = function () {
         _td_r.attr("dir", _dir);
 
         if (_display_detail === true) {
-          _td_p.html(_p);
-          _td_r2.html(_r2);
-          _td_n.html(_n);
+      //    _td_p.html(_p);
+      //    _td_r2.html(_r2);
+      //    _td_n.html(_n);
         }
       }
     }
@@ -376,7 +353,7 @@ var _draw_result_table = function () {
       } else if (_i === "***") {
         _s = 0.001;
       }
-      _note.append('<div>' + _i + '. At significant level' + _s + 'When (two-tailed), the correlation is significant.</div>');
+//      _note.append('<div>' + _i + '. At significant level' + _s + 'When (two-tailed), the correlation is significant.</div>');
     }
   }
 
@@ -397,6 +374,7 @@ var _draw_result_table = function () {
   }
 
   // ------------------------
+  // vaikuttaa viimeiseen tauluun
 
   _create_conclusion(_result_div).appendTo(_result_div);
 
@@ -406,7 +384,7 @@ var _draw_result_table = function () {
   var _panel = $(".file-process-framework");
   var _result = _result_div.html();
   var _input = _panel.find("#preview");
-  _input.val(_result);
+      _input.val(_result);
 
   _panel.find("#preview_html").append(_result_div.children());
 };
@@ -414,7 +392,7 @@ var _draw_result_table = function () {
 var _create_conclusion = function (_result_div) {
 
   var _result = [];
-  _result.push("<div>Correlation analysis results：</div>");
+//  _result.push("<div>Correlation analysis results：</div>");
 
   // ---------------------------
 
@@ -431,19 +409,19 @@ var _create_conclusion = function (_result_div) {
     _attr_desc += _attr_list[_i];
   }
 
-  _result.push("<div>This study uses product-difference correlation analysis to analyze" + _attr_desc + "Whether there is a linear correlation between the two variables.</div>");
+//  _result.push("<div>This study uses product-difference correlation analysis to analyze" + _attr_desc + "Whether there is a linear correlation between the two variables.</div>");
 
   // ---------------------------
-
+/*
   for (var _i = 0; _i < _attr_list.length; _i++) {
     var _name = _attr_list[_i];
     var _tr = _result_div.find('.descriptive-table tr[var_name="' + _attr_list[_i] + '"]');
     _result.push(_name + "The average is" + _tr.find(".avg").text() + "，The standard deviation is" + _tr.find(".stdev").text() + "，The number of samples is" + _tr.find(".count").text() + "。");
   }
-
+*/
   // ---------------------------
 
-  _result.push("<br /><div>Correlation analysis results show：</div>");
+//  _result.push("<br /><div>Correlation analysis results show：</div>");
 
   var _sig_pair_high = [];
 
@@ -452,23 +430,25 @@ var _create_conclusion = function (_result_div) {
     var _x_var = _td_r.attr("x_var");
     var _y_var = _td_r.attr("y_var");
     var _r = _td_r.attr("r");
+    var _p = _td_r.attr("p");
     var _dir = _td_r.attr("dir");
     var _sig = (_td_r.attr("significant") === "true");
 
+/*
     var _desc = _x_var + "and" + _y_var;
-
     if (_dir === "plus") {
-      _desc += "The two have a significant and highly positive correlation, which means" + _x_var + "the taller，" + _y_var + "Will be higher.";
+      _desc += "The two have a significant and highly positive correlation, which means " + _x_var + " the taller，" + _y_var + " will be higher.";
     } else {
-      _desc += "The two have a significant and highly negative correlation, which means" + _x_var + "the taller，" + _y_var + "Will be lower and vice versa.";
+      _desc += "The two have a significant and highly negative correlation, which means " + _x_var + " the taller，" + _y_var + " will be lower and vice versa.";
     }
-
     _result.push(_desc);
-    //_ul1.push("<li>" + _desc + "</li>");
+*/
+
     _sig_pair_high.push({
       x_var: _x_var.trim(),
       y_var: _y_var.trim(),
       r: _r,
+      p: _p,
       sig: _sig
     });
   });
@@ -478,62 +458,34 @@ var _create_conclusion = function (_result_div) {
     var _x_var = _td_r.attr("x_var");
     var _y_var = _td_r.attr("y_var");
     var _r = _td_r.attr("r");
+    var _p = _td_r.attr("p");
     var _dir = _td_r.attr("dir");
     var _sig = (_td_r.attr("significant") === "true");
-
-    //var _desc = _x_var + "與" + _y_var + "的相關係數為" + _r + "，";
     var _desc = _x_var + "and" + _y_var;
-
+/*
     if (_dir === "plus") {
-      _desc += "The two have a significant moderate positive correlation, which means" + _x_var + "the taller，" + _y_var + "Will be higher.";
+      _desc += "The two have a significant moderate positive correlation, which means " + _x_var + " the taller，" + _y_var + " will be higher.";
     } else {
-      _desc += "The two have a significant moderate negative correlation, which means" + _x_var + "the taller，" + _y_var + "Will be lower and vice versa.";
+      _desc += "The two have a significant moderate negative correlation, which means " + _x_var + " the taller，" + _y_var + " will be lower and vice versa.";
     }
 
     _result.push(_desc);
-    //_ul1.push("<li>" + _desc + "</li>");
     _sig_pair_high.push({
       x_var: _x_var.trim(),
       y_var: _y_var.trim(),
       r: _r,
       sig: _sig
     });
+    
+    */
+    
   });
-
-  //var _ul3 = _result.find("ul.group3");
-  /*
-   _result_div.find('[correlation="middle"][significant="true"]').each(function (_i, _td_r) {
-   _td_r = $(_td_r);
-   var _x_var = _td_r.attr("x_var");
-   var _y_var = _td_r.attr("y_var");
-   var _r = _td_r.attr("r");
-   var _dir = _td_r.attr("dir");
-   
-   var _desc = _x_var + "與" + _y_var;
-   
-   if (_dir === "plus") {
-   _desc += "具有顯著的中度正相關，表示" + _x_var + "越高者，" + _y_var + "也會越高。";
-   }
-   else {
-   _desc += "具有顯著的中度負相關，表示" + _x_var + "越高者，" + _y_var + "就會越低，反之亦然。";
-   }
-   
-   _result.push(_desc);
-   _sig_pair_high.push({
-   x_var: _x_var,
-   y_var: _y_var,
-   r: _r
-   });
-   });
-   */
-
-  // --------------------------
 
   // -------------------------
 
   var _sig_pair_middle = [];
+/*
   var _middle = [];
-  //var _ul2 = _result.find("ul.group2");
   _result_div.find('[correlation="high"][significant="false"]').each(function (_i, _td_r) {
     _td_r = $(_td_r);
     var _x_var = _td_r.attr("x_var");
@@ -571,9 +523,9 @@ var _create_conclusion = function (_result_div) {
     var _desc = _x_var + "and" + _y_var;
 
     if (_dir === "plus") {
-      _desc += "Moderately positive correlation";
+      _desc += "Moderately positive correlation ";
     } else {
-      _desc += "Moderately negative correlation";
+      _desc += "Moderately negative correlation ";
     }
 
     _middle.push(_desc);
@@ -597,7 +549,7 @@ var _create_conclusion = function (_result_div) {
 
     _result.push(_middle_desc);
   }
-
+*/
   // --------------------------
   var _sig_pair_low = [];
   var _low = [];
@@ -609,15 +561,16 @@ var _create_conclusion = function (_result_div) {
     var _x_var = _td_r.attr("x_var");
     var _y_var = _td_r.attr("y_var");
     var _r = _td_r.attr("r");
+    var _p = _td_r.attr("p");
     var _dir = _td_r.attr("dir");
     var _sig = (_td_r.attr("significant") === "true");
 
     var _desc = _x_var + "and" + _y_var;
 
     if (_dir === "plus") {
-      _desc += "Significantly low positive correlation";
+      _desc += "Significantly low positive correlation ";
     } else {
-      _desc += "Significantly low negative correlation";
+      _desc += "Significantly low negative correlation ";
     }
 
     _low.push(_desc);
@@ -626,10 +579,11 @@ var _create_conclusion = function (_result_div) {
       x_var: _x_var.trim(),
       y_var: _y_var.trim(),
       r: _r,
+      p: _p,
       sig: _sig
     });
   });
-
+/*
   if (_sig_pair_low.length > 0) {
 
     if (_result.length > 1 && _sig_pair_high.length > 0 && _sig_pair_middle.length > 0) {
@@ -641,7 +595,7 @@ var _create_conclusion = function (_result_div) {
 
     _result.push(_low_desc);
   }
-
+*/
   // ------------------------------
 
   var _sig_pair_null = [];
@@ -653,6 +607,7 @@ var _create_conclusion = function (_result_div) {
     var _x_var = _td_r.attr("x_var");
     var _y_var = _td_r.attr("y_var");
     var _r = _td_r.attr("r");
+    var _p = _td_r.attr("p");
     var _dir = _td_r.attr("dir");
     var _sig = (_td_r.attr("significant") === "true");
 
@@ -664,10 +619,11 @@ var _create_conclusion = function (_result_div) {
       x_var: _x_var.trim(),
       y_var: _y_var.trim(),
       r: _r,
+      p: _p,
       sig: _sig
     });
   });
-
+/*
   if (_null.length > 0) {
 
     if (_result.length > 1) {
@@ -682,7 +638,7 @@ var _create_conclusion = function (_result_div) {
     }
 
     var _desc = _null.join("、");
-    _desc += "Linear relationship between";
+    _desc += "Linear relationship between ";
 
     if (_null.length > 1) {
       _desc += "all";
@@ -696,7 +652,10 @@ var _create_conclusion = function (_result_div) {
 
     _result.push(_desc);
   }
+*/
 
+
+/*
   if (_result.length < 2) {
     _result = [];
   } else {
@@ -728,31 +687,18 @@ var _create_conclusion = function (_result_div) {
     }
     _result.push('<br />' + _cox_stu_msg);
   }
-
+  
+  
+*/
 
   // ------------------------------------------------------------------------------------
 
-  var _return_div = $('<div class="conclusion"></div>').html(_result.join("<br />"));
-
+   var _return_div = $('<div class="conclusion"></div>').html(_result.join("<br />"));
+/*
   var _button = $('<button type="button" class="ui icon button tiny teal speak"><i class="talk icon"></i></button>').prependTo(_return_div);
   _button.click(function () {
     //console.log(0);
-    /*
-     var _loop = function (_i) {
-     if (_i < _result.length) {
-     var _t = _result[_i];
-     //console.log(_t);
-     responsiveVoice.speak(_t, 'Chinese Female', {
-     rate: 1.2,
-     onend: function () {
-     _i++;
-     _loop(_i);
-     }
-     });
-     }
-     };
-     _loop(0);
-     */
+
     var _t = $("<div>" + _result.join() + "</div>").text();
     _t = _t.split("'").join(" ");
     _t = _t.split(",").join(" ");
@@ -761,22 +707,25 @@ var _create_conclusion = function (_result_div) {
       rate: 1.2
     });
   });
-
+*/
   // -----------------------------------
   // pair result
+// last table starts
 
-  var _pair_result = $('<div><hr />'
-          + '<div class="high">The correlation analysis is significant and highly or moderately correlated, which is of great reference value：'
-          + '<table border="1" cellpadding="0" cellspacing="0" class="sig-table group0"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>Significant</td></tr></thead><tbody></tbody></table>'
+  var _pair_result = $('<div>'
+          + '<div class="high">'
+          + '<table border="1" cellpadding="0" cellspacing="0" class="sig-table group0"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>p</td><td>Significant</td></tr></thead><tbody></tbody></table>'
           + '</div>'
           + '<div class="middle">The correlation analysis is highly or moderately correlated and still has reference value：'
-          + '<table cellpadding="0" cellspacing="0"  border="1" class="sig-table group1"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>Significant</td></tr></thead><tbody></tbody></table>'
+          + '<table cellpadding="0" cellspacing="0"  border="1" class="sig-table group1"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>p</td><td>Significant</td></tr></thead><tbody></tbody></table>'
           + '</div>'
           + '<div class="low">Low or no correlation in correlation analysis, little reference value：'
-          + '<table cellpadding="0" cellspacing="0"  border="1" class="sig-table group2"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>significant</td></tr></thead><tbody></tbody></table></div>'
+          + '<table cellpadding="0" cellspacing="0"  border="1" class="sig-table group2"><thead><tr><td>variable x</td><td>variable y</td><td>r</td><td>p</td><td>significant</td></tr></thead><tbody></tbody></table></div>'
           + '</div>').appendTo(_return_div);
 
-  var _sig_pair_array = [_sig_pair_high, _sig_pair_middle, _sig_pair_low];
+  //var _sig_pair_array = [_sig_pair_high, _sig_pair_middle, _sig_pair_low];
+  var _sig_pair_array = [_sig_pair_high];
+//console.log(_sig_pair_high);
   for (var _i = 0; _i < _sig_pair_array.length; _i++) {
     var _sig_pair = JSON.parse(JSON.stringify(_sig_pair_array[_i]));
     _sig_pair = _sig_pair.sort(function (_a, _b) {
@@ -787,18 +736,16 @@ var _create_conclusion = function (_result_div) {
         return (_b.y_var < _a.y_var);
       }
     });
-    //_sig_pair.sort(function (_a, _b) {
-    //    return (_b.r - _a.r);
-    //});
+
     var _group_ul = _pair_result.find("table.group" + _i + ' tbody');
 
     for (var _j = 0; _j < _sig_pair.length; _j++) {
       var _s = _sig_pair[_j];
-
       $('<tr>'
               + '<td>' + _s.x_var + '</td>'
               + '<td>' + _s.y_var + '</td>'
               + '<td>' + _s.r + '</td>'
+              + '<td>' + _s.p + '</td>' 
               + '<td>' + _s.sig + '</td>'
               + '</tr>').appendTo(_group_ul);
     }
@@ -813,13 +760,12 @@ var _create_conclusion = function (_result_div) {
   if (_pair_result.find('div.low table tbody tr').length === 0) {
     _pair_result.find('div.low').hide();
   }
-
+//last table ends
   // --------------------------------------
 
   var _ai = $(".ai-conclusion:visible");
   if (_ai.length > 0) {
-    _ai.empty().append(_return_div.clone(true));
-    //_ai.find("button").click();
+      _ai.empty().append(_return_div.clone(true));
   }
 
   // ------------------------------------------
@@ -829,8 +775,7 @@ var _create_conclusion = function (_result_div) {
 
 var _draw_descriptive_table = function () {
   var _attr_list = _get_attr_list();
-
-  //var _result_div = $('<div></div>');
+// Sample descriptive statistics table starts
   var _table = $('<div class="descriptive-table">'
           + '<div style="text-align:center;display:inline-block" class="caption">Sample descriptive statistics</caption>'
           + '<table border="1" cellspacing="0" cellpadding="0">'
@@ -855,6 +800,7 @@ var _draw_descriptive_table = function () {
   }
 
   return _table;
+// Sample descriptive statistics table ends
 };
 
 var _get_fix_precision = function (_number) {
@@ -863,18 +809,15 @@ var _get_fix_precision = function (_number) {
   return precision_string(_number, _precision);
 };
 
-var _get_pearson_correlation = function (_ary1, _ary2) {
-
+  var _get_pearson_correlation = function (_ary1, _ary2) {
   var _r = pearsonCorrelation(_ary1, _ary2);
-  //_r = Math.abs(_r);
   var _n = _ary1.length;
-
   var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
-  _t = Math.abs(_t);
+      _t = Math.abs(_t);
   var _p = ((tprob((_n - 2), _t)) * 2);
   //console.log(_p);
   if (_p === 2) {
-    _p = 0;
+      _p = 0;
   }
 
   if (isNaN(_p)) {
@@ -883,7 +826,7 @@ var _get_pearson_correlation = function (_ary1, _ary2) {
       't': _t
     });
     console.log(['tprob', tprob((_n - 2), _t)]);
-    throw "錯誤：NaN (r: " + _r + ";t: " + _t + "; _n: " + _n + " )";
+    throw "xx：NaN (r: " + _r + ";t: " + _t + "; _n: " + _n + " )";
   }
 
   return {
@@ -895,41 +838,17 @@ var _get_pearson_correlation = function (_ary1, _ary2) {
 
 // -----------------------------------------------------
 
-/*
-tinyMCE.init({
-  mode: "specific_textareas",
-  editor_selector: "mceEditor",
-  plugins: [
-    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-    'searchreplace wordcount visualblocks visualchars code fullscreen',
-    'insertdatetime media nonbreaking save table contextmenu directionality',
-    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
-  ],
-  toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image  tableprops',
-  toolbar2: 'print preview media | forecolor backcolor emoticons | codesample code ',
-
-  setup: function (ed) {
-    ed.on('change', function (e) {
-      //console.log('the content ', ed.getContent());
-      _combine_input();
-    });
-  }
-});
-*/
-
-var _reset_result = function () {
-
+  var _reset_result = function () {
   var _panel = $(".file-process-framework");
   var _input = _panel.find("#preview");
-  _input.val("");
-
-  _panel.find("#preview_html").html("");
+      _input.val("");
+      _panel.find("#preview_html").html("");
 };
 
 // --------------------------
 
 var _process_file = function (_input, _callback) {
-  _callback(_input);
+    _callback(_input);
 };
 
 var _output_filename_surffix = "_output";
@@ -943,13 +862,13 @@ var _load_file = function (evt) {
 
   var _file_input = this;
   var _selector = $(this).data("file-to-textarea");
-  _selector = $(_selector);
+      _selector = $(_selector);
 
   if (_selector.length === 0) {
     return;
   }
   //console.log(_selector);
-  //return;
+
 
   var reader = new FileReader();
   var _result;
@@ -964,29 +883,20 @@ var _load_file = function (evt) {
       return;
     }
 
-    //filecontent = evt.target.result;
-
-    //document.forms['myform'].elements['text'].value = evt.target.result;
     _result = evt.target.result;
-
     _process_file(_result, function (_result) {
-      _selector.val(_result);
-      _selector.change();
+    _selector.val(_result);
+    _selector.change();
       $(_file_input).val("");
     });
   };
-
-//    var _pos = _file_name.lastIndexOf(".");
-//    _file_name = _file_name.substr(0, _pos)
-//        + _output_filename_surffix
-//        + _file_name.substring(_pos, _file_name.length);
 
   //console.log(_file_name);
 
   reader.readAsText(evt.target.files[0]);
 };
 
-var _load_textarea = function (evt) {
+  var _load_textarea = function (evt) {
   var _panel = $(".file-process-framework");
 
   // --------------------------
@@ -1006,38 +916,35 @@ var _load_textarea = function (evt) {
 
   var local = new Date(utc);
   var _file_name = local.toJSON().slice(0, 19).replace(/:/g, "-");
-  _file_name = "output_" + _file_name + ".txt";
+      _file_name = "output_" + _file_name + ".txt";
 
   // ---------------------------
 
-  _process_file(_result, function (_result) {
-    _panel.find(".preview").val(_result);
-    _panel.find(".filename").val(_file_name);
+      _process_file(_result, function (_result) {
+      _panel.find(".preview").val(_result);
+      _panel.find(".filename").val(_file_name);
+      _panel.find(".loading").addClass("hide");
+      _panel.find(".display-result").show();
+      _panel.find(".display-result .encoding").hide();
 
-    _panel.find(".loading").addClass("hide");
-    _panel.find(".display-result").show();
-    _panel.find(".display-result .encoding").hide();
-
-    var _auto_download = (_panel.find('[name="autodownload"]:checked').length === 1);
+  var _auto_download = (_panel.find('[name="autodownload"]:checked').length === 1);
     if (_auto_download === true) {
       _panel.find(".download-file").click();
     }
   });
 };
 
-var _download_file_button = function () {
+  var _download_file_button = function () {
   var _panel = $(".file-process-framework");
-
   var _file_name = _panel.find(".filename").val();
   var _data = _panel.find(".preview").val();
-
-  _download_file(_data, _file_name, "txt");
+      _download_file(_data, _file_name, "txt");
 };
 
 
-var _download_file = function (data, filename, type) {
+  var _download_file = function (data, filename, type) {
   var a = document.createElement("a"),
-          file = new Blob([data], {type: type});
+      file = new Blob([data], {type: type});
   if (window.navigator.msSaveOrOpenBlob) // IE10+
     window.navigator.msSaveOrOpenBlob(file, filename);
   else { // Others
@@ -1102,70 +1009,6 @@ var _calc_stdev = function (_ary) {
   return Math.sqrt(_var / (_ary.length - 1));
 };
 
-/**
- * https://gist.github.com/ronaldsmartin/47f5239ab1834c47088e
- * @returns {undefined}
- */
-/*
- var _load_google_spreadsheet = function () {
- var _url = this.value.trim();
- 
- if (_url.indexOf('https://docs.google.com/spreadsheets/d/') !== 0
- || _url.indexOf('/edit?usp=sharing') === -1) {
- return;
- }
- 
- var _id = _url.substring(('https://docs.google.com/spreadsheets/d/').length, _url.length - ('/edit?usp=sharing').length);
- 
- var _input = this;
- var _selector = $(_input).data("file-to-textarea");
- _selector = $(_selector);
- 
- var _sheet = $(_input).data("sheet-selector");
- _sheet = $(_sheet).val().trim();
- 
- if (_sheet === "") {
- return;
- }
- 
- //var _json_url = 'https://spreadsheets.google.com/feeds/list/' + _id + '/od6/public/values?alt=json-in-script&callback=?';
- var _json_url = "https://script.google.com/macros/s/AKfycbzGvKKUIaqsMuCj7-A2YRhR-f7GZjl4kSxSN1YyLkS01_CfiyE/exec?id=" + _id + '&sheet=' + _sheet + '&callback=?';
- //console.log(_json_url);
- $.getJSON(_json_url, function (_data) {
- _data = _data["records"];
- var _text = [];
- var _attr_list = [];
- 
- //console.log(_data);
- for (var _i = 0; _i < _data.length; _i++) {
- var _line = [];
- for (var _attr in _data[_i]) {
- if (_i === 0) {
- _attr_list.push(_attr);
- }
- 
- var _value = _data[_i][_attr];
- //console.log(_value);
- _line.push(_value);
- }
- _text.push(_line.join(','));
- }
- 
- _text = _attr_list.join(",") + "\n" + _text.join("\n");
- //console.log(_text);
- 
- // ----------------------------
- 
- _selector.val(_text).change();
- 
- //console.log(_data);
- });
- 
- // https://script.google.com/macros/s/AKfycbzGvKKUIaqsMuCj7-A2YRhR-f7GZjl4kSxSN1YyLkS01_CfiyE/exec
- 
- //console.log(_id);
- };
- */
 var _load_google_spreadsheet = function () {
   var _url = this.value.trim();
 
@@ -1195,7 +1038,7 @@ var _load_google_spreadsheet = function () {
   // https://docs.google.com/spreadsheets/d/1zwOPqpkcX2YRDEXLQEd2eM8OVz24FEXT5WT5eFP6ZsA/pubhtml
 
   var _id = _url.substring(('https://docs.google.com/spreadsheets/d/').length, _url.length - ('/pubhtml').length);
-  console.log(_id);
+  //console.log(_id);
 
   var _input = this;
   var _selector = $(_input).data("file-to-textarea");
@@ -1203,13 +1046,13 @@ var _load_google_spreadsheet = function () {
 
   //var _json_url = 'https://spreadsheets.google.com/feeds/list/' + _id + '/od6/public/values?alt=json-in-script&callback=?';
   var _json_url = 'https://spreadsheets.google.com/feeds/list/' + _id + '/1/public/values?alt=json-in-script&gid=1213777536&callback=?';
-  //console.log(_json_url);
+  console.log(_json_url);
   $.getJSON(_json_url, function (_data) {
     _data = _data.feed.entry;
     var _text = [];
     var _attr_list = [];
 
-    //console.log(_data);
+    console.log(_data);
     for (var _i = 0; _i < _data.length; _i++) {
       var _line = _data[_i].content.$t.split(", ");
       for (var _j = 0; _j < _line.length; _j++) {
