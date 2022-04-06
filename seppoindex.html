@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Pearson Correlation
+        </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style2.css" />
+        
+<link rel="stylesheet" href="semantic.min.css" />
+<link rel="stylesheet" href="xstyles/font-awesome.css" />
+
+
+    
+    </head>
+    <body>
+<script src="jquery.min.js"></script>
+<script src="semantic.min.js"></script>
+<script src="puli-util.clipboard.js"></script>
+<!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script> -->
+
+<script src="statistics-distributions.js"></script>
+<script src="jquery-ui.js"></script>
+<script src="sepposcript1.js"></script>
+
+<script src="cox-stuart.js"></script>
+
+<script src='xvendors/responsivevoice/responsivevoice.js'></script>
+
+<!-- ------------------------------------------------------------ -->
+
+<form class="file-process-framework ui form">
+    
+    
+    
+<div class="mode-report">
+    <button type="button" class="mode" onclick="$('.mode-report').hide();$('.mode-ai').show();">Switch to artificial intelligence mode</button>
+    
+  <div class="ui">
+    <div class="column">
+	<div class="ui segment">
+	
+    
+<h1 class="ui horizontal divider header">
+  Input
+</h1>
+
+
+<!-- --------------------------------- -->
+
+<div class="ui bottom attached active tab segment input-field-container">
+    
+    <!-- https://apps.lazza.dk/facebook/ -->
+
+    <div class="ui top attached tabular menu">
+        <div class="item" data-tab="mode_textarea">Text box input</div>
+        <div class="active item" data-tab="mode_file">Select file input</div>
+        <div class=" item" data-tab="mode_google_spreadsheet">Google Spreadsheet release link</div>
+    </div>
+    
+    <div class="ui bottom attached  tab segment" data-tab="mode_textarea">
+        <div class="field">
+            <label for="input_data">please enter CSV material：One line of data</label>
+            <textarea class="change-trigger focus_select" 
+                      id="input_data"></textarea>
+        </div>
+    </div>
+    
+    <div class="ui bottom attached active tab segment" data-tab="mode_file">
+        <div class="field">
+            <label for="input_file">
+                please upload CSV file： 
+                (<a href="https://docs.google.com/spreadsheets/d/1KL07qS2txPpnZSvLt0gBWJ2_lGsVTr51s5JkE4bg2tY/export?format=csv">sample file download</a>)
+            </label>
+            <input type="file" id="input_file" class="file-change-trigger" data-file-to-textarea="#input_data" />
+        </div>
+    </div>
+    
+    <div class="ui bottom attached  tab segment" data-tab="mode_google_spreadsheet">
+        <div class="field">
+            <label for="input_url">
+                please enter Google Spreadsheet release link：(<a href="http://www.ioa.tw/google-sheets-api-note.html" target="pub">Operation teaching</a>) 
+            </label>
+            <input type="text" id="input_url" class="google-spreadsheet-trigger focus_select" 
+                   data-sheet-selector="#input_url_sheet"
+                   data-file-to-textarea="#input_data"
+                   value="https://docs.google.com/spreadsheets/d/1zwOPqpkcX2YRDEXLQEd2eM8OVz24FEXT5WT5eFP6ZsA/pubhtml" />
+        </div> 
+        <!--
+        <div class="field">
+            <label for="input_url_sheet">
+                請輸入工作表名稱： 
+            </label>
+            <input type="text" id="input_url_sheet" class="change-trigger-input focus_select" 
+                   data-trigger-selector="#input_url"
+                   value="data" />
+        </div>
+        -->
+    </div>
+    
+</div>
+
+		</div> <!-- <div class="ui segment"> -->
+                
+<!-- -------------------------------------- -->
+
+<div class="ui segment">
+	
+    
+    <h1 class="ui horizontal divider header">
+      Variables
+    </h1>
+        <div class="ui segment sortable" id="variables_container">
+        </div>
+            
+</div><!-- <div class="ui segment"> -->                
+
+  <!-- ------------------------------------------------- -->
+  
+  <div class="ui segment">
+	
+    
+<h1 class="ui horizontal divider header">
+  Display
+</h1>
+        <div class="ui segment sortable" id="variables_container">
+        </div>
+            
+    <div class="inline field">
+        <label for="input_precise">Number of decimal places</label>
+        <input type="text" class="change-trigger-draw focus_select" 
+               id="input_precise" 
+               value="3" 
+               placeholder="Please enter the number of decimal places" />
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" class="change-trigger-draw" 
+                   name="input_display_detail"
+                   id="input_display_detail" 
+                   value="input_display_detail" checked="checked"  />
+            <label for="input_display_detail">Display details such as "significance", "relation strength" and "number"</label>
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" class="change-trigger-draw" 
+                   name="input_test_of_rank"
+                   id="input_test_of_rank" 
+                   value="input_test_of_rank" />
+            <label for="input_test_of_rank">use Spearman Level verification</label>
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" class="change-trigger-draw" 
+                   name="input_test_of_trend"
+                   id="input_test_of_trend" 
+                   value="input_test_of_trend" checked="checked"  />
+            <label for="input_test_of_trend">When there is only one set of continuous variable data, adopt the time trend verification mode</label>
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" class="change-trigger-draw" 
+                   name="input_table_style_display"
+                   id="input_table_style_display" 
+                   value="input_table_style_display"  />
+            <label for="input_table_style_display">Use unstyled tables (easy to copy to other files)</label>
+        </div>
+    </div>
+        </div><!-- <div class="ui segment"> -->    
+        
+        
+	</div> <!-- <div class="column"> -->
+  <!-- -------------------------------------- -->
+    <div class="column">
+  <div class="ui segment display-result" style="">
+  <!-- <div class="display-result"> -->
+  
+    <h1 class="ui horizontal divider header">
+      Result
+    </h1>
+    <div class="field" style="display: none;">
+      <button type="button" class="fluid ui large right labeled icon green button download-file">
+        <i class="right download icon"></i>
+        DOWNLOAD
+      </button>
+    </div>
+
+    <div class="field" style="display: none;">
+      <label for="filename">File Name: </label>
+      <input type="text" onfocus="this.select()" id="filename" class="filename" style="width: calc(100% - 15em)" />
+    </div>
+    
+    <div class="field">
+      <label for="preview">
+        <button type="button" id="copy_source_code" class="hide">Copy Source Code</button>
+        <div class="ui  pointing below  medium blue basic label encoding" style="margin-left: 1em; display: none;">
+          Get error encoding text? <a href="http://blog.pulipuli.info/2016/12/utf-8notepad-how-to-convert-plain-text.html" target="notepad" >Try to Convert TXT file to UTF8 encoding?</a>
+        </div>
+      </label>
+        
+      <textarea id="preview" 
+                style="display: none;"
+                class="preview hide focus_select" ></textarea>
+    </div>
+	
+  <div id="preview_html" class="ui segment" ></div>
+  
+  
+  </div>
+    </div> <!-- <div class="column"> -->
+  </div> <!-- <div class="ui two column doubling grid"> -->
+</div> <!-- <div class="mode-report"> -->
+  
+<div class="mode-ai">
+    <button type="button" class="mode" onclick="$('.mode-ai').hide();$('.mode-report').show();">Switch to detailed report mode</button>
+    <div style="text-align:center">
+        <img src="assets/1-1412060R620.png" />
+    </div>
+    
+    <div class="ai-conclusion"></div>
+    <div class="ui bottom attached active tab segment" >
+        <div class="field">
+            <label for="input_file">
+                please upload CSV file：
+                (<a href="data/data2.csv">Sample file download</a>)
+            </label>
+            <input type="file" class="file-change-trigger" data-file-to-textarea="#input_data" />
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- ------------------------------------------------------------ -->
+<script src="xscripts/google-analytics.js"></script>
+  <script src="x./scripts/service-worker-loader.js"></script>
+</script>
+
+    </body>
+</html>
