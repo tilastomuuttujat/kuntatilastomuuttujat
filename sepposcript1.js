@@ -170,10 +170,10 @@ var _draw_result_table = function () {
 
 
   var _table = $('<div style="display:inline-block;">'
-          + '<div class="caption" style="text-align:center;display:block">Correlation analysis</div>'
+//          + '<div class="caption" style="text-align:center;display:block">Correlation analysis</div>'
          + '<table border="1" cellpadding="0" cellspacing="0">'
-          + '<thead><tr class="x-attr"><th colspan="' + _colspan + '" class="right-border-bold"></th></tr></thead>'
-          + '<thead><tr class="x-attr"><th colspan="" class="right-border-bold"></th></tr></thead>'
+//          + '<thead><tr class="x-attr"><th colspan="' + _colspan + '" class="right-border-bold"></th></tr></thead>'
+          //+ '<thead><tr class="x-attr"><th colspan="" class="right-border-bold"></th></tr></thead>'
           + '<tbody></tbody>'
           + '</table><div class="note" style="text-align:left;"></div></div>');
 
@@ -195,6 +195,7 @@ var _draw_result_table = function () {
   for (var _x_attr in _result_data) {
 
     if (_tr_x_attr.find('th[data-attr="' + _x_attr + '"]').length === 0) {
+//     _tr_x_attr.append('<th data-attr="' + _x_attr + '">' + _x_attr + '</th>');
      _tr_x_attr.append('<th data-attr="' + _x_attr + '">' + _x_attr + '</th>');
     }
     //console.log(['x', _x_attr]);
@@ -229,8 +230,8 @@ var _draw_result_table = function () {
           _rowspan = 4;
         }
 
+//        _tr_y_attr_r.append('<th class="right-border-none bottom-border-thin" rowspan="' + _rowspan + '" align="left" valign="top">' + _y_attr + '</th>');
         _tr_y_attr_r.append('<th class="right-border-none bottom-border-thin" rowspan="' + _rowspan + '" align="left" valign="top">' + _y_attr + '</th>');
-
 
 
         if (_display_detail === true) {
