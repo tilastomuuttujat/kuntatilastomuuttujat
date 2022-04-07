@@ -316,9 +316,9 @@ var _draw_result_table = function () {
         _td_r.attr("dir", _dir);
 
         if (_display_detail === true) {
-      //    _td_p.html(_p);
-      //    _td_r2.html(_r2);
-      //    _td_n.html(_n);
+          _td_p.html(_p);
+          _td_r2.html(_r2);
+          _td_n.html(_n);
         }
       }
     }
