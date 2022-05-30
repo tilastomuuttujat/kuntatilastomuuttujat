@@ -838,7 +838,7 @@
 {"source": "Yrittäjätulot metsätaloudesta, keskiarvo", "target": "Tulot", "value": "375"},
 {"source": "Yrittäjätulot, keskiarvo", "target": "Tulot", "value": "43"},
 {"source": "Yrittäjien osuus työllisistä, %", "target": "Työllisyys", "value": "212"},
-{"source": "Z-testikanta-1", "target": "Z-testikanta", "value": "001"},
+{"source": "Allow many/few immigrants from poorer countries outside Europe", "target": "Any period of unemployment and work seeking lasted 12 months or more", "value": "001"},
 {"source": "Z-testikanta-2", "target": "Z-testikanta", "value": "002"},
 {"source": "Z-testikanta-3", "target": "Z-testikanta", "value": "003"},
 {"source": "Z-testikanta-4", "target": "Z-testikanta", "value": "004"},
