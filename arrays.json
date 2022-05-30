@@ -838,5 +838,9 @@
 {"source": "Yrittäjätulot metsätaloudesta, keskiarvo", "target": "Tulot", "value": "375"},
 {"source": "Yrittäjätulot, keskiarvo", "target": "Tulot", "value": "43"},
 {"source": "Yrittäjien osuus työllisistä, %", "target": "Työllisyys", "value": "212"},
-{"source": "Yrityskanta", "target": "Työllisyys", "value": "116"}
+{"source": "Z-testikanta-1", "target": "Z-testikanta", "value": "001"},
+{"source": "Z-testikanta-2", "target": "Z-testikanta", "value": "002"},
+{"source": "Z-testikanta-3", "target": "Z-testikanta", "value": "003"},
+{"source": "Z-testikanta-4", "target": "Z-testikanta", "value": "004"},
+{"source": "Z-testikanta-5", "target": "Z-testikanta", "value": "005"}
 ]}
