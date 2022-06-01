@@ -842,5 +842,6 @@
 {"source": "Z-testikanta-2", "target": "Z-testikanta", "value": "002"},
 {"source": "Z-testikanta-3", "target": "Z-testikanta", "value": "003"},
 {"source": "Z-testikanta-4", "target": "Z-testikanta", "value": "004"},
-{"source": "Z-testikanta-5", "target": "Z-testikanta", "value": "005"}
+{"source": "Z-testikanta-5", "target": "Z-testikanta", "value": "005"},
+{"source": "Z-testikanta-6", "target": "Z-testikanta", "value": "006"}
 ]}
