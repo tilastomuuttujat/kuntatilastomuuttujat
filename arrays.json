@@ -844,5 +844,7 @@
 {"source": "Z-testikanta-4", "target": "Z-testikanta", "value": "004"},
 {"source": "Z-testikanta-5", "target": "Z-testikanta", "value": "005"},
 {"source": "Z-testikanta-6", "target": "Z-testikanta", "value": "006"},
-{"source": "Z-testikanta-7", "target": "Z-testikanta", "value": "007"}
+{"source": "Z-testikanta-7", "target": "Z-testikanta", "value": "007"},
+{"source": "Z-testikanta-8", "target": "Z-testikanta", "value": "008"},
+{"source": "Z-testikanta-9", "target": "Z-testikanta", "value": "009"}
 ]}
