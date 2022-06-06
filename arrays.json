@@ -849,7 +849,7 @@
 {"source": "Z-thinking", "target": "Z-testikanta", "value": "009"},
 {"source": "Z-trust", "target": "Z-testikanta", "value": "010"},
 {"source": "Z-values", "target": "Z-testikanta", "value": "011"},
-{"source": "Z-testikanta-12", "target": "Z-testikanta", "value": "012"},
+{"source": "Z-feelings", "target": "Z-testikanta", "value": "012"},
 {"source": "Z-testikanta-13", "target": "Z-testikanta", "value": "013"},
 {"source": "Z-testikanta-14", "target": "Z-testikanta", "value": "014"},
 {"source": "Z-testikanta-15", "target": "Z-testikanta", "value": "015"}
