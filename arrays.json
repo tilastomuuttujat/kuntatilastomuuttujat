@@ -853,5 +853,6 @@
 {"source": "Z-emotion 1", "target": "Z-testikanta", "value": "013"},
 {"source": "Z-emotion 2", "target": "Z-testikanta", "value": "014"},
 {"source": "Z-emotion 3", "target": "Z-testikanta", "value": "015"},
-{"source": "Z-virtue", "target": "Z-testikanta", "value": "016"}
+{"source": "Z-virtue", "target": "Z-testikanta", "value": "016"},
+{"source": "Z-virtue-value", "target": "Z-testikanta", "value": "017"}
 ]}
