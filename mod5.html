@@ -1,0 +1,1398 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<link xhref="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
+<script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+<style>
+.tree ul {
+  display: none;
+  margin: 2px auto;
+  margin-left: 4px;
+}
+
+.tree ul li {
+height:8px;
+}
+
+.has > label {
+  color: #000;
+}
+
+.child > label {
+font-size:11px;
+  color: #000;
+}
+
+table {border-collapse: collapse;}
+th,td {
+border: 1px solid #ededed;
+font-size:8px;
+}
+
+tr:hover,
+tr:focus-within {
+  background: #f2f3ff;
+  outline: none;
+}
+
+div.inp {
+visibility:hidden;
+z-index:-1000;
+}
+
+.heatmap {
+  font-size: 8px;
+  font-family: monospace;
+}
+
+rect.bordered {
+  stroke: #E6E6E6;
+  stroke-width:2px;   
+}
+
+text.mono {
+  font-size: 8px;
+  font-family: monospace;
+  fill: #000;
+}
+
+text.legendElement {
+  font-size: 10px;
+}
+
+text.hover {
+  font-weight: bold;
+  fill: #66F;
+  font-background: #000;
+}
+
+.heatmap_tooltip {
+  text-align: center;
+  font-family: monospace;
+  font-size: 14pt;
+  color: #000;
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  border: 4px solid #66F;
+  padding: 5px;
+  border-radius: 8px ;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  -khtml-border-top-left-radius: 8px;
+  -khtml-border-top-right-radius: 8px;
+  -khtml-border-bottom-right-radius: 8px;
+  -khtml-border-bottom-left-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 100px;
+  z-index:10000;
+  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.heatmap_tooltip:after, .heatmap_tooltip:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.heatmap_tooltip:after {
+  border-color: rgba(236, 240, 241, 0);
+  border-top-color: #FFFFF;
+  border-width: 10px;
+  left: 50%;
+  margin-left: -10px;
+}
+
+.heatmap_tooltip:before {
+  border-color: rgba(44, 62, 80, 0);
+  border-top-color: #66F;
+  border-width: 16px;
+  left: 50%;
+  margin-left: -16px;
+}
+
+#sidebar {
+  position: fixed;
+  width: 450px;
+  height: 100%;
+  background: rgb(255,255,255);
+  right: -450px;
+  transition: all 250ms linear;
+}
+#sidebar.active {
+  right: 0px;
+}
+#sidebar ul li {
+  color: rgba(230, 230, 230, 0.9);
+  list-style: none;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+}
+#sidebar .toggle-btn {
+  position: absolute;
+  right: 470px;
+  top: 20px;
+}
+#sidebar .toggle-btn span {
+  display: block;
+  width: 30px;
+  height: 5px;
+  background: #727e87;
+  margin: 5px 0px;
+}
+#sidebar1 {
+  position: fixed;
+  width: 450px;
+  height: 150%;
+  background: rgb(255,255,255);
+  left: -450px;
+  transition: all 250ms linear;
+}
+#sidebar1.active {
+  left: 0px;
+}
+#sidebar1 .toggle-btn {
+  position: absolute;
+  left: 470px;
+  top: 20px;
+}
+#sidebar1 ul li {
+  color: rgba(230, 230, 230, 0.9);
+  list-style: none;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(213,213,213,0.748);
+}
+#sidebar1 .toggle-btn span {
+  display: block;
+  width: 30px;
+  height: 5px;
+  background: #727e87;
+  margin: 5px 0px;
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="toggle-btn" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div id="json"></div>
+</div>
+<div id="sidebar1">
+  <div class="toggle-btn" onclick="toggleSidebar1()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+    <div id="json1"></div>
+</div>
+
+<div id="heatmap"></div>
+	<div class="ext-chord"></div>
+	
+<form class="file-process-framework">
+<div class="inp"><textarea id="input_data"></textarea></div> 
+<div id="variables_container"></div>
+</form>
+<script>
+function toggleSidebar() {
+document.getElementById("sidebar").classList.toggle('active');
+}
+function toggleSidebar1() {
+document.getElementById("sidebar1").classList.toggle('active');
+}
+
+var raja = "D";
+var alin = 3;
+var ala = 6;
+var yla = 100;
+var ylin = 1200;
+var haku = "B,C,D,E,F,G,H,I,J,K,AA,BB,CC,DD,EE,FF";
+
+
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var _data = [];
+var konsoli=[];
+var diagram = {
+	set_dimensions: function(width, height, scale) {
+		var width = width || 500,
+			height = height || 500,
+			outer_radius = Math.min(width, height) / 2 - 10.0,
+			scale = scale || 0.5;
+		
+		diagram.dimensions = {
+			width: width,
+			height: height,
+			
+			outer_radius: outer_radius,
+			inner_radius: outer_radius - 24.0,
+			
+			svg_position_x: width,
+			svg_position_y: height * 0.8,
+			
+			scale: scale,
+		};
+	},
+	
+	opts: {
+		container_class: "ext-chord",
+		hw_ratio: 1.0,
+		fade_out_opacity: 0.0,
+		max_no_of_entities: 75,
+		ignore: {
+			entities: [],
+			types: ["System", "Setup", "Other"]
+		},
+		fill: d3.scale.ordinal()
+			.range([]
+				.concat(colorbrewer.BrBG[11])
+				.concat(colorbrewer.Pastel1[9])
+				.concat(colorbrewer.Spectral[11])
+				.concat(colorbrewer.Set3[12])
+				.concat(colorbrewer.PuBuGn[9])
+			),
+		fade: function(opacity) {
+			return function(g) {
+				diagram.elements.svg.selectAll("g.svg-group path.chord")
+					.filter(function(d) {
+						return d.source.index != g.index && d.target.index != g.index;
+					})
+					.transition(0)
+						.delay(opacity==1 ? 100 : 0)
+						.style("opacity", opacity);
+			};
+		},
+	},
+	
+	render: function() {
+		diagram.prepare_data_and_matrix();
+		diagram.elements = {};
+		//diagram.viesti0 = {};
+		//diagram.make_svg_element();
+		//diagram.make_chord_diagram();
+		//diagram.get_data();
+		diagram.get_data1();
+		diagram.get_data2();
+		//diagram.get_data3();
+		diagram.get_data4();
+	},
+	
+	prepare_data_and_matrix: function() {
+		diagram.data = diagram.get_data();
+		diagram.initialize_ids_and_matrix();
+		diagram.assign_relationship_values_to_matrix();
+	},
+	
+	make_svg_element: function() {
+		var container = d3.select("." + diagram.opts.container_class);
+		container.selectAll("svg").remove();
+		var target_width = parseFloat(d3.select(container.node().parentNode).style("width")) / 1.4;
+		var scale = 0.75;
+		diagram.set_dimensions(target_width, diagram.opts.hw_ratio * target_width, scale)
+		diagram.elements.svg = container.append("svg")
+				.attr("width", diagram.dimensions.width * 2 * diagram.dimensions.scale)
+				.attr("height", diagram.dimensions.height * 2 * diagram.dimensions.scale)
+			
+			.append("g") 
+				.attr("class", "svg-group")
+				.attr("transform", "translate(" 
+					+ diagram.dimensions.svg_position_x * diagram.dimensions.scale + ","
+					+ diagram.dimensions.svg_position_y * diagram.dimensions.scale + ")"
+					+ "scale(" + diagram.dimensions.scale + ")"
+				)
+				
+		d3.select(window).on("resize", function() {
+			console.log("resized");
+			diagram.render();
+		});
+	},
+	
+	make_chord_diagram: function() {
+		diagram.prepare_chord_layout();
+		diagram.make_arcs();
+		diagram.make_chords();
+	},
+	
+	initialize_ids_and_matrix: function() {
+		diagram.entity_names = [];
+		diagram.data.forEach(function(relationship) {
+			if(diagram.entity_names.indexOf(relationship.source)===-1)
+				diagram.entity_names.push(relationship.source);
+			
+			if(diagram.entity_names.indexOf(relationship.target)===-1)
+				diagram.entity_names.push(relationship.target);
+			
+		});
+		diagram.entity_names = diagram.entity_names.sort();
+		diagram.entities = {};
+		var n = 0;
+		diagram.entity_names
+			.forEach(function(entity_name) {
+				diagram.entities[entity_name] = { id: n, name: entity_name };
+				n++;
+			});
+		
+		diagram.data.forEach(function(relationship) {
+			relationship.source_id = diagram.entities[relationship.source].id;
+			relationship.target_id = diagram.entities[relationship.target].id;
+		});
+		
+		diagram.matrix = [];
+		for(var i = 0; i < n; i++) {
+			diagram.matrix[i] = [];
+			for(var j = 0; j < n; j++) {
+				diagram.matrix[i][j] = 0;
+			}
+		}
+	},
+	
+	assign_relationship_values_to_matrix: function() {
+		diagram.data.forEach(function(relationship) {
+			diagram.matrix[relationship.source_id][relationship.target_id] = 1.0;
+			diagram.matrix[relationship.target_id][relationship.source_id] = 0.5;
+		});
+	},
+	
+	prepare_chord_layout: function() {
+		diagram.layout = d3.layout.chord()
+			.padding(0.04); 
+		diagram.layout.matrix(diagram.matrix);
+	},
+	
+	make_arcs: function() {
+		var arc = d3.svg.arc()
+			.innerRadius(diagram.dimensions.inner_radius)
+			.outerRadius(diagram.dimensions.outer_radius);
+			
+		diagram.elements.entity_groups = diagram.elements.svg.selectAll("g.entity-group")
+				.data(diagram.layout.groups) 
+			.enter().append("g") 
+				.attr("class", "entity-group");
+				
+		diagram.elements.entity_groups.append("path")
+				.attr("d", arc)
+				.style("fill", function(d) { return diagram.opts.fill(d.index); })
+				.on("mouseover", diagram.opts.fade(diagram.opts.fade_out_opacity))
+				.on("mouseout", diagram.opts.fade(1.0))
+			.append("title")
+				.text(function(d) { return diagram.entity_names[d.index]; });
+		
+		diagram.elements.entity_groups.append("text")
+			.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+			.attr("dy", ".35em")
+			.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end": null; })
+			.attr("transform", function(d) {
+				return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+					+ "translate(" + (diagram.dimensions.outer_radius + 5) + ")"
+					+ (d.angle > Math.PI ? "rotate(180)" : "")
+			})
+			.text(function(d) { return diagram.entity_names[d.index]; });
+	},
+	
+	make_chords: function() {
+		var chord = d3.svg.chord()
+			.radius(diagram.dimensions.inner_radius);
+		
+		diagram.elements.svg.selectAll("path.chord")
+				.data(diagram.layout.chords)
+			.enter().append("path")
+					.attr("class", "chord")
+					.attr("d", chord)
+					.style("fill", function(d) { return diagram.opts.fill(d.source.index); })
+				.append("title")
+					.text(function(d) {
+						return diagram.entity_names[d.source.index] + " is used in "
+							+ diagram.entity_names[d.target.index];
+					});
+	},
+	
+	get_data: function() {
+		var entity_count = {};
+		_data.forEach(function(rel) {
+			if(diagram.opts.ignore.entities.indexOf(rel.source)!==-1 || diagram.opts.ignore.entities.indexOf(rel.target)!==-1)
+				return;
+			if(diagram.opts.ignore.types.indexOf(rel.source_type)!==-1 || diagram.opts.ignore.types.indexOf(rel.target_type)!==-1)
+				return;
+			if(entity_count[rel.source]===undefined)
+				entity_count[rel.source] = 0.0;
+			entity_count[rel.source] += 1;
+			if(entity_count[rel.target]===undefined)
+				entity_count[rel.target] = 0.0;
+			entity_count[rel.target] += 1;
+		});
+		
+		var valid_entities = d3.keys(entity_count).sort(function(a, b) {
+			return entity_count[b] - entity_count[a];
+		});
+		
+		var max_no_of_entities = diagram.opts.max_no_of_entities;
+		var container = d3.select("." + diagram.opts.container_class);
+		if(container.attr("max_no_of_entities")) {
+			max_no_of_entities = parseInt(container.attr("max_no_of_entities"));
+		}
+		
+		valid_entities.splice(max_no_of_entities+1, valid_entities.length);
+
+		var new_data = [];
+		_data.forEach(function(rel) {
+			if(valid_entities.indexOf(rel.source)!==-1 && valid_entities.indexOf(rel.target)!==-1)
+				new_data.push(rel);
+		});
+		return new_data;
+	},
+	
+    get_data1: function() {
+  var merkki = "";
+  var ulli = "";
+  var ryhma = "alku";
+  var alaryhma = "";
+  var rivit = 0;
+  var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var gid = '270476198';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2))  
+  );
+  
+function myItems(jsonString){
+  var json = JSON.parse(jsonString);
+  json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
+  var table = '<ul class="tree">'
+  json.table.rows.forEach(ligne => {
+  var check = 0;
+    ligne.c.forEach(cellule => {
+        try{var valeur0 = cellule.f ? cellule.f : cellule.v}
+        catch(e){var valeur0 = ''}
+        if (check == 0) {
+        alaryhma=valeur0;
+        if (ryhma!= alaryhma) {
+        
+        if (ryhma!= "alku") {table += '</ul></li>'}
+        table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
+        table += '<label>' + valeur0 + '</label><ul class="parent">'
+        
+        }
+        ryhma=alaryhma;
+        
+        } 
+        
+        if (check == 1) {
+        merkki = valeur0;
+        }
+        
+        if (check == 2) {
+         table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
+         table += '<label>' + valeur0 + '</label></li>'        
+        }
+
+        check += 1;
+      })
+    }
+  )
+  table += '</ul>'
+  console.log(table);
+  return table
+}
+
+$(document).on('click', '.tree label', function(e) {
+  $(this).next('ul').fadeToggle();
+  e.stopPropagation();
+});
+
+$(document).on('change', '.tree input[type=checkbox]', function(e) {
+  $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+  $(this).parentsUntil('.tree').children("input[type='checkbox']").prop('checked', this.checked);
+  e.stopPropagation();
+});
+
+	},
+	
+	muuttujat: function () {
+setTimeout(() => {
+            var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
+            var values = [];
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.value);
+            });
+            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+            diagram.muuttuja();
+}, 1000);
+},
+	
+	muuttuja: function () {
+            var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
+            var values = [];
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.value);
+            });
+            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+            console.log(values);
+            var siirto = values;
+            values = [];
+            //hakutiedot=values;
+            diagram.get_data3(0,siirto);
+},
+
+
+	muuttuja0: function () {
+            var checkboxes = document.querySelectorAll('input[name="subdomain1"]:checked');
+            var values1 = [];
+            checkboxes.forEach((checkbox) => {
+                values1.push(checkbox.value);
+            });
+            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+            console.log(values1);
+            var piirto = values1;
+            values1 = [];
+            diagram.get_data3(1,piirto);
+},
+
+get_data2: function() {
+  var viesti1 = [];
+  var rivit1 = 0;
+  var haku1 = [];
+  var taso1 = [];
+  var alin = [];
+  var ala = [];
+  var yla = [];
+  var ylin = [];
+  var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var gid = '1445091643';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json1").innerHTML=myItems(data.slice(47, -2))  
+  );
+function myItems(jsonString){
+  var json = JSON.parse(jsonString);
+  var table = '<table><tr>'
+  table += '<th>Muuttuja</th><th>Alin</th><th>Ala</th><th>Ylä</th><th>Ylin</th><th>Valitse</th>'
+  table += '</tr>'
+  json.table.rows.forEach(ligne => {
+  var check = 0;
+    table += '<tr>'
+    ligne.c.forEach(cellule => {
+        try{var valeur = cellule.f ? cellule.f : cellule.v}
+        catch(e){var valeur = ''}
+        
+        if (check == 1)
+        alin[rivit1-1] = valeur;
+        
+        if (check == 3)
+        ala[rivit1-1] = valeur;
+
+        if (check == 5)
+        yla[rivit1-1] = valeur;
+        
+        if (check == 7)
+        ylin[rivit1-1] = valeur;
+        
+        if (check == 9)
+        haku1[rivit1-1] = valeur;
+         
+        if (check > 8) {
+        viesti1.push(haku1[rivit1-1], alin[rivit1-1], ala[rivit1-1], yla[rivit1-1], ylin[rivit1-1]);
+
+        table += '<td><input name="subdomain1" type="radio" value="' + viesti1 + '" onClick="diagram.muuttuja0()"></input></td>'
+
+        rivit1 +=1;
+        viesti1 = [];
+        }
+
+        if(check % 2 == 0) {
+        table += '<td>' + valeur + '</td>'
+        }
+        check += 1;
+      }
+    )
+    table += '</tr>'
+    }
+  )
+  taso1=table;
+  table += '</table>'
+  return table
+
+}
+	},
+	
+	get_data3: function(laji,valu){
+	
+if (laji == 0) {
+	haku = valu.toString();
+	console.log(haku);
+	} else {
+	raja = valu.toString();
+	var myArray = raja.split(",");
+	raja = myArray[0];
+	ala = myArray[1];
+	alin = myArray[2];
+	yla = myArray[3];
+	ylin = myArray[4];
+	}
+
+function init() {
+var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/edit#gid=1354196778';
+  var query = new google.visualization.Query(url);
+  
+    var haku1 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    var haku2 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+
+    str = haku3;
+    str = str.replace(/"+/g, "");
+  console.log(str);
+  query.setQuery(str);
+  query.send(processSheetsData);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+  var array = [];
+  var activities = [];
+  var data = response.getDataTable();
+  
+  var tiedot=[];
+  tiedot.push(haku);
+  var tieto = "";
+  
+  var columns = data.getNumberOfColumns();
+  var rows = data.getNumberOfRows();
+  for (var r = 0; r < rows; r++) {
+    var row = [];
+    for (var c = 0; c < columns; c++) {
+      row.push(data.getFormattedValue(r, c));
+      activities[r,c] = data.getFormattedValue(r, c);
+    }
+    tieto = row.join();
+    tiedot.push(tieto); 
+  }
+console.log(tiedot);
+
+haetiedot(tiedot,1);
+  }
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+    
+function haetiedot(tiedot, kierros) {
+var rivinumero = 0;
+Array.matrix = function(numrows, numcols, initial) {
+var arr = [];
+    for (var i = 0; i < numrows; ++i) {
+        var columns = [];
+        for (var j = 0; j < numcols; ++j) {
+            columns[j] = initial;
+        }
+        arr[i] = columns;
+    }
+    return arr;
+}
+var sarakenumero = 0;
+var names = Array.matrix(500);
+    
+var _combine_input = function () {
+  _reset_result();
+  _data = {};
+  _calc_pearson_correlation();
+};	
+
+_attr_list_count = 0;
+
+var _calc_pearson_correlation = function () {
+  var _attr_list = [];
+  _attr_list_count = 0;
+  var _panel = $(".file-process-framework");
+
+var _csv_lines = tiedot;
+console.log(_csv_lines);
+
+if (_csv_lines.length === 0) {
+    return "";
+}
+
+  var _pair_number;
+
+  for (var _i = 0; _i < _csv_lines.length; _i++) {
+    let _line = _csv_lines[_i]
+    if (_line.indexOf('\t') > -1) {
+      _line = _line.split('\t')
+    } else {
+      _line = _line.split(',')
+    }
+    if (_pair_number === undefined) {
+      _pair_number = _line.length;
+    } else if (_pair_number !== _line.length) {
+      return "";
+    }
+
+    for (var _j = 0; _j < _line.length; _j++) {
+      var _value = _line[_j];
+
+      if (_i === 0) {
+        _data[_value] = [];
+        _attr_list[_j] = _value;
+        _attr_list_count++;
+      } else {
+        if (isNaN(_value)) {
+          continue;
+        }
+        _value = eval(_value);
+        _data[(_attr_list[_j])].push(_value);
+
+      }
+    }
+  }
+
+    for (var _attr_name in _data) {
+      var arr = _data[_attr_name];
+      var sorted = arr.slice().sort(function (a, b) {
+        return b - a
+      })
+      var ranks = arr.slice().map(function (v) {
+        return sorted.indexOf(v) + 1
+      });
+      _data[_attr_name] = ranks;
+    }
+
+  var _var_container = _panel.find("#variables_container");
+  _var_container.empty();
+  for (var _i = 0; _i < _attr_list.length; _i++) {
+    var _attr = _attr_list[_i];
+    if (_data[_attr].length === 0) {
+      continue;
+    }
+
+    var _div = $('<input type="hidden" name="variables" value="' + _attr + '" id="variables_' +  '"  /> '); 
+    _div.appendTo(_var_container);
+  }
+  return _draw_result_table();
+};
+
+_data = {};
+_cox_stuart_result = null;
+
+var _get_attr_list = function () {
+  var _attr_list = [];
+  $('[name="variables"]').each(function (_i, _ele) {
+    _attr_list.push(_ele.value);
+  });
+  return _attr_list;
+};
+//*** start of _draw_result_table
+var _draw_result_table = function () {
+  var _attr_list = _get_attr_list();
+
+var tieto = [];
+var oikea = [];
+var items = [];
+
+  var _result_data = {};
+  for (var _i = 0; _i < _attr_list.length; _i++) {
+    var _x_attr = _attr_list[_i];
+ 
+sarakenumero += 1; 
+rivinumero = -1;
+console.log(_x_attr);
+console.log(oikea);
+tieto.push(_x_attr,oikea);
+oikea = [];
+
+    var _ary1 = _data[_x_attr];
+ 
+    for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
+
+      var _y_attr = _attr_list[_j];
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+
+      if (_j !== _i) {
+        _result_data[_x_attr][_y_attr] = null;
+      }
+    }
+
+    for (var _j = _i + 1; _j < _attr_list.length; _j++) {
+      var _y_attr = _attr_list[_j];
+      rivinumero += 1;
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+
+      var _ary2 = _data[_y_attr];
+      _result_data[_x_attr][_y_attr] = _get_pearson_correlation(_ary1, _ary2);
+const myJSON = _result_data[_x_attr][_y_attr];
+//console.log(myJSON.r.toFixed(3)); korrelaatioarvo
+//console.log(myJSON.p.toFixed(3)); p-arvo
+names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
+console.log(sarakenumero,rivinumero,names[sarakenumero][rivinumero]);
+oikea.push(myJSON.r.toFixed(3));
+items[_i,_j]=_result_data[_x_attr][_y_attr];
+    }
+  }
+
+console.log(tieto);
+tiedot=tieto;
+tsekki = 1;
+} 
+//*** end of _draw_result_table
+
+
+
+
+
+
+
+
+
+
+
+
+var _get_pearson_correlation = function (_ary1, _ary2) {
+
+  var _r = pearsonCorrelation(_ary1, _ary2);
+  var _n = _ary1.length;
+  var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
+  _t = Math.abs(_t);
+  var _p = ((tprob((_n - 2), _t)) * 2);
+  if (_p === 2) {
+    _p = 0;
+  }
+  return {
+    r: _r,
+    p: _p,
+    n: _n
+  }
+}
+
+var _reset_result = function () {
+  var _panel = $(".file-process-framework");
+  var _input = _panel.find("#preview");
+  _input.val("");
+  _panel.find("#preview_html").html("");
+}
+
+var pearsonCorrelation = function (_ary1, _ary2) {
+  var _avg1 = _calc_avg(_ary1);
+  var _avg2 = _calc_avg(_ary2);
+  var _a = 0;
+  var _b1 = 0;
+  var _b2 = 0;
+  for (var _i = 0; _i < _ary1.length; _i++) {
+    var _x = (_ary1[_i] - _avg1);
+    var _y = (_ary2[_i] - _avg2);
+    _a += _x * _y;
+    _b1 += _x * _x;
+    _b2 += _y * _y;
+  }
+
+  if (_b1 * _b2 === 0) {
+    return 0;
+  }
+  return _a / (Math.sqrt(_b1) * Math.sqrt(_b2));
+}
+
+var _calc_avg = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _sum = 0;
+  for (var _i = 0; _i < _ary.length; _i++) {
+    _sum += _ary[_i];
+  }
+  return (_sum / _ary.length);
+}
+
+var _load_data = function (_selector, _file_path, _callback) {
+  $.get(_file_path, function (_data) {_callback();}); 
+}
+
+$(function () {_load_data("", "", _combine_input);});
+
+function tprob ($n, $x) {
+    if (($n <= 0) || ((Math.abs($n) - Math.abs(integer($n))) !==0)) {
+        throw("Invalid n: $n\n");
+    }
+    return _subtprob($n-0, $x-0);
+}
+
+function _subtprob ($n, $x) {
+	var $a;
+    var $b;
+	var $w = Math.atan2($x / Math.sqrt($n), 1);
+	var $z = Math.pow(Math.cos($w), 2);
+	var $y = 1;
+
+	for (var $i = $n-2; $i >= 2; $i -= 2) {
+		$y = 1 + ($i-1) / $i * $z * $y;
+	} 
+
+	if ($n % 2 === 0) {
+		$a = Math.sin($w)/2;
+		$b = .5;
+	} else {
+		$a = ($n === 1) ? 0 : Math.sin($w)*Math.cos($w)/Math.PI;
+		$b= .5 + $w/Math.PI;
+	}
+	return max(0, 1 - $b - $a * $y);
+}
+ 
+function max () {
+	var $max = arguments[0];
+	for (var $i = 0; $i < arguments.length; $i++) {
+                if ($max < arguments[$i])
+                        $max = arguments[$i];
+	}	
+	return $max;
+}
+
+function integer ($i) {
+        if ($i > 0)
+                return Math.floor($i);
+        else
+                return Math.ceil($i);
+}
+
+} //end of haetiedot
+	
+	},
+	
+	get_data4: function(){
+	
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var _data = [];
+var konsoli=[];
+
+var classesNumber = 11,
+    cellSize = 12;
+heatmap_display("metrics.json", "#heatmap", "RdGy");
+function heatmap_display(url, heatmapId, paletteName) {
+
+    var tooltip = d3.select(heatmapId)
+        .append("div")
+        .style("position", "absolute")
+        .style("visibility", "hidden");
+
+    function zoom() {
+    	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
+    var viewerPosTop = 200;
+    var viewerPosLeft = 100;
+    var legendElementWidth = cellSize * 2;
+    var colors = colorbrewer[paletteName][classesNumber];
+    var svg;
+    
+    d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQbNMtxxCj7L5_GU7MFakZjwM6g2JrXoF7XAhrXc3PPEJsXDxNohlRekSVM-hb1oOWMVGIUZ6OvhLFg/pub?output=csv", function(error, data) {
+console.log(data);
+var etu = "R";
+var dson_data = data[1];
+var desult = [];
+for(var k in dson_data)
+desult.push([etu,k]);
+console.log(desult);
+var lson_data = data[1];
+var lesult = [];
+var vesult = [];
+for (var i = 0; i < data.length; i++) {
+
+lson_data=data[i];
+for(var k in lson_data)
+lesult.push(lson_data[k]);
+vesult.push(lesult);
+lesult=[];
+}
+console.log(vesult);
+var rivi = [];
+for (var i = 0; i < data.length; i++) {
+rivi.push([data[i].Rivimuuttuja]);
+}
+console.log(rivi);
+var arr = vesult; //data
+var row_number = arr.length;
+var col_number = arr[0].length;
+
+var colorScale = d3.scale.quantize()
+        .domain([0.0, 1.0])
+        .range(colors);
+
+svg = d3.select(heatmapId).append("svg")
+        .attr("width", viewerWidth)
+        .attr("height", viewerHeight)
+	    .call(zoomListener)
+        .append("g")
+        .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
+
+svg.append('defs')
+        .append('pattern')
+        .attr('id', 'diagonalHatch')
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', 4)
+        .attr('height', 4)
+        .append('path')
+        .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+        .attr('stroke', '#000000')
+        .attr('stroke-width', 1);
+
+        var rowSortOrder = false;
+        var colSortOrder = false;
+        
+        var rowLabels = svg.append("g")
+            .attr("class", "rowLabels")
+            .selectAll(".rowLabel")
+            .data(rivi) //rivi
+            .enter().append("text")
+            .text(function(d) {
+                return d.count > 1 ? d.join("/") : d;
+            })
+            .attr("x", 0)
+            .attr("y", function(d, i) {
+                return (i * cellSize);
+            })
+            .style("text-anchor", "end")
+            .attr("transform", function(d, i) {
+                return "translate(-3," + cellSize / 1.5 + ")";
+            })
+            .attr("class", "rowLabel mono")
+            .attr("id", function(d, i) {
+                return "rowLabel_" + i;
+            })
+            .on('mouseover', function(d, i) {
+                d3.select('#rowLabel_' + i).classed("hover", true);
+            })
+            .on('mouseout', function(d, i) {
+                d3.select('#rowLabel_' + i).classed("hover", false);
+            })
+            .on("click", function(d, i) {
+                rowSortOrder = !rowSortOrder;
+                sortByValues("r", i, rowSortOrder);
+                d3.select("#order").property("selectedIndex", 0);
+            });
+
+        var colLabels = svg.append("g")
+            .attr("class", "colLabels")
+            .selectAll(".colLabel")
+            .data(desult)
+            .enter().append("text")
+            .text(function(d) {
+                d.shift();
+                return d.count > 1 ? d.reverse().join("/") : d.reverse();
+            })
+            .attr("x", 0)
+            .attr("y", function(d, i) {
+                return (i * cellSize);
+            })
+            .style("text-anchor", "left")
+            .attr("transform", function(d, i) {
+                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
+            })
+            .attr("class", "colLabel mono")
+            .attr("id", function(d, i) {
+                return "colLabel_" + i;
+            })
+            .on('mouseover', function(d, i) {
+                d3.select('#colLabel_' + i).classed("hover", true);
+            })
+            .on('mouseout', function(d, i) {
+                d3.select('#colLabel_' + i).classed("hover", false);
+            })
+            .on("click", function(d, i) {
+                colSortOrder = !colSortOrder;
+                sortByValues("c", i, colSortOrder);
+                d3.select("#order").property("selectedIndex", 0);
+            });
+
+        var row = svg.selectAll(".row")
+            .data(vesult) //data
+            .enter().append("g")
+            .attr("id", function(d) {
+                return d.idx;
+            })
+            .attr("class", "row");
+
+        var j = 0;
+        var heatMap = row.selectAll(".cell")
+            .data(function(d) {
+                j++;
+                return d;
+            })
+            .enter().append("svg:rect")
+            .attr("x", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("y", function(d, i, j) {
+                return j * cellSize;
+            })
+            .attr("rx", 4)
+            .attr("ry", 4)
+            .attr("class", function(d, i, j) {
+                return "cell bordered cr" + j + " cc" + i;
+            })
+            .attr("row", function(d, i, j) {
+                return j;
+            })
+            .attr("col", function(d, i, j) {
+                return i;
+            })
+            .attr("width", cellSize)
+            .attr("height", cellSize)
+            .style("fill", function(d) {
+                if (d != null) return colorScale(d);
+                else return "url(#diagonalHatch)";
+            })
+            .on('mouseover', function(d, i, j) {
+                d3.select('#colLabel_' + i).classed("hover", true);
+                d3.select('#rowLabel_' + j).classed("hover", true);
+                if (d != null) {
+                    tooltip.html('<div class="heatmap_tooltip">' + Number(d).toFixed(3) + '</div>');
+                    tooltip.style("visibility", "visible");
+                } else
+                    tooltip.style("visibility", "hidden");
+            })
+            .on('mouseout', function(d, i, j) {
+                d3.select('#colLabel_' + i).classed("hover", false);
+                d3.select('#rowLabel_' + j).classed("hover", false);
+                tooltip.style("visibility", "hidden");
+            })
+            .on("mousemove", function(d, i) {
+                tooltip.style("top", (d3.event.pageY - 55) + "px").style("left", (d3.event.pageX - 60) + "px");
+            })
+            .on('click', function() {
+            });
+
+        var legend = svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(0,-300)")
+            .selectAll(".legendElement")
+            .data([-1.0, -0.8, -0.6, -0.4, -0.2, 0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+            .enter().append("g")
+            .attr("class", "legendElement");
+
+        legend.append("svg:rect")
+            .attr("x", function(d, i) {
+                return legendElementWidth * i;
+            })
+            .attr("y", viewerPosTop)
+            .attr("class", "cellLegend bordered")
+            .attr("width", legendElementWidth)
+            .attr("height", cellSize / 2)
+            .style("fill", function(d, i) {
+                return colors[i];
+            });
+
+        legend.append("text")
+            .attr("class", "mono legendElement")
+            .text(function(d) {
+                return Math.round(d * 100) / 100;
+            })
+            .attr("x", function(d, i) {
+                return legendElementWidth * i;
+            })
+            .attr("y", viewerPosTop + cellSize);
+
+        function sortByValues(rORc, i, sortOrder) {
+            var t = svg.transition().duration(1000);
+            var values = [];
+            var sorted;
+            d3.selectAll(".c" + rORc + i)
+                .filter(function(d) {
+                    if (d != null) values.push(d);
+                    else values.push(-999); 
+                });
+
+            if (rORc == "r") { 
+                sorted = d3.range(col_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+                t.selectAll(".cell")
+                    .attr("x", function(d) {
+                        var col = parseInt(d3.select(this).attr("col"));
+                        return sorted.indexOf(col) * cellSize;
+                    });
+                t.selectAll(".colLabel")
+                    .attr("y", function(d, i) {
+                        return sorted.indexOf(i) * cellSize;
+                    })
+                    .attr("transform", function(d, i) {
+                        return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (sorted.indexOf(i) * cellSize) + ")";
+                    });
+            } else { 
+                sorted = d3.range(row_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+                t.selectAll(".cell")
+                    .attr("y", function(d) {
+                        var row = parseInt(d3.select(this).attr("row"));
+                        return sorted.indexOf(row) * cellSize;
+                    });
+                t.selectAll(".rowLabel")
+                    .attr("y", function(d, i) {
+                        return sorted.indexOf(i) * cellSize;
+                    })
+                    .attr("transform", function(d, i) {
+                        return "translate(-3," + cellSize / 1.5 + ")";
+                    });
+            }
+        }
+
+        d3.select("#order").on("change", function() {
+	    var newOrder = d3.select("#order").property("value");	
+            changeOrder(newOrder, heatmapId);
+        });
+
+        d3.select("#palette")
+            .on("keyup", function() {
+		var newPalette = d3.select("#palette").property("value");
+		if (newPalette != null)						
+                	changePalette(newPalette, heatmapId);
+            })
+            .on("change", function() {
+		var newPalette = d3.select("#palette").property("value");
+                changePalette(newPalette, heatmapId);
+            });
+    });
+}
+
+function changeOrder(newOrder, heatmapId) {
+    var svg = d3.select(heatmapId);
+    var t = svg.transition().duration(1000);
+    if (newOrder == "sortinit_col") { 
+        t.selectAll(".cell")
+            .attr("x", function(d) {
+                var col = parseInt(d3.select(this).attr("col"));
+                return col * cellSize;
+            });
+        t.selectAll(".colLabel")
+            .attr("y", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("transform", function(d, i) {
+                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
+            });
+    } else if (newOrder == "sortinit_row") { 
+        t.selectAll(".cell")
+            .attr("y", function(d) {
+                var row = parseInt(d3.select(this).attr("row"));
+                return row * cellSize;
+            });
+        t.selectAll(".rowLabel")
+            .attr("y", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("transform", function(d, i) {
+                return "translate(-3," + cellSize / 1.5 + ")";
+            });
+    } else if (newOrder == "sortinit_col_row") { 
+        t.selectAll(".cell")
+            .attr("x", function(d) {
+                var col = parseInt(d3.select(this).attr("col"));
+                return col * cellSize;
+            })
+            .attr("y", function(d) {
+                var row = parseInt(d3.select(this).attr("row"));
+                return row * cellSize;
+            });
+        t.selectAll(".colLabel")
+            .attr("y", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("transform", function(d, i) {
+                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
+            });
+        t.selectAll(".rowLabel")
+            .attr("y", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("transform", function(d, i) {
+                return "translate(-3," + cellSize / 1.5 + ")";
+            });
+    }
+}
+
+function changePalette(paletteName, heatmapId) {
+    var colors = colorbrewer[paletteName][classesNumber];
+    var colorScale = d3.scale.quantize()
+        .domain([-1.0, 1.0])
+        .range(colors);
+    var svg = d3.select(heatmapId);
+    var t = svg.transition().duration(500);
+    t.selectAll(".cell")
+        .style("fill", function(d) {
+                if (d != null) return colorScale(d);
+                else return "url(#diagonalHatch)";
+        })
+    t.selectAll(".cellLegend")
+        .style("fill", function(d, i) {
+            return colors[i];
+        });
+}
+	
+	},
+	
+};
+
+function valinnat(items, mini, maxi) {
+konsoli=[];
+var links =[];
+var minval=mini;
+var maxval=maxi;
+var sitems=items;
+	for ( x = 0; x < items.length; x++ ) {
+	var fitems = "data/F"+items[x]+".json";
+	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
+    for ( y = 0; y < data.links.length; y++ ) {
+	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	}}});
+	}
+	links = konsoli.filter(function(d){return d.value < minval || d.value > maxval;});
+	_data = links;
+	diagram.render();
+	}
+	
+//valinnat(fitems,minval,maxval);
+valinnat(["11"],-0.3,0.3);
+</script>
+</body>
+</html>
