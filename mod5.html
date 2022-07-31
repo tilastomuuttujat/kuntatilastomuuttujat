@@ -639,7 +639,14 @@ function myItems(jsonString){
 	},
 	
 	get_data3: function(laji,valu){
-	
+
+var nimike = [];
+var sarakkeita = 0;
+var riveja = 0;
+var risa = 0;
+var sari = 0;
+
+
 if (laji == 0) {
 	haku = valu.toString();
 	console.log(haku);
@@ -686,6 +693,20 @@ function processSheetsData(response) {
   
   var columns = data.getNumberOfColumns();
   var rows = data.getNumberOfRows();
+console.log(columns,rows);
+
+riveja = columns;
+risa = columns;
+
+if(risa % 2 == 0) {
+risa=risa/2;
+} else {
+risa=(risa+1)/2;
+}
+
+
+
+
   for (var r = 0; r < rows; r++) {
     var row = [];
     for (var c = 0; c < columns; c++) {
@@ -696,6 +717,8 @@ function processSheetsData(response) {
     tiedot.push(tieto); 
   }
 console.log(tiedot);
+//seis
+
 
 haetiedot(tiedot,1);
   }
@@ -704,19 +727,8 @@ google.charts.setOnLoadCallback(init);
     
 function haetiedot(tiedot, kierros) {
 var rivinumero = 0;
-Array.matrix = function(numrows, numcols, initial) {
-var arr = [];
-    for (var i = 0; i < numrows; ++i) {
-        var columns = [];
-        for (var j = 0; j < numcols; ++j) {
-            columns[j] = initial;
-        }
-        arr[i] = columns;
-    }
-    return arr;
-}
 var sarakenumero = 0;
-var names = Array.matrix(500);
+
     
 var _combine_input = function () {
   _reset_result();
@@ -814,14 +826,36 @@ var tieto = [];
 var oikea = [];
 var items = [];
 
+sari=riveja-risa;
+var initial = 0;
+
+Array.matrix = function(risa, sari, initial) {
+var arr = [];
+    for (var i = 0; i < risa; ++i) {
+        var columns = [];
+        for (var j = 0; j < sari; ++j) {
+            columns[j] = initial;
+        }
+        arr[i] = columns;
+    }
+    return arr;
+}
+
+var names = Array.matrix(500);
+
+//console.log(names);
+
+
+
   var _result_data = {};
   for (var _i = 0; _i < _attr_list.length; _i++) {
     var _x_attr = _attr_list[_i];
  
 sarakenumero += 1; 
 rivinumero = -1;
-console.log(_x_attr);
-console.log(oikea);
+//console.log(_x_attr);
+nimike[_i]=_x_attr;
+//console.log(oikea);
 tieto.push(_x_attr,oikea);
 oikea = [];
 
@@ -853,27 +887,46 @@ oikea = [];
 const myJSON = _result_data[_x_attr][_y_attr];
 //console.log(myJSON.r.toFixed(3)); korrelaatioarvo
 //console.log(myJSON.p.toFixed(3)); p-arvo
+
+
 names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
-console.log(sarakenumero,rivinumero,names[sarakenumero][rivinumero]);
+//console.log(sarakenumero,rivinumero,names[sarakenumero][rivinumero]);
+
+
+
+//console.log(risa);
+//console.log(riveja-risa);
+
 oikea.push(myJSON.r.toFixed(3));
 items[_i,_j]=_result_data[_x_attr][_y_attr];
+
+//console.log(items[_i,_j]);
     }
+    console.log(nimike[_i]);
   }
+console.log(nimike[1]);
+
+console.log(risa,sari);
+var heat1 = [];
+var heat10 = [];
+
+for (var _r = 1; _r <= risa; _r++) {
+heat1.push(nimike[_r]);
+//console.log(names[_r][0],names[_r][1],names[_r][2],names[_r][3],names[_r][4],names[_r][5],names[_r][6],names[_r][7]);
+for (var _s = 0; _s < sari; _s++) { 
+heat1.push(names[_r][_s]);
+}
+heat10.push(heat1);
+heat1=[];
+}
+
+console.log(heat10);
 
 console.log(tieto);
 tiedot=tieto;
 tsekki = 1;
 } 
 //*** end of _draw_result_table
-
-
-
-
-
-
-
-
-
 
 
 
