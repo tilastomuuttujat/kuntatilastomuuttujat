@@ -902,16 +902,29 @@ items[_i,_j]=_result_data[_x_attr][_y_attr];
 
 //console.log(items[_i,_j]);
     }
-    console.log(nimike[_i]);
+    //console.log(nimike[_i]);
   }
-console.log(nimike[1]);
+//console.log(nimike[1]);
 
-console.log(risa,sari);
+//console.log(risa,sari);
 var heat1 = [];
 var heat10 = [];
+var rotsi = [];
+var sotsi = [];
+var merkki = "R";
+
+for (var _r = 0; _r < riveja-risa; _r++) { 
+rotsi.push(nimike[_r]);
+}
+
+for (var _r = riveja-risa; _r < riveja; _r++) { 
+sotsi.push([merkki,nimike[_r]]);
+}
+
+
 
 for (var _r = 1; _r <= risa; _r++) {
-heat1.push(nimike[_r]);
+//heat1.push(nimike[_r-1]);
 //console.log(names[_r][0],names[_r][1],names[_r][2],names[_r][3],names[_r][4],names[_r][5],names[_r][6],names[_r][7]);
 for (var _s = 0; _s < sari; _s++) { 
 heat1.push(names[_r][_s]);
@@ -925,6 +938,10 @@ console.log(heat10);
 console.log(tieto);
 tiedot=tieto;
 tsekki = 1;
+
+
+
+diagram.get_data4(rotsi,sotsi,heat10);
 } 
 //*** end of _draw_result_table
 
@@ -1039,8 +1056,8 @@ function integer ($i) {
 	
 	},
 	
-	get_data4: function(){
-	
+	get_data4: function(rotsi,sotsi,risa){
+console.log(rotsi,sotsi,risa);
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
