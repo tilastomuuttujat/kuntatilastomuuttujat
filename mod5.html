@@ -27,9 +27,7 @@ font-size:11px;
   color: #000;
 }
 
-table {
-	border-collapse: collapse;
-}
+table {border-collapse: collapse;}
 th,td {
 border: 1px solid #ededed;
 font-size:8px;
@@ -134,7 +132,7 @@ text.hover {
 #sidebar {
   position: fixed;
   width: 450px;
-  height: 100%;
+  height: 300%;
   background: rgb(255,255,255);
   right: -450px;
   transition: all 250ms linear;
@@ -163,7 +161,7 @@ text.hover {
 #sidebar1 {
   position: fixed;
   width: 450px;
-  height: 150%;
+  height: 300%;
   background: rgb(255,255,255);
   left: -450px;
   transition: all 250ms linear;
@@ -198,7 +196,7 @@ text.hover {
     <span></span>
     <span></span>
   </div>
-  <div id="json"></div>
+  <div style="overflow-y: scroll; height:500px;" id="json"></div>
 </div>
 <div id="sidebar1">
   <div class="toggle-btn" onclick="toggleSidebar1()">
@@ -206,11 +204,11 @@ text.hover {
     <span></span>
     <span></span>
   </div>
-    <div id="json1"></div>
+    <div style="overflow-y: scroll; height:500px;" id="json1"></div>
 </div>
 
 <div id="heatmap"></div>
-	<div class="ext-chord"></div>
+<div class="ext-chord"></div>
 	
 <form class="file-process-framework">
 <div class="inp"><textarea id="input_data"></textarea></div> 
@@ -230,6 +228,7 @@ var ala = 6;
 var yla = 100;
 var ylin = 1200;
 var haku = "B,C,D,E,F,G,H,I,J,K,AA,BB,CC,DD,EE,FF";
+
 
 
 var minval=parent.minval;
@@ -515,7 +514,7 @@ function myItems(jsonString){
     }
   )
   table += '</ul>'
-  console.log(table);
+//  console.log(table);
   return table
 }
 
@@ -539,7 +538,7 @@ setTimeout(() => {
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
             });
-            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
             diagram.muuttuja();
 }, 1000);
 },
@@ -550,8 +549,8 @@ setTimeout(() => {
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
             });
-            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
-            console.log(values);
+//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+//            console.log(values);
             var siirto = values;
             values = [];
             //hakutiedot=values;
@@ -565,14 +564,14 @@ setTimeout(() => {
             checkboxes.forEach((checkbox) => {
                 values1.push(checkbox.value);
             });
-            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
-            console.log(values1);
+//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
+//            console.log(values1);
             var piirto = values1;
             values1 = [];
             diagram.get_data3(1,piirto);
 },
 
-get_data2: function() {
+    get_data2: function() {
   var viesti1 = [];
   var rivit1 = 0;
   var haku1 = [];
@@ -671,9 +670,9 @@ var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAo
     var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
     var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
 
-    str = haku3;
+    str = haku4;
     str = str.replace(/"+/g, "");
-  console.log(str);
+//  console.log(str);
   query.setQuery(str);
   query.send(processSheetsData);
 }
@@ -695,7 +694,7 @@ function processSheetsData(response) {
   
   var columns = data.getNumberOfColumns();
   var rows = data.getNumberOfRows();
-console.log(columns,rows);
+//console.log(columns,rows);
 
 riveja = columns;
 risa = columns;
@@ -718,8 +717,7 @@ risa=(risa+1)/2;
     tieto = row.join();
     tiedot.push(tieto); 
   }
-console.log(tiedot);
-//seis
+//console.log(tiedot);
 
 
 haetiedot(tiedot,1);
@@ -746,8 +744,8 @@ var _calc_pearson_correlation = function () {
   var _panel = $(".file-process-framework");
 
 var _csv_lines = tiedot;
-console.log(_csv_lines);
-
+//console.log(_csv_lines);
+console.log(tiedot);
 if (_csv_lines.length === 0) {
     return "";
 }
@@ -916,7 +914,7 @@ var sotsi = [];
 var merkki = "R";
 
 for (var _r = 0; _r < riveja-risa; _r++) { 
-rotsi.push(nimike[_r]);
+rotsi.push([nimike[_r]]);
 }
 
 for (var _r = riveja-risa; _r < riveja; _r++) { 
@@ -935,7 +933,7 @@ heat10.push(heat1);
 heat1=[];
 }
 
-console.log(heat10);
+//console.log(heat10);
 
 console.log(tieto);
 tiedot=tieto;
@@ -1059,7 +1057,11 @@ function integer ($i) {
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
-console.log(rotsi,sotsi,risa);
+//console.log(rotsi,sotsi,risa);
+var row_number = rotsi.length;
+var col_number = sotsi.length;
+//console.log(risa);
+
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
@@ -1069,6 +1071,7 @@ var konsoli=[];
 var classesNumber = 11,
     cellSize = 12;
 heatmap_display("metrics.json", "#heatmap", "RdGy");
+
 function heatmap_display(url, heatmapId, paletteName) {
 
     var tooltip = d3.select(heatmapId)
@@ -1088,15 +1091,17 @@ function heatmap_display(url, heatmapId, paletteName) {
     var legendElementWidth = cellSize * 2;
     var colors = colorbrewer[paletteName][classesNumber];
     var svg;
-    
-    d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQbNMtxxCj7L5_GU7MFakZjwM6g2JrXoF7XAhrXc3PPEJsXDxNohlRekSVM-hb1oOWMVGIUZ6OvhLFg/pub?output=csv", function(error, data) {
-console.log(data);
+
+    //d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQbNMtxxCj7L5_GU7MFakZjwM6g2JrXoF7XAhrXc3PPEJsXDxNohlRekSVM-hb1oOWMVGIUZ6OvhLFg/pub?output=csv", function(error, data) {
+/*
+
+//console.log(data);
 var etu = "R";
 var dson_data = data[1];
 var desult = [];
 for(var k in dson_data)
 desult.push([etu,k]);
-console.log(desult);
+//console.log(desult);  //sarakeotsikko
 var lson_data = data[1];
 var lesult = [];
 var vesult = [];
@@ -1108,20 +1113,28 @@ lesult.push(lson_data[k]);
 vesult.push(lesult);
 lesult=[];
 }
-console.log(vesult);
+//console.log(vesult); //riviotsikko+data
+
 var rivi = [];
 for (var i = 0; i < data.length; i++) {
 rivi.push([data[i].Rivimuuttuja]);
 }
+
 console.log(rivi);
-var arr = vesult; //data
+console.log(rotsi);
+
+*/
+
+/*
+var arr = riveja-risa; //data
 var row_number = arr.length;
 var col_number = arr[0].length;
-
+*/
 var colorScale = d3.scale.quantize()
         .domain([0.0, 1.0])
         .range(colors);
-
+        
+d3.selectAll("#heatmap > *").remove();
 svg = d3.select(heatmapId).append("svg")
         .attr("width", viewerWidth)
         .attr("height", viewerHeight)
@@ -1146,7 +1159,7 @@ svg.append('defs')
         var rowLabels = svg.append("g")
             .attr("class", "rowLabels")
             .selectAll(".rowLabel")
-            .data(rivi) //rivi
+            .data(rotsi) //rivi-rotsi
             .enter().append("text")
             .text(function(d) {
                 return d.count > 1 ? d.join("/") : d;
@@ -1178,7 +1191,7 @@ svg.append('defs')
         var colLabels = svg.append("g")
             .attr("class", "colLabels")
             .selectAll(".colLabel")
-            .data(desult)
+            .data(sotsi) //desult-sotsi
             .enter().append("text")
             .text(function(d) {
                 d.shift();
@@ -1209,7 +1222,7 @@ svg.append('defs')
             });
 
         var row = svg.selectAll(".row")
-            .data(vesult) //data
+            .data(risa) //data-risa
             .enter().append("g")
             .attr("id", function(d) {
                 return d.idx;
@@ -1364,7 +1377,7 @@ svg.append('defs')
 		var newPalette = d3.select("#palette").property("value");
                 changePalette(newPalette, heatmapId);
             });
-    });
+    //}); // end of d3.csv
 }
 
 function changeOrder(newOrder, heatmapId) {
