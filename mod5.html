@@ -5,8 +5,6 @@
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
-<link xhref="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
-<script src="https://d3js.org/colorbrewer.v1.min.js"></script>
 <style>
 .tree ul {
   display: none;
@@ -80,22 +78,6 @@ text.hover {
   border: 4px solid #66F;
   padding: 5px;
   border-radius: 8px ;
-  -webkit-border-top-left-radius: 8px;
-  -webkit-border-top-right-radius: 8px;
-  -webkit-border-bottom-right-radius: 8px;
-  -webkit-border-bottom-left-radius: 8px;
-  -khtml-border-top-left-radius: 8px;
-  -khtml-border-top-right-radius: 8px;
-  -khtml-border-bottom-right-radius: 8px;
-  -khtml-border-bottom-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  -moz-border-radius-topright: 8px;
-  -moz-border-radius-bottomright: 8px;
-  -moz-border-radius-bottomleft: 8px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
   width: 100px;
   z-index:10000;
   -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
@@ -208,7 +190,6 @@ text.hover {
 </div>
 
 <div id="heatmap"></div>
-<div class="ext-chord"></div>
 	
 <form class="file-process-framework">
 <div class="inp"><textarea id="input_data"></textarea></div> 
@@ -227,248 +208,54 @@ var alin = 3;
 var ala = 6;
 var yla = 100;
 var ylin = 1200;
-var haku = "B,C,D,E,F,G,H,I,J,K,AA,BB,CC,DD,EE,FF";
 
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
 var _data = [];
 var konsoli=[];
+
+var colorbrewer = {RdGy: {
+3: ["#ef8a62","#ffffff","#999999"],
+4: ["#ca0020","#f4a582","#bababa","#404040"],
+5: ["#ca0020","#f4a582","#ffffff","#bababa","#404040"],
+6: ["#b2182b","#ef8a62","#fddbc7","#e0e0e0","#999999","#4d4d4d"],
+7: ["#b2182b","#ef8a62","#fddbc7","#ffffff","#e0e0e0","#999999","#4d4d4d"],
+8: ["#b2182b","#d6604d","#f4a582","#fddbc7","#e0e0e0","#bababa","#878787","#4d4d4d"],
+9: ["#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d"],
+10: ["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],
+11: ["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"]},BrBG: {
+3: ["#d8b365","#f5f5f5","#5ab4ac"],
+4: ["#a6611a","#dfc27d","#80cdc1","#018571"],
+5: ["#a6611a","#dfc27d","#f5f5f5","#80cdc1","#018571"],
+6: ["#8c510a","#d8b365","#f6e8c3","#c7eae5","#5ab4ac","#01665e"],
+7: ["#8c510a","#d8b365","#f6e8c3","#f5f5f5","#c7eae5","#5ab4ac","#01665e"],
+8: ["#8c510a","#bf812d","#dfc27d","#f6e8c3","#c7eae5","#80cdc1","#35978f","#01665e"],
+9: ["#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e"],
+10: ["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],
+11: ["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"]},Spectral: {
+3: ["#ff0000","#ffffff","#008900"],
+4: ["#d7191c","#fdae61","#abdda4","#2b83ba"],
+5: ["#d7191c","#fdae61","#ffffbf","#abdda4","#2b83ba"],
+6: ["#d53e4f","#fc8d59","#fee08b","#e6f598","#99d594","#3288bd"],
+7: ["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],
+8: ["#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd"],
+9: ["#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd"],
+10: ["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],
+11: ["#9e0142","#c50142","#e90142","#ff0142","#ffffff","#ffffff","#ffffff","#13e726","#13ca26","#13a626","#137a26"]}};
+
+
 var diagram = {
-	set_dimensions: function(width, height, scale) {
-		var width = width || 500,
-			height = height || 500,
-			outer_radius = Math.min(width, height) / 2 - 10.0,
-			scale = scale || 0.5;
-		
-		diagram.dimensions = {
-			width: width,
-			height: height,
-			
-			outer_radius: outer_radius,
-			inner_radius: outer_radius - 24.0,
-			
-			svg_position_x: width,
-			svg_position_y: height * 0.8,
-			
-			scale: scale,
-		};
-	},
-	
-	opts: {
-		container_class: "ext-chord",
-		hw_ratio: 1.0,
-		fade_out_opacity: 0.0,
-		max_no_of_entities: 75,
-		ignore: {
-			entities: [],
-			types: ["System", "Setup", "Other"]
-		},
-		fill: d3.scale.ordinal()
-			.range([]
-				.concat(colorbrewer.BrBG[11])
-				.concat(colorbrewer.Pastel1[9])
-				.concat(colorbrewer.Spectral[11])
-				.concat(colorbrewer.Set3[12])
-				.concat(colorbrewer.PuBuGn[9])
-			),
-		fade: function(opacity) {
-			return function(g) {
-				diagram.elements.svg.selectAll("g.svg-group path.chord")
-					.filter(function(d) {
-						return d.source.index != g.index && d.target.index != g.index;
-					})
-					.transition(0)
-						.delay(opacity==1 ? 100 : 0)
-						.style("opacity", opacity);
-			};
-		},
-	},
-	
 	render: function() {
-		diagram.prepare_data_and_matrix();
-		diagram.elements = {};
-		//diagram.viesti0 = {};
-		//diagram.make_svg_element();
-		//diagram.make_chord_diagram();
-		//diagram.get_data();
 		diagram.get_data1();
 		diagram.get_data2();
-		//diagram.get_data3();
-		//diagram.get_data4();
 	},
-	
-	prepare_data_and_matrix: function() {
-		diagram.data = diagram.get_data();
-		diagram.initialize_ids_and_matrix();
-		diagram.assign_relationship_values_to_matrix();
-	},
-	
-	make_svg_element: function() {
-		var container = d3.select("." + diagram.opts.container_class);
-		container.selectAll("svg").remove();
-		var target_width = parseFloat(d3.select(container.node().parentNode).style("width")) / 1.4;
-		var scale = 0.75;
-		diagram.set_dimensions(target_width, diagram.opts.hw_ratio * target_width, scale)
-		diagram.elements.svg = container.append("svg")
-				.attr("width", diagram.dimensions.width * 2 * diagram.dimensions.scale)
-				.attr("height", diagram.dimensions.height * 2 * diagram.dimensions.scale)
-			
-			.append("g") 
-				.attr("class", "svg-group")
-				.attr("transform", "translate(" 
-					+ diagram.dimensions.svg_position_x * diagram.dimensions.scale + ","
-					+ diagram.dimensions.svg_position_y * diagram.dimensions.scale + ")"
-					+ "scale(" + diagram.dimensions.scale + ")"
-				)
-				
-		d3.select(window).on("resize", function() {
-			console.log("resized");
-			diagram.render();
-		});
-	},
-	
-	make_chord_diagram: function() {
-		diagram.prepare_chord_layout();
-		diagram.make_arcs();
-		diagram.make_chords();
-	},
-	
-	initialize_ids_and_matrix: function() {
-		diagram.entity_names = [];
-		diagram.data.forEach(function(relationship) {
-			if(diagram.entity_names.indexOf(relationship.source)===-1)
-				diagram.entity_names.push(relationship.source);
-			
-			if(diagram.entity_names.indexOf(relationship.target)===-1)
-				diagram.entity_names.push(relationship.target);
-			
-		});
-		diagram.entity_names = diagram.entity_names.sort();
-		diagram.entities = {};
-		var n = 0;
-		diagram.entity_names
-			.forEach(function(entity_name) {
-				diagram.entities[entity_name] = { id: n, name: entity_name };
-				n++;
-			});
-		
-		diagram.data.forEach(function(relationship) {
-			relationship.source_id = diagram.entities[relationship.source].id;
-			relationship.target_id = diagram.entities[relationship.target].id;
-		});
-		
-		diagram.matrix = [];
-		for(var i = 0; i < n; i++) {
-			diagram.matrix[i] = [];
-			for(var j = 0; j < n; j++) {
-				diagram.matrix[i][j] = 0;
-			}
-		}
-	},
-	
-	assign_relationship_values_to_matrix: function() {
-		diagram.data.forEach(function(relationship) {
-			diagram.matrix[relationship.source_id][relationship.target_id] = 1.0;
-			diagram.matrix[relationship.target_id][relationship.source_id] = 0.5;
-		});
-	},
-	
-	prepare_chord_layout: function() {
-		diagram.layout = d3.layout.chord()
-			.padding(0.04); 
-		diagram.layout.matrix(diagram.matrix);
-	},
-	
-	make_arcs: function() {
-		var arc = d3.svg.arc()
-			.innerRadius(diagram.dimensions.inner_radius)
-			.outerRadius(diagram.dimensions.outer_radius);
-			
-		diagram.elements.entity_groups = diagram.elements.svg.selectAll("g.entity-group")
-				.data(diagram.layout.groups) 
-			.enter().append("g") 
-				.attr("class", "entity-group");
-				
-		diagram.elements.entity_groups.append("path")
-				.attr("d", arc)
-				.style("fill", function(d) { return diagram.opts.fill(d.index); })
-				.on("mouseover", diagram.opts.fade(diagram.opts.fade_out_opacity))
-				.on("mouseout", diagram.opts.fade(1.0))
-			.append("title")
-				.text(function(d) { return diagram.entity_names[d.index]; });
-		
-		diagram.elements.entity_groups.append("text")
-			.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-			.attr("dy", ".35em")
-			.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end": null; })
-			.attr("transform", function(d) {
-				return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-					+ "translate(" + (diagram.dimensions.outer_radius + 5) + ")"
-					+ (d.angle > Math.PI ? "rotate(180)" : "")
-			})
-			.text(function(d) { return diagram.entity_names[d.index]; });
-	},
-	
-	make_chords: function() {
-		var chord = d3.svg.chord()
-			.radius(diagram.dimensions.inner_radius);
-		
-		diagram.elements.svg.selectAll("path.chord")
-				.data(diagram.layout.chords)
-			.enter().append("path")
-					.attr("class", "chord")
-					.attr("d", chord)
-					.style("fill", function(d) { return diagram.opts.fill(d.source.index); })
-				.append("title")
-					.text(function(d) {
-						return diagram.entity_names[d.source.index] + " is used in "
-							+ diagram.entity_names[d.target.index];
-					});
-	},
-	
-	get_data: function() {
-		var entity_count = {};
-		_data.forEach(function(rel) {
-			if(diagram.opts.ignore.entities.indexOf(rel.source)!==-1 || diagram.opts.ignore.entities.indexOf(rel.target)!==-1)
-				return;
-			if(diagram.opts.ignore.types.indexOf(rel.source_type)!==-1 || diagram.opts.ignore.types.indexOf(rel.target_type)!==-1)
-				return;
-			if(entity_count[rel.source]===undefined)
-				entity_count[rel.source] = 0.0;
-			entity_count[rel.source] += 1;
-			if(entity_count[rel.target]===undefined)
-				entity_count[rel.target] = 0.0;
-			entity_count[rel.target] += 1;
-		});
-		
-		var valid_entities = d3.keys(entity_count).sort(function(a, b) {
-			return entity_count[b] - entity_count[a];
-		});
-		
-		var max_no_of_entities = diagram.opts.max_no_of_entities;
-		var container = d3.select("." + diagram.opts.container_class);
-		if(container.attr("max_no_of_entities")) {
-			max_no_of_entities = parseInt(container.attr("max_no_of_entities"));
-		}
-		
-		valid_entities.splice(max_no_of_entities+1, valid_entities.length);
-
-		var new_data = [];
-		_data.forEach(function(rel) {
-			if(valid_entities.indexOf(rel.source)!==-1 && valid_entities.indexOf(rel.target)!==-1)
-				new_data.push(rel);
-		});
-		return new_data;
-	},
-	
     get_data1: function() {
-  var merkki = "";
-  var ulli = "";
-  var ryhma = "alku";
-  var alaryhma = "";
-  var rivit = 0;
-  var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var merkki = "";
+var ryhma = "alku";
+var alaryhma = "";
+var rivit = 0;
+var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
 var gid = '270476198';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
 fetch(url)
@@ -512,7 +299,6 @@ function myItems(jsonString){
     }
   )
   table += '</ul>'
-//  console.log(table);
   return table
 }
 
@@ -526,20 +312,18 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
   $(this).parentsUntil('.tree').children("input[type='checkbox']").prop('checked', this.checked);
   e.stopPropagation();
 });
-
 	},
 	
 	muuttujat: function () {
-setTimeout(() => {
+            setTimeout(() => {
             var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
             var values = [];
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
             });
-//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
             diagram.muuttuja();
-}, 1000);
-},
+            }, 200);
+    },
 	
 	muuttuja: function () {
             var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
@@ -547,15 +331,10 @@ setTimeout(() => {
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
             });
-//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
-//            console.log(values);
             var siirto = values;
             values = [];
-            //hakutiedot=values;
-//            console.log(siirto);
             diagram.get_data3(0,siirto);
-},
-
+    },
 
 	muuttuja0: function () {
             var checkboxes = document.querySelectorAll('input[name="subdomain1"]:checked');
@@ -563,23 +342,21 @@ setTimeout(() => {
             checkboxes.forEach((checkbox) => {
                 values1.push(checkbox.value);
             });
-//            console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
-//            console.log(values1);
             var piirto = values1;
             values1 = [];
             diagram.get_data3(1,piirto);
-},
+    },
 
     get_data2: function() {
-  var viesti1 = [];
-  var rivit1 = 0;
-  var haku1 = [];
-  var taso1 = [];
-  var alin = [];
-  var ala = [];
-  var yla = [];
-  var ylin = [];
-  var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var viesti1 = [];
+var rivit1 = 0;
+var haku1 = [];
+var taso1 = [];
+var alin = [];
+var ala = [];
+var yla = [];
+var ylin = [];
+var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
 var gid = '1445091643';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
 fetch(url)
@@ -634,14 +411,11 @@ function myItems(jsonString){
   taso1=table;
   table += '</table>'
   return table
-
 }
 	},
 	
 	get_data3: function(laji,valu){
-	//console.log(laji,valu);
 var lista = valu.toString();
-//console.log(lista);	
 var nimike = [];
 var sarakkeita = 0;
 var riveja = 0;
@@ -651,8 +425,6 @@ var sari = 0;
 if (laji == 0) {
 	haku = valu.toString();
 	lista = valu.toString();
-	
-	//console.log(haku);
 	} else {
 	raja = valu.toString();
 	var myArray = raja.split(",");
@@ -661,7 +433,7 @@ if (laji == 0) {
 	alin = myArray[2];
 	yla = myArray[3];
 	ylin = myArray[4];
-	}
+}
 
 function init() {
 var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/edit#gid=1354196778';
@@ -671,11 +443,11 @@ var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAo
     var haku2 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
     var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
     var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
-    var haku5 = "SELECT " + haku ;
+    var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
+    var haku6 = "SELECT " + haku ;
 
-    str = haku5;
-    str = str.replace(/"+/g, "");
-  console.log(str);
+  str = haku5;
+  str = str.replace(/"+/g, "");
   query.setQuery(str);
   query.send(processSheetsData);
 }
@@ -687,17 +459,16 @@ google.charts.setOnLoadCallback(init);
 }
 
 function processSheetsData(response) {
-  var array = [];
-  var activities = [];
-  var data = response.getDataTable();
+var array = [];
+var activities = [];
+var data = response.getDataTable();
   
-  var tiedot=[];
-  tiedot.push(haku);
-  var tieto = "";
+var tiedot=[];
+tiedot.push(haku);
+var tieto = "";
   
-  var columns = data.getNumberOfColumns();
-  var rows = data.getNumberOfRows();
-//console.log(columns,rows);
+var columns = data.getNumberOfColumns();
+var rows = data.getNumberOfRows();
 
 riveja = columns;
 risa = columns;
@@ -707,7 +478,8 @@ risa=risa/2;
 } else {
 risa=(risa+1)/2;
 }
-  for (var r = 0; r < rows; r++) {
+
+for (var r = 0; r < rows; r++) {
     var row = [];
     for (var c = 0; c < columns; c++) {
       row.push(data.getFormattedValue(r, c));
@@ -715,18 +487,15 @@ risa=(risa+1)/2;
     }
     tieto = row.join();
     tiedot.push(tieto); 
-  }
-//console.log(tiedot,risa,riveja);
+}
 
 diagram.get_data31(tiedot,risa,riveja,lista);
-//haetiedot(tiedot,1);
   }
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,_risa,_riveja,lista){
-	//console.log(tiedot,_risa,_riveja);
 var listaus = [];	
 var tietoja= tiedot;	
 var rotsi = [];	
@@ -738,22 +507,17 @@ var sarakkeita = 0;
 var riveja = _riveja;
 var risa = _risa;
 var sari = riveja-risa;
-//_combine_input();
 var _combine_input = function () {
-
     _data = {};  
-    
     _calc_pearson_correlation();
-    
-    //seis
 };
 
 //***** start of _calc_pearson_correlation
-var _calc_pearson_correlation = function () {
-var _attr_list = [];
-    _attr_list_count = 0;
-var _csv_lines = tietoja;
-//console.log(listat); *********onko list varattu vai puuttuu
+  var _calc_pearson_correlation = function () {
+  var _attr_list = [];
+      _attr_list_count = 0;
+  var _csv_lines = tietoja;
+
   var _pair_number;
 
   for (var _i = 0; _i < _csv_lines.length; _i++) {
@@ -781,9 +545,7 @@ var _csv_lines = tietoja;
           continue;
         }
         _value = eval(_value);
-        _data[(_attr_list[_j])].push(_value);
-        //console.log(_attr_list[_j]);
-        
+        _data[(_attr_list[_j])].push(_value); 
       }
     }
   }
@@ -801,7 +563,6 @@ var items = [];
 
 sari=riveja-risa;
 var initial = 0;
-//console.log(sari);
 
 Array.matrix = function(risa, sari, initial) {
 var arr = [];
@@ -818,22 +579,19 @@ var arr = [];
 var names = Array.matrix(500);
 
 
-  var _result_data = {};
-  for (var _i = 0; _i < _attr_list.length; _i++) {
-    var _x_attr = _attr_list[_i];
+    var _result_data = {};
+    for (var _i = 0; _i < _attr_list.length; _i++) {
+         var _x_attr = _attr_list[_i];
     
 sarakenumero += 1; 
 rivinumero = -1;
-//console.log(_x_attr);
 nimike[_i]=_x_attr;
-//console.log(oikea);
 tieto.push(_x_attr,oikea);
-//console.log(tieto);
 oikea = [];
     
     var _ary1 = _data[_x_attr];
     for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
-      var _y_attr = _attr_list[_j];
+         var _y_attr = _attr_list[_j];
 
       if (typeof (_result_data[_x_attr]) === "undefined") {
         _result_data[_x_attr] = {};
@@ -844,30 +602,22 @@ oikea = [];
       }
     }
     
-
-
     for (var _j = _i + 1; _j < _attr_list.length; _j++) {
       var _y_attr = _attr_list[_j];
-rivinumero += 1; 
+      rivinumero += 1; 
 
       if (typeof (_result_data[_x_attr]) === "undefined") {
         _result_data[_x_attr] = {};
       }
       var _ary2 = _data[_y_attr];
-
       _result_data[_x_attr][_y_attr] = _get_pearson_correlation(_ary1, _ary2);
 
 const myJSON = _result_data[_x_attr][_y_attr];
-//console.log(myJSON);
 names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
 oikea.push(myJSON.r.toFixed(3));
 items[_i,_j]=_result_data[_x_attr][_y_attr];
-//console.log(oikea);
-//console.log(_x_attr,_y_attr,_result_data[_x_attr][_y_attr]["r"]);
     }
   }
-  
-  console.log(nimike);
   
 var heat1 = [];
 var heat10 = [];
@@ -882,8 +632,7 @@ rotsi.push([nimike[_r]]);
 for (var _r = riveja-risa; _r < riveja; _r++) { 
 sotsi.push([merkki,nimike[_r]]);
 }
- 
-//console.log(_result_data);
+
 for (var _r = 1; _r <= risa; _r++) {
 
 for (var _s = 0; _s < sari; _s++) { 
@@ -896,20 +645,13 @@ heat1=[];
 tiedot=tieto;
 tsekki = 1;
 
-//console.log(rotsi);
-//console.log(sotsi);
-//console.log(heat10);
-
-diagram.get_data4(rotsi,sotsi,heat10);
-    
+diagram.get_data4(rotsi,sotsi,heat10);    
 };
 //*** end of _draw_result_table
 
 //*** start of _get_pearson_correlation
 var _get_pearson_correlation = function (_ary1, _ary2) {
-
   var _r = pearsonCorrelation(_ary1, _ary2);
-
   var _n = _ary1.length;
   var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
       _t = Math.abs(_t);
@@ -997,7 +739,6 @@ function integer ($i) {
 }
 
 function _subtprob ($n, $x) {
-
 	var $a;
         var $b;
 	var $w = Math.atan2($x / Math.sqrt($n), 1);
@@ -1029,19 +770,13 @@ function max () {
 
 //*** start of function
 var _panel = _combine_input();
-//_panel.find(".change-trigger").change(_combine_input);
-//$(function () {_combine_input();});
 //*** end of function
-	
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
 	console.log(rotsi, rotsi.length);
-//console.log(rotsi,sotsi,risa);
 var row_number = rotsi.length;
 var col_number = sotsi.length;
-//console.log(risa);
-
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
@@ -1050,15 +785,36 @@ var konsoli=[];
 
 var classesNumber = 11,
     cellSize = 12;
-heatmap_display("metrics.json", "#heatmap", "RdGy");
+//heatmap_display("#heatmap", "RdGy");
+heatmap_display("#heatmap", "Spectral");
+//heatmap_display("#heatmap", "BrBG");
 
-function heatmap_display(url, heatmapId, paletteName) {
+function heatmap_display(heatmapId, paletteName) {
+d3.selectAll("#heatmap > *").remove();
 
-    var tooltip = d3.select(heatmapId)
-        .append("div")
-        .style("position", "absolute")
-        .style("visibility", "hidden");
-
+  var tooltip = d3.select(heatmapId)
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px");
+/*
+  var mouseover = function(event,d) {
+    tooltip.style("opacity", 1)
+  }
+  var mousemove = function(event,d) {
+    tooltip
+      .html("The exact value of<br>this cell is: " + d.value)
+      .style("left", (event.x)/2 + "px")
+      .style("top", (event.y)/2 + "px")
+  }
+  var mouseleave = function(d) {
+    tooltip.style("opacity", 0)
+  }
+*/
     function zoom() {
     	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
@@ -1070,51 +826,14 @@ function heatmap_display(url, heatmapId, paletteName) {
     var viewerPosLeft = 100;
     var legendElementWidth = cellSize * 2;
     var colors = colorbrewer[paletteName][classesNumber];
+    //console.log(colors);
     var svg;
 
-    //d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQbNMtxxCj7L5_GU7MFakZjwM6g2JrXoF7XAhrXc3PPEJsXDxNohlRekSVM-hb1oOWMVGIUZ6OvhLFg/pub?output=csv", function(error, data) {
-/*
-
-//console.log(data);
-var etu = "R";
-var dson_data = data[1];
-var desult = [];
-for(var k in dson_data)
-desult.push([etu,k]);
-//console.log(desult);  //sarakeotsikko
-var lson_data = data[1];
-var lesult = [];
-var vesult = [];
-for (var i = 0; i < data.length; i++) {
-
-lson_data=data[i];
-for(var k in lson_data)
-lesult.push(lson_data[k]);
-vesult.push(lesult);
-lesult=[];
-}
-//console.log(vesult); //riviotsikko+data
-
-var rivi = [];
-for (var i = 0; i < data.length; i++) {
-rivi.push([data[i].Rivimuuttuja]);
-}
-
-console.log(rivi);
-console.log(rotsi);
-
-*/
-
-/*
-var arr = riveja-risa; //data
-var row_number = arr.length;
-var col_number = arr[0].length;
-*/
-var colorScale = d3.scale.quantize()
-        .domain([0.0, 1.0])
+    var colorScale = d3.scale.quantize()
+        .domain([-1.0, 1.0])
         .range(colors);
         
-d3.selectAll("#heatmap > *").remove();
+
 svg = d3.select(heatmapId).append("svg")
         .attr("width", viewerWidth)
         .attr("height", viewerHeight)
@@ -1240,6 +959,7 @@ svg.append('defs')
                 else return "url(#diagonalHatch)";
             })
             .on('mouseover', function(d, i, j) {
+            console.log(Number(d).toFixed(3));
                 d3.select('#colLabel_' + i).classed("hover", true);
                 d3.select('#rowLabel_' + j).classed("hover", true);
                 if (d != null) {
@@ -1256,7 +976,7 @@ svg.append('defs')
             .on("mousemove", function(d, i) {
                 tooltip.style("top", (d3.event.pageY - 55) + "px").style("left", (d3.event.pageX - 60) + "px");
             })
-            .on('click', function() {
+            .on('click', function(d) {
             });
 
         var legend = svg.append("g")
@@ -1357,7 +1077,6 @@ svg.append('defs')
 		var newPalette = d3.select("#palette").property("value");
                 changePalette(newPalette, heatmapId);
             });
-    //}); // end of d3.csv
 }
 
 function changeOrder(newOrder, heatmapId) {
