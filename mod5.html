@@ -241,12 +241,13 @@ function myItems(jsonString){
   json.table.rows.forEach(ligne => {
   var check = 0;
     ligne.c.forEach(cellule => {
+    //console.log(ligne.c);
         try{var valeur0 = cellule.f ? cellule.f : cellule.v}
         catch(e){var valeur0 = ''}
         if (check == 0) {
         alaryhma=valeur0;
         if (ryhma!= alaryhma) {
-        
+        //console.log(valeur0);
         if (ryhma!= "alku") {table += '</ul></li>'}
         table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
         table += '<label>' + valeur0 + '</label><ul class="parent">'
@@ -259,12 +260,11 @@ function myItems(jsonString){
         if (check == 1) {
         merkki = valeur0;
         }
-        
+        //console.log(merkki);
         if (check == 2) {
          table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-         table += '<label>' + valeur0 + '</label></li>'        
+         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'        
         }
-
         check += 1;
       })
     }
@@ -385,6 +385,11 @@ function myItems(jsonString){
 }
 	},
 	
+	get_data30: function() {
+	
+	
+	},
+	
 	get_data3: function(laji,valu){
 var lista = valu.toString();
 var nimike = [];
@@ -417,7 +422,7 @@ var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAo
     var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
     var haku6 = "SELECT " + haku ;
 
-  str = haku5;
+  str = haku6;
   str = str.replace(/"+/g, "");
   query.setQuery(str);
   query.send(processSheetsData);
