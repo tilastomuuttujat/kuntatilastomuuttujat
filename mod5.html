@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <link xhref="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700" rel='stylesheet' type='text/css'>
 <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
@@ -229,8 +229,6 @@ var yla = 100;
 var ylin = 1200;
 var haku = "B,C,D,E,F,G,H,I,J,K,AA,BB,CC,DD,EE,FF";
 
-
-
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
@@ -297,7 +295,7 @@ var diagram = {
 		diagram.get_data1();
 		diagram.get_data2();
 		//diagram.get_data3();
-		diagram.get_data4();
+		//diagram.get_data4();
 	},
 	
 	prepare_data_and_matrix: function() {
@@ -554,6 +552,7 @@ setTimeout(() => {
             var siirto = values;
             values = [];
             //hakutiedot=values;
+//            console.log(siirto);
             diagram.get_data3(0,siirto);
 },
 
@@ -640,17 +639,20 @@ function myItems(jsonString){
 	},
 	
 	get_data3: function(laji,valu){
-
+	//console.log(laji,valu);
+var lista = valu.toString();
+//console.log(lista);	
 var nimike = [];
 var sarakkeita = 0;
 var riveja = 0;
 var risa = 0;
 var sari = 0;
 
-
 if (laji == 0) {
 	haku = valu.toString();
-	console.log(haku);
+	lista = valu.toString();
+	
+	//console.log(haku);
 	} else {
 	raja = valu.toString();
 	var myArray = raja.split(",");
@@ -669,10 +671,11 @@ var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAo
     var haku2 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
     var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
     var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    var haku5 = "SELECT " + haku ;
 
-    str = haku4;
+    str = haku5;
     str = str.replace(/"+/g, "");
-//  console.log(str);
+  console.log(str);
   query.setQuery(str);
   query.send(processSheetsData);
 }
@@ -704,10 +707,6 @@ risa=risa/2;
 } else {
 risa=(risa+1)/2;
 }
-
-
-
-
   for (var r = 0; r < rows; r++) {
     var row = [];
     for (var c = 0; c < columns; c++) {
@@ -717,39 +716,44 @@ risa=(risa+1)/2;
     tieto = row.join();
     tiedot.push(tieto); 
   }
-//console.log(tiedot);
+//console.log(tiedot,risa,riveja);
 
-
-haetiedot(tiedot,1);
+diagram.get_data31(tiedot,risa,riveja,lista);
+//haetiedot(tiedot,1);
   }
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
-    
-function haetiedot(tiedot, kierros) {
+	},
+	
+	get_data31: function(tiedot,_risa,_riveja,lista){
+	//console.log(tiedot,_risa,_riveja);
+var listaus = [];	
+var tietoja= tiedot;	
+var rotsi = [];	
 var rivinumero = 0;
 var sarakenumero = 0;
+var nimike = [];
+var sarakkeita = 0;
 
-    
+var riveja = _riveja;
+var risa = _risa;
+var sari = riveja-risa;
+//_combine_input();
 var _combine_input = function () {
-  _reset_result();
-  _data = {};
-  _calc_pearson_correlation();
-};	
 
-_attr_list_count = 0;
+    _data = {};  
+    
+    _calc_pearson_correlation();
+    
+    //seis
+};
 
+//***** start of _calc_pearson_correlation
 var _calc_pearson_correlation = function () {
-  var _attr_list = [];
-  _attr_list_count = 0;
-  var _panel = $(".file-process-framework");
-
-var _csv_lines = tiedot;
-//console.log(_csv_lines);
-console.log(tiedot);
-if (_csv_lines.length === 0) {
-    return "";
-}
-
+var _attr_list = [];
+    _attr_list_count = 0;
+var _csv_lines = tietoja;
+//console.log(listat); *********onko list varattu vai puuttuu
   var _pair_number;
 
   for (var _i = 0; _i < _csv_lines.length; _i++) {
@@ -778,56 +782,26 @@ if (_csv_lines.length === 0) {
         }
         _value = eval(_value);
         _data[(_attr_list[_j])].push(_value);
-
+        //console.log(_attr_list[_j]);
+        
       }
     }
   }
-
-    for (var _attr_name in _data) {
-      var arr = _data[_attr_name];
-      var sorted = arr.slice().sort(function (a, b) {
-        return b - a
-      })
-      var ranks = arr.slice().map(function (v) {
-        return sorted.indexOf(v) + 1
-      });
-      _data[_attr_name] = ranks;
-    }
-
-  var _var_container = _panel.find("#variables_container");
-  _var_container.empty();
-  for (var _i = 0; _i < _attr_list.length; _i++) {
-    var _attr = _attr_list[_i];
-    if (_data[_attr].length === 0) {
-      continue;
-    }
-
-    var _div = $('<input type="hidden" name="variables" value="' + _attr + '" id="variables_' +  '"  /> '); 
-    _div.appendTo(_var_container);
-  }
-  return _draw_result_table();
+listaus = _attr_list;
+return _draw_result_table();
 };
+//*** end of _calc_pearson_correlation
 
-_data = {};
-_cox_stuart_result = null;
-
-var _get_attr_list = function () {
-  var _attr_list = [];
-  $('[name="variables"]').each(function (_i, _ele) {
-    _attr_list.push(_ele.value);
-  });
-  return _attr_list;
-};
 //*** start of _draw_result_table
 var _draw_result_table = function () {
-  var _attr_list = _get_attr_list();
-
+var _attr_list = listaus;
 var tieto = [];
 var oikea = [];
 var items = [];
 
 sari=riveja-risa;
 var initial = 0;
+//console.log(sari);
 
 Array.matrix = function(risa, sari, initial) {
 var arr = [];
@@ -843,26 +817,22 @@ var arr = [];
 
 var names = Array.matrix(500);
 
-//console.log(names);
-
-
 
   var _result_data = {};
   for (var _i = 0; _i < _attr_list.length; _i++) {
     var _x_attr = _attr_list[_i];
- 
+    
 sarakenumero += 1; 
 rivinumero = -1;
 //console.log(_x_attr);
 nimike[_i]=_x_attr;
 //console.log(oikea);
 tieto.push(_x_attr,oikea);
+//console.log(tieto);
 oikea = [];
-
+    
     var _ary1 = _data[_x_attr];
- 
     for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
-
       var _y_attr = _attr_list[_j];
 
       if (typeof (_result_data[_x_attr]) === "undefined") {
@@ -873,40 +843,32 @@ oikea = [];
         _result_data[_x_attr][_y_attr] = null;
       }
     }
+    
+
 
     for (var _j = _i + 1; _j < _attr_list.length; _j++) {
       var _y_attr = _attr_list[_j];
-      rivinumero += 1;
+rivinumero += 1; 
 
       if (typeof (_result_data[_x_attr]) === "undefined") {
         _result_data[_x_attr] = {};
       }
-
       var _ary2 = _data[_y_attr];
+
       _result_data[_x_attr][_y_attr] = _get_pearson_correlation(_ary1, _ary2);
+
 const myJSON = _result_data[_x_attr][_y_attr];
-//console.log(myJSON.r.toFixed(3)); korrelaatioarvo
-//console.log(myJSON.p.toFixed(3)); p-arvo
-
-
+//console.log(myJSON);
 names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
-//console.log(sarakenumero,rivinumero,names[sarakenumero][rivinumero]);
-
-
-
-//console.log(risa);
-//console.log(riveja-risa);
-
 oikea.push(myJSON.r.toFixed(3));
 items[_i,_j]=_result_data[_x_attr][_y_attr];
-
-//console.log(items[_i,_j]);
+//console.log(oikea);
+//console.log(_x_attr,_y_attr,_result_data[_x_attr][_y_attr]["r"]);
     }
-    //console.log(nimike[_i]);
   }
-//console.log(nimike[1]);
-
-//console.log(risa,sari);
+  
+  console.log(nimike);
+  
 var heat1 = [];
 var heat10 = [];
 var rotsi = [];
@@ -920,57 +882,60 @@ rotsi.push([nimike[_r]]);
 for (var _r = riveja-risa; _r < riveja; _r++) { 
 sotsi.push([merkki,nimike[_r]]);
 }
-
-
-
+ 
+//console.log(_result_data);
 for (var _r = 1; _r <= risa; _r++) {
-//heat1.push(nimike[_r-1]);
-//console.log(names[_r][0],names[_r][1],names[_r][2],names[_r][3],names[_r][4],names[_r][5],names[_r][6],names[_r][7]);
+
 for (var _s = 0; _s < sari; _s++) { 
 heat1.push(names[_r][_s]);
 }
 heat10.push(heat1);
 heat1=[];
 }
-
-//console.log(heat10);
-
-console.log(tieto);
+  
 tiedot=tieto;
 tsekki = 1;
 
-
+//console.log(rotsi);
+//console.log(sotsi);
+//console.log(heat10);
 
 diagram.get_data4(rotsi,sotsi,heat10);
-} 
+    
+};
 //*** end of _draw_result_table
 
-
-
+//*** start of _get_pearson_correlation
 var _get_pearson_correlation = function (_ary1, _ary2) {
 
   var _r = pearsonCorrelation(_ary1, _ary2);
+
   var _n = _ary1.length;
   var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
-  _t = Math.abs(_t);
+      _t = Math.abs(_t);
   var _p = ((tprob((_n - 2), _t)) * 2);
   if (_p === 2) {
-    _p = 0;
+      _p = 0;
   }
+  
+  if (isNaN(_p)) {
+    console.log({
+      'n-2': _n - 2,
+      't': _t
+    });
+    console.log(['tprob', tprob((_n - 2), _t)]);
+    throw "xx：NaN (r: " + _r + ";t: " + _t + "; _n: " + _n + " )";
+  }
+
   return {
-    r: _r,
-    p: _p,
-    n: _n
-  }
-}
+    r: _r
+    //p: _p,
+    //n: _n
+  };
+};
+//*** end of _get_pearson_correlation
 
-var _reset_result = function () {
-  var _panel = $(".file-process-framework");
-  var _input = _panel.find("#preview");
-  _input.val("");
-  _panel.find("#preview_html").html("");
-}
-
+//*** start of pearsonCorrelation
 var pearsonCorrelation = function (_ary1, _ary2) {
   var _avg1 = _calc_avg(_ary1);
   var _avg2 = _calc_avg(_ary2);
@@ -989,7 +954,8 @@ var pearsonCorrelation = function (_ary1, _ary2) {
     return 0;
   }
   return _a / (Math.sqrt(_b1) * Math.sqrt(_b2));
-}
+};
+//*** end of pearsonCorrelation
 
 var _calc_avg = function (_ary) {
   if (_ary.length === 0) {
@@ -1000,13 +966,21 @@ var _calc_avg = function (_ary) {
     _sum += _ary[_i];
   }
   return (_sum / _ary.length);
-}
+};
 
-var _load_data = function (_selector, _file_path, _callback) {
-  $.get(_file_path, function (_data) {_callback();}); 
-}
+var _calc_stdev = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _avg = _calc_avg(_ary);
+  var _var = 0;
 
-$(function () {_load_data("", "", _combine_input);});
+  for (var _i = 0; _i < _ary.length; _i++) {
+    var _a = (_ary[_i] - _avg);
+    _var += _a * _a;
+  }
+  return Math.sqrt(_var / (_ary.length - 1));
+};
 
 function tprob ($n, $x) {
     if (($n <= 0) || ((Math.abs($n) - Math.abs(integer($n))) !==0)) {
@@ -1015,9 +989,17 @@ function tprob ($n, $x) {
     return _subtprob($n-0, $x-0);
 }
 
+function integer ($i) {
+        if ($i > 0)
+                return Math.floor($i);
+        else
+                return Math.ceil($i);
+}
+
 function _subtprob ($n, $x) {
+
 	var $a;
-    var $b;
+        var $b;
 	var $w = Math.atan2($x / Math.sqrt($n), 1);
 	var $z = Math.pow(Math.cos($w), 2);
 	var $y = 1;
@@ -1035,7 +1017,7 @@ function _subtprob ($n, $x) {
 	}
 	return max(0, 1 - $b - $a * $y);
 }
- 
+
 function max () {
 	var $max = arguments[0];
 	for (var $i = 0; $i < arguments.length; $i++) {
@@ -1045,18 +1027,16 @@ function max () {
 	return $max;
 }
 
-function integer ($i) {
-        if ($i > 0)
-                return Math.floor($i);
-        else
-                return Math.ceil($i);
-}
-
-} //end of haetiedot
+//*** start of function
+var _panel = _combine_input();
+//_panel.find(".change-trigger").change(_combine_input);
+//$(function () {_combine_input();});
+//*** end of function
 	
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
+	console.log(rotsi, rotsi.length);
 //console.log(rotsi,sotsi,risa);
 var row_number = rotsi.length;
 var col_number = sotsi.length;
