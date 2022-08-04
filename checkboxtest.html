@@ -1,0 +1,42 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<div class="addto-search">
+    <form action="#">
+        <div class="form-input">
+            <input class="keyword" type="text">
+            <button class="search-button"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</div>
+<div class="addto-playlists">
+    <ul>
+        <li>
+            <label for="random-1" class="playlist-name">
+                <input id="random-1" type="checkbox" name="" id="">
+                Hanoi
+            </label>
+        </li>
+        <li>
+            <label for="random-2" class="playlist-name"> 
+                <input id="random-2" type="checkbox" name="" id="">
+                Danang
+            </label>
+        </li>
+    </ul>
+</div>
+<script>
+
+(function($){
+  $(".keyword").on('keyup', function(e) {
+    var $this = $(this);
+    var exp = new RegExp($this.val(), 'i');
+    $(".addto-playlists li label").each(function() {
+      var $self = $(this);
+      if(!exp.test($self.text())) {
+        $self.parent().hide();
+      } else {
+        $self.parent().show();
+      }
+    });
+  });
+})(jQuery);
+</script>
