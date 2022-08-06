@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,29 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <style>
+ul, li		{ list-style: none; }
+body		{background:#fff; padding:0 20px 20px 20px;}
+.container	{font-family:"Open Sans"; font-size:16px; background:#fff; border-radius:3px;border:1px solid #ddd;}
+h1			{color:#08f; font-weight:100; font-size:44px;}
+/*input		{background:transparent; font-size:16px; border:1px solid #ddd; border-width:0 0 1px 0; border-radius: 0; line-height:40px; height:40px; width:100%; outline:none; padding: 0 10px;}*/
+ul#my-tree	{margin:0; padding:10px 5px; color:#666;}
+ul#my-tree	li		{margin:8px 0;}
+.tf-tree,	
+.tf-tree	li	{list-style:none; padding-left:0; line-height:20px;}
+.tf-tree	.tf-child-true	> ul	{display:none; padding-left:0;}
+.tf-tree	.tf-child-true			{cursor:pointer; position:relative;}
+.tf-tree	.tf-child-true:before	{display:block; position:absolute; top:-1px; left:0; content:"▸"; width:20px; height:20px; font-size:11px; line-height:20px; text-align:center; transition:.1s linear;}
+.tf-tree	.tf-child-true.tf-open	> div	{font-weight:bold;}
+.tf-tree	.tf-child-true.tf-open	> ul	{display:block;}
+.tf-tree	.tf-child-true.tf-open:before	{-webkit-transform:rotate(90deg);}
+.tf-tree	.tf-child-false			{cursor:pointer; position:relative;}
+.tf-tree	.tf-child-false:before	{display:block; position:absolute; top:-1px; left:0; content:"•"; width:20px; height:20px; font-size:11px; line-height:20px; text-align:center;}
+.tf-tree	.tf-closed				{font-weight:normal;}
+.tf-tree	.tf-selected			{background:#fff; color:#08f; border-radius:20px;}
+.tf-tree	ul.tf-search-result		{display:block}
+.tf-tree	ul.tf-search-result	> li	{display:none;}
+.tf-tree	ul.tf-search-result	> li.tf-search-result	{display:block;}
+
 .tree ul {
   display: none;
   margin: 2px auto;
@@ -13,7 +35,7 @@
 }
 
 .tree ul li {
-height:8px;
+height:20px;
 }
 
 .has > label {
@@ -21,7 +43,7 @@ height:8px;
 }
 
 .child > label {
-font-size:11px;
+font-size:12px;
   color: #000;
 }
 
@@ -64,21 +86,37 @@ text.legendElement {
 
 text.hover {
   font-weight: bold;
-  fill: #66F;
+  fill: #d62419;
   font-background: #000;
 }
 
 .heatmap_tooltip {
   text-align: center;
   font-family: monospace;
-  font-size: 14pt;
+  font-size: 10pt;
   color: #000;
   position: relative;
   background: rgba(255, 255, 255, 0.8);
-  border: 4px solid #66F;
+  border: 4px solid #d62419;
   padding: 5px;
   border-radius: 8px ;
-  width: 100px;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  -khtml-border-top-left-radius: 8px;
+  -khtml-border-top-right-radius: 8px;
+  -khtml-border-bottom-right-radius: 8px;
+  -khtml-border-bottom-left-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 400px;
   z-index:10000;
   -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
   -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
@@ -105,7 +143,7 @@ text.hover {
 
 .heatmap_tooltip:before {
   border-color: rgba(44, 62, 80, 0);
-  border-top-color: #66F;
+  border-top-color: #d62419;
   border-width: 16px;
   left: 50%;
   margin-left: -16px;
@@ -125,8 +163,7 @@ text.hover {
 #sidebar ul li {
   color: rgba(230, 230, 230, 0.9);
   list-style: none;
-  padding: 15px 10px;
-  border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+
 }
 #sidebar .toggle-btn {
   position: absolute;
@@ -172,13 +209,22 @@ text.hover {
 </style>
 </head>
 <body>
+
+		
 <div id="sidebar">
   <div class="toggle-btn" onclick="toggleSidebar()">
     <span></span>
     <span></span>
     <span></span>
   </div>
-  <div style="overflow-y: scroll; height:500px;" id="json"></div>
+  <div style="overflow-y: scroll; height:500px;" id="json">
+
+<input type="search" id="my-search" placeholder="hae">
+		<ul id="my-tree">
+		</ul>
+
+
+  </div>
 </div>
 <div id="sidebar1">
   <div class="toggle-btn" onclick="toggleSidebar1()">
@@ -202,7 +248,14 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
-
+var riveja = 0;
+var sarakkeita = 0;
+var rivinimike = [];
+var saranimike = [];
+var saramuuttujat = [];
+var saranumerot = [];
+var muuttuja = [];
+var selitteet = [];
 var raja = "D";
 var alin = 3;
 var ala = 6;
@@ -231,13 +284,21 @@ var gid = '270476198';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
 fetch(url)
   .then(response => response.text())
-  .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2))  
+ // .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2))  
+  .then(data => document.getElementById("my-tree").innerHTML=myItems(data.slice(47, -2))  
   );
   
 function myItems(jsonString){
   var json = JSON.parse(jsonString);
   json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
-  var table = '<ul class="tree">'
+  var table = '<ul id="my-tree" class="tree">'
+  var rivinumero = 0;
+  var saranumero = 0;
+  rivinimike = [];
+  saranimike = [];
+  selitteet = [];
+  saramuuttujat = [];
+  saranumerot = [];
   json.table.rows.forEach(ligne => {
   var check = 0;
     ligne.c.forEach(cellule => {
@@ -262,8 +323,20 @@ function myItems(jsonString){
         }
         //console.log(merkki);
         if (check == 2) {
+        saramuuttujat.push(merkki);
+        saranumerot.push(ligne.c[8].f);
+        selitteet.push(valeur0);
+        /*
+        if (ligne.c[8].f < 2) {
+        rivinimike.push(merkki);
+        rivinumero += 1;
+        } else { 
+        saranimike.push(merkki);
+        saranumero += 1;
+        }
+        */
          table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'        
+         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
         }
         check += 1;
       })
@@ -299,10 +372,21 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
 	muuttuja: function () {
             var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
             var values = [];
+            rivinimike = [];
+            saranimike = [];
+            var hakemisto = 0;
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
+                if (saranumerot[saramuuttujat.indexOf(checkbox.value)] < 2) {
+                rivinimike.push(checkbox.value);
+                } else {
+                saranimike.push(checkbox.value);
+                }
+                //console.log(saranimike.indexOf(checkbox.value));
+                //console.log(saranimike[saranimike.indexOf(checkbox.value)]);
             });
             var siirto = values;
+//            console.log(siirto); 
             values = [];
             diagram.get_data3(0,siirto);
     },
@@ -393,10 +477,13 @@ function myItems(jsonString){
 	get_data3: function(laji,valu){
 var lista = valu.toString();
 var nimike = [];
-var sarakkeita = 0;
-var riveja = 0;
+sarakkeita = 0;
+riveja = 0;
 var risa = 0;
 var sari = 0;
+
+var hakulista = rivinimike.toString() + "," + saranimike.toString();
+//console.log(hakulista);
 
 if (laji == 0) {
 	haku = valu.toString();
@@ -446,42 +533,60 @@ var tieto = "";
 var columns = data.getNumberOfColumns();
 var rows = data.getNumberOfRows();
 
-riveja = columns;
-risa = columns;
+//console.log(columns);
+//console.log(rows);
 
+
+//riveja = columns;
+//risa = columns;
+
+//console.log("Rivejä",rivinimike.length);
+//console.log("Sarakkeita",saranimike.length);
+
+riveja = rivinimike.length;
+sarakkeita = saranimike.length;
+//risa = saranimike.length;
+
+
+/*
 if(risa % 2 == 0) {
 risa=risa/2;
 } else {
 risa=(risa+1)/2;
 }
+*/
 
+//console.log(data);
 for (var r = 0; r < rows; r++) {
-    var row = [];
-    for (var c = 0; c < columns; c++) {
+     var row = [];
+     for (var c = 0; c < columns; c++) {
       row.push(data.getFormattedValue(r, c));
       activities[r,c] = data.getFormattedValue(r, c);
     }
     tieto = row.join();
     tiedot.push(tieto); 
 }
-
-diagram.get_data31(tiedot,risa,riveja,lista);
+//console.log(tiedot);
+diagram.get_data31(tiedot,lista);
   }
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
 	},
 	
-	get_data31: function(tiedot,_risa,_riveja,lista){
+	get_data31: function(tiedot,lista){
+//	console.log(tiedot);
+//	console.log(_risa);
+//	console.log(_riveja);
+//	console.log(lista);
 var listaus = [];	
 var tietoja= tiedot;	
 var rotsi = [];	
 var rivinumero = 0;
 var sarakenumero = 0;
 var nimike = [];
-var sarakkeita = 0;
 
-var riveja = _riveja;
-var risa = _risa;
+
+var risa = sarakkeita;
 var sari = riveja-risa;
 var _combine_input = function () {
     _data = {};  
@@ -537,7 +642,7 @@ var tieto = [];
 var oikea = [];
 var items = [];
 
-sari=riveja-risa;
+sari=sarakkeita;
 var initial = 0;
 
 Array.matrix = function(risa, sari, initial) {
@@ -590,36 +695,49 @@ oikea = [];
 
 const myJSON = _result_data[_x_attr][_y_attr];
 names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
+//console.log(names[sarakenumero][rivinumero]);
+//console.log(oikea);
 oikea.push(myJSON.r.toFixed(3));
 items[_i,_j]=_result_data[_x_attr][_y_attr];
     }
   }
   
+
+//console.log("Rivejä",riveja);
+//console.log("Sarakkeita",sarakkeita);
+//console.log("Nimike",nimike);
+
 var heat1 = [];
 var heat10 = [];
 var rotsi = [];
 var sotsi = [];
 var merkki = "R";
 
-for (var _r = 0; _r < riveja-risa; _r++) { 
+if (riveja > 0 && sarakkeita > 0) {
+
+for (var _r = 0; _r < riveja; _r++) {
 rotsi.push([nimike[_r]]);
 }
 
-for (var _r = riveja-risa; _r < riveja; _r++) { 
-sotsi.push([merkki,nimike[_r]]);
+
+for (var _s = riveja; _s < sarakkeita+riveja; _s++) { 
+sotsi.push([merkki,nimike[_s]]);
 }
-
-for (var _r = 1; _r <= risa; _r++) {
-
-for (var _s = 0; _s < sari; _s++) { 
+var laskuri = 0
+for (var _r = 1; _r <= riveja; _r++) {
+laskuri +=1;
+for (var _s = riveja-laskuri; _s < sarakkeita+riveja-laskuri; _s++) { 
 heat1.push(names[_r][_s]);
 }
 heat10.push(heat1);
 heat1=[];
 }
-  
+}
+
+
 tiedot=tieto;
 tsekki = 1;
+
 
 diagram.get_data4(rotsi,sotsi,heat10);    
 };
@@ -750,7 +868,7 @@ var _panel = _combine_input();
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
-	console.log(rotsi, rotsi.length);
+//	console.log(rotsi, rotsi.length);
 var row_number = rotsi.length;
 var col_number = sotsi.length;
 var minval=parent.minval;
@@ -761,36 +879,18 @@ var konsoli=[];
 
 var classesNumber = 21,
     cellSize = 12;
+    
+d3.selectAll("#heatmap > *").remove(); 
 //heatmap_display("#heatmap", "RdGy");
-heatmap_display("#heatmap", "Spectral");
 //heatmap_display("#heatmap", "BrBG");
-
+heatmap_display("#heatmap", "Spectral");
 function heatmap_display(heatmapId, paletteName) {
-d3.selectAll("#heatmap > *").remove();
 
-  var tooltip = d3.select(heatmapId)
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px");
-/*
-  var mouseover = function(event,d) {
-    tooltip.style("opacity", 1)
-  }
-  var mousemove = function(event,d) {
-    tooltip
-      .html("The exact value of<br>this cell is: " + d.value)
-      .style("left", (event.x)/2 + "px")
-      .style("top", (event.y)/2 + "px")
-  }
-  var mouseleave = function(d) {
-    tooltip.style("opacity", 0)
-  }
-*/
+    var tooltip = d3.select(heatmapId)
+        .append("div")
+        .style("position", "absolute")
+        .style("visibility", "hidden");
+
     function zoom() {
     	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
@@ -808,7 +908,6 @@ d3.selectAll("#heatmap > *").remove();
         .domain([-1.0, 1.0])
         .range(colors);
         
-
 svg = d3.select(heatmapId).append("svg")
         .attr("width", viewerWidth)
         .attr("height", viewerHeight)
@@ -902,7 +1001,7 @@ svg.append('defs')
                 return d.idx;
             })
             .attr("class", "row");
-
+            
         var j = 0;
         var heatMap = row.selectAll(".cell")
             .data(function(d) {
@@ -934,11 +1033,15 @@ svg.append('defs')
                 else return "url(#diagonalHatch)";
             })
             .on('mouseover', function(d, i, j) {
-            console.log(Number(d).toFixed(3));
                 d3.select('#colLabel_' + i).classed("hover", true);
                 d3.select('#rowLabel_' + j).classed("hover", true);
+                //console.log(Number(d).toFixed(3));
+                
+                
+                //console.log(selitteet[saramuuttujat.indexOf(rotsi[j].toString())]);
+                //console.log(selitteet[saramuuttujat.indexOf(sotsi[i].toString())]);
                 if (d != null) {
-                    tooltip.html('<div class="heatmap_tooltip">' + Number(d).toFixed(3) + '</div>');
+                    tooltip.html('<div class="heatmap_tooltip">' + String(Number(d).toFixed(3)) + '<br>' + rotsi[j]+'-'+selitteet[saramuuttujat.indexOf(rotsi[j].toString())] + '<br>' + sotsi[i]+'-'+selitteet[saramuuttujat.indexOf(sotsi[i].toString())]) + '</div>';
                     tooltip.style("visibility", "visible");
                 } else
                     tooltip.style("visibility", "hidden");
@@ -949,11 +1052,11 @@ svg.append('defs')
                 tooltip.style("visibility", "hidden");
             })
             .on("mousemove", function(d, i) {
-                tooltip.style("top", (d3.event.pageY - 55) + "px").style("left", (d3.event.pageX - 60) + "px");
+                tooltip.style("top", (d3.event.pageY - 155) + "px").style("left", (d3.event.pageX - 80) + "px");
             })
-            .on('click', function(d) {
+            .on('click', function() {
             });
-
+             
         var legend = svg.append("g")
             .attr("class", "legend")
             .attr("transform", "translate(0,-300)")
@@ -1152,6 +1255,132 @@ var sitems=items;
 	
 //valinnat(fitems,minval,maxval);
 valinnat(["11"],-0.3,0.3);
+
+$(function() {
+	//var tree = new treefilter($("#my-tree"), {
+	var tree = new treefilter($("#my-tree"), {
+		searcher : $("input#my-search")
+	});
+	//console.log(document.getElementById("my-tree").innerHTML);
+	//console.log(document.getElementById("json").innerHTML);
+});
+
+$.extend($.expr[":"], {
+	"containsIN" : function(elem, i, match, array) {
+		return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	}
+});
+
+var treefilter = function(el, options) {
+	var defaults = {
+		offsetLeft : 20, // left offset for each level
+		searcher : null, // search input field
+		expanded : false, // if true, your list will be show with expanded.
+		expanded : false, // if true, your list will be show with expanded.
+		multiselect : false // multiselect.
+	};
+
+	// Public Variables
+	var plugin = this;
+	var status = []; // save folder status for "var memory"
+
+	plugin.settings = {};
+
+	// Main Function
+	var init = function() {
+		plugin.settings = $.extend({}, defaults, options);
+		plugin.el = el;
+
+		// set class names to tags
+		el.addClass("tf-tree");
+		el.find("li").addClass("tf-child-true");
+		el.find("li").css("padding-left", plugin.settings.offsetLeft);
+		el.find("li div:only-child").parent().removeClass("tf-child-true");
+		el.find("li div:only-child").parent().addClass("tf-child-false");
+
+		// if the list has a checkbox, block event bubbling.
+		el.find("input[type=checkbox]").click(function(e) {
+			e.stopPropagation();
+		});
+
+		// set click event.
+		el.find("li.tf-child-true").children("div").click(function(e) {
+			if (e.metaKey || e.ctrlKey) {
+				if ($(this).parent().hasClass("tf-open")) {
+					$(this).parent().find("li.tf-child-true").removeClass("tf-open");
+				} else {
+					$(this).parent().find("li.tf-child-true").addClass("tf-open");
+				}
+			}
+			$(this).parent().toggleClass("tf-open");
+		});
+
+		// toggle effect when multiselect enabled.
+		el.find("li.tf-child-false").click(function() {
+			if (plugin.settings.multiSelect != true) {
+				el.find("li.tf-selected").removeClass("tf-selected");
+			}
+			$(this).toggleClass("tf-selected");
+		});
+
+		if (plugin.settings.searcher) {
+			searcher();
+		}
+	};
+
+	// PUBLIC METHOD
+	plugin.openAll = function() {
+		plugin.el.find("li.tf-child-true").parent().addClass("tf-open");
+	};
+	plugin.closeAll = function() {
+		plugin.el.find("li.tf-child-true").parent().removeClass("tf-open");
+	};
+
+	// PRIVATE FUNCTION
+	// fired when type on search input field.
+	var searcher = function() {
+		$(plugin.settings.searcher).keyup(function() {
+			if ($(this).val().length == 0) {
+				plugin.el.find(".tf-search-result").removeClass("tf-search-result");
+				memory("out", status);
+			} else {
+				plugin.closeAll();
+				plugin.el.find("li.tf-open").removeClass("tf-open");
+				plugin.el.find("li.tf-search-result").removeClass("tf-search-result");
+				plugin.el.find("li:containsIN('" + $(this).val() + "')").addClass("tf-search-result");
+				plugin.el.find("li.tf-search-result").parent().addClass("tf-search-result");
+			}
+		});
+		$(plugin.settings.searcher).keydown(function() {
+			if ($(this).val().length == 0) {
+				memory("in", status);
+			}
+		});
+	};
+	
+	// save current status of folder 
+	// action : string "in" / "out"
+	// array : array that saves current status
+	// list : el
+	var memory = function(action) {
+		if (action == "in") {
+			status = [];
+			plugin.el.find("li").each(function() {
+				status.push($(this).hasClass("tf-open"));
+			});
+		} else if (action == "out") {
+			plugin.el.find("li").each(function(i) {
+				if (status[i]) { 
+					$(this).addClass("tf-open");
+				} else {
+					$(this).removeClass("tf-open");
+				}
+			});
+		}
+	}
+
+	init();
+};
 </script>
 </body>
 </html>
