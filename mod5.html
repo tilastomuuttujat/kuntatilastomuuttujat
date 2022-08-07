@@ -244,6 +244,9 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
+var jako = [];
+var piirtoselite = [];
+var viesti1 = [];
 var hakujono = [];
 var siirto = [];
 var piirto = [];
@@ -260,7 +263,11 @@ var alin = 2;
 var ala = 4;
 var yla = 6;
 var ylin = 6;
-
+var alinselite = [];
+var alaselite = [];
+var ylaselite = [];
+var ylinselite = [];
+var vertailunimike = [];
 var minval=parent.minval;
 var maxval=parent.maxval;
 var fitems=parent.fitems;
@@ -275,7 +282,7 @@ var classesNumber = 21,
     
 var margin = {top: 5, right: 20, bottom: 10, left: 40},
     width = 960 - margin.left - margin.right,
-    height = 170 - margin.left - margin.right; 
+    height = 155 - margin.left - margin.right; 
 
 var diagram = {
 	render: function() {
@@ -391,6 +398,27 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
                 values1.push(checkbox.value);
             });
             piirto = values1;
+var test = "["+piirto+"]";
+jako = test.split(",");
+//console.log(jako[2]);
+piirtoselite[1] = "Kaikki";
+piirtoselite[2] = jako[2];
+piirtoselite[3] = jako[4];
+piirtoselite[4] = jako[6];
+piirtoselite[5] = jako[8];
+piirtoselite[6] = jako[0];
+console.log(piirtoselite[1]);
+console.log(piirtoselite[2]);
+console.log(piirtoselite[3]);
+console.log(piirtoselite[4]);
+console.log(piirtoselite[5]);
+console.log(piirtoselite[6]);
+
+
+//console.log(jako[0]);
+            //console.log(array);
+            //piirtoselite = piirto.split(",");
+            //console.log(myArray.length); 
             values1 = [];
             menossa = 0;
             hakujono = [];
@@ -398,7 +426,7 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
     },
 
     get_data2: function() {
-var viesti1 = [];
+viesti1 = [];
 var rivit1 = 0;
 var haku1 = [];
 var taso1 = [];
@@ -406,6 +434,8 @@ var alin = [];
 var ala = [];
 var yla = [];
 var ylin = [];
+var vertailunimike = [];
+var koonti = 1;
 var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
 var gid = '1445091643';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
@@ -424,27 +454,45 @@ function myItems(jsonString){
     ligne.c.forEach(cellule => {
         try{var valeur = cellule.f ? cellule.f : cellule.v}
         catch(e){var valeur = ''}
+      
+        if (check == 0)
+        vertailunimike[rivit1] = valeur;
+         
+        if (check == 1 && valeur > 0)
+        koonti = 0;
         
         if (check == 1)
-        alin[rivit1-1] = valeur;
+        alin[rivit1-koonti] = valeur;
+        
+        if (check == 2)
+        alinselite[rivit1-koonti] = valeur; 
         
         if (check == 3)
-        ala[rivit1-1] = valeur;
+        ala[rivit1-koonti] = valeur;
 
+        if (check == 4)
+        alaselite[rivit1-koonti] = valeur;
+        
         if (check == 5)
-        yla[rivit1-1] = valeur;
+        yla[rivit1-koonti] = valeur;
+        
+        if (check == 6)
+        ylaselite[rivit1-koonti] = valeur;
         
         if (check == 7)
-        ylin[rivit1-1] = valeur;
+        ylin[rivit1-koonti] = valeur;
+        
+        if (check == 8)
+        ylinselite[rivit1-koonti] = valeur;
         
         if (check == 9)
-        haku1[rivit1-1] = valeur;
+        haku1[rivit1-koonti] = valeur;
          
         if (check > 8) {
-        viesti1.push(haku1[rivit1-1], alin[rivit1-1], ala[rivit1-1], yla[rivit1-1], ylin[rivit1-1]);
+        viesti1.push([vertailunimike[rivit1-koonti]],[haku1[rivit1-koonti]],[ alinselite[rivit1-koonti]],[alin[rivit1-koonti]],[alaselite[rivit1-koonti]],[ala[rivit1-koonti]],[ylaselite[rivit1-koonti]],[yla[rivit1-koonti]],[ylinselite[rivit1-koonti]],[ylin[rivit1-koonti]]);
 
         table += '<td><input name="subdomain1" type="radio" value="' + viesti1 + '" onClick="diagram.muuttuja0()"></input></td>'
-
+koonti=1;
         rivit1 +=1;
         viesti1 = [];
         }
@@ -878,7 +926,7 @@ var tooltip = d3.select(heatmapId)
 //    var viewerWidth = $(document).width();
 //    var viewerHeight = $(document).height();
 var viewerWidth = 960;
-var viewerHeight = 165;
+var viewerHeight = 125;
     var viewerPosTop = 20;
     var viewerPosLeft = 150;
     var legendElementWidth = cellSize * 2;
@@ -907,8 +955,23 @@ svg.append('defs')
         .append('path')
         .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
         .attr('stroke', '#000000')
-        .attr('stroke-width', 1);
-
+   
+   svg.append("text")
+        .attr("x", "-42px")
+        .attr("y", "-28")
+        .attr('stroke-width', 1)
+        .style("text-anchor", "left")
+        .style("font-size", "12px")
+        .text(piirtoselite[6]);
+console.log(piirtoselite[6]);
+   svg.append("text")
+      .attr("x", "-42px")
+      .attr("y", "-28")
+      .attr("transform", "rotate(-90)")
+      .style("text-anchor", "middle")
+      .style("font-size", "12px")
+      .text(piirtoselite[menossa+1]);
+      //console.log(piirtoselite[menossa]);
         var rowSortOrder = false;
         var colSortOrder = false;
   
@@ -1142,7 +1205,7 @@ svg.append('defs')
 
 if (menossa < 4) {
 menossa +=1;
-console.log(menossa);
+//console.log(menossa);
 diagram.get_data3(1,siirto);
 
 }
