@@ -9,7 +9,6 @@ ul, li		{ list-style: none; }
 body		{background:#fff; padding:0 20px 20px 20px;}
 .container	{font-family:"Open Sans"; font-size:16px; background:#fff; border-radius:3px;border:1px solid #ddd;}
 h1			{color:#08f; font-weight:100; font-size:44px;}
-/*input		{background:transparent; font-size:16px; border:1px solid #ddd; border-width:0 0 1px 0; border-radius: 0; line-height:40px; height:40px; width:100%; outline:none; padding: 0 10px;}*/
 ul#my-tree	{margin:0; padding:10px 5px; color:#666;}
 ul#my-tree	li		{margin:8px 0;}
 .tf-tree,	
@@ -209,8 +208,6 @@ text.hover {
 </style>
 </head>
 <body>
-
-		
 <div id="sidebar">
   <div class="toggle-btn" onclick="toggleSidebar()">
     <span></span>
@@ -218,12 +215,9 @@ text.hover {
     <span></span>
   </div>
   <div style="overflow-y: scroll; height:500px;" id="json">
-
-<input type="search" id="my-search" placeholder="hae">
+  <input type="search" id="my-search" placeholder="hae">
 		<ul id="my-tree">
 		</ul>
-
-
   </div>
 </div>
 <div id="sidebar1">
@@ -234,13 +228,15 @@ text.hover {
   </div>
     <div style="overflow-y: scroll; height:500px;" id="json1"></div>
 </div>
+<div style="position:absolute;z-index: -1;" class="bar_holder" align = "center">
+<div id="heatmap1"></div>
+<div id="heatmap2"></div>
+<div id="heatmap3"></div>
+<div id="heatmap4"></div>
+<div id="heatmap5"></div>
 
-<div id="heatmap"></div>
-	
-<form class="file-process-framework">
-<div class="inp"><textarea id="input_data"></textarea></div> 
-<div id="variables_container"></div>
-</form>
+  
+</div>
 <script>
 function toggleSidebar() {
 document.getElementById("sidebar").classList.toggle('active');
@@ -248,19 +244,22 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
+var hakujono = [];
+var siirto = [];
+var piirto = [];
+var menossa = 0;
 var riveja = 0;
 var sarakkeita = 0;
 var rivinimike = [];
 var saranimike = [];
 var saramuuttujat = [];
 var saranumerot = [];
-var muuttuja = [];
 var selitteet = [];
-var raja = "D";
-var alin = 3;
-var ala = 6;
-var yla = 100;
-var ylin = 1200;
+var raja = "AAF";
+var alin = 2;
+var ala = 4;
+var yla = 6;
+var ylin = 6;
 
 var minval=parent.minval;
 var maxval=parent.maxval;
@@ -268,6 +267,15 @@ var fitems=parent.fitems;
 var _data = [];
 var konsoli=[];
 var colorbrewer = {Spectral: {3: ["#005824","#ffffff","#91003F"],21: ["#005824","#1A693B","#347B53","#4F8D6B","#699F83","#83B09B","#9EC2B3","#B8D4CB","#D2E6E3","#EDF8FB","#FFFFFF","#F1EEF6","#E6D3E1","#DBB9CD","#D19EB9","#C684A4","#BB6990","#B14F7C","#A63467","#9B1A53","#91003F"]}};
+
+var lampokartat = ["#heatmap1","#heatmap2","#heatmap3","#heatmap4","#heatmap5"];
+
+var classesNumber = 21,
+    cellSize = 12;
+    
+var margin = {top: 5, right: 20, bottom: 10, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 170 - margin.left - margin.right; 
 
 var diagram = {
 	render: function() {
@@ -284,7 +292,6 @@ var gid = '270476198';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
 fetch(url)
   .then(response => response.text())
- // .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2))  
   .then(data => document.getElementById("my-tree").innerHTML=myItems(data.slice(47, -2))  
   );
   
@@ -302,17 +309,14 @@ function myItems(jsonString){
   json.table.rows.forEach(ligne => {
   var check = 0;
     ligne.c.forEach(cellule => {
-    //console.log(ligne.c);
         try{var valeur0 = cellule.f ? cellule.f : cellule.v}
         catch(e){var valeur0 = ''}
         if (check == 0) {
         alaryhma=valeur0;
         if (ryhma!= alaryhma) {
-        //console.log(valeur0);
         if (ryhma!= "alku") {table += '</ul></li>'}
         table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
         table += '<label>' + valeur0 + '</label><ul class="parent">'
-        
         }
         ryhma=alaryhma;
         
@@ -321,20 +325,10 @@ function myItems(jsonString){
         if (check == 1) {
         merkki = valeur0;
         }
-        //console.log(merkki);
         if (check == 2) {
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-        /*
-        if (ligne.c[8].f < 2) {
-        rivinimike.push(merkki);
-        rivinumero += 1;
-        } else { 
-        saranimike.push(merkki);
-        saranumero += 1;
-        }
-        */
          table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
          table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
         }
@@ -363,7 +357,7 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
             var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
             var values = [];
             checkboxes.forEach((checkbox) => {
-                values.push(checkbox.value);
+            values.push(checkbox.value);
             });
             diagram.muuttuja();
             }, 200);
@@ -382,12 +376,11 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
                 } else {
                 saranimike.push(checkbox.value);
                 }
-                //console.log(saranimike.indexOf(checkbox.value));
-                //console.log(saranimike[saranimike.indexOf(checkbox.value)]);
             });
-            var siirto = values;
-//            console.log(siirto); 
+            siirto = values;
             values = [];
+            menossa = 0;
+            hakujono = [];
             diagram.get_data3(0,siirto);
     },
 
@@ -397,8 +390,10 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
             checkboxes.forEach((checkbox) => {
                 values1.push(checkbox.value);
             });
-            var piirto = values1;
+            piirto = values1;
             values1 = [];
+            menossa = 0;
+            hakujono = [];
             diagram.get_data3(1,piirto);
     },
 
@@ -469,21 +464,15 @@ function myItems(jsonString){
 }
 	},
 	
-	get_data30: function() {
-	
-	
-	},
-	
 	get_data3: function(laji,valu){
 var lista = valu.toString();
-var nimike = [];
 sarakkeita = 0;
 riveja = 0;
 var risa = 0;
 var sari = 0;
+var hakuehdot = ["haku1","haku2","haku3","haku4","haku5"];
 
 var hakulista = rivinimike.toString() + "," + saranimike.toString();
-//console.log(hakulista);
 
 if (laji == 0) {
 	haku = valu.toString();
@@ -492,8 +481,8 @@ if (laji == 0) {
 	raja = valu.toString();
 	var myArray = raja.split(",");
 	raja = myArray[0];
-	ala = myArray[1];
-	alin = myArray[2];
+	alin = myArray[1];
+	ala = myArray[2];
 	yla = myArray[3];
 	ylin = myArray[4];
 }
@@ -502,17 +491,33 @@ function init() {
 var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/edit#gid=1354196778';
   var query = new google.visualization.Query(url);
   
-    var haku1 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
-    var haku2 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
-    var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
-    var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
-    var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
-    var haku6 = "SELECT " + haku ;
+    //var haku1 = "SELECT " + haku ;
+    //var haku2 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    //var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    //var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
 
-  str = haku6;
+if (menossa == 0) 
+str = "SELECT " + haku ;
+
+if (menossa == 1)
+str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+
+if (menossa == 2)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+
+if (menossa == 3)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+
+if (menossa == 4)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+
   str = str.replace(/"+/g, "");
+  //setTimeout(() => {
   query.setQuery(str);
   query.send(processSheetsData);
+  //}, 1200);
 }
 
 function changelimit(selection) {
@@ -528,35 +533,15 @@ var data = response.getDataTable();
   
 var tiedot=[];
 tiedot.push(haku);
+
 var tieto = "";
   
 var columns = data.getNumberOfColumns();
 var rows = data.getNumberOfRows();
 
-//console.log(columns);
-//console.log(rows);
-
-
-//riveja = columns;
-//risa = columns;
-
-//console.log("Rivejä",rivinimike.length);
-//console.log("Sarakkeita",saranimike.length);
-
 riveja = rivinimike.length;
 sarakkeita = saranimike.length;
-//risa = saranimike.length;
 
-
-/*
-if(risa % 2 == 0) {
-risa=risa/2;
-} else {
-risa=(risa+1)/2;
-}
-*/
-
-//console.log(data);
 for (var r = 0; r < rows; r++) {
      var row = [];
      for (var c = 0; c < columns; c++) {
@@ -566,26 +551,22 @@ for (var r = 0; r < rows; r++) {
     tieto = row.join();
     tiedot.push(tieto); 
 }
-//console.log(tiedot);
+
 diagram.get_data31(tiedot,lista);
-  }
+
+}
+  
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,lista){
-//	console.log(tiedot);
-//	console.log(_risa);
-//	console.log(_riveja);
-//	console.log(lista);
 var listaus = [];	
 var tietoja= tiedot;	
 var rotsi = [];	
 var rivinumero = 0;
 var sarakenumero = 0;
 var nimike = [];
-
-
 var risa = sarakkeita;
 var sari = riveja-risa;
 var _combine_input = function () {
@@ -659,7 +640,6 @@ var arr = [];
 
 var names = Array.matrix(500);
 
-
     var _result_data = {};
     for (var _i = 0; _i < _attr_list.length; _i++) {
          var _x_attr = _attr_list[_i];
@@ -695,13 +675,10 @@ oikea = [];
 
 const myJSON = _result_data[_x_attr][_y_attr];
 names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
-//console.log(names[sarakenumero][rivinumero]);
-//console.log(oikea);
 oikea.push(myJSON.r.toFixed(3));
 items[_i,_j]=_result_data[_x_attr][_y_attr];
     }
   }
-  
 
 //console.log("Rivejä",riveja);
 //console.log("Sarakkeita",sarakkeita);
@@ -719,7 +696,6 @@ for (var _r = 0; _r < riveja; _r++) {
 rotsi.push([nimike[_r]]);
 }
 
-
 for (var _s = riveja; _s < sarakkeita+riveja; _s++) { 
 sotsi.push([merkki,nimike[_s]]);
 }
@@ -734,10 +710,8 @@ heat1=[];
 }
 }
 
-
 tiedot=tieto;
 tsekki = 1;
-
 
 diagram.get_data4(rotsi,sotsi,heat10);    
 };
@@ -868,7 +842,6 @@ var _panel = _combine_input();
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
-//	console.log(rotsi, rotsi.length);
 var row_number = rotsi.length;
 var col_number = sotsi.length;
 var minval=parent.minval;
@@ -880,13 +853,19 @@ var konsoli=[];
 var classesNumber = 21,
     cellSize = 12;
     
-d3.selectAll("#heatmap > *").remove(); 
+
+d3.selectAll(lampokartat[menossa] +" > *").remove(); 
+    
+
 //heatmap_display("#heatmap", "RdGy");
 //heatmap_display("#heatmap", "BrBG");
-heatmap_display("#heatmap", "Spectral");
+heatmap_display(lampokartat[menossa], "Spectral");
 function heatmap_display(heatmapId, paletteName) {
 
-    var tooltip = d3.select(heatmapId)
+
+
+
+var tooltip = d3.select(heatmapId)
         .append("div")
         .style("position", "absolute")
         .style("visibility", "hidden");
@@ -896,10 +875,12 @@ function heatmap_display(heatmapId, paletteName) {
     }
 
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
-    var viewerWidth = $(document).width();
-    var viewerHeight = $(document).height();
-    var viewerPosTop = 200;
-    var viewerPosLeft = 100;
+//    var viewerWidth = $(document).width();
+//    var viewerHeight = $(document).height();
+var viewerWidth = 960;
+var viewerHeight = 165;
+    var viewerPosTop = 20;
+    var viewerPosLeft = 150;
     var legendElementWidth = cellSize * 2;
     var colors = colorbrewer[paletteName][classesNumber];
     var svg;
@@ -907,14 +888,16 @@ function heatmap_display(heatmapId, paletteName) {
     var colorScale = d3.scale.quantize()
         .domain([-1.0, 1.0])
         .range(colors);
-        
+
 svg = d3.select(heatmapId).append("svg")
-        .attr("width", viewerWidth)
-        .attr("height", viewerHeight)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+     //   .attr("width", viewerWidth)
+     //   .attr("height", viewerHeight)
 	    .call(zoomListener)
         .append("g")
         .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
-
+console.log(heatmapId);
 svg.append('defs')
         .append('pattern')
         .attr('id', 'diagonalHatch')
@@ -928,7 +911,7 @@ svg.append('defs')
 
         var rowSortOrder = false;
         var colSortOrder = false;
-        
+  
         var rowLabels = svg.append("g")
             .attr("class", "rowLabels")
             .selectAll(".rowLabel")
@@ -1001,7 +984,7 @@ svg.append('defs')
                 return d.idx;
             })
             .attr("class", "row");
-            
+        
         var j = 0;
         var heatMap = row.selectAll(".cell")
             .data(function(d) {
@@ -1035,13 +1018,9 @@ svg.append('defs')
             .on('mouseover', function(d, i, j) {
                 d3.select('#colLabel_' + i).classed("hover", true);
                 d3.select('#rowLabel_' + j).classed("hover", true);
-                //console.log(Number(d).toFixed(3));
-                
-                
-                //console.log(selitteet[saramuuttujat.indexOf(rotsi[j].toString())]);
-                //console.log(selitteet[saramuuttujat.indexOf(sotsi[i].toString())]);
+                d3.select(this).style("stroke", "#000");
                 if (d != null) {
-                    tooltip.html('<div class="heatmap_tooltip">' + String(Number(d).toFixed(3)) + '<br>' + rotsi[j]+'-'+selitteet[saramuuttujat.indexOf(rotsi[j].toString())] + '<br>' + sotsi[i]+'-'+selitteet[saramuuttujat.indexOf(sotsi[i].toString())]) + '</div>';
+                    tooltip.html('<div class="heatmap_tooltip">' + String(Number(d).toFixed(3)) + '<br>' + sotsi[i]+'-'+selitteet[saramuuttujat.indexOf(sotsi[i].toString())] + '<br>' + rotsi[j]+'-'+selitteet[saramuuttujat.indexOf(rotsi[j].toString())]) + '</div>';
                     tooltip.style("visibility", "visible");
                 } else
                     tooltip.style("visibility", "hidden");
@@ -1049,6 +1028,7 @@ svg.append('defs')
             .on('mouseout', function(d, i, j) {
                 d3.select('#colLabel_' + i).classed("hover", false);
                 d3.select('#rowLabel_' + j).classed("hover", false);
+                d3.select(this).style("stroke", "none");
                 tooltip.style("visibility", "hidden");
             })
             .on("mousemove", function(d, i) {
@@ -1056,7 +1036,8 @@ svg.append('defs')
             })
             .on('click', function() {
             });
-             
+
+/*            
         var legend = svg.append("g")
             .attr("class", "legend")
             .attr("transform", "translate(0,-300)")
@@ -1086,8 +1067,24 @@ svg.append('defs')
                 return legendElementWidth * i;
             })
             .attr("y", viewerPosTop + cellSize);
+            
+            
+            
+        // tooltip on mouseover
+      .on("mouseover", function(d) {d3.selectAll("."+d.code)
+      .attr('opacity', .2);})
+      
+      
+      d3.select("#dataset").on("change", function () {
+    load(this.value);
+  });
+      
+
+*/  
 
         function sortByValues(rORc, i, sortOrder) {
+        for ( x = 0; x < lampokartat.length; x++ ) {
+        svg = d3.select(lampokartat[x])
             var t = svg.transition().duration(1000);
             var values = [];
             var sorted;
@@ -1139,102 +1136,20 @@ svg.append('defs')
                     });
             }
         }
-
-        d3.select("#order").on("change", function() {
-	    var newOrder = d3.select("#order").property("value");	
-            changeOrder(newOrder, heatmapId);
-        });
-
-        d3.select("#palette")
-            .on("keyup", function() {
-		var newPalette = d3.select("#palette").property("value");
-		if (newPalette != null)						
-                	changePalette(newPalette, heatmapId);
-            })
-            .on("change", function() {
-		var newPalette = d3.select("#palette").property("value");
-                changePalette(newPalette, heatmapId);
-            });
+        }
+        
 }
 
-function changeOrder(newOrder, heatmapId) {
-    var svg = d3.select(heatmapId);
-    var t = svg.transition().duration(1000);
-    if (newOrder == "sortinit_col") { 
-        t.selectAll(".cell")
-            .attr("x", function(d) {
-                var col = parseInt(d3.select(this).attr("col"));
-                return col * cellSize;
-            });
-        t.selectAll(".colLabel")
-            .attr("y", function(d, i) {
-                return i * cellSize;
-            })
-            .attr("transform", function(d, i) {
-                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
-            });
-    } else if (newOrder == "sortinit_row") { 
-        t.selectAll(".cell")
-            .attr("y", function(d) {
-                var row = parseInt(d3.select(this).attr("row"));
-                return row * cellSize;
-            });
-        t.selectAll(".rowLabel")
-            .attr("y", function(d, i) {
-                return i * cellSize;
-            })
-            .attr("transform", function(d, i) {
-                return "translate(-3," + cellSize / 1.5 + ")";
-            });
-    } else if (newOrder == "sortinit_col_row") { 
-        t.selectAll(".cell")
-            .attr("x", function(d) {
-                var col = parseInt(d3.select(this).attr("col"));
-                return col * cellSize;
-            })
-            .attr("y", function(d) {
-                var row = parseInt(d3.select(this).attr("row"));
-                return row * cellSize;
-            });
-        t.selectAll(".colLabel")
-            .attr("y", function(d, i) {
-                return i * cellSize;
-            })
-            .attr("transform", function(d, i) {
-                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
-            });
-        t.selectAll(".rowLabel")
-            .attr("y", function(d, i) {
-                return i * cellSize;
-            })
-            .attr("transform", function(d, i) {
-                return "translate(-3," + cellSize / 1.5 + ")";
-            });
-    }
+if (menossa < 4) {
+menossa +=1;
+console.log(menossa);
+diagram.get_data3(1,siirto);
+
 }
 
-function changePalette(paletteName, heatmapId) {
-    var colors = colorbrewer[paletteName][classesNumber];
-    var colorScale = d3.scale.quantize()
-        .domain([-1.0, 1.0])
-        .range(colors);
-    var svg = d3.select(heatmapId);
-    var t = svg.transition().duration(500);
-    t.selectAll(".cell")
-        .style("fill", function(d) {
-                if (d != null) return colorScale(d);
-                else return "url(#diagonalHatch)";
-        })
-    t.selectAll(".cellLegend")
-        .style("fill", function(d, i) {
-            return colors[i];
-        });
-}
-	
 	},
-	
 };
-
+/*
 function valinnat(items, mini, maxi) {
 konsoli=[];
 var links =[];
@@ -1255,14 +1170,13 @@ var sitems=items;
 	
 //valinnat(fitems,minval,maxval);
 valinnat(["11"],-0.3,0.3);
+*/
+diagram.render();
 
 $(function() {
-	//var tree = new treefilter($("#my-tree"), {
 	var tree = new treefilter($("#my-tree"), {
 		searcher : $("input#my-search")
 	});
-	//console.log(document.getElementById("my-tree").innerHTML);
-	//console.log(document.getElementById("json").innerHTML);
 });
 
 $.extend($.expr[":"], {
@@ -1273,37 +1187,31 @@ $.extend($.expr[":"], {
 
 var treefilter = function(el, options) {
 	var defaults = {
-		offsetLeft : 20, // left offset for each level
-		searcher : null, // search input field
-		expanded : false, // if true, your list will be show with expanded.
-		expanded : false, // if true, your list will be show with expanded.
-		multiselect : false // multiselect.
+		offsetLeft : 20, 
+		searcher : null, 
+		expanded : false, 
+		expanded : false, 
+		multiselect : false 
 	};
 
-	// Public Variables
 	var plugin = this;
-	var status = []; // save folder status for "var memory"
+	var status = []; 
 
 	plugin.settings = {};
 
-	// Main Function
 	var init = function() {
 		plugin.settings = $.extend({}, defaults, options);
 		plugin.el = el;
 
-		// set class names to tags
 		el.addClass("tf-tree");
 		el.find("li").addClass("tf-child-true");
 		el.find("li").css("padding-left", plugin.settings.offsetLeft);
 		el.find("li div:only-child").parent().removeClass("tf-child-true");
 		el.find("li div:only-child").parent().addClass("tf-child-false");
-
-		// if the list has a checkbox, block event bubbling.
 		el.find("input[type=checkbox]").click(function(e) {
 			e.stopPropagation();
 		});
 
-		// set click event.
 		el.find("li.tf-child-true").children("div").click(function(e) {
 			if (e.metaKey || e.ctrlKey) {
 				if ($(this).parent().hasClass("tf-open")) {
@@ -1315,7 +1223,6 @@ var treefilter = function(el, options) {
 			$(this).parent().toggleClass("tf-open");
 		});
 
-		// toggle effect when multiselect enabled.
 		el.find("li.tf-child-false").click(function() {
 			if (plugin.settings.multiSelect != true) {
 				el.find("li.tf-selected").removeClass("tf-selected");
@@ -1328,7 +1235,6 @@ var treefilter = function(el, options) {
 		}
 	};
 
-	// PUBLIC METHOD
 	plugin.openAll = function() {
 		plugin.el.find("li.tf-child-true").parent().addClass("tf-open");
 	};
@@ -1336,8 +1242,6 @@ var treefilter = function(el, options) {
 		plugin.el.find("li.tf-child-true").parent().removeClass("tf-open");
 	};
 
-	// PRIVATE FUNCTION
-	// fired when type on search input field.
 	var searcher = function() {
 		$(plugin.settings.searcher).keyup(function() {
 			if ($(this).val().length == 0) {
@@ -1357,11 +1261,7 @@ var treefilter = function(el, options) {
 			}
 		});
 	};
-	
-	// save current status of folder 
-	// action : string "in" / "out"
-	// array : array that saves current status
-	// list : el
+
 	var memory = function(action) {
 		if (action == "in") {
 			status = [];
@@ -1378,7 +1278,7 @@ var treefilter = function(el, options) {
 			});
 		}
 	}
-
+	
 	init();
 };
 </script>
