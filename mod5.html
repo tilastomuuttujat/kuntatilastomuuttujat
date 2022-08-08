@@ -244,6 +244,7 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
+var tietue = [];
 var jako = [];
 var piirtoselite = [];
 var viesti1 = [];
@@ -282,7 +283,7 @@ var classesNumber = 21,
     
 var margin = {top: 5, right: 20, bottom: 10, left: 40},
     width = 960 - margin.left - margin.right,
-    height = 155 - margin.left - margin.right; 
+    height = 170 - margin.left - margin.right; 
 
 var diagram = {
 	render: function() {
@@ -388,6 +389,7 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
             values = [];
             menossa = 0;
             hakujono = [];
+            tietue = [];
             diagram.get_data3(0,siirto);
     },
 
@@ -609,6 +611,7 @@ google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,lista){
+	tietue.push(tiedot);
 var listaus = [];	
 var tietoja= tiedot;	
 var rotsi = [];	
@@ -926,8 +929,8 @@ var tooltip = d3.select(heatmapId)
 //    var viewerWidth = $(document).width();
 //    var viewerHeight = $(document).height();
 var viewerWidth = 960;
-var viewerHeight = 125;
-    var viewerPosTop = 20;
+var viewerHeight = 200;
+    var viewerPosTop = 50;
     var viewerPosLeft = 150;
     var legendElementWidth = cellSize * 2;
     var colors = colorbrewer[paletteName][classesNumber];
@@ -962,8 +965,9 @@ svg.append('defs')
         .attr('stroke-width', 1)
         .style("text-anchor", "left")
         .style("font-size", "12px")
-        .text(piirtoselite[6]);
-console.log(piirtoselite[6]);
+        .text(piirtoselite[6]+" "+piirtoselite[menossa+1]+"]");
+/*
+//console.log(piirtoselite[6]+" "+piirtoselite[menossa+1]);
    svg.append("text")
       .attr("x", "-42px")
       .attr("y", "-28")
@@ -972,6 +976,7 @@ console.log(piirtoselite[6]);
       .style("font-size", "12px")
       .text(piirtoselite[menossa+1]);
       //console.log(piirtoselite[menossa]);
+*/ 
         var rowSortOrder = false;
         var colSortOrder = false;
   
@@ -1038,6 +1043,7 @@ console.log(piirtoselite[6]);
                 colSortOrder = !colSortOrder;
                 sortByValues("c", i, colSortOrder);
                 d3.select("#order").property("selectedIndex", 0);
+                console.log(menossa);
             });
 
         var row = svg.selectAll(".row")
@@ -1146,6 +1152,7 @@ console.log(piirtoselite[6]);
 */  
 
         function sortByValues(rORc, i, sortOrder) {
+        //console.log(rORc, i, sortOrder); 
         for ( x = 0; x < lampokartat.length; x++ ) {
         svg = d3.select(lampokartat[x])
             var t = svg.transition().duration(1000);
@@ -1209,7 +1216,7 @@ menossa +=1;
 diagram.get_data3(1,siirto);
 
 }
-
+console.log(tietue);
 	},
 };
 /*
