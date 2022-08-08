@@ -254,7 +254,7 @@ function _subu ($p) {
 }
 
 function _subuprob ($x) {
-	var $p = 0; /* if ($absx > 100) */
+	var $p = 0;
 	var $absx = Math.abs($x);
 
 	if ($absx < 1.9) {
@@ -488,29 +488,13 @@ function precision ($x, sign) {
 }
 
 function precision_string ($x, sign) {
-    //var _min = Math.pow(0.1, sign+1);
     if ($x !== undefined) {
         var _result = $x;
         if (isNaN(_result)) {
             throw "錯誤:" + _result;
             _result = 0;
         }
-        /*
-        if (_result !== 0) {
-            if (typeof(_result) !== "string") {
-                _result = "" + _result;
-            }
 
-            _result = round_to_precision(_result, precision(_result, sign+1));
-        }
-        */
-        
-        //var _i = 2;
-        //if (_result < 0) {
-        //    _i++;
-        //}
-        
-        // 要計算小數點後面幾位
         var _s = Math.pow(10, sign);
         _result = _result*_s;
         _result = Math.round(_result);
@@ -528,10 +512,8 @@ function precision_string ($x, sign) {
         }
         _result = _a + "." + _b;
         
-        //console.log([$x, _result]);
         return _result;
     } else {
-        //console.log(["x", $x]);
         return "0";
     }
 }
