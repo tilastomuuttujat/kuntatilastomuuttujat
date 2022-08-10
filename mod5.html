@@ -413,8 +413,10 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-         table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
+        table += '<li class="child"><div class="toggle"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label><input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label><input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label></div>'
+
+	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
+        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
         }
         check += 1;
       })
