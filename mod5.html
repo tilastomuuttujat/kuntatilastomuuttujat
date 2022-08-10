@@ -402,7 +402,7 @@ function myItems(jsonString){
 		
 		
         //table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
-        table += '<label>' + valeur0 + '</label></div><div class="toggle"><ul class="parent">'
+        table += '<label>' + valeur0 + '</label><ul class="parent"><div class="toggle">'
         }
         ryhma=alaryhma;
         
@@ -426,7 +426,7 @@ function myItems(jsonString){
       })
     }
   )
-  table += '</ul>'
+  table += '</ul></div>'
   return table
 }
 
