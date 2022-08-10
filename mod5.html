@@ -415,9 +415,9 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-        table += '<li class="child"><input name="switch" id=r"' + merkki + '" type="radio" /><label for="one" class="switch__label">r</label>'
-	table += '<input name="switch" id=o"' + merkki + '" type="radio" checked/><label for="two" class="switch__label">-</label>'
-	table += '<input name="switch" id=c"' + merkki + '" type="radio" /><label for="three" class="switch__label" >s</label>'
+        table += '<li class="child"><input name="switch" id=1"' + merkki + '" type="radio" /><label for=1"' + merkki + '" class="switch__label">r</label>'
+	table += '<input name="switch" id=0"' + merkki + '" type="radio" checked/><label for=0"' + merkki + '" class="switch__label">-</label>'
+	table += '<input name="switch" id=2"' + merkki + '" type="radio" /><label for=2"' + merkki + '" class="switch__label" >s</label>'
 
 	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
