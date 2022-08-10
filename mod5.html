@@ -205,6 +205,58 @@ text.hover {
   background: #727e87;
   margin: 5px 0px;
 }
+.toggle input {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+.toggle input + label {
+  margin: 0;
+  padding: 0.75rem 2rem;
+  position: relative;
+  display: inline-block;
+  border: solid 1px #DDD;
+  background-color: #FFF;
+  font-size: 1rem;
+  line-height: 60%;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+.toggle input:checked + label {
+  background-color: #4B9DEA;
+  color: #FFF;
+  box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
+  border-color: rgba(228,229,234,0.941);
+  z-index: 1;
+}
+.toggle input {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+.toggle input + label {
+  margin: 0;
+  padding: 0.2rem 1rem;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  border: solid 1px #DDD;
+  background-color: #FFF;
+  font-size: 1rem;
+  line-height: 140%;
+  font-weight: 600;
+  text-align: center;
+}
+.toggle input:checked + label {
+  background-color: #4B9DEA;
+  color: #FFF;
+  box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
+  border-color: #4B9DEA;
+  z-index: 1;
+}
 </style>
 </head>
 <body>
@@ -219,6 +271,21 @@ text.hover {
 		<ul id="my-tree">
 		</ul>
   </div>
+    <div class="toggle">
+        <input name="switch" id="one" type="radio" />
+        <label for="one" class="switch__label">r</label>
+        <input name="switch" id="two" type="radio" checked/>
+        <label for="two" class="switch__label">-</label>
+        <input name="switch" id="three" type="radio" />
+        <label for="three" class="switch__label" >s</label>
+	</div>
+	<div class="toggle">
+		<input type="radio" name="sizeBy" value="rows" id="rows" checked="checked" onClick="javascipt:taytto=1;" />
+		<label for="rows">Rivit</label>
+		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="javascipt:taytto=2;"/>
+		<label for="cols">Sarakkeet</label>
+	</div>
+
 </div>
 <div id="sidebar1">
   <div class="toggle-btn" onclick="toggleSidebar1()">
@@ -244,12 +311,13 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
+var taytto = 1;
 var tietue = [];
 var jako = [];
-var piirtoselite = [];
+var piirtoselite = ["AAF","Kaikki","Itä- ja Pohjois-Suomi","Länsi-Suomi","Etelä-Suomi","Uusimaa ja Helsinki","[Suuralue"];
 var viesti1 = [];
 var hakujono = [];
-var siirto = [];
+var siirto = ["ML","MM","MO","MP","MQ","MR","NE","NF","SF","SG","SH","SI","SJ","SK","SL","SM","SN","SO","SP","SQ","SR","SS","ST","SU","SV","SW","SX","SY","SZ","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","TL","TM","TN","TO","TP","TQ","TR","UY","UZ","VA","VB","VC","VD","VE","VF","VG","VH","VI","VJ","VK","VL","VM","VN","VO","VP","VQ","GX","GY","GZ","HA","HB","HC","HD","HE","HF","HG","HH","HI","HJ","HK","HL","HM","HN","HO","HP","HQ","HR","HS","HT","HU","HV","HW","HX","HY","HZ","IA","IB","IC","ID","IE","IF","IG","IH","II","IJ","IK","IL","IM","IN","IO","IP","IQ","IR","IS","IT","IU","IV","IW","IX","IY","OP","OQ"];
 var piirto = [];
 var menossa = 0;
 var riveja = 0;
@@ -287,8 +355,10 @@ var margin = {top: 5, right: 20, bottom: 10, left: 40},
 
 var diagram = {
 	render: function() {
-		diagram.get_data1();
+	    diagram.get_data3(0,siirto);
 		diagram.get_data2();
+		diagram.get_data1();
+		
 	},
     get_data1: function() {
 var merkki = "";
@@ -367,12 +437,14 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
             checkboxes.forEach((checkbox) => {
             values.push(checkbox.value);
             });
+            //console.log(values);
             diagram.muuttuja();
             }, 200);
     },
 	
-	muuttuja: function () {
+	muuttuja: function () {	
             var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
+            console.log(taytto);
             var values = [];
             rivinimike = [];
             saranimike = [];
@@ -386,6 +458,7 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
                 }
             });
             siirto = values;
+            //console.log(siirto);
             values = [];
             menossa = 0;
             hakujono = [];
@@ -415,7 +488,6 @@ console.log(piirtoselite[3]);
 console.log(piirtoselite[4]);
 console.log(piirtoselite[5]);
 console.log(piirtoselite[6]);
-
 
 //console.log(jako[0]);
             //console.log(array);
@@ -611,6 +683,8 @@ google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,lista){
+	//console.log(tiedot);
+	console.log(lista);
 	tietue.push(tiedot);
 var listaus = [];	
 var tietoja= tiedot;	
@@ -893,6 +967,7 @@ var _panel = _combine_input();
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
+	
 var row_number = rotsi.length;
 var col_number = sotsi.length;
 var minval=parent.minval;
