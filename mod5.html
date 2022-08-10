@@ -393,7 +393,13 @@ function myItems(jsonString){
         alaryhma=valeur0;
         if (ryhma!= alaryhma) {
         if (ryhma!= "alku") {table += '</ul></li>'}
-        table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
+		
+        table += '<li class="has"><div class="toggle"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label><input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label><input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label></div>'
+	
+	//table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
+		
+		
+        //table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
         table += '<label>' + valeur0 + '</label><ul class="parent">'
         }
         ryhma=alaryhma;
