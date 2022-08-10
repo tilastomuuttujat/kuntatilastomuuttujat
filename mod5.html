@@ -394,15 +394,15 @@ function myItems(jsonString){
         if (ryhma!= alaryhma) {
         if (ryhma!= "alku") {table += '</ul></li>'}
 		
-        table += '<li class="has"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label>'
-	table += '<input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label>'
-	table += '<input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label>'
+        table += '<li class="has"><input name="switch" id="one" type="checkbox" /><label for="one" class="switch__label">r</label>'
+	table += '<input name="switch" id="two" type="checkbox" checked/><label for="two" class="switch__label">-</label>'
+	table += '<input name="switch" id="three" type="checkbox" /><label for="three" class="switch__label" >s</label>'
 	
 	//table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
 		
 		
         //table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
-        table += '<label>' + valeur0 + '</label><ul class="parent"><div class="toggle">'
+        table += '<label>' + valeur0 + '</label><ul class="parent">
         }
         ryhma=alaryhma;
         
@@ -415,12 +415,12 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-        table += '<li class="child"><input name="switch" id=1"' + merkki + '" type="radio" /><label for=1"' + merkki + '" class="switch__label">r</label>'
-	table += '<input name="switch" id=0"' + merkki + '" type="radio" checked/><label for=0"' + merkki + '" class="switch__label">-</label>'
-	table += '<input name="switch" id=2"' + merkki + '" type="radio" /><label for=2"' + merkki + '" class="switch__label" >s</label>'
+        table += '<li class="child"><input name="switch" id=1"' + merkki + '" type="checkbox"/><label for=1"' + merkki + '" class="switch__label">r</label>'
+	table += '<input name="switch" id=0"' + merkki + '" type="checkbox" checked/><label for=0"' + merkki + '" class="switch__label">-</label>'
+	table += '<input name="switch" id=2"' + merkki + '" type="checkbox" /><label for=2"' + merkki + '" class="switch__label" >s</label>'
 
 	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li></div>'
+        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>
         }
         check += 1;
       })
