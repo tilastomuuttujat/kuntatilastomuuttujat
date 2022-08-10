@@ -402,7 +402,7 @@ function myItems(jsonString){
 		
 		
         //table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
-        table += '<label>' + valeur0 + '</label><ul class="parent">'
+        table += '<label>' + valeur0 + '</label></div><div class="toggle"><ul class="parent">'
         }
         ryhma=alaryhma;
         
@@ -420,13 +420,13 @@ function myItems(jsonString){
 	table += '<input name="switch" id=2"' + merkki + '" type="radio" /><label for=2"' + merkki + '" class="switch__label" >s</label>'
 
 	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
+        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li></div>'
         }
         check += 1;
       })
     }
   )
-  table += '</ul></div>'
+  table += '</ul>'
   return table
 }
 
