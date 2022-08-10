@@ -394,7 +394,9 @@ function myItems(jsonString){
         if (ryhma!= alaryhma) {
         if (ryhma!= "alku") {table += '</ul></li>'}
 		
-        table += '<li class="has"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label><input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label><input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label>'
+        table += '<li class="has"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label>'
+	table += '<input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label>'
+	table += '<input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label>'
 	
 	//table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
 		
@@ -413,7 +415,9 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-        table += '<li class="child"><input name="switch" id="one" type="radio" /><label for="one" class="switch__label">r</label><input name="switch" id="two" type="radio" checked/><label for="two" class="switch__label">-</label><input name="switch" id="three" type="radio" /><label for="three" class="switch__label" >s</label>'
+        table += '<li class="child"><input name="switch" id=r"' + merkki + '" type="radio" /><label for="one" class="switch__label">r</label>'
+	table += '<input name="switch" id=o"' + merkki + '" type="radio" checked/><label for="two" class="switch__label">-</label>'
+	table += '<input name="switch" id=c"' + merkki + '" type="radio" /><label for="three" class="switch__label" >s</label>'
 
 	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
