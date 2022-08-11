@@ -1,42 +1,35 @@
+<html>
+<body>
+<div id="outPut"></div>
 <script>
-/**
- *  Sorts all arrays together with the first. Pass either a list of arrays, or a map. Any key is accepted.
- *     Array|Object arrays               [sortableArray, ...otherArrays]; {sortableArray: [], secondaryArray: [], ...}
- *     Function comparator(?,?) -> int   optional compareFunction, compatible with Array.sort(compareFunction) 
- */
-function sortArrays(arrays, comparator = (a, b) => (a < b) ? -1 : (a > b) ? 1 : 0) {
-  let arrayKeys = Object.keys(arrays);
-  let sortableArray = Object.values(arrays)[0];
-  let indexes = Object.keys(sortableArray);
-  let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
-
-  let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
-
-  if (Array.isArray(arrays)) {
-    return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
-  } else {
-    let sortedArrays = {};
-    arrayKeys.forEach((arrayKey) => {
-      sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
-    });
-    return sortedArrays;
-  }
-}
-
-
-
 let people = ["john", "benny", "sally", "george"];
 let peopleIds = [10, 20, 30, 40];
 
 sortArrays([people, peopleIds]);
 //[["benny", "george", "john", "sally"], [20, 40, 10, 30]] // output
-
+console.log(sortArrays([people, peopleIds]));
 sortArrays({people, peopleIds});
+console.log(sortArrays({people, peopleIds}));
 //{"people": ["benny", "george", "john", "sally"], "peopleIds": [20, 40, 10, 30]} // output
 
+function sortArrays(arrays, comparator = (a, b) => (a < b) ? -1 : (a > b) ? 1 : 0) {
+    let arrayKeys = Object.keys(arrays);
+    let sortableArray = Object.values(arrays)[0];
+    let indexes = Object.keys(sortableArray);
+    let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
 
-console.log(sortArrays([people, peopleIds]););
+    let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
 
-console.log(sortArrays({people, peopleIds}););
-
+    if (Array.isArray(arrays)) {
+        return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
+    } else {
+        let sortedArrays = {};
+        arrayKeys.forEach((arrayKey) => {
+            sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
+        });
+        return sortedArrays;
+    }
+}
 </script>
+</body>
+</html>
