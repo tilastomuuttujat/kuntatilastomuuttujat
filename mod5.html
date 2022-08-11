@@ -271,18 +271,10 @@ text.hover {
 		<ul id="my-tree">
 		</ul>
   </div>
-    <div class="toggle">
-        <input name="switch" id="one" type="radio" />
-        <label for="one" class="switch__label">r</label>
-        <input name="switch" id="two" type="radio" checked/>
-        <label for="two" class="switch__label">-</label>
-        <input name="switch" id="three" type="radio" />
-        <label for="three" class="switch__label" >s</label>
-	</div>
 	<div class="toggle">
 		<input type="radio" name="sizeBy" value="rows" id="rows" checked="checked" onClick="diagram.get_data3(0,siirto);" />
 		<label for="rows">Rivit</label>
-		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="javascipt:menossa=0;"/>
+		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="console.log(menossa);console.log(siirto);"/>
 		<label for="cols">Sarakkeet</label>
 	</div>
 
