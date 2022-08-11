@@ -280,9 +280,9 @@ text.hover {
         <label for="three" class="switch__label" >s</label>
 	</div>
 	<div class="toggle">
-		<input type="radio" name="sizeBy" value="rows" id="rows" checked="checked" onClick="javascipt:taytto=1;" />
+		<input type="radio" name="sizeBy" value="rows" id="rows" checked="checked" onClick="diagram.get_data3(0,siirto);" />
 		<label for="rows">Rivit</label>
-		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="javascipt:taytto=2;"/>
+		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="javascipt:menossa=0;"/>
 		<label for="cols">Sarakkeet</label>
 	</div>
 
@@ -311,6 +311,7 @@ document.getElementById("sidebar").classList.toggle('active');
 function toggleSidebar1() {
 document.getElementById("sidebar1").classList.toggle('active');
 }
+var jonossa = 0;
 var taytto = 1;
 var tietue = [];
 var jako = [];
@@ -355,7 +356,7 @@ var margin = {top: 5, right: 20, bottom: 10, left: 40},
 
 var diagram = {
 	render: function() {
-	    diagram.get_data3(0,siirto);
+	    //diagram.get_data3(0,siirto);
 		diagram.get_data2();
 		diagram.get_data1();
 		
@@ -376,7 +377,7 @@ fetch(url)
 function myItems(jsonString){
   var json = JSON.parse(jsonString);
   json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
-  var table = '<div class="toggle"><ul id="my-tree" class="tree">'
+  var table = '<ul id="my-tree" class="tree">'
   var rivinumero = 0;
   var saranumero = 0;
   rivinimike = [];
@@ -393,15 +394,7 @@ function myItems(jsonString){
         alaryhma=valeur0;
         if (ryhma!= alaryhma) {
         if (ryhma!= "alku") {table += '</ul></li>'}
-		
-        table += '<li class="has"><input name="switch" id="one" type="checkbox" /><label for="one" class="switch__label">r</label>'
-	table += '<input name="switch" id="two" type="checkbox" checked/><label for="two" class="switch__label">-</label>'
-	table += '<input name="switch" id="three" type="checkbox" /><label for="three" class="switch__label" >s</label>'
-	
-	//table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
-		
-		
-        //table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
+        table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
         table += '<label>' + valeur0 + '</label><ul class="parent">'
         }
         ryhma=alaryhma;
@@ -415,18 +408,14 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-        table += '<li class="child"><input name="switch" id=1"' + merkki + '" type="checkbox"/><label for=1"' + merkki + '" class="switch__label">r</label>'
-	table += '<input name="switch" id=0"' + merkki + '" type="checkbox" checked/><label for=0"' + merkki + '" class="switch__label">-</label>'
-	table += '<input name="switch" id=2"' + merkki + '" type="checkbox" /><label for=2"' + merkki + '" class="switch__label" >s</label>'
-
-	//table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
-        table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>
+         table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
+         table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
         }
         check += 1;
       })
     }
   )
-  table += '</ul></div>'
+  table += '</ul>'
   return table
 }
 
@@ -475,7 +464,8 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
             menossa = 0;
             hakujono = [];
             tietue = [];
-            diagram.get_data3(0,siirto);
+            console.log(siirto);
+            //diagram.get_data3(0,siirto);
     },
 
 	muuttuja0: function () {
@@ -494,13 +484,14 @@ piirtoselite[3] = jako[4];
 piirtoselite[4] = jako[6];
 piirtoselite[5] = jako[8];
 piirtoselite[6] = jako[0];
+/*
 console.log(piirtoselite[1]);
 console.log(piirtoselite[2]);
 console.log(piirtoselite[3]);
 console.log(piirtoselite[4]);
 console.log(piirtoselite[5]);
 console.log(piirtoselite[6]);
-
+*/
 //console.log(jako[0]);
             //console.log(array);
             //piirtoselite = piirto.split(",");
@@ -508,7 +499,8 @@ console.log(piirtoselite[6]);
             values1 = [];
             menossa = 0;
             hakujono = [];
-            diagram.get_data3(1,piirto);
+            console.log(piirto);
+            //diagram.get_data3(1,piirto);
     },
 
     get_data2: function() {
@@ -695,8 +687,9 @@ google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,lista){
+	console.log(tiedot);
 	//console.log(tiedot);
-	console.log(lista);
+console.log(lista);
 	tietue.push(tiedot);
 var listaus = [];	
 var tietoja= tiedot;	
@@ -786,7 +779,7 @@ rivinumero = -1;
 nimike[_i]=_x_attr;
 tieto.push(_x_attr,oikea);
 oikea = [];
-    
+
     var _ary1 = _data[_x_attr];
     for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
          var _y_attr = _attr_list[_j];
@@ -799,7 +792,7 @@ oikea = [];
         _result_data[_x_attr][_y_attr] = null;
       }
     }
-    
+
     for (var _j = _i + 1; _j < _attr_list.length; _j++) {
       var _y_attr = _attr_list[_j];
       rivinumero += 1; 
@@ -979,7 +972,6 @@ var _panel = _combine_input();
 	},
 	
 	get_data4: function(rotsi,sotsi,risa){
-	
 var row_number = rotsi.length;
 var col_number = sotsi.length;
 var minval=parent.minval;
@@ -1035,7 +1027,7 @@ svg = d3.select(heatmapId).append("svg")
 	    .call(zoomListener)
         .append("g")
         .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
-console.log(heatmapId);
+//console.log(heatmapId);
 svg.append('defs')
         .append('pattern')
         .attr('id', 'diagonalHatch')
@@ -1300,10 +1292,13 @@ svg.append('defs')
 if (menossa < 4) {
 menossa +=1;
 //console.log(menossa);
-diagram.get_data3(1,siirto);
+//setTimeout(diagram.get_data3(1,siirto), 6000); 
+
+
+//diagram.get_data3(1,siirto);
 
 }
-console.log(tietue);
+//console.log(tietue);
 	},
 };
 /*
