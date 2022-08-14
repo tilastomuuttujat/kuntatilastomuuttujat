@@ -369,8 +369,8 @@ body {
 </style>
 </head>
 <body>
-	<div class="toggle">
-		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="diagram.get_data3(1,siirto);"/>
+	<div id="button" class="toggle">
+		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="diagram.get_data3(1,siirto);document.getElementById('button').style.background='white';"/>
 		<label for="cols">Päivitä visualisointi</label>
 	</div>
 
@@ -519,7 +519,7 @@ function myItems(jsonString){
         alaryhma=valeur0;
         if (ryhma!= alaryhma) {
         if (ryhma!= "alku") {table += '</ul></li>'}
-        table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat()"></input>'
+        table += '<li class="has"><input class="domain" type="checkbox" name="domain" value="' + valeur0 + '" onClick="diagram.muuttujat();"></input>'
         table += '<label>' + ligne.c[8].f + '-' + valeur0 + '</label><ul class="parent">'
         }
         ryhma=alaryhma;
@@ -533,7 +533,7 @@ function myItems(jsonString){
         saramuuttujat.push(merkki);
         saranumerot.push(ligne.c[8].f);
         selitteet.push(valeur0);
-         table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja()"></input>'
+         table += '<li class="child"><input class="subdomain" type="checkbox" name="subdomain" value="' + merkki + '" onClick="diagram.muuttuja();"></input>'
          table += '<label>' + ligne.c[8].f + '-' + merkki + '-' + valeur0 + '</label></li>'
         }
         check += 1;
@@ -584,6 +584,8 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
                 }
             });
             siirto = values;
+            console.log(values);
+            document.getElementById("button").style.background="red";
             //console.log(siirto);
             values = [];
             round = 0;
@@ -600,6 +602,8 @@ $(document).on('change', '.tree input[type=checkbox]', function(e) {
                 values1.push(checkbox.value);
             });
             piirto = values1;
+            console.log(values1);
+            document.getElementById("button").style.background="red";
 var test = "["+piirto+"]";
 jako = test.split(",");
 //console.log(jako[2]);
@@ -681,8 +685,8 @@ function myItems(jsonString){
          
         if (check > 4) {
         viesti2.push([vertailunimike[rivit1-koonti]],[haku1[rivit1-koonti]],[alinselite[rivit1-koonti]],[alin[rivit1-koonti]],[alaselite[rivit1-koonti]],[ala[rivit1-koonti]]);
-console.log(viesti2);
-        table += '<td><input name="subdomain1" type="radio" value="' + viesti2 + '" onClick="diagram.muuttuja0()"></input></td>'
+//console.log(viesti2);
+        table += '<td><input name="subdomain1" type="radio" value="' + viesti2 + '" onClick="diagram.muuttuja0();"></input></td>'
 koonti=1;
         rivit1 +=1;
         viesti2 = [];
