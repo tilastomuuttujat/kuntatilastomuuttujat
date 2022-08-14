@@ -261,10 +261,8 @@ text.hover {
 </head>
 <body>
 	<div class="toggle">
-		<input type="radio" name="sizeBy" value="rows" id="rows" checked="checked" onClick="diagram.get_data3(0,siirto);" />
-		<label for="rows">Näytä vaiheittain</label>
 		<input type="radio" name="sizeBy" value="cols" id="cols" onClick="diagram.get_data3(1,siirto);"/>
-		<label for="cols">Näytä kaikki</label>
+		<label for="cols">Päivitä visualisointi</label>
 	</div>
 
 <div id="sidebar">
@@ -292,8 +290,6 @@ text.hover {
 <div id="heatmap1"></div>
 <div id="heatmap2"></div>
 <div id="heatmap3"></div>
-<div id="heatmap4"></div>
-<div id="heatmap5"></div>
 
   
 </div>
@@ -307,7 +303,7 @@ document.getElementById("sidebar1").classList.toggle('active');
 var piirtoselite = [];
 piirtoselite[1] = "Kaikki";
 piirtoselite[2] = "Itä- ja Pohjois-Suomi";
-piirtoselite[3] = "Länsi-Suomi";
+piirtoselite[3] = "Länsi- ja Etelä-Suomi";
 piirtoselite[4] = "Etelä-Suomi";
 piirtoselite[5] = "Uusimaa ja Helsinki";
 piirtoselite[6] = "B";
@@ -317,7 +313,7 @@ var jonossa = 0;
 var taytto = 1;
 var tietue = [];
 var jako = [];
-var piirtoselite = ["C","Kaikki","Itä- ja Pohjois-Suomi","Länsi-Suomi","Etelä-Suomi","Uusimaa ja Helsinki","[Suuralue"];
+var piirtoselite = ["C","Kaikki","Itä- ja Pohjois-Suomi","Länsi- ja Etelä-Suomi","Etelä-Suomi","Uusimaa ja Helsinki","[Suuralue"];
 var viesti1 = [];
 var hakujono = [];
 var siirto = ["ML","MM","MO","MP","MQ","MR","NE","NF","SF","SG","SH","SI","SJ","SK","SL","SM","SN","SO","SP","SQ","SR","SS","ST","SU","SV","SW","SX","SY","SZ","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","TL","TM","TN","TO","TP","TQ","TR","UY","UZ","VA","VB","VC","VD","VE","VF","VG","VH","VI","VJ","VK","VL","VM","VN","VO","VP","VQ","GX","GY","GZ","HA","HB","HC","HD","HE","HF","HG","HH","HI","HJ","HK","HL","HM","HN","HO","HP","HQ","HR","HS","HT","HU","HV","HW","HX","HY","HZ","IA","IB","IC","ID","IE","IF","IG","IH","II","IJ","IK","IL","IM","IN","IO","IP","IQ","IR","IS","IT","IU","IV","IW","IX","IY","OP","OQ"];
@@ -505,7 +501,7 @@ console.log(piirtoselite[6]);
     },
 
     get_data2: function() {
-viesti1 = [];
+viesti2 = [];
 var rivit1 = 0;
 var haku1 = [];
 var taso1 = [];
@@ -516,7 +512,7 @@ var ylin = [];
 var vertailunimike = [];
 var koonti = 1;
 var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
-var gid = '1445091643';
+var gid = '224550902';
 var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
 fetch(url)
   .then(response => response.text())
@@ -525,7 +521,7 @@ fetch(url)
 function myItems(jsonString){
   var json = JSON.parse(jsonString);
   var table = '<table><tr>'
-  table += '<th>Muuttuja</th><th>Alin</th><th>Ala</th><th>Ylä</th><th>Ylin</th><th>Valitse</th>'
+  table += '<th>Muuttuja</th><th>Alle</th><th>Yli</th><th>Valitse</th>'
   table += '</tr>'
   json.table.rows.forEach(ligne => {
   var check = 0;
@@ -553,27 +549,15 @@ function myItems(jsonString){
         alaselite[rivit1-koonti] = valeur;
         
         if (check == 5)
-        yla[rivit1-koonti] = valeur;
-        
-        if (check == 6)
-        ylaselite[rivit1-koonti] = valeur;
-        
-        if (check == 7)
-        ylin[rivit1-koonti] = valeur;
-        
-        if (check == 8)
-        ylinselite[rivit1-koonti] = valeur;
-        
-        if (check == 9)
         haku1[rivit1-koonti] = valeur;
          
-        if (check > 8) {
-        viesti1.push([vertailunimike[rivit1-koonti]],[haku1[rivit1-koonti]],[ alinselite[rivit1-koonti]],[alin[rivit1-koonti]],[alaselite[rivit1-koonti]],[ala[rivit1-koonti]],[ylaselite[rivit1-koonti]],[yla[rivit1-koonti]],[ylinselite[rivit1-koonti]],[ylin[rivit1-koonti]]);
-
-        table += '<td><input name="subdomain1" type="radio" value="' + viesti1 + '" onClick="diagram.muuttuja0()"></input></td>'
+        if (check > 4) {
+        viesti2.push([vertailunimike[rivit1-koonti]],[haku1[rivit1-koonti]],[alinselite[rivit1-koonti]],[alin[rivit1-koonti]],[alaselite[rivit1-koonti]],[ala[rivit1-koonti]]);
+console.log(viesti2);
+        table += '<td><input name="subdomain1" type="radio" value="' + viesti2 + '" onClick="diagram.muuttuja0()"></input></td>'
 koonti=1;
         rivit1 +=1;
-        viesti1 = [];
+        viesti2 = [];
         }
 
         if(check % 2 == 0) {
@@ -635,7 +619,7 @@ if (round == 1)
 str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
 
 if (round == 2)
-str = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala;
 
 if (round == 3)
 str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
@@ -986,7 +970,7 @@ var fitems=parent.fitems;
 var _data = [];
 var konsoli=[];
 var paletteName = "Spectral";
-var heatmaps = ["#heatmap1","#heatmap2","#heatmap3","#heatmap4","#heatmap5"];
+var heatmaps = ["#heatmap1","#heatmap2","#heatmap3"];
 var heatmapId = heatmaps[round];
 
 
@@ -1366,12 +1350,12 @@ console.log(calu,values);
         
 }
 
-if (round < 5) {
+if (round < 3) {
 round +=1;
 //console.log(menossa);
 //setTimeout(diagram.get_data3(1,siirto), 6000); 
 
-if (sarja == 1)
+if (sarja == 1 && round < 3)
 diagram.get_data3(1,siirto);
 
 }
