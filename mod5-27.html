@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+ul, li		{ list-style: none; }
+body		{background:#fff; padding:0 20px 20px 20px;}
+.container	{font-family:"Open Sans"; font-size:16px; background:#fff;}
+input		{font-size:10px; border:1px solid #ddd; line-height:14px; height:14px;}
+h1			{color:#08f; font-weight:100; font-size:44px;}
+ul#my-tree	{margin:0; padding:10px 5px; color:#666;}
+ul#my-tree	li		{margin:8px 0;}
+.tf-tree,	
+.tf-tree	li	{list-style:none; padding-left:0; line-height:20px;}
+.tf-tree	.tf-child-true	> ul	{display:none; padding-left:0;}
+.tf-tree	.tf-child-true			{cursor:pointer; position:relative;}
+.tf-tree	.tf-child-true:before	{display:block; position:absolute; top:-1px; left:0; content:"▸"; width:20px; height:20px; font-size:11px; line-height:20px; text-align:center; transition:.1s linear;}
+.tf-tree	.tf-child-true.tf-open	> div	{font-weight:bold;}
+.tf-tree	.tf-child-true.tf-open	> ul	{display:block;}
+.tf-tree	.tf-child-true.tf-open:before	{-webkit-transform:rotate(90deg);}
+.tf-tree	.tf-child-false			{cursor:pointer; position:relative;}
+.tf-tree	.tf-child-false:before	{display:block; position:absolute; top:-1px; left:0; content:"•"; width:20px; height:20px; font-size:11px; line-height:20px; text-align:center;}
+.tf-tree	.tf-closed				{font-weight:normal;}
+.tf-tree	.tf-selected			{background:#fff; color:#08f; border-radius:20px;}
+.tf-tree	ul.tf-search-result		{display:block}
+.tf-tree	ul.tf-search-result	> li	{display:none;}
+.tf-tree	ul.tf-search-result	> li.tf-search-result	{display:block;}
+
+.tree ul {
+  display: none;
+  margin: 2px auto;
+  margin-left: 4px;
+  color: #000;
+}
+/*
+.tree ul li {
+height:20px;
+color: #000;
+}
+
+.has > label {
+  color: #000;
+}
+
+.child > label {
+font-size:12px;
+  color: #000;
+}
+*/
+table {border-collapse: collapse;}
+th,td {
+border: 1px solid #ededed;
+font-size:8px;
+}
+
+tr:hover,
+tr:focus-within {
+  background: #f2f3ff;
+  outline: none;
+}
+
+div.inp {
+visibility:hidden;
+z-index:-1000;
+}
+
+.heatmap {
+  font-size: 8px;
+  font-family: monospace;
+}
+
+rect.bordered {
+  stroke: #E6E6E6;
+  stroke-width:2px;   
+}
+
+text.mono {
+  font-size: 8px;
+  font-family: monospace;
+  fill: #000;
+}
+
+text.legendElement {
+  font-size: 10px;
+}
+
+text.hover {
+  font-weight: bold;
+  fill: #d62419;
+  font-background: #000;
+}
+
+.heatmap_tooltip {
+  text-align: center;
+  font-family: monospace;
+  font-size: 10pt;
+  color: #000;
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  border: 4px solid #d62419;
+  padding: 5px;
+  border-radius: 8px ;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  -khtml-border-top-left-radius: 8px;
+  -khtml-border-top-right-radius: 8px;
+  -khtml-border-bottom-right-radius: 8px;
+  -khtml-border-bottom-left-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 400px;
+  z-index:10000;
+  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.heatmap_tooltip:after, .heatmap_tooltip:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.heatmap_tooltip:after {
+  border-color: rgba(236, 240, 241, 0);
+  border-top-color: #FFFFF;
+  border-width: 10px;
+  left: 50%;
+  margin-left: -10px;
+}
+
+.heatmap_tooltip:before {
+  border-color: rgba(44, 62, 80, 0);
+  border-top-color: #d62419;
+  border-width: 16px;
+  left: 50%;
+  margin-left: -16px;
+}
+
+#sidebar {
+  position: fixed;
+  width: 450px;
+  height: 300%;
+  background: rgb(255,255,255);
+  right: -450px;
+  transition: all 250ms linear;
+}
+#sidebar.active {
+  right: 0px;
+}
+#sidebar ul li {
+  /*color: rgba(230, 230, 230, 0.9);*/
+  list-style: none;
+
+}
+#sidebar .toggle-btn {
+  position: absolute;
+  right: 470px;
+  top: 20px;
+}
+#sidebar .toggle-btn span {
+  display: block;
+  width: 30px;
+  height: 5px;
+  background: #727e87;
+  margin: 5px 0px;
+}
+
+.toggle input {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+.toggle input + label {
+  margin: 0;
+  padding: 0.75rem 2rem;
+  position: relative;
+  display: inline-block;
+  border: solid 1px #DDD;
+  background-color: #FFF;
+  font-size: 1rem;
+  line-height: 60%;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+.toggle input:checked + label {
+  background-color: #4B9DEA;
+  color: #FFF;
+  box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
+  border-color: rgba(228,229,234,0.941);
+  z-index: 1;
+}
+.toggle input {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+.toggle input + label {
+  margin: 0;
+  padding: 0.2rem 1rem;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  border: solid 1px #DDD;
+  background-color: #FFF;
+  font-size: 1rem;
+  line-height: 140%;
+  font-weight: 600;
+  text-align: center;
+}
+.toggle input:checked + label {
+  background-color: #4B9DEA;
+  color: #FFF;
+  box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
+  border-color: #4B9DEA;
+  z-index: 1;
+}
+/*
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*/
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+#app {
+  /*width: 100%;
+  height: 100%;*/
+    width: 100vw;
+  height: 100vh;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.resizable-x,
+.resizable-y {
+  display: flex;
+  overflow: hidden;
+}
+
+.resizable-x {
+  height: 100%;
+}
+
+.resizable-y {
+  flex-direction: column;
+}
+
+.resizer-x,
+.resizer-y {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: f3f3f3;
+  padding: 0px;
+}
+
+.resizer-x {
+  z-index: 2;
+  cursor: col-resize;
+}
+.resizer-x::before,
+.resizer-x::after {
+  content: "";
+  width: 2px;
+  height: 16px;
+  margin: 1px;
+  background: #a1a1a1;
+}
+
+.resizer-y {
+  z-index: 1;
+  cursor: row-resize;
+  flex-direction: column;
+}
+.resizer-y::before,
+.resizer-y::after {
+  content: "";
+  width: 16px;
+  height: 2px;
+  margin: 1px;
+  background: #a1a1a1;
+}
+
+.div0,
+.div1,
+.div2 {
+  overflow: hidden;
+}
+
+.div0 {
+  background: #f3f3f3;
+}
+
+.div1 {
+  background: #f3f3f3;
+}
+
+.div2 {
+  background: #f3f3f3;
+}
+
+.div0 p,
+.div1 p,
+.div2 p {
+  font-size: 2rem;
+  margin-left: 1em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div id="button" class="toggle">
+<table>
+<td id="400">	
+<div id="json1"></div>		
+</td>
+
+<td width="360" align="right"><label for="cols">Päivitä visualisointi</label>
+<input type="radio" name="sizeBy" value="cols" id="cols" onClick="diagram.get_data3(1,siirto);document.getElementById('button').style.background='white';"/>
+</td>
+
+
+</table>	    
+</div>
+
+<div id="sidebar">
+  <div class="toggle-btn" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div style="overflow-y: scroll; height:500px;" id="json">
+  <input type="search" id="my-search" placeholder="hae">
+		<ul id="my-tree">
+		</ul>
+  </div>
+
+</div>
+
+<div style="position:absolute;z-index: -1;" class="bar_holder" align = "center">
+
+</div>
+
+<div id="app">
+  <div class="resizable-x">
+    <div class="div0" style="flex: 50%;">
+      <p>Kaikki</p>
+          <div id="heatmap1"></div>
+    </div>
+    <div class="resizer-x"></div>
+    <div class="resizable-y" style="flex: 50%;">
+      <div class="div1" style="flex: 50%;">
+        <p>Vertailuryhmä 1</p>
+        <div id="heatmap2"></div>
+      </div>
+      <div class="resizer-y"></div>
+      <div class="div2" style="flex: 50%;">
+        <p>Vertailuryhmä 2</p>
+        <div id="heatmap3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function toggleSidebar() {
+document.getElementById("sidebar").classList.toggle('active');
+}
+function toggleSidebar1() {
+document.getElementById("sidebar1").classList.toggle('active');
+}
+var tiedot2016 = [];
+var tiedot2020 = [];
+var erotus = [];
+var erotussumma = [];
+
+var piirtoselite = [];
+piirtoselite[1] = "Kaikki";
+piirtoselite[2] = "Itä- ja Pohjois-Suomi";
+piirtoselite[3] = "Länsi- ja Etelä-Suomi";
+piirtoselite[4] = "Etelä-Suomi";
+piirtoselite[5] = "Uusimaa ja Helsinki";
+piirtoselite[6] = "B";
+var sarja = 0;
+var round = 0;
+var jonossa = 0;
+var taytto = 1;
+var tietue = [];
+var jako = [];
+var piirtoselite = ["C","Kaikki","Itä- ja Pohjois-Suomi","Länsi- ja Etelä-Suomi","Etelä-Suomi","Uusimaa ja Helsinki","[Suuralue"];
+var viesti1 = [];
+var hakujono = [];
+var siirto = ["ML","MM","MO","MP","MQ","MR","NE","NF","SF","SG","SH","SI","SJ","SK","SL","SM","SN","SO","SP","SQ","SR","SS","ST","SU","SV","SW","SX","SY","SZ","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","TL","TM","TN","TO","TP","TQ","TR","UY","UZ","VA","VB","VC","VD","VE","VF","VG","VH","VI","VJ","VK","VL","VM","VN","VO","VP","VQ","GX","GY","GZ","HA","HB","HC","HD","HE","HF","HG","HH","HI","HJ","HK","HL","HM","HN","HO","HP","HQ","HR","HS","HT","HU","HV","HW","HX","HY","HZ","IA","IB","IC","ID","IE","IF","IG","IH","II","IJ","IK","IL","IM","IN","IO","IP","IQ","IR","IS","IT","IU","IV","IW","IX","IY","OP","OQ"];
+var piirto = [];
+var riveja = 0;
+var sarakkeita = 0;
+var rivinimike = [];
+var saranimike = [];
+var saramuuttujat = [];
+var saranumerot = [];
+var selitteet = [];
+var raja = "AAF";
+var alin = 2;
+var ala = 4;
+var yla = 6;
+var ylin = 6;
+var suorita = [];
+var alinselite = [];
+var alaselite = [];
+var ylaselite = [];
+var ylinselite = [];
+var vertailunimike = [];
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var _data = [];
+var konsoli=[];
+var colorbrewer = {Spectral: {3: ["#005824","#ffffff","#91003F"],21: ["#005824","#1A693B","#347B53","#4F8D6B","#699F83","#83B09B","#9EC2B3","#B8D4CB","#D2E6E3","#EDF8FB","#FFFFFF","#F1EEF6","#E6D3E1","#DBB9CD","#D19EB9","#C684A4","#BB6990","#B14F7C","#A63467","#9B1A53","#91003F"]}};
+
+var lampokartat = ["#heatmap1","#heatmap2","#heatmap3","#heatmap4","#heatmap5"];
+
+var classesNumber = 21,
+    cellSize = 12;
+    
+var margin = {top: 5, right: 20, bottom: 10, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 800 - margin.left - margin.right; 
+
+var diagram = {
+	render: function() {
+	    //diagram.get_data3(0,siirto);
+		diagram.get_data2();
+		diagram.get_data1();
+		
+	},
+    get_data1: function() {
+var merkki = "";
+var ryhma = "alku";
+var alaryhma = "";
+var rivit = 0;
+var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var gid = '270476198';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("my-tree").innerHTML=myItems(data.slice(47, -2))  
+  );
+
+function myItems(jsonString){
+  var r0,r1,r2,r3,r8,s0,s1,s2,s3,s8;
+  var json = JSON.parse(jsonString);
+  json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
+  var table = '<ul id="my-tree" class="tree">'
+  var rivinumero = 0;
+  var saranumero = 0;
+  rivinimike = [];
+  saranimike = [];
+  selitteet = [];
+  saramuuttujat = [];
+  saranumerot = [];
+  var alku0 = 0;
+  var alku1 = 0;
+  json.table.rows.forEach(ligne => {
+    r0 = ligne.c[0].v; 
+    r1 = ligne.c[1].v;
+    r2 = ligne.c[2].v; 
+    r3 = ligne.c[3].v; 
+    r8 = ligne.c[8].f;
+    if (s0 != r0 && s1 != r1) {
+    if (alku0>0)
+    table += '</ul></li></ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[0].v + '" onClick="diagram.muuttujat()"></input><label>' + ligne.c[8].f + '-' + ligne.c[0].v + '</label><ul>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.muuttujat()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s0 = r0;
+    s1 = r1;
+    }  
+    
+    if (s1 != r1) {
+    table += '</ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.muuttujat()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s1 = r1;
+    }
+    
+    table += '<li><input class="subdomain" type="checkbox" name="subdomain" value="' + r2 + '" onClick="diagram.muuttuja()"></input>'
+    table += '<label>' + ligne.c[8].f + '-' + ligne.c[2].v + '-' + ligne.c[3].v + '</label></li>'                
+         
+    saramuuttujat.push(ligne.c[2].v);
+    saranumerot.push(ligne.c[8].f);
+    selitteet.push(ligne.c[3].v);
+    
+    alku0 = 1;
+    s0 = r0;
+    s1 = r1;
+    });
+    table += '</ul>'
+    document.getElementById("my-tree").innerHTML = table;
+    document.getElementById("my-tree1").innerHTML = table;
+    //return table;
+    }
+    
+$(document).on('click', '.tree label', function(e) {
+  $(this).next('ul').fadeToggle();
+  e.stopPropagation();
+});
+
+$(document).on('change', '.tree input[type=checkbox]', function(e) {
+  $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+  $(this).parentsUntil('.tree').children("input[type='checkbox']").prop('checked', this.checked);
+  e.stopPropagation();
+});
+	},
+	
+	muuttujat: function () {
+            setTimeout(() => {
+            var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
+            var values = [];
+            checkboxes.forEach((checkbox) => {
+            values.push(checkbox.value);
+            });
+            //console.log(values);
+            diagram.muuttuja();
+            }, 200);
+    },
+	
+	muuttuja: function () {	
+            var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
+            var values = [];
+            rivinimike = [];
+            saranimike = [];
+            var hakemisto = 0;
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.value);
+                if (saranumerot[saramuuttujat.indexOf(checkbox.value)] < 2) {
+                rivinimike.push(checkbox.value);
+                } else {
+                saranimike.push(checkbox.value);
+                }
+            });
+            siirto = values;
+            console.log(values);
+            document.getElementById("button").style.background="red";
+            values = [];
+            round = 0;
+            hakujono = [];
+            tietue = [];
+
+    },
+
+	muuttuja0: function () {
+		suorita = document.getElementById("vertaa").value;
+	console.log(suorita);
+            var checkboxes = document.querySelectorAll('input[name="subdomain1"]:checked');
+            var values1 = [];
+            /*
+            checkboxes.forEach((checkbox) => {
+                values1.push(checkbox.value);
+            });
+            piirto = values1;
+            console.log(values1);
+            */
+            document.getElementById("button").style.background="red";
+var test = "["+suorita+"]";
+jako = test.split(",");
+
+console.log(jako[2]);
+piirtoselite[1] = "Kaikki";
+piirtoselite[2] = jako[2];
+piirtoselite[3] = jako[4];
+piirtoselite[4] = jako[6];
+piirtoselite[5] = jako[8];
+piirtoselite[6] = jako[0];
+
+            values1 = [];
+            round = 0;
+            hakujono = [];
+
+    },
+
+    get_data2: function() {
+viesti2 = [];
+var rivit1 = 0;
+var haku1 = [];
+var taso1 = [];
+var alin = [];
+var ala = [];
+var yla = [];
+var ylin = [];
+var vertailunimike = [];
+var koonti = 1;
+var id = '1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y';
+var gid = '224550902';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json1").innerHTML=myItems(data.slice(47, -2))  
+  );
+function myItems(jsonString){
+var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+
+  var table = '<div class="custom-select" style="width:600px;"><select id="vertaa" onChange="diagram.muuttuja0()">'
+  var laskuri = 0;
+  json.table.rows.forEach(ligne => {
+  
+  
+  
+    r0 = ligne.c[0].v; 
+    r1 = ligne.c[1].v;
+    r2 = ligne.c[2].v; 
+    r3 = ligne.c[3].v; 
+    r4 = ligne.c[4].v; 
+    r5 = ligne.c[5].v; 
+
+    viesti2.push(r0,r1,r2,r3,r4,r5);
+
+  table += '<option value="' + viesti2 + '">' + r0 + '</option>'
+  viesti2 = [];
+
+laskuri += 1;
+    });
+  taso1=table;
+  table += '</select></div>'
+  return table
+}
+	},
+	
+	get_data3: function(laji,valu){
+	sarja=laji;
+	laji = 0;
+	//console.log(laji,valu);
+var lista = valu.toString();
+sarakkeita = 0;
+riveja = 0;
+var risa = 0;
+var sari = 0;
+var hakuehdot = ["haku1","haku2","haku3","haku4","haku5"];
+
+var hakulista = rivinimike.toString() + "," + saranimike.toString();
+
+if (laji == 0) {
+	haku = valu.toString();
+	lista = valu.toString();
+	} else {
+	raja = valu.toString();
+	var myArray = raja.split(",");
+	raja = myArray[0];
+	alin = myArray[1];
+	ala = myArray[2];
+	yla = myArray[3];
+	ylin = myArray[4];
+}
+
+function init() {
+var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/gviz/tq?sheet=2016';
+//var url = 'https://docs.google.com/spreadsheets/d/1GFWxl2s15OmK8Ll44-b8q5Z2GtIWseENY6xf_y8BTNo/edit#gid=544988871';
+var query = new google.visualization.Query(url);
+  
+    //var haku1 = "SELECT " + haku ;
+    //var haku2 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    //var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    //var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
+
+//if (round == 0) 
+str = "SELECT " + haku ;
+/*
+if (round == 1)
+str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+
+if (round == 2)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala;
+
+if (round == 3)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+
+if (round == 4)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+*/
+
+  str = str.replace(/"+/g, "");
+  
+  //setTimeout(() => {
+  query.setQuery(str);
+  query.send(processSheetsData);
+  //}, 1200);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+var array = [];
+var activities = [];
+var data = response.getDataTable();
+  
+var tiedot=[];
+tiedot.push(haku);
+console.log(tiedot);
+var tieto = "";
+  
+var columns = data.getNumberOfColumns();
+var rows = data.getNumberOfRows();
+
+riveja = rivinimike.length;
+sarakkeita = saranimike.length;
+
+for (var r = 0; r < rows; r++) {
+     var row = [];
+     for (var c = 0; c < columns; c++) {
+      row.push(data.getFormattedValue(r, c));
+      activities[r,c] = data.getFormattedValue(r, c);
+    }
+    tieto = row.join();
+    tiedot.push(tieto); 
+}
+console.log(tiedot);
+tiedot2016=tiedot;
+
+
+
+
+//diagram.get_data31(tiedot,lista);
+diagram.get_data3a(1,siirto)
+}
+  
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+		get_data3a: function(laji,valu){
+	sarja=laji;
+	laji = 0;
+	//console.log(laji,valu);
+var lista = valu.toString();
+sarakkeita = 0;
+riveja = 0;
+var risa = 0;
+var sari = 0;
+var hakuehdot = ["haku1","haku2","haku3","haku4","haku5"];
+
+var hakulista = rivinimike.toString() + "," + saranimike.toString();
+
+if (laji == 0) {
+	haku = valu.toString();
+	lista = valu.toString();
+	} else {
+	raja = valu.toString();
+	var myArray = raja.split(",");
+	raja = myArray[0];
+	alin = myArray[1];
+	ala = myArray[2];
+	yla = myArray[3];
+	ylin = myArray[4];
+}
+
+function init() {
+var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/gviz/tq?sheet=2020';
+//var url = 'https://docs.google.com/spreadsheets/d/1cS4D1hVq4jDDVX94DhBj1a6BxeRXvxy_97qbicGPTr0/edit#gid=631079934';
+var query = new google.visualization.Query(url);
+  
+    //var haku1 = "SELECT " + haku ;
+    //var haku2 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    //var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    //var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
+
+if (round == 0) 
+str = "SELECT " + haku ;
+
+if (round == 1)
+str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+
+if (round == 2)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala;
+
+if (round == 3)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+
+if (round == 4)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+
+  str = str.replace(/"+/g, "");
+  query.setQuery(str);
+  query.send(processSheetsData);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+var array = [];
+var activities = [];
+var data = response.getDataTable();
+  
+var tiedot=[];
+tiedot.push(haku);
+console.log(tiedot);
+var tieto = "";
+  
+var columns = data.getNumberOfColumns();
+var rows = data.getNumberOfRows();
+
+riveja = rivinimike.length;
+sarakkeita = saranimike.length;
+
+for (var r = 0; r < rows; r++) {
+     var row = [];
+     for (var c = 0; c < columns; c++) {
+      row.push(data.getFormattedValue(r, c));
+      activities[r,c] = data.getFormattedValue(r, c);
+    }
+    tieto = row.join();
+    tiedot.push(tieto); 
+}
+
+tiedot2020 = tiedot;
+erotus = [];
+erotussumma = [];
+
+console.log(tiedot2016);
+console.log(tiedot2020);
+
+var testaus1 = tiedot[0];
+var testaus2 = tiedot[0]; 
+var jakaus1 = testaus1.split(",");
+var jakaus2 = testaus2.split(",");
+
+erotussumma.push(tiedot[0]);
+
+
+for (var h = 2; h < tiedot.length; h++) { 
+
+testaus1 = tiedot2016[h];
+jakaus1 = testaus1.split(",");
+
+testaus2 = tiedot2020[h];
+jakaus2 = testaus2.split(",");
+
+
+/*
+
+tiedot2016=jakaus1;
+//console.log(jakaus1.length);
+//console.log(tiedot);
+var testaus2 = tiedot[2];
+var jakaus2 = testaus2.split(",");
+//console.log(jakaus1);
+tiedot2020=jakaus2;
+//console.log(jakaus2.length);
+
+console.log(tiedot2020);
+console.log(tiedot2016);
+
+*/
+
+for (var k = 0; k < jakaus2.length; k++) {
+erotus.push(Number(jakaus2[k])-Number(jakaus1[k]));
+
+}
+
+tieto = erotus.join();
+    //tiedot.push(tieto); 
+
+
+
+
+erotussumma.push(tieto);
+erotus = [];
+
+
+
+
+}
+
+//console.log(erotussumma);
+tiedot=erotussumma;
+
+
+//console.log(tiedot,lista);
+diagram.get_data31(tiedot,lista);
+
+}
+  
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+	get_data31: function(tiedot,lista){
+	console.log(tiedot);
+	tietue.push(tiedot);
+var listaus = [];	
+var tietoja= tiedot;	
+var rotsi = [];	
+var rivinumero = 0;
+var sarakenumero = 0;
+var nimike = [];
+var risa = sarakkeita;
+var sari = riveja-risa;
+var _combine_input = function () {
+    _data = {};  
+    _calc_pearson_correlation();
+};
+
+//***** start of _calc_pearson_correlation
+  var _calc_pearson_correlation = function () {
+  var _attr_list = [];
+      _attr_list_count = 0;
+  var _csv_lines = tietoja;
+
+  var _pair_number;
+/*  
+console.log(_csv_lines.length,_csv_lines);  
+console.log(_csv_lines[0].length);
+console.log(_csv_lines[1].length);
+console.log(_csv_lines[2].length);
+console.log(_csv_lines[3].length);
+*/
+  for (var _i = 0; _i < _csv_lines.length; _i++) {
+//  console.log(_i,_csv_lines.length);
+    let _line = _csv_lines[_i]
+    if (_line.indexOf('\t') > -1) {
+      _line = _line.split('\t')
+    } else {
+      _line = _line.split(',')
+    }
+    if (_pair_number === undefined) {
+      _pair_number = _line.length;
+    } else if (_pair_number !== _line.length) {
+      return "";
+    }
+
+    for (var _j = 0; _j < _line.length; _j++) {
+      var _value = _line[_j];
+      if (_i === 0) {
+        _data[_value] = [];
+        _attr_list[_j] = _value;
+        _attr_list_count++;
+      } else {
+        if (isNaN(_value)) {
+          continue;
+        }
+        _value = eval(_value);
+        _data[(_attr_list[_j])].push(_value); 
+      }
+    }
+  }
+
+listaus = _attr_list;
+//console.log(listaus);
+return _draw_result_table();
+};
+//*** end of _calc_pearson_correlation
+
+//*** start of _draw_result_table
+var _draw_result_table = function () {
+var _attr_list = listaus;
+var tieto = [];
+var oikea = [];
+var items = [];
+
+sari=sarakkeita;
+var initial = 0;
+
+Array.matrix = function(risa, sari, initial) {
+var arr = [];
+    for (var i = 0; i < risa; ++i) {
+        var columns = [];
+        for (var j = 0; j < sari; ++j) {
+            columns[j] = initial;
+        }
+        arr[i] = columns;
+    }
+    return arr;
+}
+
+var names = Array.matrix(500);
+
+    var _result_data = {};
+    for (var _i = 0; _i < _attr_list.length; _i++) {
+         var _x_attr = _attr_list[_i];
+    
+sarakenumero += 1; 
+rivinumero = -1;
+nimike[_i]=_x_attr;
+tieto.push(_x_attr,oikea);
+oikea = [];
+
+    var _ary1 = _data[_x_attr];
+    for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
+         var _y_attr = _attr_list[_j];
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+
+      if (_j !== _i) {
+        _result_data[_x_attr][_y_attr] = null;
+      }
+    }
+
+    for (var _j = _i + 1; _j < _attr_list.length; _j++) {
+      var _y_attr = _attr_list[_j];
+      rivinumero += 1; 
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+      var _ary2 = _data[_y_attr];
+      _result_data[_x_attr][_y_attr] = _get_pearson_correlation(_ary1, _ary2);
+
+const myJSON = _result_data[_x_attr][_y_attr];
+names[sarakenumero][rivinumero]=myJSON.r.toFixed(3);
+oikea.push(myJSON.r.toFixed(3));
+items[_i,_j]=_result_data[_x_attr][_y_attr];
+    }
+  }
+
+console.log("Rivejä",riveja);
+console.log("Sarakkeita",sarakkeita);
+console.log("Nimike",nimike);
+
+var heat1 = [];
+var heat10 = [];
+var rotsi = [];
+var sotsi = [];
+var merkki = "R";
+
+if (riveja > 0 && sarakkeita > 0) {
+
+for (var _r = 0; _r < riveja; _r++) {
+rotsi.push([nimike[_r]]);
+}
+
+for (var _s = riveja; _s < sarakkeita+riveja; _s++) { 
+sotsi.push([merkki,nimike[_s]]);
+}
+var laskuri = 0
+for (var _r = 1; _r <= riveja; _r++) {
+laskuri +=1;
+for (var _s = riveja-laskuri; _s < sarakkeita+riveja-laskuri; _s++) { 
+heat1.push(names[_r][_s]);
+}
+heat10.push(heat1);
+heat1=[];
+}
+}
+
+tiedot=tieto;
+tsekki = 1;
+console.log(rotsi,sotsi,heat10);
+diagram.get_data4(rotsi,sotsi,heat10); 
+
+};
+//*** end of _draw_result_table
+
+//*** start of _get_pearson_correlation
+var _get_pearson_correlation = function (_ary1, _ary2) {
+  var _r = pearsonCorrelation(_ary1, _ary2);
+  var _n = _ary1.length;
+  var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
+      _t = Math.abs(_t);
+  var _p = ((tprob((_n - 2), _t)) * 2);
+  if (_p === 2) {
+      _p = 0;
+  }
+  
+  if (isNaN(_p)) {
+    console.log({
+      'n-2': _n - 2,
+      't': _t
+    });
+    console.log(['tprob', tprob((_n - 2), _t)]);
+    throw "xx：NaN (r: " + _r + ";t: " + _t + "; _n: " + _n + " )";
+  }
+
+  return {
+    r: _r
+    //p: _p,
+    //n: _n
+  };
+};
+//*** end of _get_pearson_correlation
+
+//*** start of pearsonCorrelation
+var pearsonCorrelation = function (_ary1, _ary2) {
+  var _avg1 = _calc_avg(_ary1);
+  var _avg2 = _calc_avg(_ary2);
+  var _a = 0;
+  var _b1 = 0;
+  var _b2 = 0;
+  for (var _i = 0; _i < _ary1.length; _i++) {
+    var _x = (_ary1[_i] - _avg1);
+    var _y = (_ary2[_i] - _avg2);
+    _a += _x * _y;
+    _b1 += _x * _x;
+    _b2 += _y * _y;
+  }
+
+  if (_b1 * _b2 === 0) {
+    return 0;
+  }
+  return _a / (Math.sqrt(_b1) * Math.sqrt(_b2));
+};
+//*** end of pearsonCorrelation
+
+var _calc_avg = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _sum = 0;
+  for (var _i = 0; _i < _ary.length; _i++) {
+    _sum += _ary[_i];
+  }
+  return (_sum / _ary.length);
+};
+
+var _calc_stdev = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _avg = _calc_avg(_ary);
+  var _var = 0;
+
+  for (var _i = 0; _i < _ary.length; _i++) {
+    var _a = (_ary[_i] - _avg);
+    _var += _a * _a;
+  }
+  return Math.sqrt(_var / (_ary.length - 1));
+};
+
+function tprob ($n, $x) {
+    if (($n <= 0) || ((Math.abs($n) - Math.abs(integer($n))) !==0)) {
+        throw("Invalid n: $n\n");
+    }
+    return _subtprob($n-0, $x-0);
+}
+
+function integer ($i) {
+        if ($i > 0)
+                return Math.floor($i);
+        else
+                return Math.ceil($i);
+}
+
+function _subtprob ($n, $x) {
+	var $a;
+        var $b;
+	var $w = Math.atan2($x / Math.sqrt($n), 1);
+	var $z = Math.pow(Math.cos($w), 2);
+	var $y = 1;
+
+	for (var $i = $n-2; $i >= 2; $i -= 2) {
+		$y = 1 + ($i-1) / $i * $z * $y;
+	} 
+
+	if ($n % 2 === 0) {
+		$a = Math.sin($w)/2;
+		$b = .5;
+	} else {
+		$a = ($n === 1) ? 0 : Math.sin($w)*Math.cos($w)/Math.PI;
+		$b= .5 + $w/Math.PI;
+	}
+	return max(0, 1 - $b - $a * $y);
+}
+
+function max () {
+	var $max = arguments[0];
+	for (var $i = 0; $i < arguments.length; $i++) {
+                if ($max < arguments[$i])
+                        $max = arguments[$i];
+	}	
+	return $max;
+}
+
+//*** start of function
+var _panel = _combine_input();
+//*** end of function
+	},
+	
+	get_data4: function(rotsi,sotsi,risa){
+var row_number = rotsi.length;
+var col_number = sotsi.length;
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var _data = [];
+var konsoli=[];
+var paletteName = "Spectral";
+var heatmaps = ["#heatmap1","#heatmap2","#heatmap3"];
+var heatmapId = heatmaps[round];
+
+
+var classesNumber = 21,
+    cellSize = 12;
+    
+
+d3.selectAll(heatmaps[round] +" > *").remove(); 
+    
+
+//heatmap_display("#heatmap", "RdGy");
+//heatmap_display("#heatmap", "BrBG");
+heatmap_display(heatmapId, paletteName);
+function heatmap_display(heatmapId, paletteName) {
+
+
+var tooltip = d3.select(heatmapId)
+        .append("div")
+        .style("position", "absolute")
+        .style("visibility", "hidden");
+
+    function zoom() {
+    	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+//    var viewerWidth = $(document).width();
+//    var viewerHeight = $(document).height();
+var viewerWidth = 960;
+var viewerHeight = 200;
+    var viewerPosTop = 50;
+    var viewerPosLeft = 150;
+    var legendElementWidth = cellSize * 2;
+    var colors = colorbrewer[paletteName][classesNumber];
+    var svg;
+
+    var colorScale = d3.scale.quantize()
+        .domain([-1.0, 1.0])
+        .range(colors);
+
+svg = d3.select(heatmapId).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+     //   .attr("width", viewerWidth)
+     //   .attr("height", viewerHeight)
+	    .call(zoomListener)
+        .append("g")
+        .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
+//console.log(heatmapId);
+svg.append('defs')
+        .append('pattern')
+        .attr('id', 'diagonalHatch')
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', 4)
+        .attr('height', 4)
+        .append('path')
+        .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+        .attr('stroke', '#000000')
+   
+   svg.append("text")
+        .attr("x", "-42px")
+        .attr("y", "-28")
+        .attr('stroke-width', 1)
+        .style("text-anchor", "left")
+        .style("font-size", "12px")
+        .text(piirtoselite[6]+" "+piirtoselite[round+1]+"]");
+/*
+//console.log(piirtoselite[6]+" "+piirtoselite[menossa+1]);
+   svg.append("text")
+      .attr("x", "-42px")
+      .attr("y", "-28")
+      .attr("transform", "rotate(-90)")
+      .style("text-anchor", "middle")
+      .style("font-size", "12px")
+      .text(piirtoselite[menossa+1]);
+      //console.log(piirtoselite[menossa]);
+*/ 
+        var rowSortOrder = false;
+        var colSortOrder = false;
+  
+        var rowLabels = svg.append("g")
+            .attr("class", "rowLabels")
+            .selectAll(".rowLabel")
+            .data(rotsi) //rivi-rotsi
+            .enter().append("text")
+            .text(function(d) {
+                return d.count > 1 ? d.join("/") : d;
+            })
+            .attr("x", 0)
+            .attr("y", function(d, i) {
+                return (i * cellSize);
+            })
+            .style("text-anchor", "end")
+            .attr("transform", function(d, i) {
+                return "translate(-3," + cellSize / 1.5 + ")";
+            })
+            .attr("class", "rowLabel mono")
+            .attr("id", function(d, i) {
+                return "rowLabel_" + i;
+            })
+            .on('mouseover', function(d, i) {
+                d3.select('#rowLabel_' + i).classed("hover", true);
+            })
+            .on('mouseout', function(d, i) {
+                d3.select('#rowLabel_' + i).classed("hover", false);
+            })
+            .on("click", function(d, i) {
+            //console.log(heatmaps[heatmaps.indexOf(heatmapId)]); 
+            round = heatmaps.indexOf(heatmapId);
+            console.log(round);
+                rowSortOrder = !rowSortOrder;
+                bsortByValues("r", i, rowSortOrder);
+                d3.select("#order").property("selectedIndex", 0);
+            });
+
+        var colLabels = svg.append("g")
+            .attr("class", "colLabels")
+            .selectAll(".colLabel")
+            .data(sotsi) //desult-sotsi
+            .enter().append("text")
+            .text(function(d) {
+                d.shift();
+                return d.count > 1 ? d.reverse().join("/") : d.reverse();
+            })
+            .attr("x", 0)
+            .attr("y", function(d, i) {
+                return (i * cellSize);
+            })
+            .style("text-anchor", "left")
+            .attr("transform", function(d, i) {
+                return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (i * cellSize) + ")";
+            })
+            .attr("class", "colLabel mono")
+            .attr("id", function(d, i) {
+                return "colLabel_" + i;
+            })
+            .on('mouseover', function(d, i) {
+                d3.select('#colLabel_' + i).classed("hover", true);
+            })
+            .on('mouseout', function(d, i) {
+                d3.select('#colLabel_' + i).classed("hover", false);
+            })
+            .on("click", function(d, i) {
+            console.log(heatmaps[heatmaps.indexOf(heatmapId)]);
+            round = heatmaps.indexOf(heatmapId);
+                colSortOrder = !colSortOrder;
+                bsortByValues("c", i, colSortOrder);
+                d3.select("#order").property("selectedIndex", 0);
+//console.log(menossa);
+            });
+
+        var row = svg.selectAll(".row")
+            .data(risa) //data-risa
+            .enter().append("g")
+            .attr("id", function(d) {
+                return d.idx;
+            })
+            .attr("class", "row");
+        
+        var j = 0;
+        var heatMap = row.selectAll(".cell")
+            .data(function(d) {
+                j++;
+                return d;
+            })
+            .enter().append("svg:rect")
+            .attr("x", function(d, i) {
+                return i * cellSize;
+            })
+            .attr("y", function(d, i, j) {
+                return j * cellSize;
+            })
+            .attr("rx", 4)
+            .attr("ry", 4)
+            .attr("class", function(d, i, j) {
+                return "cell bordered cr" + j + " cc" + i;
+            })
+            .attr("row", function(d, i, j) {
+                return j;
+            })
+            .attr("col", function(d, i, j) {
+                return i;
+            })
+            .attr("width", cellSize)
+            .attr("height", cellSize)
+            .style("fill", function(d) {
+                if (d != null) return colorScale(d);
+                else return "url(#diagonalHatch)";
+            })
+            .on('mouseover', function(d, i, j) {
+                d3.select('#colLabel_' + i).classed("hover", true);
+                d3.select('#rowLabel_' + j).classed("hover", true);
+                d3.select(this).style("stroke", "#000");
+                if (d != null) {
+                    tooltip.html('<div class="heatmap_tooltip">' + String(Number(d).toFixed(3)) + '<br>' + sotsi[i]+'-'+selitteet[saramuuttujat.indexOf(sotsi[i].toString())] + '<br>' + rotsi[j]+'-'+selitteet[saramuuttujat.indexOf(rotsi[j].toString())]) + '</div>';
+                    tooltip.style("visibility", "visible");
+                } else
+                    tooltip.style("visibility", "hidden");
+            })
+            .on('mouseout', function(d, i, j) {
+                d3.select('#colLabel_' + i).classed("hover", false);
+                d3.select('#rowLabel_' + j).classed("hover", false);
+                d3.select(this).style("stroke", "none");
+                tooltip.style("visibility", "hidden");
+            })
+            .on("mousemove", function(d, i) {
+                tooltip.style("top", (d3.event.pageY - 155) + "px").style("left", (d3.event.pageX - 80) + "px");
+            })
+            .on('click', function() {
+            });
+
+/*            
+        var legend = svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(0,-300)")
+            .selectAll(".legendElement")
+            .data([-1.0, -0.9, -0.8, -0.7,-0.6, -0.5,-0.4, -0.3,-0.2, -0.1,0.0, 0.1,0.2, 0.3,0.4, 0.5,0.6, 0.7,0.8, 0.9,1.0])
+            .enter().append("g")
+            .attr("class", "legendElement");
+
+        legend.append("svg:rect")
+            .attr("x", function(d, i) {
+                return legendElementWidth * i;
+            })
+            .attr("y", viewerPosTop)
+            .attr("class", "cellLegend bordered")
+            .attr("width", legendElementWidth)
+            .attr("height", cellSize / 2)
+            .style("fill", function(d, i) {
+                return colors[i];
+            });
+
+        legend.append("text")
+            .attr("class", "mono legendElement")
+            .text(function(d) {
+                return Math.round(d * 100) / 100;
+            })
+            .attr("x", function(d, i) {
+                return legendElementWidth * i;
+            })
+            .attr("y", viewerPosTop + cellSize);
+            
+            
+            
+        // tooltip on mouseover
+      .on("mouseover", function(d) {d3.selectAll("."+d.code)
+      .attr('opacity', .2);})
+      
+      
+      d3.select("#dataset").on("change", function () {
+    load(this.value);
+  });
+      
+
+*/  
+
+var ralu = [];
+var calu = [];
+
+        function bsortByValues(rORc, i, sortOrder) {
+                svg = d3.select(heatmapId)
+        var values = [];
+        var sorted;
+            d3.selectAll(".c" + rORc + i)
+                .filter(function(d) {
+                    if (d != null) values.push(d);
+                    else values.push(-999); 
+                });
+                
+ralu = [];
+calu = []; 
+var sorted;
+if (rORc == "r") { 
+var rako = (round)*col_number;
+for ( x = 0; x < values.length; x++ ) {
+if ( x >= rako && x < rako + col_number)
+ralu.push(values[x]);
+}
+//values = [];
+values=ralu;
+sorted = d3.range(col_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+}else{
+var cako = (round)*row_number;
+for ( x = 0; x < values.length; x++ ) {
+if ( x >= cako && x < cako + row_number)
+calu.push(values[x]);
+}
+values=calu;
+                sorted = d3.range(row_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+}  
+
+
+sortByValues(sorted, rORc, i, sortOrder)
+}
+
+
+
+        function sortByValues(sorted, rORc, i, sortOrder) {
+
+        for ( x = 0; x < heatmaps.length; x++ ) {
+        svg = d3.select(heatmaps[x])
+            var t = svg.transition().duration(1000);    
+/*         
+            var values = [];
+            var sorted;
+            d3.selectAll(".c" + rORc + i)
+                .filter(function(d) {
+                    if (d != null) values.push(d);
+                    else values.push(-999); 
+                });
+*/  
+            if (rORc == "r") { 
+/*
+//values=ralu;
+console.log(ralu,values);
+                sorted = d3.range(col_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+//                console.log("r",sorted);
+*/
+                t.selectAll(".cell")
+                    .attr("x", function(d) {
+                        var col = parseInt(d3.select(this).attr("col"));
+                        return sorted.indexOf(col) * cellSize;
+                    });
+                t.selectAll(".colLabel")
+                    .attr("y", function(d, i) {
+                        return sorted.indexOf(i) * cellSize;
+                    })
+                    .attr("transform", function(d, i) {
+                        return "translate(" + cellSize / 2 + ", -3) rotate(-90) rotate(45, 0, " + (sorted.indexOf(i) * cellSize) + ")";
+                    });
+            } else { 
+/*
+//values=calu;
+console.log(calu,values);
+                sorted = d3.range(row_number).sort(function(a, b) {
+                    if (sortOrder) {
+                        return values[b] - values[a];
+                    } else {
+                        return values[a] - values[b];
+                    }
+                });
+//                console.log("c",sorted);
+*/
+                t.selectAll(".cell")
+                    .attr("y", function(d) {
+                        var row = parseInt(d3.select(this).attr("row"));
+                        return sorted.indexOf(row) * cellSize;
+                    });
+                t.selectAll(".rowLabel")
+                    .attr("y", function(d, i) {
+                        return sorted.indexOf(i) * cellSize;
+                    })
+                    .attr("transform", function(d, i) {
+                        return "translate(-3," + cellSize / 1.5 + ")";
+                    });
+            }
+        }
+        }
+        
+}
+
+if (round < 3) {
+round +=1;
+//console.log(menossa);
+//setTimeout(diagram.get_data3(1,siirto), 6000); 
+
+if (sarja == 1 && round < 3)
+diagram.get_data3(1,siirto);
+
+}
+//console.log(tietue);
+	},
+	
+	
+	
+};
+/*
+function valinnat(items, mini, maxi) {
+konsoli=[];
+var links =[];
+var minval=mini;
+var maxval=maxi;
+var sitems=items;
+	for ( x = 0; x < items.length; x++ ) {
+	var fitems = "data/F"+items[x]+".json";
+	$.ajax({dataType: "json", url: fitems, data: links, async: false, success: function(data) {
+    for ( y = 0; y < data.links.length; y++ ) {
+	konsoli.push({source: data.links[y].source, target: data.links[y].target, value: data.links[y].value});
+	}}});
+	}
+	links = konsoli.filter(function(d){return d.value < minval || d.value > maxval;});
+	_data = links;
+	diagram.render();
+	}
+	
+//valinnat(fitems,minval,maxval);
+valinnat(["11"],-0.3,0.3);
+*/
+diagram.render();
+
+  (function () {
+  "use strict";
+
+  // horizontal direction
+  (function resizableX() {
+    const resizer = document.querySelector(".resizer-x");
+    resizer.addEventListener("mousedown", onmousedown);
+    resizer.addEventListener("touchstart", ontouchstart);
+
+    // for mobile
+    function ontouchstart(e) {
+      e.preventDefault();
+      resizer.addEventListener("touchmove", ontouchmove);
+      resizer.addEventListener("touchend", ontouchend);
+    }
+    function ontouchmove(e) {
+      e.preventDefault();
+      const clientX = e.touches[0].clientX;
+      const deltaX = clientX - (resizer._clientX || clientX);
+      resizer._clientX = clientX;
+      const l = resizer.previousElementSibling;
+      const r = resizer.nextElementSibling;
+      // LEFT
+      if (deltaX < 0) {
+        const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
+        l.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        r.style.flex = "1 0";
+      }
+      // RIGHT
+      if (deltaX > 0) {
+        const w = Math.round(parseInt(getComputedStyle(r).width) - deltaX);
+        r.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        l.style.flex = "1 0";
+      }
+    }
+    function ontouchend(e) {
+      e.preventDefault();
+      resizer.removeEventListener("touchmove", ontouchmove);
+      resizer.removeEventListener("touchend", ontouchend);
+      delete e._clientX;
+    }
+
+    // for desktop
+    function onmousedown(e) {
+      e.preventDefault();
+      document.addEventListener("mousemove", onmousemove);
+      document.addEventListener("mouseup", onmouseup);
+    }
+    function onmousemove(e) {
+      e.preventDefault();
+      const clientX = e.clientX;
+      const deltaX = clientX - (resizer._clientX || clientX);
+      resizer._clientX = clientX;
+      const l = resizer.previousElementSibling;
+      const r = resizer.nextElementSibling;
+      // LEFT
+      if (deltaX < 0) {
+        const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
+        l.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        r.style.flex = "1 0";
+      }
+      // RIGHT
+      if (deltaX > 0) {
+        const w = Math.round(parseInt(getComputedStyle(r).width) - deltaX);
+        r.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        l.style.flex = "1 0";
+      }
+    }
+    function onmouseup(e) {
+      e.preventDefault();
+      document.removeEventListener("mousemove", onmousemove);
+      document.removeEventListener("mouseup", onmouseup);
+      delete e._clientX;
+    }
+  })();
+
+  // vertical direction
+  (function resizableY() {
+    const resizer = document.querySelector(".resizer-y");
+    resizer.addEventListener("mousedown", onmousedown);
+    resizer.addEventListener("touchstart", ontouchstart);
+
+    // for mobile
+    function ontouchstart(e) {
+      e.preventDefault();
+      resizer.addEventListener("touchmove", ontouchmove);
+      resizer.addEventListener("touchend", ontouchend);
+    }
+    function ontouchmove(e) {
+      e.preventDefault();
+      const clientY = e.touches[0].clientY;
+      const deltaY = clientY - (resizer._clientY || clientY);
+      resizer._clientY = clientY;
+      const t = resizer.previousElementSibling;
+      const b = resizer.nextElementSibling;
+      // UP
+      if (deltaY < 0) {
+        const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY);
+        t.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        b.style.flex = "1 0";
+      }
+      // DOWN
+      if (deltaY > 0) {
+        const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY);
+        b.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        t.style.flex = "1 0";
+      }
+    }
+    function ontouchend(e) {
+      e.preventDefault();
+      resizer.removeEventListener("touchmove", ontouchmove);
+      resizer.removeEventListener("touchend", ontouchend);
+      delete e._clientY;
+    }
+
+    // for desktop
+    function onmousedown(e) {
+      e.preventDefault();
+      document.addEventListener("mousemove", onmousemove);
+      document.addEventListener("mouseup", onmouseup);
+    }
+    function onmousemove(e) {
+      e.preventDefault();
+      const clientY = e.clientY;
+      const deltaY = clientY - (resizer._clientY || clientY);
+      resizer._clientY = clientY;
+      const t = resizer.previousElementSibling;
+      const b = resizer.nextElementSibling;
+      // UP
+      if (deltaY < 0) {
+        const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY);
+        t.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        b.style.flex = "1 0";
+      }
+      // DOWN
+      if (deltaY > 0) {
+        const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY);
+        b.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        t.style.flex = "1 0";
+      }
+    }
+    function onmouseup(e) {
+      e.preventDefault();
+      document.removeEventListener("mousemove", onmousemove);
+      document.removeEventListener("mouseup", onmouseup);
+      delete e._clientY;
+    }
+  })();
+})();
+
+$(function() {
+	var tree = new treefilter($("#my-tree"), {
+		searcher : $("input#my-search")
+	});
+});
+
+$.extend($.expr[":"], {
+	"containsIN" : function(elem, i, match, array) {
+		return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	}
+});
+
+var treefilter = function(el, options) {
+	var defaults = {
+		offsetLeft : 20, 
+		searcher : null, 
+		expanded : false, 
+		expanded : false, 
+		multiselect : false 
+	};
+
+	var plugin = this;
+	var status = []; 
+
+	plugin.settings = {};
+
+	var init = function() {
+		plugin.settings = $.extend({}, defaults, options);
+		plugin.el = el;
+
+		el.addClass("tf-tree");
+		el.find("li").addClass("tf-child-true");
+		el.find("li").css("padding-left", plugin.settings.offsetLeft);
+		el.find("li div:only-child").parent().removeClass("tf-child-true");
+		el.find("li div:only-child").parent().addClass("tf-child-false");
+		el.find("input[type=checkbox]").click(function(e) {
+			e.stopPropagation();
+		});
+
+		el.find("li.tf-child-true").children("div").click(function(e) {
+			if (e.metaKey || e.ctrlKey) {
+				if ($(this).parent().hasClass("tf-open")) {
+					$(this).parent().find("li.tf-child-true").removeClass("tf-open");
+				} else {
+					$(this).parent().find("li.tf-child-true").addClass("tf-open");
+				}
+			}
+			$(this).parent().toggleClass("tf-open");
+		});
+
+		el.find("li.tf-child-false").click(function() {
+			if (plugin.settings.multiSelect != true) {
+				el.find("li.tf-selected").removeClass("tf-selected");
+			}
+			$(this).toggleClass("tf-selected");
+		});
+
+		if (plugin.settings.searcher) {
+			searcher();
+		}
+	};
+
+	plugin.openAll = function() {
+		plugin.el.find("li.tf-child-true").parent().addClass("tf-open");
+	};
+	plugin.closeAll = function() {
+		plugin.el.find("li.tf-child-true").parent().removeClass("tf-open");
+	};
+
+	var searcher = function() {
+		$(plugin.settings.searcher).keyup(function() {
+			if ($(this).val().length == 0) {
+				plugin.el.find(".tf-search-result").removeClass("tf-search-result");
+				memory("out", status);
+			} else {
+				plugin.closeAll();
+				plugin.el.find("li.tf-open").removeClass("tf-open");
+				plugin.el.find("li.tf-search-result").removeClass("tf-search-result");
+				plugin.el.find("li:containsIN('" + $(this).val() + "')").addClass("tf-search-result");
+				plugin.el.find("li.tf-search-result").parent().addClass("tf-search-result");
+			}
+		});
+		$(plugin.settings.searcher).keydown(function() {
+			if ($(this).val().length == 0) {
+				memory("in", status);
+			}
+		});
+	};
+
+	var memory = function(action) {
+		if (action == "in") {
+			status = [];
+			plugin.el.find("li").each(function() {
+				status.push($(this).hasClass("tf-open"));
+			});
+		} else if (action == "out") {
+			plugin.el.find("li").each(function(i) {
+				if (status[i]) { 
+					$(this).addClass("tf-open");
+				} else {
+					$(this).removeClass("tf-open");
+				}
+			});
+		}
+	}
+	
+	init();
+};
+</script>
+</body>
+</html>

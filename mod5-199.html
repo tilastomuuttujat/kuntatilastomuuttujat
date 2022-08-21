@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="xhttps://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</head>
+<body>
+
+<table>
+
+
+<td width="360" align="right"><label for="cols">Päivitä visualisointi</label>
+<input type="radio" name="sizeBy" value="cols" id="cols" onClick="diagram.get_data3(1,siirto);"/>
+</td>
+
+
+</table>	    
+
+<script>
+var tiedot2016 = [];
+var tiedot2020 = [];
+var erotus = [];
+var erotussumma = [];
+
+var sarja = 0;
+var round = 0;
+var jonossa = 0;
+var taytto = 1;
+var tietue = [];
+var jako = [];
+var piirtoselite = ["C","Kaikki","Itä- ja Pohjois-Suomi","Länsi- ja Etelä-Suomi","Etelä-Suomi","Uusimaa ja Helsinki","[Suuralue"];
+var viesti1 = [];
+var hakujono = [];
+var siirto = ["ML","MM","MO","MP","MQ","MR","NE","NF","SF","SG","SH","SI","SJ","SK","SL"];
+var piirto = [];
+var riveja = 0;
+var sarakkeita = 0;
+var rivinimike = [];
+var saranimike = [];
+var saramuuttujat = [];
+var saranumerot = [];
+var selitteet = [];
+var raja = "C";
+var alin = 2;
+var ala = 4;
+var yla = 6;
+var ylin = 6;
+var suorita = [];
+var alinselite = [];
+var alaselite = [];
+var ylaselite = [];
+var ylinselite = [];
+var vertailunimike = [];
+var minval=parent.minval;
+var maxval=parent.maxval;
+var fitems=parent.fitems;
+var _data = [];
+var konsoli=[];
+var colorbrewer = {Spectral: {3: ["#005824","#ffffff","#91003F"],21: ["#005824","#1A693B","#347B53","#4F8D6B","#699F83","#83B09B","#9EC2B3","#B8D4CB","#D2E6E3","#EDF8FB","#FFFFFF","#F1EEF6","#E6D3E1","#DBB9CD","#D19EB9","#C684A4","#BB6990","#B14F7C","#A63467","#9B1A53","#91003F"]}};
+
+var lampokartat = ["#heatmap1","#heatmap2","#heatmap3","#heatmap4","#heatmap5"];
+
+var classesNumber = 21,
+    cellSize = 12;
+    
+var margin = {top: 5, right: 20, bottom: 10, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 800 - margin.left - margin.right; 
+
+var diagram = {
+	render: function() {
+	    //diagram.get_data3(0,siirto);
+		//diagram.get_data2();
+		//diagram.get_data1();
+		
+	},
+
+	
+	get_data3: function(laji,valu){
+	sarja=laji;
+	laji = 0;
+	//console.log(laji,valu);
+var lista = valu.toString();
+sarakkeita = 0;
+riveja = 0;
+var risa = 0;
+var sari = 0;
+var hakuehdot = ["haku1","haku2","haku3","haku4","haku5"];
+
+var hakulista = rivinimike.toString() + "," + saranimike.toString();
+
+if (laji == 0) {
+	haku = valu.toString();
+	lista = valu.toString();
+	} else {
+	raja = valu.toString();
+	var myArray = raja.split(",");
+	raja = myArray[0];
+	alin = myArray[1];
+	ala = myArray[2];
+	yla = myArray[3];
+	ylin = myArray[4];
+}
+
+function init() {
+var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/gviz/tq?sheet=2016';
+//var url = 'https://docs.google.com/spreadsheets/d/1GFWxl2s15OmK8Ll44-b8q5Z2GtIWseENY6xf_y8BTNo/edit#gid=544988871';
+
+var query = new google.visualization.Query(url);
+  
+    //var haku1 = "SELECT " + haku ;
+    //var haku2 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    //var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    //var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
+
+//if (round == 0) 
+str = "SELECT " + haku ;
+/*
+if (round == 1)
+str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+
+if (round == 2)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala;
+
+if (round == 3)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+
+if (round == 4)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+*/
+
+  str = str.replace(/"+/g, "");
+  
+  //setTimeout(() => {
+  query.setQuery(str);
+  query.send(processSheetsData);
+  //}, 1200);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+var array = [];
+var activities = [];
+var data = response.getDataTable();
+  
+var tiedot=[];
+tiedot.push(haku);
+console.log(tiedot);
+var tieto = "";
+  
+var columns = data.getNumberOfColumns();
+var rows = data.getNumberOfRows();
+
+riveja = rivinimike.length;
+sarakkeita = saranimike.length;
+
+for (var r = 0; r < rows; r++) {
+     var row = [];
+     for (var c = 0; c < columns; c++) {
+      row.push(data.getFormattedValue(r, c));
+      activities[r,c] = data.getFormattedValue(r, c);
+    }
+    tieto = row.join();
+    tiedot.push(tieto); 
+}
+//console.log(tiedot);
+tiedot2016=tiedot;
+
+
+
+
+//diagram.get_data31(tiedot,lista);
+diagram.get_data3a(1,siirto)
+}
+  
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+		get_data3a: function(laji,valu){
+	sarja=laji;
+	laji = 0;
+	//console.log(laji,valu);
+var lista = valu.toString();
+sarakkeita = 0;
+riveja = 0;
+var risa = 0;
+var sari = 0;
+var hakuehdot = ["haku1","haku2","haku3","haku4","haku5"];
+
+var hakulista = rivinimike.toString() + "," + saranimike.toString();
+
+if (laji == 0) {
+	haku = valu.toString();
+	lista = valu.toString();
+	} else {
+	raja = valu.toString();
+	var myArray = raja.split(",");
+	raja = myArray[0];
+	alin = myArray[1];
+	ala = myArray[2];
+	yla = myArray[3];
+	ylin = myArray[4];
+}
+
+function init() {
+var url = 'https://docs.google.com/spreadsheets/d/1kus7FnXUf0dl9mnTe3y5vEMOqxHAoVAwsRnooetUX3Y/gviz/tq?sheet=2020';
+//var url = 'https://docs.google.com/spreadsheets/d/1cS4D1hVq4jDDVX94DhBj1a6BxeRXvxy_97qbicGPTr0/edit#gid=631079934';
+var query = new google.visualization.Query(url);
+  
+    //var haku1 = "SELECT " + haku ;
+    //var haku2 = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+    //var haku3 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + ala;
+    //var haku4 = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+    //var haku5 = "SELECT " + haku + " WHERE " + raja + ">=" + alin + " AND " + raja + "<" + yla;
+
+if (round == 0) 
+str = "SELECT " + haku ;
+
+if (round == 1)
+str = "SELECT " + haku + " WHERE " + raja + "<" + alin;
+
+if (round == 2)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala;
+
+if (round == 3)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ala + " AND " + raja + "<" + yla;
+
+if (round == 4)
+str = "SELECT " + haku + " WHERE " + raja + ">=" + ylin;
+
+  str = str.replace(/"+/g, "");
+  query.setQuery(str);
+  query.send(processSheetsData);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+var array = [];
+var activities = [];
+var data = response.getDataTable();
+  
+var tiedot=[];
+tiedot.push(haku);
+console.log(tiedot);
+var tieto = "";
+  
+var columns = data.getNumberOfColumns();
+var rows = data.getNumberOfRows();
+
+riveja = rivinimike.length;
+sarakkeita = saranimike.length;
+
+for (var r = 0; r < rows; r++) {
+     var row = [];
+     for (var c = 0; c < columns; c++) {
+      row.push(data.getFormattedValue(r, c));
+      activities[r,c] = data.getFormattedValue(r, c);
+    }
+    tieto = row.join();
+    tiedot.push(tieto); 
+}
+
+tiedot2020 = tiedot;
+erotus = [];
+erotussumma = [];
+
+console.log(tiedot2016);
+console.log(tiedot2020);
+
+var testaus1 = tiedot[0];
+var testaus2 = tiedot[0]; 
+var jakaus1 = testaus1.split(",");
+var jakaus2 = testaus2.split(",");
+
+erotussumma.push(tiedot[0]);
+
+
+for (var h = 2; h < tiedot.length; h++) { 
+
+testaus1 = tiedot2016[h];
+jakaus1 = testaus1.split(",");
+
+testaus2 = tiedot2020[h];
+jakaus2 = testaus2.split(",");
+
+
+/*
+
+tiedot2016=jakaus1;
+//console.log(jakaus1.length);
+//console.log(tiedot);
+var testaus2 = tiedot[2];
+var jakaus2 = testaus2.split(",");
+//console.log(jakaus1);
+tiedot2020=jakaus2;
+//console.log(jakaus2.length);
+
+console.log(tiedot2020);
+console.log(tiedot2016);
+
+*/
+
+for (var k = 0; k < jakaus2.length; k++) {
+erotus.push(Number(jakaus2[k])-Number(jakaus1[k]));
+
+}
+
+tieto = erotus.join();
+    //tiedot.push(tieto); 
+
+
+
+
+erotussumma.push(tieto);
+erotus = [];
+
+
+
+
+}
+
+console.log(erotussumma);
+tiedot=erotussumma;
+
+//console.log(tiedot,lista);
+//diagram.get_data31(tiedot,lista);
+
+}
+  
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+};
+
+diagram.render();
+
+
+</script>
+</body>
+</html>
