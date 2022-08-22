@@ -733,7 +733,7 @@ var data = response.getDataTable();
   
 var tiedot=[];
 tiedot.push(haku);
-console.log(tiedot);
+//console.log(tiedot);
 var tieto = "";
   
 var columns = data.getNumberOfColumns();
@@ -751,7 +751,7 @@ for (var r = 0; r < rows; r++) {
     tieto = row.join();
     tiedot.push(tieto); 
 }
-console.log(tiedot);
+//console.log(tiedot);
 tiedot2016=tiedot;
 
 
@@ -836,7 +836,7 @@ var data = response.getDataTable();
   
 var tiedot=[];
 tiedot.push(haku);
-console.log(tiedot);
+//console.log(tiedot);
 var tieto = "";
   
 var columns = data.getNumberOfColumns();
@@ -859,8 +859,8 @@ tiedot2020 = tiedot;
 erotus = [];
 erotussumma = [];
 
-console.log(tiedot2016);
-console.log(tiedot2020);
+//console.log(tiedot2016);
+//console.log(tiedot2020);
 
 var testaus1 = tiedot[0];
 var testaus2 = tiedot[0]; 
@@ -914,7 +914,7 @@ erotus = [];
 
 }
 
-//console.log(erotussumma);
+console.log(erotussumma);
 tiedot=erotussumma;
 
 
@@ -928,7 +928,7 @@ google.charts.setOnLoadCallback(init);
 	},
 	
 	get_data31: function(tiedot,lista){
-	console.log(tiedot);
+//	console.log(tiedot);
 	tietue.push(tiedot);
 var listaus = [];	
 var tietoja= tiedot;	
