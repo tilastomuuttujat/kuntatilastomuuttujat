@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+<style>
+   #heatmap {
+	float: left;
+	background-color: whitesmoke;
+}
+
+.cell {
+	stroke: #E6E6E6;
+	stroke-width: 1px;
+}
+
+/**
+ * Legend linear.
+ */
+.legendTitle {
+	font-size: 15px;
+	fill: black;
+	font-weight: 12;
+	font-family: Consolas, courier;
+}
+
+#legendLin {
+	background-color: yellow;
+}
+
+.legendLinAxis path, .legendLinAxis line {
+	fill: none;
+	stroke: none;
+	shape-rendering: crispEdges;
+}
+
+.legendLinAxis text {
+	font-family: Consolas, courier;
+	font-size: 8pt;
+	fill: black;
+}
+
+.legendLinG .tick line {
+	stroke: black;
+	stroke-width: 1px;
+}
+</style>
+</head>
+<body>
+   <div id='heatmap'></div>
+   <div id='legend'></div>
+   <script>
+var itemSize = 20;
+var cellBorderSize = 1;
+var cellSize = itemSize - 1 + cellBorderSize;
+
+var margin = {top: 10, right: 10, bottom: 10, left: 10};
+var width = 80 - margin.right - margin.left;
+var height = 80 - margin.top - margin.bottom; 
+
+var svg = d3.select('#heatmap')
+	.append('svg')
+	.attr('width', width + margin.left + margin.right)
+	.attr('height', height + margin.top + margin.bottom)
+	.append('g')
+	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+var domain1 = [0, 80, 90, 95, 100];
+var range1 = ['#EC93AB', '#CEB1DE', '#95D3F0', '#77EDD9', '#A9FCAA']; 
+var colorScale1 = d3.scaleLinear()
+	.domain(domain1)
+	.range(range1);
+
+var domain2 = [0,	95, 100];
+var range2 = ['white', 'lightgrey', 'grey']; 
+var colorScale2 = d3.scaleThreshold()
+	.domain(domain2)
+	.range(range2);
+
+svg.append('defs')
+	.append('pattern')
+		.attr('id', 'pattern-stripes')
+		.attr('patternUnits', 'userSpaceOnUse')
+		.attr('patternTransform', 'rotate(45)')
+		.attr('width', 3)
+		.attr('height', 3)
+		.append('rect')
+			.attr('width', 1)
+			.attr('height', 3)
+			.attr('transform', 'translate(0, 0)')
+			.attr('fill', 'black');
+
+var data = [
+  { "NAME": "ronnie", "YEAR": 1990, "VAL": 90 },
+  { "NAME": "ronnie", "YEAR": 1991, "VAL": 95 },
+  { "NAME": "ronnie", "YEAR": 1992, "VAL": 98 },
+  { "NAME": "bob", "YEAR": 1990, "VAL": 92 },
+  { "NAME": "bob", "YEAR": 1991, "VAL": 90 },
+  { "NAME": "bob", "YEAR": 1992, "VAL": 99 },
+  { "NAME": "carl", "YEAR": 1990, "VAL": 98 },
+  { "NAME": "carl", "YEAR": 1991, "VAL": 99 },
+  { "NAME": "carl", "YEAR": 1992, "VAL": 995 }
+];
+
+makeHeatmap(data);
+
+///////////////////////////////////////////////////////////
+// Data heatmap
+///////////////////////////////////////////////////////////
+function makeHeatmap(data) {
+	//var data = myData[0]; 
+
+	// get each element of data file and creates an object
+   var data = data.map(function(item) {
+		var newItem = {};
+		newItem.name = item.NAME;
+		newItem.year = item.YEAR;
+		newItem.val = item.VAL;
+		return newItem;
+	});
+
+	var names = data.map(function(d) {
+		return d.name;
+	});
+	regionsName = d3.set(names).values();
+	numRegions = regionsName.length; 
+
+	var years = data.map(function(d) {
+		return d.year;
+	});
+	yearsName = d3.set(years).values();
+	numYears = yearsName.length; 
+
+	///////////////////////////////////////////////////////////
+	// Draw heatmap
+	///////////////////////////////////////////////////////////
+	var cells = svg.selectAll('.cell')
+		.data(data)
+		.enter()
+		.append('g')
+		.append('rect')
+		.attr('data-value', function(d) { 
+			return d.val; 
+		})
+		.attr('data-r', function(d) {
+			var idr = regionsName.indexOf(d.name);
+			return idr; 			
+		})
+		.attr('data-c', function(d, i) {
+			if(regionsName.includes(d.name) & d.year == '1990') var idc = 0;
+			else if(regionsName.includes(d.name) && d.year == '1991') var idc = 1;
+			else if(regionsName.includes(d.name) && d.year == '1992') var idc = 2;
+			return idc; 
+		})
+		.attr('class', function() {
+			var idr = d3.select(this).attr('data-r'); // row
+			var idc = d3.select(this).attr('data-c'); // column
+			return 'cell cr' + idr + ' cc' + idc;
+		})
+		.attr('width', cellSize)
+		.attr('height', cellSize)
+		.attr('x', function(d) { 
+			var c = d3.select(this).attr('data-c');
+			return c * cellSize;
+		})
+		.attr('y', function() { 
+			var r = d3.select(this).attr('data-r');
+			return r * cellSize;
+		})
+		.attr('fill', function(d) {
+			var col;
+			if(d.name == '') {
+				col = 'url(#pattern-stripes)';
+			}
+			else {
+				col = colorScale1(d.val); 
+			}
+			return col;
+		});
+
+} // end makeHeatmap
+
+///////////////////////////////////////////////////////////
+// Legend
+///////////////////////////////////////////////////////////
+// create tick marks
+var xLegend = d3.scaleLinear()
+	.domain([0, 100])
+	.range([10, 409]); // larghezza dei tick
+
+var axisLegend = d3.axisBottom(xLegend)
+	.tickSize(19) // height of ticks
+	.tickFormat(function(v, i) { // i is index of domain colorScale, v is the corrisponding value (v = domain[i])
+		if(v == 0) {
+			return v + '%';
+		}
+		else {
+			return v;
+		}
+	});
+
+var svgLegend = d3.select('#legend').append('svg').attr('width', 600);
+
+// append title
+svgLegend.append('text')
+	.attr('class', 'legendTitle')
+	.attr('x', 10)
+	.attr('y', 20)
+	.style('text-anchor', 'start')
+	.text('Legend title');
+
+// draw the rectangle and fill with gradient
+svgLegend.append('rect')
+	.attr('class', 'legendRect')
+	.attr('x', 10) // position
+	.attr('y', 30)
+	.attr('width', 400) // larghezza fascia colorata
+	.attr('height', 15) // altezza fascia colorata
+	.style('fill', 'url(#linear-gradient1)')
+	.on('click', function() {
+		if(currentFill === '1') {
+			updateColor2();
+			currentFill = '2';
+		}
+		else {
+			updateColor1();
+			currentFill = '1';
+		}		
+	});
+
+var legend = svgLegend
+	.attr('class', 'legendLinAxis')
+	.append('g')
+	.attr('class', 'legendLinG')
+	.attr('transform', 'translate(0, 30)'); // 47 è la posizione verticale dei tick (se l'aumenti, scendono) (47 per farli partire sotto, 30 per farli partire da sopra)
+
+var defs = svgLegend.append('defs');
+
+// horizontal gradient and append multiple color stops by using D3's data/enter step
+var linearGradient1 = defs.append('linearGradient')
+	.attr('id', 'linear-gradient1')
+	.attr('x1', '0%').attr('y1', '0%')
+	.attr('x2', '100%').attr('y2', '0%')
+	.selectAll('stop')
+	.data(colorScale1.domain())
+	.enter().append('stop')
+	.attr('offset', function(d) { 
+		return d + '%'; 
+	})
+	.attr('stop-color', function(d) { 
+		return colorScale1(d); 
+	});
+
+// horizontal gradient and append multiple color stops by using D3's data/enter step
+
+function getGradient2data() {
+  // Duplicates elements of domain2:
+  var duplicatedDomain = domain2.reduce(function (res, current, index, array) { return res.concat([current, current]); }, []).slice(1, -1);
+  // Duplicates elements of range2:
+  var duplicatedRange = range2.slice(1).reduce(function (res, current, index, array) { return res.concat([current, current]); }, []);
+  // Zips both domain and range:
+  return duplicatedDomain.map( function(e, i) { return { "offset": e + "%", "color": duplicatedRange[i] }; [e, duplicatedRange[i]]; });
+}
+
+var linearGradient2 = defs.append('linearGradient')
+	.attr('id', 'linear-gradient2')
+	.attr('x1', '0%').attr('y1', '0%')
+	.attr('x2', '100%').attr('y2', '0%')
+	.selectAll('stop')
+  .data(getGradient2data())
+	//.data([                             
+  //  { offset: "0%", color: "lightgrey" },
+  //  { offset: "95%", color: "lightgrey" },
+  //  { offset: "95%", color: "grey" },
+  //  { offset: "100%", color: "grey" }
+  //])
+	.enter().append('stop')
+	.attr('offset', function(d) { 
+		return d.offset; 
+	})
+	.attr('stop-color', function(d) { 
+		return d.color; 
+	});
+
+// update the colors to a different color scale (colorScale1)
+function updateColor1() {
+	// fill the legend rectangle
+	svgLegend.select('.legendRect')
+		.style('fill', 'url(#linear-gradient1)');
+	// transition the cell colors
+	svg.selectAll('.cell')
+		.transition().duration(1000)
+		.style('fill', function(d, i) { 
+			var col;
+			if(d.valuePol == '') {
+				col = 'url(#pattern-stripes)';
+			}
+			else {
+				col = colorScale1(d.val); 
+			}
+			return col;
+		});
+		
+	axisLegend.tickValues(colorScale1.domain());
+	legend.call(axisLegend);
+}
+
+// update the colors to a different color scale (colorScale2)
+function updateColor2() {
+	// fill the legend rectangle
+	svgLegend.select('.legendRect')
+		.style('fill', 'url(#linear-gradient2)');
+	// transition the cell colors
+	svg.selectAll('.cell')
+		.transition().duration(1000)
+		.style('fill', function(d, i) { 
+			var col;
+			if(d.valuePol == '') {
+				col = 'url(#pattern-stripes)';
+			}
+			else {
+				col = colorScale2(d.val); 
+			}
+			return col;
+		});
+		
+	axisLegend.tickValues(colorScale2.domain());
+	legend.call(axisLegend);
+}
+
+// start set-up
+updateColor1();
+var currentFill = '1';
+   </script>
+</body>
+</html>
