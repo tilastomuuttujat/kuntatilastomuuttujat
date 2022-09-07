@@ -751,8 +751,10 @@ google.charts.setOnLoadCallback(init);
 
 console.log(file_a);
 console.log(file_b);	
-var tot_columns = file_a.getNumberOfColumns();
-var tot_rows = file_a.getNumberOfRows();
+var tot_columns = colnames.length;
+var tot_rows = rownames.length;
+//var tot_columns = file_a.getNumberOfColumns();
+//var tot_rows = file_a.getNumberOfRows();
 file_c.push(sql);
 var val;
 
