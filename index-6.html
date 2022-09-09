@@ -2,8 +2,11 @@
 <html lang="en" >
 <head>
 <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="xhttps://ajax.googleapis.com/ajax/libs/d3js/7.6.1/d3.min.js"></script>
+<script src="xhttps://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="xhttps://www.google.com/jsapi" type="text/javascript"></script>
 <style>
 .heatmap {
   font-size: 8px;
@@ -191,11 +194,13 @@ text.hover {
 <div class="column" id="json1"></div>
 <div class="column" id="json2"></div>
 <div class="column" id="json3"></div>
-<input id="button" class="btn btn--form" type="submit" value="OK" onClick="diagram.get_data3(1,variables);"/>
+<input id="button" class="btn btn--form" type="submit" value="OK" onClick="diagram.get_data3(1,variables,rownames,colnames);"/>
 <div id="heatmap1"></div>
 <script>
 var round = 0;
 var names = [];
+var names0 = [];
+var names1 = [];
 var variables = [];
 var rownames = [];
 var colnames = [];
@@ -356,7 +361,8 @@ function myItems(jsonString){
     colvariables.push(ligne.c[2].v);
     colnumbers.push(ligne.c[8].f);
     names.push(ligne.c[3].v);
-    
+    names0.push(ligne.c[0].v);
+    names1.push(ligne.c[1].v);
     start = 1;
     s0 = r0;
     s1 = r1;
@@ -504,8 +510,8 @@ var treefilter = function(el, options) {
 	variable: function () {	
             var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
             var values = [];
-            var rowname = [];
-            var colname = [];
+            var rownames = [];
+            var colnames = [];
             checkboxes.forEach((checkbox) => {
                 values.push(checkbox.value);
                 if (colnumbers[colvariables.indexOf(checkbox.value)] < 2) {
@@ -515,7 +521,9 @@ var treefilter = function(el, options) {
                 }
             });
             variables = values;
-            //console.log(values);
+            //console.log(variables);
+            //console.log(rownames);
+            //console.log(colnames);
             document.getElementById("button").style.background="red";
             document.getElementById("button").value="UPDATE";
             values = [];
@@ -608,7 +616,6 @@ function myItems(jsonString){
 }
 	},
 	get_data3: function() {
-	
 if(rownames.length < 1 || colnames.length < 1 || compname.length < 1) {
 document.getElementById("button").style.background="red";
 document.getElementById('button').value ='MISSING';
@@ -662,7 +669,6 @@ diagram.get_data3b(url_b,sql,str2);
 },
 
 get_data3a: function(url,sql,str) {
-
 function init() {
 var query = new google.visualization.Query(url);
 
@@ -670,11 +676,10 @@ str = str.replace(/"+/g, "");
 query.setQuery(str);
 query.send(processSheetsData);
 }
-
 function processSheetsData(response) {
-console.log(response);
 if (round == 0) {
 results_a0 = response.getDataTable();
+console.log(response.getDataTable());
 diagram.get_data3b(url_b,sql,str0);
 }
 if (round == 1) {
@@ -697,7 +702,6 @@ diagram.get_data3b(url_b,sql,str4);
 }
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
-
 	},
 	
 	get_data3b: function(url,sql,str) {
@@ -717,12 +721,10 @@ google.charts.setOnLoadCallback(init);
 }
 
 function processSheetsData(response) {
-console.log(response);
 if (round == 0) {
 results_b0 = response.getDataTable();
-setTimeout(() => {
+console.log(response.getDataTable());
 diagram.get_data3c(results_a0,results_b0,results_c0);
-}, 2000);
 }
 if (round == 1) {
 results_b1 = response.getDataTable();
@@ -744,17 +746,14 @@ diagram.get_data3c(results_a4,results_b4,results_c4);
 }
 google.charts.load('current');
 google.charts.setOnLoadCallback(init);
-
 	},
 	
 	get_data3c: async function(file_a,file_b,file_c) {
 
 console.log(file_a);
 console.log(file_b);	
-var tot_columns = colnames.length;
-var tot_rows = rownames.length;
-//var tot_columns = file_a.getNumberOfColumns();
-//var tot_rows = file_a.getNumberOfRows();
+var tot_columns = file_a.getNumberOfColumns();
+var tot_rows = file_a.getNumberOfRows();
 file_c.push(sql);
 var val;
 
@@ -789,7 +788,6 @@ diagram.get_data31(file_c)
 	},
 
 	get_data31: function(file_c){
-
 var tmp_attr_list = [];	
 var rownumber = 0;
 var colnumber = 0;
@@ -861,8 +859,8 @@ var _get_pearson_correlation = function (_ary1, _ary2) {
   }
 
   return {
-    r: _r
-    //p: _p,
+    r: _r,
+    p: _p
     //n: _n
   };
 };
@@ -1015,21 +1013,27 @@ var arr = [];
 
 const myJSON = _result_data[_x_attr][_y_attr];
 names[colnumber][rownumber]=myJSON.r.toFixed(3);
-
-var myObj = JSON.parse('{"source":"'+_x_attr+'","target":"'+_y_attr+'","value":"'+names[colnumber][rownumber]+'"}');
-
+//console.log(myJSON);
+var myObj = JSON.parse('{"id":"'+_x_attr+'","target":"'+_y_attr+'","r_value":"'+names[colnumber][rownumber]+'","p_value":"'+myJSON.p.toFixed(3)+'","level":"'+round+'"}');
+//console.log(myObj);
 array1 = [_x_attr];
 array2 = [_y_attr];
 
 array3 = (array1.filter(element => rownames.includes(element)));
 array4 = (array2.filter(element => colnames.includes(element)));
+//if (array2[0] == array4[0])
+//tpsum.push(myObj);
+//console.log(tpsum);
+console.log(array1,array2,array3,array4);
+console.log(array1[0],array2[0],array3[0],array4[0]);
 
 if (array1[0] == array3[0] && array2[0] == array4[0]) {
 tpsum.push(myObj);
 }
 }
 }
-  
+console.log(colnames);
+console.log(rownames);
 console.log(tpsum);
 diagram.get_data41(rownames,colnames,tpsum); 
 }
