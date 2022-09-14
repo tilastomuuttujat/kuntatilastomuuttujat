@@ -1,0 +1,189 @@
+<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+<script src="data.js"></script>
+<svg></svg>
+
+<script>
+var width = 800;
+var height = 800;
+var margin = {top: 20, right: 20, bottom: 20, left: 100};
+
+const nodes = data.nodes.map(({id, group, sugarpercent, rank, avg, count}) => ({
+    id,
+    sourceLinks: [],
+    targetLinks: [],
+    group,
+    rank,
+    sugarpercent,
+    avg,
+    count
+  }));
+
+var y = d3.scalePoint(nodes.sort((a,b) => d3.ascending(+a.rank, +b.rank)).map(d => d.id), [margin.top, height - margin.bottom])
+var color = d3.scaleOrdinal(nodes.map(d => d.group).sort(d3.ascending), ["black", "orange"])
+
+const svg = d3.select('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .style("font-family", "'Helvetica Neue', Helvetica, Arial sans-serif");
+  
+svg.append("style").text(`
+
+    .hover path {
+      stroke: grey;
+    }
+
+    .hover text {
+      fill: black;
+    }
+
+    .hover g.primary text {
+      fill: black;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .hover g.secondary text {
+      fill: black;
+      font-weight: 350;
+    }
+
+    .hover path.primary {
+      stroke: orange;
+      stroke-width: 1.7;
+      stroke-opacity: 0.7;
+    }
+
+    `);
+
+const nodeById = new Map(nodes.map(d => [d.id, d]));
+
+const links = data.links.map(({source, target, value}) => ({
+    source: nodeById.get(source),
+    target: nodeById.get(target),
+    value
+  }));
+  
+for (const link of links) {
+    const {source, target, value} = link;
+    source.sourceLinks.push(link);
+    target.targetLinks.push(link);
+    source_list = d3.set().add(link.source.id);
+  }
+  
+const label = svg.append("g")
+    .attr("font-size", 12)
+    .attr("font-weight", 300)
+    .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(nodes)
+    .join("g")
+    .attr("transform", d => `translate(${source_list.has(d.id) ? margin.left+600 : margin.left+100},${source_list.has(d.id) ? d.y = y(d.id) * 4 - 4450 : d.y = y(d.id)})`)
+    .call(g => g.append("text")
+          .attr("x", d => source_list.has(d.id) ? margin.left - 94 : margin.left - 106)
+          .attr("text-anchor", d=> source_list.has(d.id)? "start" : "end")
+          .attr("dy", "0.35em")
+          .attr("fill", d => d3.lab(color(d.group)).darker(2))
+          .text(d => d.id))
+    .call(g => g.append("circle")
+          .attr("r", 3)
+          .attr("fill", d => color(d.group)));
+
+const path = svg.insert("g", "*")
+    .attr("fill", "none")
+    .attr("stroke-opacity", 0.4)
+    .attr("stroke-width", 0.6)
+    .selectAll("path")
+    .data(links)
+    .join("path")
+    .attr("stroke", d => d.source.group === d.target.group ? color(d.source.group) : "grey")
+    .attr("d", curve);
+
+let highlight = svg.append("g")
+    .attr("x", margin.left + 4000)
+    .attr("y", 2000)
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "#333")
+    .attr("fill-opacity", 0.8)
+    .style("font-size", "4vw")
+    .style("font-weight", 700);
+    
+let alias = highlight
+    .append("text")
+    .attr("x", margin.left + 120)
+    .attr("y", 380)
+    .attr("dy", "-0.3em"); 
+
+let rank_avg = highlight
+    .append("text")
+    .attr("x", margin.left + 120)
+    .attr("y", 380)
+    .attr("dy", "0.5em")
+    .attr("fill-opacity", 0.6)
+    .style("font-size", "2.5vw")
+    .style("font-weight", 500);
+    
+let sugar_connect = highlight
+    .append("text")
+    .attr("x", margin.left + 120)
+    .attr("y", 380)
+    .attr("dy", "1.4em")
+    .style("font-size", "3vw")
+    .style("font-weight", 600);
+    
+let price = highlight
+    .append("text")
+    .attr("dy", "1.7em")
+    .style("font-size", "3vw")
+    .style("font-weight", 600);
+    
+const overlay = svg.append("g")
+    .attr("fill", "none")
+    .attr("pointer-events", "all")
+    .selectAll("rect")
+    .data(nodes)
+    .join("rect")
+    .attr("width", d => source_list.has(d.id) ? 100: margin.left + 60)
+    .attr("height", step)
+    .attr("y", d => source_list.has(d.id) ? d.y =  y(d.id) * 4 -4450 - step/2 : d.y = y(d.id) - step/2)
+    .attr("x", d => source_list.has(d.id) ? margin.left+600 : margin.left - 50)
+    .on("mouseover", d => { 
+        svg.classed("hover", true);
+        label.classed("primary", n => n === d);
+        label.classed("secondary", n => n.sourceLinks.some(l => l.target === d) || n.targetLinks.some(l => l.source === d));
+        path.classed("primary", l => l.source === d || l.target === d).filter(".primary").raise();
+        if(source_list.has(d.id)){
+          alias.text(d.id)
+          rank_avg.text(d.avg + " average rank")
+          sugar_connect.text(d.count + " connections")
+        } else{
+          alias.text(d.id)
+          rank_avg.text("rank: " + d.rank)
+          sugar_connect.text(Number((parseFloat(d.sugarpercent) * 100).toFixed(2)) + "% sugar")
+        }
+    })
+    .on("mouseout", d => {
+        svg.classed("hover", false);
+        label.classed("primary", false);
+        label.classed("secondary", false);
+        path.classed("primary", false).order();
+        alias.text("")
+        rank_avg.text("")
+        sugar_connect.text("")
+    });
+
+function step(){return(
+14
+)}
+
+function curve(margin){return(
+function curve(d) {
+  const y1 = d.source.y;
+  const y2 = d.target.y;
+  return `M${margin.left + 600},${y1}
+          C${margin.left + 400},${y1}
+          ${margin.left + 300},${y2}
+          ${margin.left + 100},${y2}`;
+}
+)} 
+</script> 
