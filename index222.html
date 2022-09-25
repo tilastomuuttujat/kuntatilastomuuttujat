@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="bootstrap.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+        <script src="select2.js"></script>
+        <script src="localforage.js"></script>
+    </head>
+    <body> 
+<script>
+let raw_data;      //global container for the JSON data tree object
+let selected_data;      //global container for the JSON data tree object
+let diagram_all_parameters; //global container for the diagram config file
+let loaded_micromeda_file = false; //global container for the diagram config file
+let back_end_url          = "";
+const minZoom             = 0.5;
+const maxZoom             = 1.2;
+const zScale              = d3.scaleLinear()
+    .domain([0,100])
+    .range([minZoom,maxZoom]);
+    
+$(document).ready(function () {
+    
+    $.getJSON('./configs/application_configuration.json', function (config) {
+        back_end_url = config['back_end_url'];
+
+        localforage.config({name: 'micromeda', storeName: 'micromeda_data'});
+        localforage.getItem('micromeda-result-key').then(function (result_key) {
+            if (result_key === null)
+            {
+                get_diagram_data("./data/Json_output_e.json");
+            }
+            else
+            {
+                get_diagram_data(back_end_url + "genome_properties_tree" + '?result_key=' + result_key);
+                loaded_micromeda_file = true;
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    });
+});
+
+function get_diagram_data(backend_tree_url)
+{
+    $.getJSON(backend_tree_url, function (genome_properties_data) {
+    console.log(genome_properties_data);
+        $.getJSON("./configs/diagram_configuration.json", function (diagram_parameters) {
+            //initialize global variables
+            diagram_all_parameters = diagram_parameters;
+            raw_data               = genome_properties_data.property_tree;
+            //draw_top_navbar(diagram_parameters['topnavbar']);
+            draw_content_container(diagram_parameters);
+            draw_heatmap(diagram_parameters,genome_properties_data.sample_names);
+            //FOLLOWup with sample names
+            draw_tool_tips(diagram_parameters['general_content']);
+          //  draw_footer(diagram_parameters['footer']);
+            setup_object_actions(diagram_parameters);
+            draw_sample_names(genome_properties_data.sample_names,diagram_parameters);
+            initHeatmapData(genome_properties_data.property_tree,diagram_parameters);
+        });
+    });
+}
+
+function collapse(d) {
+  if(d.children) {
+    d._children = d.children;
+    d._children.forEach(collapse);
+    d.children = null;
+  }
+}
+
+function expand(d) {
+  if(d._children) {
+    d.children = d._children;
+    d._children.forEach(expand);
+    d._children = null;
+  }
+}
+
+function expandAllParents(d){
+    if(d._children){
+
+        d.children = d._children;
+        d._children = null;
+    }else{
+
+    }
+    if(d.parent){
+        expandAllParents(d.parent);
+    }else{
+
+    }
+}
+
+let o;
+let tofind;
+
+function getFilteredData(d) {
+    if(d.idx === tofind){
+        o = d;
+        expandAllParents(o);
+    }else{
+        if(d._children){
+            d._children.forEach(getFilteredData);
+        }else{
+
+        }
+
+    }
+    return o;
+}
+
+let ptp = false;
+
+function get_path_to_parent(d) {
+    if(ptp ===false){
+        output = "M" + (d.yLinkScaledLenght) + "," + (d.nodeY-1) +" L"+ (d.yLinkScaledLenght) + "," + d.nodeY;
+        ptp = true;
+    }
+    if(d.parent) {
+        output = output + " L" + d.parent.yLinkScaledLenght + "," + d.nodeY
+                        + " L" + d.parent.yLinkScaledLenght + "," + d.parent.nodeY; 
+        output = output + get_path_to_parent(d.parent);
+    }else{
+        ptp = false;
+    }
+
+  return(output);
+}
+
+function click(d) {
+  if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+
+  updateGraph(d);
+}
+
+function OnMouseOverExpand(d){
+    d3.select(this).style("cursor", "zoom-in"); 
+}
+function OnMouseOverCollapse(d){
+    d3.select(this).style("cursor", "zoom-out"); 
+}
+function OnMouseOverNoMore(d){
+    d3.select(this).style("cursor", "not-allowed"); 
+}
+
+function filter_partial_y(element, index, array) {
+    return element === "YES";
+}
+function filter_partial_p(element, index, array) {
+    return element === "PARTIAL";
+}
+function filter_partial_n(element, index, array) {
+    return element === "NO";
+}
+function filter_partial_yp(element, index, array) {
+    return (element === "YES" || element === "PARTIAL");
+}
+function filter_partial_yn(element, index, array) {
+    return (element === "YES" || element === "NO");
+}
+function filter_partial_pn(element, index, array) {
+    return (element === "PARTIAL" || element === "NO");
+}
+function filter_partial_ypn(element, index, array) {
+    return (element === "PARTIAL" || element === "NO" || element === "YES");
+}
+function filter_partial_special(element, index, array) {
+    return (element !== array[0]);
+}
+
+function initJson(d, global_parameters){
+    if (d.property_id){
+
+        let o = global_parameters['meta-pathways_genprop'].filter(function(x){
+            return x===d.property_id;
+        });
+        if(o.length>0){
+            d.type = "metapathway";
+        }else{
+            //check if the 
+            o = global_parameters['pathways_genprop'].filter(function(x){
+                return x===d.property_id;
+            });
+            if(o.length>0){
+                d.type = "pathway";
+            }else{
+                // try guild
+                d.type = "all";
+            }
+
+        }
+    }else{
+    }
+    if (d.children) d.children.forEach(function(d) { initJson(d,global_parameters); });
+    return(d);
+}
+
+function filterType(d,t,v,filter_function){
+    if(d.type){
+        if (d.type===t){
+            // check if the node follows the partial, no and yes filter. 
+            if(filter_function ===filter_partial_special){
+
+                if (d.result.some(filter_function)){
+                    v.push(d);
+                }else{
+
+                }
+            }else{
+                if (d.result.every(filter_function)){
+                    v.push(d);
+                }else{
+
+                }
+            }
+
+        }else{
+
+        }
+    }else{
+
+    }
+    if (d.children) d.children.forEach(function(d) { filterType(d,t,v,filter_function); });
+}                    
+
+function filterTypeW(d,t,filter_function){//add a call to the special filter function. 
+    let met_vector = [];
+    filterType(d,t,met_vector,filter_function);
+    return(met_vector);
+}
+
+function getUnique(arr, comp) {
+    // store the comparison  values in array
+    const unique =  arr.map(e => e[comp])
+
+    // store the indexes of the unique objects
+    .map((e, i, final) => final.indexOf(e) === i && i)
+
+    // eliminate the false indexes & return unique objects
+    .filter((e) => arr[e]).map(e => arr[e]);
+
+    return unique;
+}
+
+function initCustomVars(d, y0, k) {
+    let parent_string = "root";
+    if(d.parent){
+        parent_string = d.parent.data.property_id;
+    }else{
+        parent_string = "root";
+    }
+    let h = d.data.property_id?d.data.property_id:d.data.step_id;// the name, lowecase and with no spaces.
+    d.yLinkScaledLenght = (y0= (1+d.depth)) * k; //like an X distribution of the links in the Y axis network
+    d.idx               = "idx"+d.data.name.toLowerCase().replace(/\s+/g, '').replace(/[^\w\s]/gi, '')+h+parent_string;
+    if (d.children) d.children.forEach(function(d) { initCustomVars(d, y0, k); });
+    return(d);
+}
+
+function borderTween(target_color,target_object) {
+    return function() {
+    let ip = d3.interpolateRgb(target_object.style("fill"),target_color);
+    return function(t) { 
+        target_object.style("fill",ip(t));
+    };
+  };
+} 
+
+function scrollTween(offset) {
+  return function() {
+    let ip = d3.interpolateNumber(d3.select(".mct").property("offsetTop"), offset);
+    return function(t) { d3.select(".mct").node().scrollTo(0, ip(t)); };
+  };
+}
+
+function is_node_downloadable(d){
+    return(d.data.step_id && !d.data.result.every(d =>d==="NO"));
+}
+
+function initHeatmapData (){
+    let heatmap_parameters = diagram_all_parameters.general_content.heatmap;
+    let margin_parameters  = diagram_all_parameters.margins;
+    let filter_mode        = Number(d3.select(".fry").property("checked")).toString() + Number(d3.select(".frp").property("checked")).toString() + Number(d3.select(".frn").property("checked")).toString()+ Number(d3.select(".frs").property("checked")).toString();//testing the glo
+    let filter_function    = filter_partial_ypn;
+    initJson(raw_data,diagram_all_parameters.global);
+    
+    switch(filter_mode) {
+        case "0010":
+            //Get only NO
+            filter_function = filter_partial_n;
+        break;
+        case "0100":
+            //Get only PARTIAL
+            filter_function = filter_partial_p;
+        break;
+        case "0110":
+            //Get PARTIAL OR NO
+            filter_function = filter_partial_pn;
+        break
+        case "1000":
+            //Get only YES
+            filter_function = filter_partial_y;
+        break
+        case "1010":
+            //Get YES OR NO
+            filter_function = filter_partial_yn;
+        break
+        case "1100":
+            //Get YES OR PARTIAL
+            filter_function = filter_partial_yp;
+        break
+        case "1110":
+            ////Get YES OR PARTIAL OR NO (all)
+            filter_function = filter_partial_ypn;
+        break
+        case "0001":
+            ////Get special
+            filter_function = filter_partial_special;
+        break
+        default:
+          // code block
+          console.log("whaaaat?");
+    }
+    let metapathways_vector        = filterTypeW(raw_data,"metapathway",filter_function);
+    let pathways_vector            = filterTypeW(raw_data,"pathway",filter_function);
+
+    let metapathways_vector_unique = getUnique(metapathways_vector,'name');
+    let pathways_vector_unique     = getUnique(pathways_vector,'name');
+    
+    let all_data         = d3.hierarchy(raw_data,function(d){return d.children;});
+    let metapathway_data = d3.hierarchy({"children":metapathways_vector_unique,"enabled":false,"name":"meta-pathways","property_id":"GenProp_metapaths","result":raw_data.result},function(d){return d.children;});
+    let pathway_data     = d3.hierarchy({"children":pathways_vector_unique,"enabled":false,"name":"pathways","property_id":"GenProp_paths","result":raw_data.result},function(d){return d.children;});
+
+    initCustomVars(all_data, all_data.depth, heatmap_parameters.Y_link_lenght / all_data.height);
+
+    initCustomVars(metapathway_data, metapathway_data.depth, heatmap_parameters.Y_link_lenght / metapathway_data.height);
+    initCustomVars(pathway_data, pathway_data.depth, heatmap_parameters.Y_link_lenght / pathway_data.height);
+    
+    let counter = 0;
+    all_data.eachBefore(function(d){
+        d.or = counter;//or stands for order
+        counter++;
+        return(d.or);
+    });
+    counter = 0;
+    metapathway_data.eachBefore(function(d){
+        d.or = counter;//or stands for order
+        counter++;
+        return(d.or);
+    });
+    counter = 0;
+    pathway_data.eachBefore(function(d){
+        d.or = counter;//or stands for order
+        counter++;
+        return(d.or);
+    });
+    counter = 0;
+    
+    let place_holder_text = "Search all functions here";
+    selected_data         = all_data;
+    
+    switch(d3.select(".fms").attr("data-filter")) {
+        case "all":
+            //console.log("all");
+            selected_data     = all_data;
+            selected_data.descendants().slice(1).forEach(expand);
+            place_holder_text = "Search all functions here";
+	    d3.select(".fry").attr("disabled","true");
+            d3.select(".frp").attr("disabled","true");
+            d3.select(".frn").attr("disabled","true");
+            d3.select(".frs").attr("disabled","true");
+        break;
+        case "path":
+            selected_data     = pathway_data;
+            selected_data.descendants().slice(1).forEach(expand);
+            place_holder_text = "Search for pathways here";
+        break;
+        case "mpath":
+            selected_data     = metapathway_data;
+            selected_data.descendants().slice(1).forEach(expand);
+            place_holder_text = "Search for metapathways here";
+        break
+        default:
+          console.log("whaaaat?");
+    }
+
+    $('.ndfs').select2({
+        placeholder: place_holder_text,
+        width: 'resolve',
+        minimumInputLength: 3
+    }).on("select2:select", function(evt){
+            //Conecting the select to the hierarchical dataset
+            o="";
+            tofind = evt.params.data.id;
+            selected_data.descendants().forEach(getFilteredData);
+            
+
+            let tar = d3.selectAll("."+o.idx)
+                .select(".y-node")
+                .style("fill", "blue")
+            ;
+            d3.transition()
+                .duration(1000)
+                .tween("scroll", scrollTween(o.nodeY*(d3.select(".chart").attr("scale"))))
+            ;
+            updateGraph();
+        }
+    );
+       
+    let opt_Enter = d3.select(".ndfso_names").selectAll(".ndfso_names_options")
+        .data(selected_data.descendants(),function(d) {
+               return d.idx;
+           });
+    opt_Enter.join(
+        function (enter){
+            let optEnter = enter.append("option")
+                .attr("class","ndfso_names_options")
+                .attr("value",function(d){
+                        return d.idx;
+                    }
+                )
+                .text(function(d){
+                        return d.data.name;
+                    }
+                );
+            return(optEnter);
+        },
+        function(update){
+            let optUpdate = update;
+            optUpdate.select("option.ndfso_names_options")
+                .attr("value",function(d){
+                            return d.idx;
+                        }
+                    )
+                    .text(function(d){
+                        return d.data.name;
+                    }
+                );
+        },
+        function(exit){
+            let optExit = exit.remove();
+            return(optExit);
+        }
+    );
+    selected_data.descendants().slice(1).forEach(collapse);
+          
+    const window_width  = window.innerWidth - margin_parameters.left - margin_parameters.right;
+    const window_height = window.innerHeight - margin_parameters.top - margin_parameters.bottom;
+    let zoomv =  d3.zoom()
+        .on("zoom", function () {
+            //UPDATE ZOOM BAR
+            const scrollRatio = d3.select(".mct").property("scrollTop")/d3.select(".mct").property("scrollHeight");
+
+            d3.select(".chart").transition()
+                .duration(1000)
+                .attr("transform", " translate("+0+ ","+0+")  scale(" + d3.event.transform.k+")")
+                .attr("scale",d3.event.transform.k)
+            ;
+
+            d3.select(".div_svg").transition()
+                .duration(1000)
+                .attr("width", (window_width + margin_parameters.left + margin_parameters.right)*d3.event.transform.k)
+                .attr("height", (heatmap_parameters.nodeSpaceY*(selected_data.descendants().length)+heatmap_parameters.sample_name_height+20)*d3.event.transform.k)
+                .attr("viewBox", [0,0, (window_width + margin_parameters.left + margin_parameters.right)*d3.event.transform.k, (heatmap_parameters.nodeSpaceY*(selected_data.descendants().length)+heatmap_parameters.sample_name_height+20)*d3.event.transform.k])
+            ;
+            setTimeout(() => {  updateGraph(); }, 1100);
+        })
+        .scaleExtent([minZoom, maxZoom])
+    ;
+
+    d3.select(".chart").call(zoomv)
+        .on("dblclick.zoom", null)
+        .on("wheel.zoom", null)
+        .on("touchstart.zoom", null)
+        .on("touchmove.zoom", null)
+        .on("touchend.zoom", null)
+    ;
+    d3.select(".zcc").property("value",  80);
+    d3.select(".chart").call(zoomv.transform,d3.zoomIdentity.translate(0,0).scale(zScale(d3.select(".zcc").property("value"))));
+
+    d3.select(".chart")
+        .attr("transform","scale("+zScale(d3.select(".zcc").property("value"))+")")
+        .attr("scale",zScale(d3.select(".zcc").property("value")));
+    
+    d3.select(".xn").attr('transform', 'translate(' + (d3.select(".xn").attr('data-x_position')*1) + ',' + (d3.select(".mct").property("scrollTop")*(1/d3.select(".chart").attr("scale"))) + ')');
+    
+    d3.select(".zcc").on("input", function(d){
+        zoomv.scaleTo(d3.select(".chart"),zScale(d3.select(".zcc").property("value")));
+    });
+    updateGraph();
+}
+
+function truncateString(str, num) {
+  if (str.length <= num) {
+    return str;
+  }
+  return str.slice(0, num) + '...';
+}
+
+function switch_opacity(d,n){
+    d.style("opacity",n);
+}
+
+function switch_opacity_dim(d){
+    d3.select(this).attr("opacity",0.5);
+}
+function switch_opacity_on(d){
+    d3.select(this).attr("opacity",1);
+}
+
+function viz_ligths_out(){
+    d3.selectAll(".y-node").style("opacity",0);//get all labels
+    d3.selectAll(".heatmap_square").style("opacity",0.5);//get all rows and columns of squares
+    d3.selectAll(".metadata_icon").style("opacity",0);//get all metadata icons
+    d3.selectAll(".download_icon").style("opacity",0);//get all download icons
+    d3.selectAll(".heatmap_col").style("opacity",0);//get all cols of squares and sample names
+}
+function viz_ligths_dim(){
+    d3.selectAll(".y-node").style("opacity",0.5);//get all labels
+    d3.selectAll(".heatmap_square").style("opacity",0.5);//get all rows of squares
+    d3.selectAll(".metadata_icon").style("opacity",0.5);//get all rows of squares
+    d3.selectAll(".download_icon").style("opacity",0.5);//get all rows of squares
+    d3.selectAll(".heatmap_col").style("opacity",0.5);//get all cols of squares and sample names
+}
+function viz_ligths_on(){
+    d3.selectAll(".y-node").style("opacity",1);//get all labels
+    d3.selectAll(".heatmap_square").style("opacity",1);//get all rows of squares
+    d3.selectAll(".metadata_icon").style("opacity",1);//get all rows of squares
+    d3.selectAll(".download_icon").style("opacity",1);//get all rows of squares
+    d3.selectAll(".heatmap_col").style("opacity",1);//get all cols of squares and sample names
+}
+
+function onmouseover_function_labels(d){
+    viz_ligths_on();
+    
+    let tooltip = d3.select(".toolt");
+    tooltip.attr("data-class",d3.select(this).attr("class"));
+
+    if(d.data.property_id){
+
+        generate_property_tooltip_html_content(tooltip, d);
+    }else{
+
+        generate_step_tooltip_html_content(tooltip, d);
+    }
+    
+    d3.selectAll("."+String(d.idx)).style("opacity",1);
+
+    if(d.children){
+        d3.select(this).style("cursor", "zoom-out");
+    }else{
+        d3.select(this).style("cursor", "zoom-in");
+    }
+    if(d.height === 0){
+        d3.select(this)
+            .style("cursor", "not-allowed");
+    }
+}
+function onmouseout_function_labels(d){
+    viz_ligths_on();
+}
+
+function onmouseover_heatmap_squares(d,i){
+    viz_ligths_on();
+    viz_ligths_dim();
+    d3.selectAll("."+String(d3.select(this.parentNode).data()[0].idx)).style("opacity",1);//rows
+    //Columns on
+    d3.selectAll(".heatmap_col"+i).style("opacity",1);//cols
+    d3.selectAll(".x-node"+i).attr("font-size", 18);
+    let ygap_functions = 20;
+    let ygap_values    = 60;
+    let ygap_samples   = 40;
+    
+    let xgap_functions = 20;
+    let xgap_values    = 20;
+    let xgap_samples   = -50;
+    const tt_bottom_position           = d3.select(".mct").node().getBoundingClientRect().height - d3.select(this).node().getBoundingClientRect().top;
+    const tt_bottom_position_threshold = ygap_values+parseInt(d3.select(".value_tt").style("height"));
+
+    if(tt_bottom_position<=tt_bottom_position_threshold){
+        ygap_functions = -20;
+        ygap_values    = -60;
+        ygap_samples   = -60;
+        
+        xgap_functions = 20;
+        xgap_values    = 20;
+        xgap_samples   = 0;
+    }else{
+        ygap_functions = 20;
+        ygap_values    = 60;
+        ygap_samples   = 60;
+        
+        xgap_functions = 20;
+        xgap_values    = 20;
+        xgap_samples   = 0;
+    }
+   
+    d3.select(".function_name_tt")
+        .style("visibility","visible")
+        .style("left",(d3.select(this).node().getBoundingClientRect().left+xgap_functions)+"px")
+        .style("top",(d3.select(this).node().getBoundingClientRect().top+ygap_functions)+"px")
+        .text(d3.select(this.parentNode).data()[0].data.name)
+    ;
+
+    
+    d3.select(".value_tt")
+        .style("visibility","visible")
+        .style("left",(d3.select(this).node().getBoundingClientRect().left+xgap_values)+"px")
+        .style("top",(d3.select(this).node().getBoundingClientRect().top+ygap_values)+"px")
+        .text(d3.select(this).data())
+    ;
+
+    
+    d3.select(".sample_name_tt")
+        .style("visibility","visible")
+        .style("left",(d3.select(this).node().getBoundingClientRect().left+xgap_samples)+"px")
+        .style("top",(d3.select(this).node().getBoundingClientRect().top+ygap_samples)+"px")
+        .text(d3.select(".x-node"+i).text())
+    ;
+    
+}
+
+function onmouseout_heatmap_squares(d,i){
+    d3.selectAll(".x-node"+i).attr("font-size", 12)
+    viz_ligths_on();
+
+    d3.select(".value_tt").style("visibility","hidden");
+    d3.select(".value_tt").style("left","0px");
+    d3.select(".value_tt").style("top","0px");
+    d3.select(".sample_name_tt").style("visibility","hidden");
+    d3.select(".sample_name_tt").style("left","0px");
+    d3.select(".sample_name_tt").style("top","0px");
+    d3.select(".function_name_tt").style("visibility","hidden");
+    d3.select(".function_name_tt").style("left","0px");
+    d3.select(".function_name_tt").style("top","0px");
+}
+
+function BiggerElements(val){
+    return function(evalue, index, array){
+        return (evalue >= val);
+    };
+}
+
+function InbetweenElements(x,y){
+    return function(evalue, index, array){
+        return (parseInt(evalue.nodeY) >= x && parseInt(evalue.nodeY) <=y);
+    };
+}
+
+function updateGraph (){
+    
+    let heatColor = d3.scaleOrdinal()
+        .domain(['YES','PARTIAL','NO'])
+        .range([d3.select(".rect0").style("fill"),d3.select(".rect1").style("fill"),d3.select(".rect2").style("fill")]);//takes them from the legend objects
+    ;
+    //NODE manipulation
+    let pre_filter_nodes             = selected_data.descendants().slice(1);//the slice is used to avoid showing the first node
+    const scale                      = zScale(d3.select(".zcc").property("value"));
+    d3.select(".div_svg")
+        .attr("width", (window.innerWidth)*scale)
+        .attr("height", (parseInt(d3.select(".div_svg").attr("data-nodeSpaceY"))*pre_filter_nodes.length + parseInt(d3.select(".div_svg").attr("data-sample_name_height")) + 20)*scale)
+        .attr("viewBox", [0, 0, (window.innerWidth)*scale, parseInt(d3.select(".div_svg").attr("data-nodeSpaceY")*pre_filter_nodes.length + parseInt(d3.select(".div_svg").attr("data-sample_name_height")) + 20)*scale])
+    ;
+    const downloadable_steps              = [];
+    const svg_height_min                  = (parseInt(d3.select(".div_svg").attr("data-nodeSpaceY"))*pre_filter_nodes.length + parseInt(d3.select(".div_svg").attr("data-sample_name_height")) + 20)*minZoom;
+    const set_of_screens_in_onepage       = 3;
+    const mct_height                      = d3.select(".mct").node().getBoundingClientRect().height;
+    const page_number                     = Math.ceil(svg_height_min/mct_height);
+    const current_mct_scroll_top          = d3.select(".mct").property("scrollTop");
+    let   i                               = 0;
+    let visible_node_min_threshold_vector = [];
+    let visible_node_max_threshold_vector = [];
+    while(i < page_number){
+      visible_node_min_threshold_vector.push(Math.floor(i*(1/minZoom)*mct_height*(scale)));
+      if(i+1===page_number){
+          visible_node_max_threshold_vector.push(svg_height_min*(1/minZoom)*(scale));
+      }else{
+          visible_node_max_threshold_vector.push(Math.floor((i+1)*(1/minZoom)*mct_height*(scale)));
+      }
+      i++;
+    }
+    
+    let visible_node_min_threshold = 0;
+    let visible_node_max_threshold = 0;
+    let scroll_top_current_page    = 0;
+    
+    pre_filter_nodes.sort(function(a, b){return a.or - b.or;});
+    update_genome_properties_info(pre_filter_nodes.map(d => d.data.property_id));
+    counter       = 0;
+    pre_filter_nodes.forEach(function(d){
+        d.id    = counter;
+        d.nodeY = ((d3.select(".div_svg").attr("data-nodeSpaceY"))*(d.id+1)) - (d3.select(".div_svg").attr("data-nodeSpaceY")/2);
+        counter++;
+        return(d.id);
+    });
+    counter      = 0;
+    let nodes       = [];
+    if(page_number<=set_of_screens_in_onepage){
+        //print all
+        console.log("one set of 3 screens!");
+        scroll_top_current_page    = visible_node_max_threshold_vector.findIndex(BiggerElements(current_mct_scroll_top));
+        visible_node_min_threshold = visible_node_min_threshold_vector[0];
+        //max threshold to maximum svg size with scale
+        visible_node_max_threshold = visible_node_max_threshold_vector[page_number-1];
+        nodes                      = pre_filter_nodes.filter(InbetweenElements(visible_node_min_threshold*(1/scale),visible_node_max_threshold*(1/scale)));
+        
+        
+    }else{
+        //define pages and their thresholds 
+        //gets the page where my scroll top is at 
+        scroll_top_current_page = visible_node_max_threshold_vector.findIndex(BiggerElements(current_mct_scroll_top));
+        // define the set of three pages to show 
+        // define the threshold of the pages to show
+        switch(scroll_top_current_page){
+            case 0:
+                //first page so, show the 0, 1 and 2 pages
+                //console.log("I am scrolling in the first page!");
+                //let nodes       = selected_data.descendants().slice(1);//the slice is used to avoid showing the first node
+                visible_node_min_threshold = visible_node_min_threshold_vector[(scroll_top_current_page)];
+                visible_node_max_threshold = visible_node_max_threshold_vector[(scroll_top_current_page+2)];
+                //nodes = pre_filter_nodes.filter(InbetweenElements(visible_node_min_threshold,visible_node_max_threshold));
+                nodes = pre_filter_nodes.filter(InbetweenElements(visible_node_min_threshold*(1/scale),visible_node_max_threshold*(1/scale)));
+                break;
+            case page_number:
+                nodes = pre_filter_nodes.filter(InbetweenElements(visible_node_min_threshold*(1/scale),visible_node_max_threshold*(1/scale)));
+                break;
+            default:
+                visible_node_min_threshold = visible_node_min_threshold_vector[(scroll_top_current_page-1)];
+                visible_node_max_threshold = visible_node_max_threshold_vector[(scroll_top_current_page+1)];
+                nodes = pre_filter_nodes.filter(InbetweenElements(visible_node_min_threshold*(1/scale),visible_node_max_threshold*(1/scale)));
+                break;
+        }
+    }
+    d3.select(".mct").attr("data-scroll_top_current_page",scroll_top_current_page);
+    
+    let GyNodes = d3.select(".yn");
+    
+    GyNodes
+        .append("rect")
+        .attr("class","yn_background")
+        .style("display","block")
+        .style("fill","white")
+        .style("opacity",0.7)
+    ;
+    let yNode = d3.select(".yn").selectAll('g.y-node')
+            .data(nodes,function(d) {
+                return d.idx;
+            });
+        yNode.join(
+            function(enter){
+                let yNodeEnter = enter
+                        .append("g")
+                        //.transition()
+                        .attr('class',function(d) {
+                            return 'y-node '+ d.idx;}
+                        );
+                    yNodeEnter.append("text")
+                        .attr('class',function(d) {
+                            return 'y-node '+ d.idx;}
+                        )
+                        .attr('transform', function(d) { 
+                            return 'translate(' + d.yLinkScaledLenght + ',' + (d.nodeY+3) + ')'; 
+                        })
+                        .style('fill', "white")
+                        .attr("font-family", " Arial, sans-serif")
+                        .attr("font-size", function(d){
+                                return (15-(d.depth)*1.2);
+                            }
+                        )
+                        .text(d => d.data.name)
+                        .style("font-weight", function(d) {
+                            let fw = "normal";
+                            if(d.height ===0){
+                                fw = "normal";
+                            }else{
+                                fw = (d.children || d._children) ? "bold": "normal";
+                            }
+                            return (fw);
+                        })
+                        .on('mouseover', onmouseover_function_labels)
+                        .on('mouseout', onmouseout_function_labels)
+                        .on('click', click)
+                        .transition()
+                            .duration(d3.select(".yn").attr("data-intro_animation_time"))
+                            .style('fill', "black")
+                ;
+                return(yNodeEnter);
+            },
+            function(update){
+                let yNodeUpdate = update
+                ;
+                    yNodeUpdate.select("text")
+                        .style("font-weight", function(d) {
+                            let fw = "normal";
+                            if(d.height ===0){
+                                fw = "normal";
+                            }else{
+                                fw = (d.children || d._children) ? "bold": "normal";
+                            }
+                            return (fw);
+                        })
+                        .text(d => d.data.name)
+                        .on('mouseover', onmouseover_function_labels)
+                        .on('mouseout', onmouseout_function_labels)
+                        .attr('transform', function(d) { return 'translate(' + d.yLinkScaledLenght + ',' + (d.nodeY+3) + ')'; })
+                        .transition()
+                            .duration(d3.select(".yn").attr("data-intro_animation_time"))
+                            .style("fill","black")
+                ;
+                return(yNodeUpdate);
+            },
+            function(exit){
+                let yNodeExit = exit;
+                    yNodeExit.select("text.y-node") 
+                            .transition()
+                            .duration(d3.select(".yn").attr("data-intro_animation_time"))
+                            .style("fill","white")
+                            
+                    ;
+                    yNodeExit.remove();
+                return(yNodeExit);
+            }
+        );
+        
+        d3.select(".yn_background")
+                .attr("width",d3.select(".yn").node().getBBox().width*1)
+                .attr("height",d3.select(".yn").node().getBBox().height*1)
+        ;
+        const yn_x_position      = d3.select(".yn").attr("data-position_x")*1;
+        const yn_total_width     = d3.select(".yn").node().getBBox().width*1;
+        const yn_container_width = d3.select(".div_svg").attr("width")*1
+        
+        if(yn_x_position - yn_total_width > yn_container_width){
+            console.log("I enter to correct yn's x position");
+            d3.select(".yn").attr("data-position_x",yn_x_position - yn_total_width);
+            d3.select(".yn").attr("transform","translate(" + (yn_x_position - yn_total_width) + "," + (0) + ")");
+        }else{
+            console.log("no need to correct yn's x position");
+        }
+        
+    let nCols = d3.select(".table").attr("data-sample_names_length");
+    let bandX = d3.scaleBand()
+        .domain(d3.range(nCols))
+        .range([0, d3.select(".table").attr("data-heatmapWidth")]);
+
+    let rows = d3.select(".table").selectAll('.row')
+        .data(nodes,function(d) {
+            return d.idx;
+        });
+    rows.join(
+        function(enter){
+            let rowEnter = enter.append('g')
+                .attr('class',function(d) {return 'row '+ d.idx;})
+                .style('opacity', 0)
+                .attr('transform', function(d, i) {
+
+                    return 'translate(0, ' + (d.nodeY- (d3.select(".div_svg").attr("data-nodeSpaceY")/2)) + ')';
+                });  
+            let rowEnterRect = rowEnter
+                .selectAll('rect')
+                .data(function(d) {
+                    return(d.data.result);
+                });
+            rowEnterRect
+                .join(
+                    function(enter){
+                        let rowEnterRect = enter.append('rect')
+                            .attr("class",function (d,i) {return "heatmap_square heatmap_col heatmap_col"+i+" "+d3.select(this.parentNode).data()[0].idx ;})//assigning to the rects their column row indexes
+                            .style('fill', function (d) {return heatColor(d);})
+                            .style('opacity', 1)
+                            .attr('x', function(d, i) {return bandX(i);})
+                            .style('stroke', '#000')
+                            .style('stroke-width', 1)
+                            .attr('width', bandX.bandwidth())
+                            .attr('height', d3.select(".div_svg").attr("data-nodeSpaceY"))
+                            .on('mouseover', onmouseover_heatmap_squares)
+                            .on('mouseout', onmouseout_heatmap_squares)
+                        return(rowEnterRect);
+                    }
+                );
+            rowEnter.transition()
+                .duration(d3.select(".yn").attr("data-intro_animation_time"))
+                    .style('opacity', 1)
+            ;
+            return(rowEnter);
+        },
+        function(update){
+            let rowUpdate = update;
+                rowUpdate
+                    .transition()
+                        .duration(1500)
+                        .attr('transform', function(d, i) {
+                            return 'translate(0, ' + (d.nodeY- (d3.select(".div_svg").attr("data-nodeSpaceY")/2)) + ')';
+                        })
+                        .style('opacity', 1)
+                        ;
+                rowUpdate.selectAll('rect')
+                    .style('fill', function (d) {
+                            return heatColor(d);
+                        })
+                    .style('opacity', 1)
+                    .attr('x', function(d, i) {return bandX(i);})
+                    .style('stroke', '#000')
+                    .style('stroke-width', 1)
+                    .attr('width', bandX.bandwidth())
+                    .attr('height', d3.select(".div_svg").attr("data-nodeSpaceY"));
+
+            return(rowUpdate);
+        },
+        function(exit){
+            let rowExit = exit.remove();
+            return(rowExit);
+        }
+    );
+
+    if (!loaded_micromeda_file){
+        console.log("no micromeda file loaded, can not download properties");
+    }else{
+        console.log("I loaded a micromeda file, check if we have to draw the download icons");
+        downloadable_steps.push(nodes.filter(is_node_downloadable));
+
+        let d_icon = d3.select(".download_icon_holder").selectAll('.download_icon')
+            .data(downloadable_steps[0],function(d) {
+                return d.idx;
+            });
+        d_icon.join(
+            function(enter){
+                let iconEnter = enter.append('g')
+                    .style('opacity', 1)
+                    .attr('class',function(d) {return 'download_icon '+ d.idx;})
+                    .attr('transform', function(d, i) {
+                        return 'translate(0, ' + ((d.nodeY) - (d3.select(".div_svg").attr("data-nodeSpaceY")/2))+ ')';
+                    })
+                    .on("click", function (hovered_tree_node) {
+                            //Activating the text
+                        let tooltip = d3.select(".download_protein_tt");
+                        d3.select(this)
+                                //.text(function(d) { return '\uf019' ;})
+                                .style("cursor","pointer")
+                        ;
+                        if(tooltip.style("visibility")==="hidden"){
+                            tooltip.attr("data-class",d3.select(this).attr("class"));
+                            generate_download_tooltip_html_content(tooltip, hovered_tree_node);
+                            console.log("size of the download tool tip");
+                            console.log(d3.select(this).node().getBoundingClientRect());
+                            tooltip
+                                .style("visibility","visible")
+                                .style("left",(d3.select(this).node().getBoundingClientRect().left+10)+"px")
+                                .style("top",(d3.select(this).node().getBoundingClientRect().top)+"px")
+
+                            ;
+                        }else{
+                            tooltip.style("visibility","hidden");
+                        }
+
+
+                      })
+                    .append("image")
+                    .attr("xlink:href","./assets/firefox_download.png")
+                    .attr("width", 15)
+                    .attr("height", 21)
+                    
+                ;  
+                iconEnter.transition()
+                    .duration(d3.select(".yn").attr("data-intro_animation_time"))
+                        .style('opacity', 1)
+                ;
+                return(iconEnter);
+            },
+            function(update){
+                let iconUpdate = update;
+                    iconUpdate
+                        .transition()
+                            .duration(1500)
+                            .attr('transform', function(d, i) {
+                                return 'translate(0, ' + ((d.nodeY) - (d3.select(".div_svg").attr("data-nodeSpaceY")/2))+ ')';
+                            })
+                            .style('opacity', 1)
+                            ;
+
+                return(iconUpdate);
+            },
+            function(exit){
+                let iconExit = exit.remove();
+                return(iconExit);
+            }
+        );
+    }
+};
+
+function update_genome_properties_info(genome_property_ids)
+{
+    for (let id_index in genome_property_ids)
+    {
+        let current_id = genome_property_ids[id_index];
+
+        localforage.getItem(current_id).then(function (local_genome_properties_data) {
+
+            if (local_genome_properties_data === null)
+            {
+                let data_url = back_end_url + 'genome_properties/' + current_id;
+
+                if(loaded_micromeda_file){
+                    jQuery.getJSON(data_url, function (remote_genome_properties_data) {
+                    localforage.setItem(current_id, remote_genome_properties_data).then(function () {
+                        
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                    });
+                }
+                
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+}
+
+function draw_top_navbar(topnavbar_parameters){
+    let topnavbar = d3.select("body")
+        .append("nav")
+        .attr("class","navbar navbar-expand-lg navbar-light bg-light")
+        .style('position','fixed')
+        .style('top',topnavbar_parameters['top'])
+        .style("width",topnavbar_parameters['width'])
+        .style("z-index",100)
+    ;
+    //INTERACTIVE TITLE OF THE WEBSITE
+    topnavbar.append("img")
+        .attr("src",topnavbar_parameters['logo_url'])
+        .attr("class","d-inline-block align-top")
+    ;
+    topnavbar.append("a")
+        .attr("href","#")
+        .attr("class","navbar-brand")
+        .style("margin-left","1rem")
+        .text(topnavbar_parameters['tile_text'])
+    ;
+    //BUTTON TO HIDE THE RESET AND SEARCH BAR WHEN THE SCREEN IS SMALL
+    topnavbar.append("button")
+        .attr("class","navbar-toggler")
+        .attr("type","button")
+        .attr("data-toggle","collapse")
+        .attr("data-target","#navbarSC")
+        .attr("aria-controls","navbarSC")
+        .attr("aria-expanded","false")
+        .attr("aria-label","Toggle Navigation")
+        .append("span")
+            .attr("class","navbar-toggler-icon")
+    ;
+
+    let topnavbar_elements  = topnavbar.append("div")
+        .attr("class","collapse navbar-collapse")
+        .attr("id","navbarSC")
+        .attr("position","relative")
+        .style("z-index",50)
+    ;
+    topnavbar_elements.append("ul")
+        .attr("class","navbar-nav mr-auto")
+        .append("li")
+            .attr("class","nav-item active")
+            .append("a")
+                .attr("class","nav-link")
+                .attr("href","./html/upload_view.html")
+                //.attr("href","#")
+                .text("Upload")
+    ;
+
+}
+
+function draw_content_container(general_parameters){
+    let general_content_container_parameters = general_parameters["general_content"];
+    let content_container_parameters         = general_content_container_parameters['general_container'];
+    let sidebar_parameters                   = general_content_container_parameters['sidebar'];
+    let general_content_container            = d3.select("body")
+        .append("div")
+            .attr("class","gcc")
+            .style("display","flex")
+            .style("align-items","stretch")
+            .style("position","fixed")
+            .style("width",content_container_parameters['width'])
+            .style("top",content_container_parameters['top'])
+            .style("bottom",content_container_parameters['bottom'])
+            .style("margin-bottom",content_container_parameters['margin-bottom']+"px")
+            .style("margin-top",content_container_parameters['margin-top']+"px")
+        ;
+    
+    //Drawing the left sidebar
+    let sidebar = general_content_container
+        .append("div")
+        .attr("class","sdb collapse show")
+        .attr("id","sidebar")
+        .style("width",sidebar_parameters['width'])
+        .style("min-width",sidebar_parameters['min-width'])
+        .style("height",sidebar_parameters['height'])
+        .style("padding",sidebar_parameters['padding'])
+        .style("padding-bottom",sidebar_parameters['padding-bottom'])
+        .style("border-right-width",sidebar_parameters['border-right-width'])
+        .style("border-right-style",sidebar_parameters['border-right-style'])
+        .style("border-right-color",sidebar_parameters['border-right-color'])
+        .style("overflow-y","scroll")
+        .style("overflow-x","hidden")
+    ;
+    //Adding the selection filter to the sidebar
+    let sidebar_form = sidebar.append("form")
+    ;
+
+    let sidebar_form_group = sidebar_form.append("div")
+        .attr("class","form-group")
+    ;
+    sidebar_form_group.append("label")
+        .attr("for","fs1")//filter menu select filter select
+        .text("Filter Content")
+    ;
+    let sidebar_form_group_select = sidebar_form_group.append("select")
+        .attr("id","fs1")
+        .attr("class","fms form-control")//filter menu select
+        .attr("name","filter")
+        .attr("data-filter","all")
+    ;
+    sidebar_form_group_select.append("option")
+        .attr("class","fmdo")//option
+        .attr("value","all")
+		.attr("selected","true")
+        .text("All")
+    ;
+    sidebar_form_group_select.append("option")
+        .attr("class","fmdo")//options
+        .attr("value","path")
+        .text("Pathways")
+    ;
+    sidebar_form_group_select.append("option")
+        .attr("class","fmdo")//options
+        .attr("value","mpath")
+        .text("Meta-Pathways")
+    ;
+    //Checkboxes
+    let fitler_checkboxes_parameters = sidebar_parameters['checkboxes'];
+    let filter_checkboxes = sidebar_form_group.append("div")
+        .attr("class","form-group text-center")
+        .style("margin-top","1rem")
+    ;
+    let checkbox_Yes = filter_checkboxes.append("div")
+        .attr("class","form-check form-check-inline")
+    ;
+    checkbox_Yes.append("input")
+        .attr("type","checkbox")
+        .attr("class","fry form-check-input")
+        .attr("value","Y")
+        .attr("id","fr_y")
+        .property("checked",fitler_checkboxes_parameters['check'][0])
+    ;
+    checkbox_Yes.append("label")
+        .attr("class","form-check-label")
+        .attr("for","fr_y")
+        .text("YES")
+    ;
+    let checkbox_Partial = filter_checkboxes.append("div")
+        .attr("class","form-check form-check-inline")
+    ;
+    checkbox_Partial.append("input")
+        .attr("type","checkbox")
+        .attr("class","frp form-check-input")
+        .attr("value","P")
+        .attr("id","fr_p")
+        .property("checked",fitler_checkboxes_parameters['check'][1])
+    ;
+    checkbox_Partial.append("label")
+        .attr("class","form-check-label")
+        .attr("for","fr_p")
+        .text("PARTIAL")
+    ;
+    let checkbox_No = filter_checkboxes.append("div")
+            .attr("class","form-check form-check-inline")
+    ;
+    checkbox_No.append("input")
+        .attr("type","checkbox")
+        .attr("class","frn form-check-input")
+        .attr("value","N")
+        .attr("id","fr_n")
+        .property("checked",fitler_checkboxes_parameters['check'][2])
+    ;
+    checkbox_No.append("label")
+        .attr("class","form-check-label")
+        .attr("for","fr_n")
+        .text("NO")
+    ;
+    let checkbox_Unique = filter_checkboxes.append("div")
+            .attr("class","form-check form-check-inline")
+    ;
+    checkbox_Unique.append("input")
+        .attr("type","checkbox")
+        .attr("class","frs form-check-input")
+        .attr("value","S")
+        .attr("id","fr_s")
+        .property("checked",fitler_checkboxes_parameters['check'][3])
+    ;
+    checkbox_Unique.append("label")
+        .attr("class","form-check-label")
+        .attr("for","fr_s")
+        .text("Unique")
+        .on("mouseover",function(){
+            d3.select(".unique")
+                .style("visibility","visible")
+                .style("top",(this.getBoundingClientRect().top + this.getBoundingClientRect().height+ 3)+"px")
+                .style("left",(this.getBoundingClientRect().left + this.getBoundingClientRect().width/2)+"px")
+            ;
+            }
+        )
+        .on("mouseout",function(){
+            d3.select(".unique")
+                .style("visibility","hidden");
+        })
+    ;
+    sidebar_form_group.append("hr");
+    //LEGENDS
+    let legends_parameters = sidebar_parameters['legends'];
+    let heatColor = d3.scaleOrdinal()
+        .domain(legends_parameters['color_scale_domain'])
+        .range(legends_parameters['color_scale_range']);
+    ;
+    let legend_menu = sidebar_form_group.append("div")
+        .attr("class","form-group")
+    ;
+    legend_menu.append("label")
+                .attr("for","sdbf_c")//filter menu select filter select
+                .text("Click the legends to change color")
+            ;
+    //let legends = legend_menu.append('svg')
+    let legends = legend_menu.append('div')
+        .attr("id","sdbf_c")
+        .attr("width",legends_parameters['legend_menu_width'])
+        .attr("height",legends_parameters['legend_menu_height'])
+        .style("vertical-align", legends_parameters['legend_menu_vertical-align'])
+    ;
+    let GLegends = legends.selectAll(".leg")
+            .data(legends_parameters['color_scale_domain'])
+    ;
+	//HERE I can update the color customization
+    GLegends.join(
+        function(enter){
+        let GLegends_div_Enter = enter
+                .append("div")
+                .attr("class","form-group row")
+        ;
+        GLegends_div_Enter.append("label")
+            .attr("for",function(d,i){
+              return "rect"+i;  
+            })//filter menu select filter select
+            .attr("class","col-form-label col-sm-4")
+            .style("font-size","12px")
+            .text(d =>d)
+        ;
+        GLegends_div_Enter
+                .append("input")
+                .attr("id",function(d,i){
+                  return "rect"+i;  
+                })
+                .attr("class",function(d,i){
+                  return "leg rect"+i;  
+                })
+                .attr("type","color")
+                .attr("data-color",function(d,i) {
+                        return (legends_parameters["color_scale_range"][i]);
+                    })
+                .attr("value",function(d,i) {
+                    return (legends_parameters["color_scale_range"][i]);
+                    })
+                .attr("height",legends_parameters['legend_square_height'])
+                .attr("width",legends_parameters['legend_square_height'])
+                //.attr("fill",d => heatColor(d))
+                .style("fill",d => heatColor(d))
+                .on("change",function(){
+                    //change color of the respective legend 
+                     d3.select(this)
+                          .style("fill",this.value);
+                     ;
+                     d3.select(this)
+                         .attr("data-color",this.value)
+                     ;
+                     updateGraph();
+                 })
+            ;
+            return(GLegends_div_Enter);
+        })
+    ;
+    sidebar_form_group.append("hr");
+    //Drawing the Buttons
+    let sidebar_buttons_form_group = sidebar_form_group.append("div")//side bar buttion
+        .attr("class","form-group text-center")
+    ;
+    sidebar_buttons_form_group.append("button")
+        .attr("type","button")
+        .attr("class","btn btn-outline-secondary btn-sm rb")
+        .text("Reset")
+    ;
+    sidebar_buttons_form_group.append("button")
+        .attr("class", "btn btn-outline-secondary btn-sm eab")
+        .attr("type", "button")
+        .text("Expand all")
+        .on("mouseover",function(){
+            d3.select(".expand")
+                .style("visibility","visible")
+                .style("top",(this.getBoundingClientRect().top + this.getBoundingClientRect().height+ 3)+"px")
+                .style("left",(this.getBoundingClientRect().left + this.getBoundingClientRect().width/2)+"px")
+            ;
+            }
+        )
+        .on("mouseout",function(){
+            d3.select(".expand")
+                .style("visibility","hidden");
+        })
+    ;
+    sidebar_form_group.append("hr");
+    //Drawing Zoom controls
+    let sidebar_zoom_control = sidebar_form_group.append("div")//side bar buttion
+        .attr("class","form-group")
+    ;
+    sidebar_zoom_control.append("label")
+        .attr("for","zc")//filter menu select filter select
+        .text("Zoom control")
+    ;
+    sidebar_zoom_control.append("input")
+        .attr("class","form-control zcc")
+        .attr("id","zc")
+        .attr("type","range")
+        .attr("min",0)
+        .attr("max",100)
+        .attr("value",80)
+		//modify the padding to cero
+		.style("padding",0)
+    ;
+    sidebar_form_group.append("hr");
+    //Drawing the select2 Search selector
+    let sidebar_select2_search = sidebar_form_group
+        .append("select")//navigationbar division select
+            .attr("class","ndfs select2-accessible")//nav-div-form-select
+            .attr("name","properties")
+            .attr("title","Property Search")
+            .attr("tabindex",-1)
+            .style("width","100%")
+            .attr("aria-hidden","true")
+    ;
+    sidebar_select2_search.append("option")/* to be able to set the placeholder*/;
+    
+    let option_names = sidebar_select2_search.append("optgroup")
+        .attr("label","Property Names")
+        .attr("class","ndfso_names")
+    ;
+}
+
+function calculate_heatmap_width(heatmap_parameters, sample_names){
+    let   heatmap_width        = sample_names.length*heatmap_parameters.heatmap_sample_square_size;
+    return(heatmap_width);
+}
+
+function BiggerElements(val){
+    return function(evalue, index, array){
+        return (evalue >= val);
+    };
+}
+
+function draw_heatmap(general_parameters,sample_names){
+    let general_content_parameters   = general_parameters["general_content"];
+    let heatmap_parameters           = general_content_parameters["heatmap"];
+    let margin_parameters            = general_parameters["margins"];
+    let heatmap_width                = calculate_heatmap_width(heatmap_parameters,sample_names);
+    let mct_footer = d3.select(".gcc")
+        .append("div")
+            .attr("class","mct_foot")
+            .style("display", 'flex')
+            .style("flex-direction", 'column')
+            .style("flex-wrap", 'nowrap')
+            .style("justify-content", 'flex-start')
+            .style("align-items", 'strech')
+            .style("width","100%")
+    ;
+    
+    let mct = mct_footer
+        .append("div")
+        .attr("class","mct")
+        .style("order","0")
+        .style("flex-grow","1")
+        .style("flex-shrink","1")
+        .style("flex-basis","auto")
+        .style("align-self","flex-start")
+        .style("position","relative")
+        .style("z-index","1003")
+        .style("width","100%")
+        .style("box-shadow","0 0 5px 3px rgba(0,0,0,0.25) inset")
+        .style("overflow-y","scroll")
+        .on("scroll",function(){
+
+            d3.select(".xn").attr('transform', 'translate(' + (parseInt(d3.select(".xn").attr("data-x_position"))) + ',' + (d3.select(".mct").property("scrollTop")*(1/d3.select(".chart").attr("scale"))) + ')');
+            d3.select(".yn").attr('transform', 'translate(' + (parseInt(d3.select(".yn").attr("data-x_position"))) + ',' + (0) + ')');
+
+            const scale                             = zScale(d3.select(".zcc").property("value"));
+            const svg_height_min                    = Math.round(parseInt(d3.select(".div_svg").attr("height"))*(1/scale)*minZoom);
+            const mct_height                        = d3.select(".mct").node().getBoundingClientRect().height;
+            const page_number                       = Math.ceil(svg_height_min/mct_height);
+            const current_mct_scroll_top            = d3.select(".mct").property("scrollTop");
+            let   scroll_top_current_page           = 0;
+            let   i                                 = 0;
+            let   visible_node_max_threshold_vector = [];
+            while(i < page_number){
+                if(i+1===page_number){
+                    //fill the last element with the maximum size possible 
+                    visible_node_max_threshold_vector.push(svg_height_min*(1/minZoom)*(scale));
+                }else{
+                    visible_node_max_threshold_vector.push(Math.floor((i+1)*(1/minZoom)*mct_height*(scale)));
+                }
+                i++;
+              }
+            scroll_top_current_page = visible_node_max_threshold_vector.findIndex(BiggerElements(current_mct_scroll_top));
+
+            if(scroll_top_current_page === parseInt(d3.select(".mct").attr("data-scroll_top_current_page"))){
+                //same page do nothing
+            }else{
+                //send redraw order.
+                updateGraph();
+            }
+        })
+    ;
+
+    let sidebar_collapse_button = mct.append("button")
+        .attr("id","sidebar-button")
+        .attr("class","sidebar_collapse_btn btn btn-xs btn-light btn-outline-secondary")
+        .attr("type","button")
+        .attr("data-toggle","collapse")
+        .attr("data-target","#sidebar")
+        .attr("data-collapsed","0")
+        .attr("aria-expanded","false")
+        .attr("aria-controls","sidebar")
+        .style("position","fixed")
+        .style("width","12px")
+        .style("height","50px")
+        .style("left","300px")// 
+        .style("top","50%")
+        .style("padding-top","2px")
+        .style("padding-right","0px")
+        .style("padding-bottom","2px")
+        .style("padding-left","0px")
+        .style("border-top-left-radius",0)
+        .style("border-bottom-left-radius",0)
+        .style("z-index",10)
+        .on("click",function(){
+            let footer_collapse_button = d3.select(".footer_collapse_btn");
+            if(sidebar_collapse_button.attr("data-collapsed")==="0"){
+                //Collapsing sidebar
+                d3.select(".sidebar_collapse_btn_icon")
+                    .attr("class","sidebar_collapse_btn_icon fa fa-chevron-right")
+                ;
+                sidebar_collapse_button
+                        .style("left","0px")// 
+                        .attr("data-collapsed","1")
+                ;
+                footer_collapse_button
+                        .style("left","0px")// 
+                ;
+                //if the color pop ups are visible, make them invisible.
+                d3.select(".c0")
+                    .style("visibility","hidden")
+                ;
+                d3.select(".c1")
+                    .style("visibility","hidden")
+                ;
+                d3.select(".c2")
+                    .style("visibility","hidden")
+                ;
+            }else{
+                //Expanding sidebar
+                d3.select(".sidebar_collapse_btn_icon")
+                    .attr("class","sidebar_collapse_btn_icon fa fa-chevron-left")
+                ;
+                sidebar_collapse_button
+                        .style("left","300px")// 
+                        .attr("data-collapsed","0")
+                ;
+                footer_collapse_button
+                        .style("left","288px")// 
+                ;
+            }
+            
+        })
+    ;
+    sidebar_collapse_button.append("span")
+        .attr("class","sidebar_collapse_btn_icon fa fa-chevron-left")
+    ;
+    //**************************************************************************
+    //**                    Button to collapse the footer                     **
+    //**************************************************************************
+    let footer_collapse_button = mct.append("button")
+        .attr("id","footer-button")
+        .attr("class","footer_collapse_btn btn btn-xs btn-light btn-outline-secondary")
+        .attr("type","button")
+        .attr("data-toggle","collapse")
+        .attr("data-target","#foot")
+        .attr("data-collapsed","0")
+        .attr("aria-expanded","false")
+        .attr("aria-controls","foot")
+        .style("position","fixed")
+        .style("width","12px")
+        .style("height","25px")
+        .style("left","288px")// sidebar minus button's width
+        .style("bottom","50px")
+        .style("padding-top","2px")
+        .style("padding-right","0px")
+        .style("padding-bottom","2px")
+        .style("padding-left","0px")
+        .style("border-rigth-left-radius",0)
+        .style("border-left-left-radius",0)
+        .style("z-index",101)
+        .style("font-size","12px")
+        .on("click",function(){
+            
+            //logic for the collapsing buttons positions. 
+            if(footer_collapse_button.attr("data-collapsed")==="0"){
+                //Collapsing
+                d3.select(".footer_collapse_btn_icon")
+                    .attr("class","footer_collapse_btn_icon fa fa-chevron-up")
+                ;
+                footer_collapse_button
+                        .style("bottom","0px")// aqui sidebar width -1 px;
+                        .attr("data-collapsed","1")
+                ;
+                
+
+            }else{
+                d3.select(".footer_collapse_btn_icon")
+                    .attr("class","footer_collapse_btn_icon fa fa-chevron-down  ")
+                ;
+                footer_collapse_button
+                        .style("bottom","50px")// 
+                        .attr("data-collapsed","0")
+                ;
+            }
+            
+        })
+    ;
+    footer_collapse_button.append("span")
+        .attr("class","footer_collapse_btn_icon fa fa-chevron-down")
+        .style("marging", "auto")
+    ;
+    
+    //##########################################################################
+    //##                   DRAWING THE TOP HEATMAP                            ##
+    //##########################################################################
+    let dv = mct
+        .append("div")
+        //.append("g")
+        .attr("class","svg")
+        .style("z-index",0)
+
+    ;
+    //##########################################################################
+    //##                     HEATMAP CONTENT I ZOOM THIS                      ##
+    //##########################################################################
+            // this object is the window to see the target of the zoom.
+            // remember to scale this up
+			
+	
+    const scale                             = zScale(d3.select(".zcc").property("value"));
+            
+    let svg = dv
+        .append("svg")
+        .attr('transform', 'translate('+ (0) + ',' + (0) + ')')
+        .attr("class","div_svg")
+        .attr("data-nodeSpaceY",heatmap_parameters.nodeSpaceY)
+        .attr("data-sample_name_height",heatmap_parameters.sample_name_height)
+    ;
+    let gZoom = svg.append("g")
+        .attr("class","chart")
+        .attr("transform","scale("+scale+")")
+        .attr("scale",scale)
+        .style("position","relative")
+        .style("z-index","1001")
+    ;
+
+    // CREATING THE HEATMAP DRAWING SPACE 
+    const table_x_position         = heatmap_parameters.heatmap_controls_left_margin + heatmap_parameters.heatmap_icon_container_width + heatmap_parameters.heatmap_controls_left_margin;
+    const download_icon_x_position = table_x_position+ heatmap_width + heatmap_parameters.heatmap_controls_left_margin;
+    const GxNodes_x_position       = table_x_position;
+    const GyNodes_x_position       = download_icon_x_position + heatmap_parameters.heatmap_icon_container_width + heatmap_parameters.heatmap_controls_left_margin;
+    let heatmap = gZoom.append('g').attr('class', 'heatmap')
+        .attr('transform', 'translate('+ (0) + ',' + (heatmap_parameters.sample_name_height+20) + ')')
+        .attr("data-Y_link_lenght",heatmap_parameters.heatmap_sample_square_size)
+        .attr("data-link_margin",heatmap_parameters.heatmap_controls_margin)
+        .style("position","relative")
+        .style("z-index",1000)
+    ;
+    // table contains the heatmap squares
+    let table = heatmap.append('g')
+        .attr('class', 'table')
+        //.attr('transform', 'translate(' + (heatmap_parameters["Y_link_lenght"] + heatmap_parameters["link_margin"]) + ',' + (0) + ')')
+        .attr("data-x_position",table_x_position)
+        .attr('transform', 'translate(' + (table_x_position) + ',' + (0) + ')')
+        .attr("data-heatmapWidth",heatmap_width)
+        .attr("data-sample_names_length",sample_names.length)
+    ;
+    
+        // GxNodes contains the sample names
+    let GxNodes = gZoom.append('g')//you can intercept here for a rectangle to generate the blur
+        .attr('class', 'xn')
+        .attr("data-x_position",GxNodes_x_position)
+        .attr('transform', 'translate(' + (GxNodes_x_position) + ',' + (0) + ')')
+        .style("display","block")
+        .style("position","relative")
+        .style("z-index","1001")
+    ;
+    
+    // GyNodes contains the function labels
+    let GyNodes = heatmap.append('g')
+        .attr('class', 'yn')
+        //.attr('transform','translate(' + (heatmap_parameters["Y_link_lenght"]+ heatmap_width + heatmap_parameters["link_margin"] + 10) + ',' + (1e-6) + ')')
+        .attr("data-x_position",GyNodes_x_position)
+        .attr('transform','translate(' + (GyNodes_x_position) + ',' + (1e-6) + ')')
+        //.attr('transform','translate(' + (heatmap_parameters.heatmap_controls_margin) + ',' + (1e-6) + ')')
+        .attr("data-intro_animation_time",heatmap_parameters.intro_animation_time)
+    ;
+
+    let download_icon_holder = heatmap.append('g')
+        .attr('class', 'download_icon_holder')
+        .attr("data-x_position",download_icon_x_position)
+        .attr('transform', 'translate(' + (download_icon_x_position) + ',' + (0) + ')')
+    ;
+}
+
+function draw_tool_tips(general_content_parameters){
+    let sidebar_parameters = general_content_parameters["sidebar"];
+    let legend_parameters  = sidebar_parameters["legends"];
+    //##########################################################################
+    //##                       DRAWING THE TOOLTIPS                           ##
+    //##########################################################################    
+    
+    let tt1 = d3.select("body")
+        .append("span")
+        .attr("class","tt1 expand")
+        .style("visibility","hidden")
+        .style("width","120px")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("padding","5px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        .style("z-index","101")
+        .text("Warning might slow the site's response")
+    ;
+    let download_protein_tt = d3.select("body")
+        .append("span")
+        .attr("class","download_protein_tt")
+        .style("left","0px")
+        .style("top","0px")
+        .style("display","block")
+        .style("opacity",0.7)
+        .style("visibility","hidden")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("padding","5px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        .style("z-index","101")
+        .text("the download tooltip")
+    ;
+
+    let function_name_tt = d3.select("body")
+        .append("span")
+        .attr("class","function_name_tt")
+        .style("left","0px")
+        .style("top","0px")
+        .style("height","30px")
+        .style("opacity",0.7)
+        .style("visibility","hidden")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("vertical-align","middle")
+        .style("padding","2px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        //.style("z-index","101")
+        .text("here I will insert the function name")
+    ;
+    let sample_name_tt = d3.select("body")
+        .append("span")
+        .attr("class","sample_name_tt")
+        .style("left","0px")
+        .style("top","0px")
+        .style("height","30px")
+        .style("opacity",0.7)
+        .style("visibility","hidden")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("vertical-align","middle")
+        .style("padding","2px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        //.style("z-index","101")
+        .style("transform","rotate(270deg)")
+        .style("transform-origin","left 100%")
+        .text("shu")
+    ;
+    let value_tt = d3.select("body")
+        .append("span")
+        .attr("class","value_tt")
+        .style("left","0px")
+        .style("top","0px")
+        .style("height","30px")
+        .style("opacity",0.7)
+        .style("visibility","hidden")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("vertical-align","middle")
+        .style("padding","2px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        .text("here I will insert the value")
+    ;
+    //------------------------------------------------------------------
+    //------------------Unique filter tool tip--------------------------
+    //------------------------------------------------------------------
+    let tt1_f = d3.select("body")
+        .append("span")
+        .attr("class","tt1 unique")
+        .style("visibility","hidden")
+        .style("width","200px")
+        .style("background-color","black")
+        .style("color","#fff")
+        .style("text-align","center")
+        .style("padding","5px")
+        .style("border-radius","6px")
+        .style("position","fixed")
+        .style("z-index","101")
+        .text("The unique filter will show you the functions where at least one sample has a different value compared to the others")
+    ;
+    //------------------------------------------------------------------
+    //---------------------Color tool tips------------------------------
+    //------------------------------------------------------------------
+    let tt1_cy = d3.select("body")
+        .append("div")
+        .attr("class","tt1 c0")
+        .style("visibility","hidden")
+        .style("background-color","white")
+        .style("text-align","center")
+        .style("position","fixed")
+        .style("z-index","101")
+    ;
+    tt1_cy.append("span")
+        .style("font-size","12px")
+        .style("cursor","pointer")
+        .style("vertical-align","middle")
+        .on("click",function(){
+            d3.select(".c0")
+                .style("visibility","hidden")
+            ;
+        })
+        .text("X ")
+    ;
+    tt1_cy.append("input")
+        .attr("type","color")
+        .attr("id","y_color")
+        .attr("class","tool_tip_color_yes")
+        .attr("data-color",legend_parameters["color_scale_range"][0])
+        .attr("value",legend_parameters["color_scale_range"][0])
+        .on("change",function(){
+           //change color of the respective legend 
+            d3.select(".rect0")
+                 .style("fill",this.value);
+            ;
+            d3.select(".tool_tip_color_yes")
+                .attr("data-color",this.value)
+            ;
+            updateGraph();
+        })
+    ;
+    tt1_cy.append("label")
+        .attr("for","y_color")
+        .style("font-size","12px")
+        .text(" Choose your color")
+    ;        
+    let tt1_cp = d3.select("body")
+        .append("div")
+        .attr("class","tt1 c1")
+        .style("visibility","hidden")
+        .style("background-color","white")
+        .style("text-align","center")
+        .style("position","fixed")
+        .style("z-index","101")
+    ;
+    tt1_cp.append("span")
+        .style("font-size","12px")
+        .style("cursor","pointer")
+        .style("vertical-align","middle")
+        .on("click",function(){
+            d3.select(".c1")
+                .style("visibility","hidden")
+            ;
+        })
+        .text("X ")
+    ;
+    tt1_cp.append("input")
+        .attr("type","color")
+        .attr("id","p_color")
+        .attr("class","tool_tip_color_partial")
+        .attr("data-color",legend_parameters["color_scale_range"][1])
+        .attr("value",legend_parameters["color_scale_range"][1])
+        .on("change",function(){
+           //change color of the respective legend 
+            d3.select(".rect1")
+                 .style("fill",this.value);
+            ;
+            d3.select(".tool_tip_color_partial")
+                .attr("data-color",this.value)
+            ;
+            updateGraph();
+        })
+        ;
+    tt1_cp.append("label")
+        .attr("for","p_color")
+        .style("font-size","12px")
+        .text(" Choose your color")
+    ;
+    let tt1_cn = d3.select("body")
+        .append("div")
+        .attr("class","tt1 c2")
+        .style("visibility","hidden")
+        .style("background-color","white")
+        .style("text-align","center")
+        .style("position","fixed")
+        .style("z-index","101")
+    ;
+    tt1_cn.append("span")
+        .style("font-size","12px")
+        .style("cursor","pointer")
+        .style("vertical-align","middle")
+        .on("click",function(){
+            d3.select(".c2")
+                .style("visibility","hidden")
+            ;
+        })
+        .text("X ")
+    ;
+    tt1_cn.append("input")
+        .attr("type","color")
+        .attr("id","no_color")
+        .attr("class","tool_tip_color_no")
+        .attr("data-color",legend_parameters["color_scale_range"][2])
+        .attr("value",legend_parameters["color_scale_range"][2])
+        .on("change",function(){
+           //change color of the respective legend 
+            d3.select(".rect2")
+                 .style("fill",this.value);
+            ;
+            d3.select(".tool_tip_color_no")
+                .attr("data-color",this.value)
+            ;
+            updateGraph();
+        })
+    ;
+    tt1_cn.append("label")
+        .attr("for","no_color")
+        .style("font-size","12px")
+        .text(" Choose your color")
+    ;
+}
+
+function draw_footer(footer_parameters){
+    let foot = d3.select(".mct_foot")
+        .append("div")
+        .attr("id","foot")
+        .attr("class","foote bg-light collapse show")
+        .style("order","1")
+        .style("flex-grow","1")
+        .style("flex-shrink","0")
+        .style("flex-basis","auto")
+        .style("align-self","flex-start")
+        .style("width",footer_parameters['width'])
+        .style("text-align","center")
+        .style("z-index",100)
+        .style("overflow","scroll")
+    ;
+    let tooltip = foot.append("div")
+        .attr("class", "toolt")
+        .style("font-family", "Arial, sans-serif")
+        .style("font-size", "12px")
+        .style("opacity", 1)
+        .style("z-index",100)
+        .style("text-align","center")
+    ;
+    
+}
+
+function setup_object_actions(){
+    d3.select(".ub")
+        .on("click",function(){
+                //VALIDATE THE FIELDS
+                //Guarantee that at least a YES, PARTIAL, NO option is selected.
+                let fcheck = [d3.select(".fry").property("checked"),d3.select(".frp").property("checked"),d3.select(".frn").property("checked"),d3.select(".frs").property("checked")];
+                if(fcheck.some(d => d===true)){
+                    initHeatmapData();
+                }else{
+                    alert("Please choose at least one value from YES, NO, PARTIAL or Unique");
+                }
+                
+            }
+        )
+    ;
+    //RESET BUTTON
+    d3.select(".rb")
+        .on("click",function(){
+                selected_data.descendants().slice(1).forEach(collapse);//the collapse gunction was defined in the genome_properties_tree_fused.js file
+                updateGraph();
+            }
+        )
+    ;
+    //EXPAND ALL BUTTON
+    d3.select(".eab")
+        .on("click",function(){
+                selected_data.descendants().slice(1).forEach(expand);//the expand gunction was defined in the genome_properties_tree_fused.js file
+                updateGraph();
+            }
+        )
+    ;
+    //FILTER DROP BOX
+    d3.select(".fms").on("change",function(){
+        d3.select(".fms").attr("data-filter",this.value);
+        if(d3.select(".fms").attr("data-filter")==="all"){
+            d3.select(".fry").attr("disabled","true");
+            d3.select(".frp").attr("disabled","true");
+            d3.select(".frn").attr("disabled","true");
+            d3.select(".frs").attr("disabled","true");
+        }else{
+            d3.select(".fry").attr("disabled",null);
+            d3.select(".frp").attr("disabled",null);
+            d3.select(".frn").attr("disabled",null);
+            d3.select(".frs").attr("disabled",null);
+        }
+        //call the data changing function
+        initHeatmapData();
+    });
+    //CHECKBOXES
+    d3.select(".fry").on("change",function(){
+        d3.select(this).property("checked");
+        if(d3.select(".frs").property("checked")){
+            d3.select(".frs").property("checked",false);
+        }
+        //call the data changing function
+        let fcheck = [d3.select(".fry").property("checked"),d3.select(".frp").property("checked"),d3.select(".frn").property("checked"),d3.select(".frs").property("checked")];
+        if(fcheck.some(d => d===true)){
+            initHeatmapData();
+        }else{
+            alert("Please choose at least one value from YES, NO, PARTIAL or Unique");
+        }
+    });
+    d3.select(".frp").on("change",function(){
+        if(d3.select(".frs").property("checked")){
+            d3.select(".frs").property("checked",false);
+        }
+        //call the data changing function
+        let fcheck = [d3.select(".fry").property("checked"),d3.select(".frp").property("checked"),d3.select(".frn").property("checked"),d3.select(".frs").property("checked")];
+        if(fcheck.some(d => d===true)){
+            initHeatmapData();
+        }else{
+            alert("Please choose at least one value from YES, NO, PARTIAL or Unique");
+        }
+    });
+    d3.select(".frn").on("change",function(){
+        if(d3.select(".frs").property("checked")){
+            d3.select(".frs").property("checked",false);
+        }
+        //call the data changing function
+        let fcheck = [d3.select(".fry").property("checked"),d3.select(".frp").property("checked"),d3.select(".frn").property("checked"),d3.select(".frs").property("checked")];
+        if(fcheck.some(d => d===true)){
+            initHeatmapData();
+        }else{
+            alert("Please choose at least one value from YES, NO, PARTIAL or Unique");
+        }
+    });
+    d3.select(".frs").on("change",function(){
+        if(d3.select(this).property("checked")){
+            d3.select(".frn").property("checked",false);
+            d3.select(".frp").property("checked",false);
+            d3.select(".fry").property("checked",false);
+        }
+        //call the data changing function
+        let fcheck = [d3.select(".fry").property("checked"),d3.select(".frp").property("checked"),d3.select(".frn").property("checked"),d3.select(".frs").property("checked")];
+        if(fcheck.some(d => d===true)){
+            initHeatmapData();
+        }else{
+            alert("Please choose at least one value from YES, NO, PARTIAL or Unique");
+        }
+    });
+}
+
+function draw_sample_names(sample_names,general_parameters){
+    console.log("I am in drawing the sample names");
+    
+    let samples                      = sample_names;
+    let general_content_parameters   = general_parameters.general_content;
+    let heatmap_parameters           = general_content_parameters.heatmap;
+    //let margin_parameters            = general_parameters["margins"];
+    let heatmap_width                = calculate_heatmap_width(heatmap_parameters,sample_names);
+    let nodeSpaceX                   = heatmap_parameters.heatmap_sample_square_size;
+    let GxNodes = d3.select(".xn")
+    ;
+
+    GxNodes
+        .append("rect")
+		.attr("class","xn_background")
+        .style("position","relative")
+        .style("z-index","1000")
+        .style("display","block")
+        .style("fill","white")
+        .style("opacity",0.7)
+    ;
+    let xNode = GxNodes.selectAll('g.x-node')
+        .data(samples);
+    xNode.join(
+        function(enter){
+            let xNodeEnter = enter
+                    .append("g")
+                    .attr('class',(function (d,i) {return "x-node heatmap_col heatmap_col"+i ;}))
+                ;
+                xNodeEnter.append("text")
+                    .attr('class',function (d,i) {return "x-node x-node"+i ;})//"x-node"+i+
+                    .style("text-anchor", 'start')
+                    .attr("font-family", "Arial, sans-serif")
+                    .attr("font-size", "12px")
+                    .style('fill', "white")
+                    .attr("transform", function(d,i) { return "translate(" + ((nodeSpaceX*i) + (nodeSpaceX/2))+ "," + heatmap_parameters["sample_name_height"] + ")"+" rotate(315)"; })
+                    .text(function(d) { return d; })
+                    .transition()
+                        .duration(heatmap_parameters["intro_animation_time"])
+                            .style('fill', "black")
+                ;
+            return(xNodeEnter);
+        },
+        function(update){
+            let xNodeUpdate = update;
+                xNodeUpdate.select("text.x-node")
+                    .attr("transform", function(d,i) { return "translate(" + ((nodeSpaceX*i) + (nodeSpaceX/2))+ "," + heatmap_parameters["sample_name_height"] + ")"+" rotate(270)"; });
+            return(xNodeUpdate);
+        },
+        function(exit){
+            let xNodeExit = exit.remove();
+            return(xNodeExit);
+        }
+	);
+	const xn_background_height = GxNodes.node().getBBox().height*1;
+	const xn_background_y_pos  = heatmap_parameters["sample_name_height"] - xn_background_height;
+	console.log("width of xn");
+	console.log(GxNodes.node().getBBox().width*1);
+	console.log("height of xn");
+	console.log(xn_background_height);
+	d3.select(".xn_background")
+		.attr("width",GxNodes.node().getBBox().width*1)
+		.attr("height",xn_background_height)
+		.attr("transform","translate("+(0)+","+(xn_background_y_pos)+")")
+	;
+}
+
+
+function generate_download_tooltip_html_content(tooltip, hovered_tree_node) {//this one works only for steps
+    let step_number = hovered_tree_node.data.step_id;
+    let genome_property_id = hovered_tree_node.parent.data.property_id;//updated the object access to properties by adding .data
+
+    localforage.getItem('micromeda-result-key').then(function (result_key) {
+        if (result_key === null)
+        {
+            let fasta_url = back_end_url + 'fasta/' + genome_property_id + '/' + step_number;
+            let download_link_one = '<a target="_blank" rel="noopener noreferrer" href="' + fasta_url +'">' + 'Top 10 protein sequences' + '</a><br>';
+            let download_link_two = '<a target="_blank" rel="noopener noreferrer" href="' + fasta_url + '?all=true' + '">' + 'All protein sequences' + '</a>';
+            tooltip.html(download_link_one + download_link_two);
+        }
+        else {
+            let fasta_url = back_end_url + 'fasta/' + genome_property_id + '/' + step_number + '?result_key=' + result_key;
+            let download_link_one = '<a target="_blank" rel="noopener noreferrer" href="' + fasta_url +'">' + 'Top 10 protein sequences' + '</a><br>';
+            let download_link_two = '<a target="_blank" rel="noopener noreferrer" href="' + fasta_url + '?all=true' + '">' + 'All protein sequences' + '</a>';
+            tooltip.html(download_link_one + download_link_two);
+        }
+        
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
+
+function generate_step_tooltip_html_content(tooltip, hovered_tree_node)
+{
+    let parent_property_id   = "Parent property ID: " + hovered_tree_node.parent.data.property_id+"<br>";
+    let parent_property_name = "Parent property name: " + hovered_tree_node.parent.data.name+"<br>";
+    let step_id              = "Step Number: "+hovered_tree_node.data.step_id+"<br>"; 
+    let step_name            = "Step name: " + hovered_tree_node.data.name+"<br>";
+    let html_content = parent_property_id + parent_property_name + step_id + step_name;
+    tooltip.html(html_content);
+}
+
+function generate_property_tooltip_html_content(tooltip, hovered_tree_node)
+{
+    //I have to correct the path to the data of the nodes depending on which tree
+    //hovered tree node has the data in data.propertyid, etc etc, change the path to that. 
+    let genome_property_id = hovered_tree_node.data.property_id;
+
+    localforage.getItem(genome_property_id).then(function (local_genome_properties_data) {
+        if (local_genome_properties_data !== null)
+        {
+            default_tool_tip_html_callback(tooltip, genome_property_id, local_genome_properties_data);
+        }
+        else
+        {
+            default_tool_tip_html_callback(tooltip, genome_property_id, hovered_tree_node.data);
+        }
+    });
+
+}
+function generate_out_link(database_url, link_name)
+{
+    return '<a target="_blank" rel="noopener noreferrer" href="' + database_url + '">' + link_name + '</a>  ';
+}
+
+function default_tool_tip_html_callback(tooltip, property_id, property_data)
+{
+    let header = "Property ID: " + property_id+"<br>";
+    let name   = "Property name: " + property_data.name+"<br>";
+
+    let desc   = "Description: " + "This is a mock property description it can be long."+"<br>";
+    if (property_data.hasOwnProperty('description')) {
+        desc   = "Description: " + property_data.description + "<br>";
+    }
+
+    let out_links = 'Links:';
+    let ebi_url   = "https://www.ebi.ac.uk/interpro/genomeproperties/#" + property_id;
+    let ebi_link  = generate_out_link(ebi_url, 'EBI Genome Properties');
+
+    let individual_database_links = [];
+    if (property_data.hasOwnProperty('databases')) {
+        let databases = property_data.databases;
+        if (!$.isEmptyObject(databases)) {
+            if (databases.hasOwnProperty('KEGG')) {
+                let kegg_ids = databases['KEGG'];
+                for (let index in kegg_ids){
+                    let current_kegg_id = kegg_ids[index];
+                    let kegg_url_one = 'https://www.genome.jp/dbget-bin/www_bget?' + current_kegg_id;
+                    let kegg_url_two = 'https://www.genome.jp/kegg-bin/show_pathway?' + current_kegg_id;
+                    individual_database_links.push(generate_out_link(kegg_url_one, 'KEGG Pathway'));
+                    individual_database_links.push(generate_out_link(kegg_url_two, 'KEGG Map'));
+                }
+            }
+
+            if (databases.hasOwnProperty('MetaCyc')) {
+                let metacyc_ids = databases['MetaCyc'];
+                for (let index in metacyc_ids){
+                    let current_metacyc_id = metacyc_ids[index];
+                    let metacyc_url = 'https://biocyc.org/META/new-image?object=' + current_metacyc_id;
+                    individual_database_links.push(generate_out_link(metacyc_url, 'MetaCyc Pathway'));
+                }
+            }
+        }
+    }
+
+    let combined_database_links = individual_database_links.join('');
+    let html_content = header + name + desc + out_links + ebi_link + combined_database_links;
+
+    tooltip.html(html_content);
+}
+</script> 
+</body>
+</html>
