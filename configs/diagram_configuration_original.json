@@ -1,0 +1,28 @@
+{
+  "margins": {
+    "left": 20,
+    "right": 20,
+    "top": 20,
+    "bottom": 20
+  },
+  "global": {
+    "top_offset": 230,
+    "row_height": 50,
+    "row_spacer": 2
+  },
+  "heatmap": {
+    "cell_width": 25,
+    "column_spacer": 2,
+    "axes": {
+      "x_axis_label_offset": 15,
+      "x_axis_label_width": 100,
+      "y_axis_label_offset": -1,
+      "y_axis_label_width": 400
+    }
+  },
+  "tree": {
+    "cell_width": 25,
+    "column_spacer": 2,
+    "link_out_height": 15
+  }
+}
