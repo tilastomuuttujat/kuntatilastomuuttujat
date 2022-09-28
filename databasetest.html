@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+<script src="data.js" type="text/javascript"></script>
+<style>
+.heatmap {
+  font-size: 8px;
+  font-family: monospace;
+}
+
+rect.bordered {
+  stroke: #E6E6E6;
+  stroke-width:2px;   
+}
+
+text.mono {
+  font-size: 8px;
+  font-family: monospace;
+  fill: #000;
+}
+
+text.legendElement {
+  font-size: 10px;
+}
+
+text.hover {
+  font-weight: bold;
+  fill: #d62419;
+  font-background: #000;
+}
+
+.heatmap_tooltip {
+  text-align: center;
+  font-family: monospace;
+  font-size: 10pt;
+  color: #000;
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  border: 4px solid #d62419;
+  padding: 5px;
+  border-radius: 8px ;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  -khtml-border-top-left-radius: 8px;
+  -khtml-border-top-right-radius: 8px;
+  -khtml-border-bottom-right-radius: 8px;
+  -khtml-border-bottom-left-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 400px;
+  z-index:10000;
+  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.heatmap_tooltip:after, .heatmap_tooltip:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.heatmap_tooltip:after {
+  border-color: rgba(236, 240, 241, 0);
+  border-top-color: #FFFFF;
+  border-width: 10px;
+  left: 50%;
+  margin-left: -10px;
+}
+
+.heatmap_tooltip:before {
+  border-color: rgba(44, 62, 80, 0);
+  border-top-color: #d62419;
+  border-width: 16px;
+  left: 50%;
+  margin-left: -16px;
+}
+
+.tf-tree ul.tf-search-result {
+ display:block;
+}
+
+.tf-tree ul.tf-search-result > li {
+ display:none;
+}
+
+.tf-tree ul.tf-search-result > li.tf-search-result {
+ display:block;
+}
+
+.tree ul {
+  display: none;
+  margin: 2px auto;
+  margin-left: 4px;
+  color: #000;
+}
+
+.btn--form {
+  padding: 0.5rem 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: #111;
+  border-radius: 1rem;
+}
+
+#sidebar {
+  position: fixed;
+  width: 450px;
+  height: 300%;
+  background: rgb(255,255,255);
+  right: -450px;
+  transition: all 250ms linear;
+}
+#sidebar.active {
+  right: 0px;
+}
+#sidebar ul li {
+  /*color: rgba(230, 230, 230, 0.9);*/
+  list-style: none;
+
+}
+#sidebar .toggle-btn {
+  position: absolute;
+  right: 470px;
+  top: 0px;
+}
+#sidebar .toggle-btn span {
+  display: block;
+  width: 30px;
+  height: 5px;
+  background: #727e87;
+  margin: 5px 0px;
+}
+.column {
+  float: left;
+}
+.form-control1 {
+  display: block;
+  width: 100%;
+  height: 26px;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+#json1 {
+  top: 30px;
+  left: 10px;
+}
+#json2 {
+  top: 30px;
+  left: 810px;
+} 
+#json3 {
+  top: 30px;
+  left: 1200px;
+}
+.barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
+}
+
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
+}
+
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
+}
+
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
+}
+
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
+}
+
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+}
+
+.barAxis path,
+.barAxis line {
+	stroke: #999;
+}
+
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="toggle-btn" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div style="overflow-y: scroll; height:500px;" id="json">
+  <input type="search" id="my-search" placeholder="search">
+		<ul id="my-tree">
+		</ul>
+  </div>
+</div>
+<div class="column" id="json1"></div>
+<div class="column" id="json2"></div>
+<div class="column" id="json3"></div>
+<input id="button" class="btn btn--form" type="submit" value="OK" onClick="diagram.get_data3(1,variables);"/>
+<div id="heatmap"></div>
+<div id="heatmap1"></div>
+<div id="svganchor" style="width: 100%;height: 100%;margin-left: auto;margin-right: auto;background-color: white;"></div>
+<script>
+var round = 0;
+var values = [];
+var level1 = [];
+var level2 = [];
+var names = [];
+var names1 = [];
+var names2 = [];
+var lnames1 = [];
+var lnames2 = [];
+var variables = [];
+var rownames = [];
+var colnames = [];
+var compname = [];
+var period_a = 2016;
+var period_b = 2020;
+var url_a = "";
+var url_b = "";
+var sql;
+var str0, str1, str2, str3, str4;
+
+var results_a0 = [];
+var results_a1 = [];
+var results_a2 = [];
+//var results_a3 = [];
+//var results_a4 = [];
+
+var results_b0 = [];
+var results_b1 = [];
+var results_b2 = [];
+//var results_b3 = [];
+//var results_b4 = [];
+
+var results_c0 = [];
+var results_c1 = [];
+var results_c2 = [];
+//var results_c3 = [];
+//var results_c4 = [];
+
+function toggleSidebar() {
+document.getElementById("sidebar").classList.toggle('active');
+}
+
+var diagram = {
+	render: function() {
+	    diagram.get_data0a();
+	    diagram.get_data0b();
+	    diagram.get_data1();
+		diagram.get_data2();
+	},
+
+	get_data0a: function() {
+var id = '1rBp1NHLg2dAkBko3Pu6dfRoJaqWlHQTUQolxo2-dFnM';
+var gid = '1693978924';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json2").innerHTML=myItems(data.slice(47, -2))  
+  );
+
+function myItems(jsonString){
+var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+  var table = '<div class="column" style="width:100px;"><select id="compare_a" class="form-control1" onChange="diagram.period_a()">'
+  var counter = 0;
+  json.table.rows.forEach(ligne => {
+  r0 = json.table.rows[counter].c[0].v;
+  r1 = json.table.rows[counter].c[1].v;
+  r2 = json.table.rows[counter].c[2].v;
+  r3 = json.table.rows[counter].c[3].v;
+
+  if(r2=='a') {
+  r2=" selected";
+  period_a = r0;
+  url_a = r3;
+  }
+  
+  var text = r0+','+r3
+  
+  table += '<option value="' + text + '"' + r2 + '>' + r1 + '</option>'
+  counter += 1;
+    });
+table += '</select></div>'
+return table
+}
+},
+	get_data0b: function() {
+
+var id = '1rBp1NHLg2dAkBko3Pu6dfRoJaqWlHQTUQolxo2-dFnM';
+var gid = '1693978924';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json3").innerHTML=myItems(data.slice(47, -2))  
+  );
+
+function myItems(jsonString){
+var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+  var table = '<div class="column" style="width:100px;"><select id="compare_b" class="form-control1" onChange="diagram.period_b()">'
+  var counter = 0;
+  json.table.rows.forEach(ligne => {
+  r0 = json.table.rows[counter].c[0].v;
+  r1 = json.table.rows[counter].c[1].v;
+  r2 = json.table.rows[counter].c[2].v;
+  r3 = json.table.rows[counter].c[3].v;
+
+  if(r2=='b') {
+  r2=" selected";
+  period_b = r0;
+  url_b = r3;
+  }
+  
+  var text = r0+','+r3
+  
+  table += '<option value="' + text + '"' + r2 + '>' + r1 + '</option>'
+  counter += 1;
+    });
+table += '</select></div>'
+return table
+}
+},
+
+    get_data1: function() {
+var id = '1rBp1NHLg2dAkBko3Pu6dfRoJaqWlHQTUQolxo2-dFnM';
+var gid = '270476198';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("my-tree").innerHTML=myItems(data.slice(47, -2))  
+  );
+
+function myItems(jsonString){
+  var r0,r1,r2,r3,r8,s0,s1,s2,s3,s8;
+  var json = JSON.parse(jsonString);
+  json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
+  var table = '<ul id="my-tree" class="tree">'
+  rownames = [];
+  colnames = [];
+  names = [];
+  level1 = [];
+  level2 = [];
+  names1 = [];
+  names2 = [];
+  colvariables = [];
+  colnumbers = [];
+  var start = 0;
+  json.table.rows.forEach(ligne => {
+    r0 = ligne.c[0].v; 
+    r1 = ligne.c[1].v;
+    r2 = ligne.c[2].v; 
+    r3 = ligne.c[3].v; 
+    r8 = ligne.c[8].f;
+    if (s0 != r0 && s1 != r1) {
+    if (start>0)
+    table += '</ul></li></ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[0].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[0].v + '</label><ul>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s0 = r0;
+    s1 = r1;
+    }  
+    
+    if (s1 != r1) {
+    table += '</ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s1 = r1;
+    }
+    
+    table += '<li><input class="subdomain" type="checkbox" name="subdomain" value="' + r2 + '" onClick="diagram.variable()"></input>'
+    table += '<label>' + ligne.c[8].f + '-' + ligne.c[2].v + '-' + ligne.c[3].v + '</label></li>'                
+         
+    colvariables.push(ligne.c[2].v);
+    colnumbers.push(ligne.c[8].f);
+    names.push(ligne.c[3].v);
+    if(r8<2) {
+    names1.push(ligne.c[1].v);
+    level1.push(ligne.c[0].v);
+    }else{
+    names2.push(ligne.c[1].v);
+    level2.push(ligne.c[0].v);
+    }
+    start = 1;
+    s0 = r0;
+    s1 = r1;
+    });
+    table += '</ul>'
+    document.getElementById("my-tree").innerHTML = table;
+    document.getElementById("my-tree1").innerHTML = table;
+    //return table;
+    }
+    
+$(document).on('click', '.tree label', function(e) {
+  $(this).next('ul').fadeToggle();
+  e.stopPropagation();
+});
+
+$(document).on('change', '.tree input[type=checkbox]', function(e) {
+  $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+  $(this).parentsUntil('.tree').children("input[type='checkbox']").prop('checked', this.checked);
+  e.stopPropagation();
+});
+
+$(function() {
+	var tree = new treefilter($("#my-tree"), {
+		searcher : $("input#my-search")
+	});
+});
+
+$.extend($.expr[":"], {
+	"containsIN" : function(elem, i, match, array) {
+		return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	}
+});
+
+var treefilter = function(el, options) {
+	var defaults = {
+		offsetLeft : 20, 
+		searcher : null, 
+		expanded : false, 
+		expanded : false, 
+		multiselect : false 
+	};
+
+	var plugin = this;
+	var status = []; 
+
+	plugin.settings = {};
+
+	var init = function() {
+		plugin.settings = $.extend({}, defaults, options);
+		plugin.el = el;
+
+		el.addClass("tf-tree");
+		el.find("li").addClass("tf-child-true");
+		el.find("li").css("padding-left", plugin.settings.offsetLeft);
+		el.find("li div:only-child").parent().removeClass("tf-child-true");
+		el.find("li div:only-child").parent().addClass("tf-child-false");
+		el.find("input[type=checkbox]").click(function(e) {
+			e.stopPropagation();
+		});
+
+		el.find("li.tf-child-true").children("div").click(function(e) {
+			if (e.metaKey || e.ctrlKey) {
+				if ($(this).parent().hasClass("tf-open")) {
+					$(this).parent().find("li.tf-child-true").removeClass("tf-open");
+				} else {
+					$(this).parent().find("li.tf-child-true").addClass("tf-open");
+				}
+			}
+			$(this).parent().toggleClass("tf-open");
+		});
+
+		el.find("li.tf-child-false").click(function() {
+			if (plugin.settings.multiSelect != true) {
+				el.find("li.tf-selected").removeClass("tf-selected");
+			}
+			$(this).toggleClass("tf-selected");
+		});
+
+		if (plugin.settings.searcher) {
+			searcher();
+		}
+	};
+
+	plugin.openAll = function() {
+		plugin.el.find("li.tf-child-true").parent().addClass("tf-open");
+	};
+	plugin.closeAll = function() {
+		plugin.el.find("li.tf-child-true").parent().removeClass("tf-open");
+	};
+
+	var searcher = function() {
+		$(plugin.settings.searcher).keyup(function() {
+			if ($(this).val().length == 0) {
+				plugin.el.find(".tf-search-result").removeClass("tf-search-result");
+				memory("out", status);
+			} else {
+				plugin.closeAll();
+				plugin.el.find("li.tf-open").removeClass("tf-open");
+				plugin.el.find("li.tf-search-result").removeClass("tf-search-result");
+				plugin.el.find("li:containsIN('" + $(this).val() + "')").addClass("tf-search-result");
+				plugin.el.find("li.tf-search-result").parent().addClass("tf-search-result");
+			}
+		});
+		$(plugin.settings.searcher).keydown(function() {
+			if ($(this).val().length == 0) {
+				memory("in", status);
+			}
+		});
+	};
+
+	var memory = function(action) {
+		if (action == "in") {
+			status = [];
+			plugin.el.find("li").each(function() {
+				status.push($(this).hasClass("tf-open"));
+			});
+		} else if (action == "out") {
+			plugin.el.find("li").each(function(i) {
+				if (status[i]) { 
+					$(this).addClass("tf-open");
+				} else {
+					$(this).removeClass("tf-open");
+				}
+			});
+		}
+	}
+	
+	init();
+};
+
+	},
+	
+	vargroup: function () {
+            setTimeout(() => {
+            var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
+            values = [];
+            checkboxes.forEach((checkbox) => {
+            values.push(checkbox.value);
+            });
+            //console.log(values);
+            diagram.variable();
+            }, 200);
+    },
+	
+	variable: function () {	
+            var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
+            values = [];
+            rownames = [];
+            colnames = [];
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.value);
+                if (colnumbers[colvariables.indexOf(checkbox.value)] < 2) {
+                rownames.push(checkbox.value);
+                } else {
+                colnames.push(checkbox.value);
+                }
+            });
+            variables = values;
+            //console.log(variables);
+            //console.log(rownames);
+            //console.log(colnames);
+            document.getElementById("button").style.background="red";
+            document.getElementById("button").value="UPDATE";
+            values = [];
+            round = 0;
+
+    },
+
+	comparing: function () {
+	var compval = document.getElementById("compare").value;
+    var checkboxes = document.querySelectorAll('input[name="subdomain1"]:checked');
+    document.getElementById("button").style.background="red";
+    document.getElementById("button").value="UPDATE";
+            
+var test = compval;
+var divide = test.split(",");
+
+compname[0] = "All";
+compname[1] = divide[2];
+compname[2] = divide[4];
+compname[3] = divide[1];
+compname[4] = divide[3];
+compname[5] = divide[0];
+compname[6] = divide[5];
+
+min=divide[1];
+max=divide[3];
+
+round = 0;
+    },
+    
+    period_a: function() {
+    url_a = document.getElementById("compare_a").value;
+
+    var test = url_a;
+    var divide = test.split(",");
+    
+    period_a = divide[0];
+    url_a = divide[1];
+    
+    console.log(document.getElementById("compare_a").value);
+	document.getElementById("button").style.background="red";
+	document.getElementById('button').value ='UPDATE';
+	},
+    period_b: function() {
+    url_b = document.getElementById("compare_b").value;
+    
+    var test = url_b;
+    var divide = test.split(",");
+    
+    period_b = divide[0];
+    url_b = divide[1];
+    
+    console.log(document.getElementById("compare_b").value);
+	document.getElementById("button").style.background="red";
+	document.getElementById('button').value ='UPDATE';
+	},	
+
+    get_data2: function() {
+var id = '1rBp1NHLg2dAkBko3Pu6dfRoJaqWlHQTUQolxo2-dFnM';
+var gid = '224550902';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json1").innerHTML=myItems(data.slice(47, -2))  
+  );
+function myItems(jsonString){
+  var message = [];
+  var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+
+  var table = '<div class="custom-select" style="width:600px;"><select id="compare" class="form-control1" onChange="diagram.comparing()">'
+  var counter = 0;
+  json.table.rows.forEach(ligne => {
+    r0 = ligne.c[0].v; 
+    r1 = ligne.c[1].v;
+    r2 = ligne.c[2].v; 
+    r3 = ligne.c[3].v; 
+    r4 = ligne.c[4].v; 
+    r5 = ligne.c[5].v; 
+
+    message.push(r0,r1,r2,r3,r4,r5);
+
+  table += '<option value="' + message + '">' + r0 + '</option>'
+  message = [];
+  counter += 1;
+    });
+  //level=table;
+  table += '</select></div>'
+  return table
+}
+	},
+	get_data3: function() {
+if(rownames.length < 1 || colnames.length < 1 || compname.length < 1) {
+document.getElementById("button").style.background="red";
+document.getElementById('button').value ='MISSING';
+} else {
+document.getElementById('button').style.background = '#323232';
+document.getElementById('button').value ='OK';
+}
+
+var min;
+var max;
+var lower;
+var upper;
+var limit;
+var serie = 0;
+var lists = variables.toString();
+
+if (serie == 0) {
+	sql = variables.toString();
+	lists = variables.toString();
+	} else {
+	limit = variables.toString();
+	var myArray = limit.split(",");
+	limit = myArray[0];
+	min = myArray[1];
+	lower = myArray[2];
+	upper = myArray[3];
+	max = myArray[4];
+}
+
+str0 = "SELECT " + sql ;
+str1 = "SELECT " + sql + " WHERE " + limit + "<" + min;
+str2 = "SELECT " + sql + " WHERE " + limit + ">=" + lower;
+str3 = "SELECT " + sql + " WHERE " + limit + ">=" + lower + " AND " + limit + "<" + upper;
+str4 = "SELECT " + sql + " WHERE " + limit + ">=" + max;
+
+diagram.get_data3a(url_a,sql,str0);
+
+/*
+diagram.get_data3a(url_a,sql,str1);
+diagram.get_data3b(url_b,sql,str1);
+diagram.get_data3a(url_a,sql,str2);
+diagram.get_data3b(url_b,sql,str2);
+*/
+            
+//diagram.get_data3a(url_a,sql,str1);
+//diagram.get_data3a(url_a,sql,str2);
+
+//diagram.get_data3a(url_b,sql,str1);
+//diagram.get_data3a(url_b,sql,str2);
+
+},
+
+get_data3a: function(url,sql,str) {
+function init() {
+var query = new google.visualization.Query(url);
+
+str = str.replace(/"+/g, "");
+query.setQuery(str);
+query.send(processSheetsData);
+}
+function processSheetsData(response) {
+if (round == 0) {
+results_a0 = response.getDataTable();
+console.log(response.getDataTable());
+diagram.get_data3b(url_b,sql,str0);
+}
+if (round == 1) {
+results_a1 = response.getDataTable();
+diagram.get_data3b(url_b,sql,str1);
+}
+if (round == 2) {
+results_a2 = response.getDataTable();
+diagram.get_data3b(url_b,sql,str2);
+}
+if (round == 3) {
+results_a3 = response.getDataTable();
+diagram.get_data3b(url_b,sql,str3);
+}
+if (round == 4) {
+results_a4 = response.getDataTable();
+diagram.get_data3b(url_b,sql,str4);
+}
+
+}
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+	get_data3b: function(url,sql,str) {
+
+function init() {
+var query = new google.visualization.Query(url);
+
+str = str.replace(/"+/g, "");
+query.setQuery(str);
+query.send(processSheetsData);
+}
+
+function changelimit(selection) {
+limit=selection;
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+}
+
+function processSheetsData(response) {
+if (round == 0) {
+results_b0 = response.getDataTable();
+console.log(response.getDataTable());
+diagram.get_data3c(results_a0,results_b0,results_c0);
+}
+if (round == 1) {
+results_b1 = response.getDataTable();
+diagram.get_data3c(results_a1,results_b1,results_c1);
+}
+if (round == 2) {
+results_b2 = response.getDataTable();
+diagram.get_data3c(results_a2,results_b2,results_c2);
+}
+if (round == 3) {
+results_b3 = response.getDataTable();
+diagram.get_data3c(results_a3,results_b3,results_c3);
+}
+if (round == 4) {
+results_b4 = response.getDataTable();
+diagram.get_data3c(results_a4,results_b4,results_c4);
+}
+
+}
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+	},
+	
+	get_data3c: async function(file_a,file_b,file_c) {
+
+console.log(file_a);
+console.log(file_b);	
+var tot_columns = file_a.getNumberOfColumns();
+var tot_rows = file_a.getNumberOfRows();
+file_c.push(sql);
+var val;
+
+for (var r = 0; r < tot_rows; r++) {
+     var row = [];
+     for (var c = 0; c < tot_columns; c++) {
+     val = (file_b.getFormattedValue(r, c)-file_a.getFormattedValue(r, c)).toFixed(2);
+     row.push(val);
+    }
+    result = row.join();
+    file_c.push(result); 
+    
+if (round == 0) {
+results_c0.push(result);
+}
+if (round == 1) {
+results_c1.push(result);
+}
+if (round == 2) {
+results_c2.push(result);
+}
+if (round == 3) {
+results_c3.push(result);
+}
+if (round == 4) {
+results_c4.push(result);
+}
+}
+
+console.log(file_c);
+diagram.get_data31(file_c)
+	},
+
+	get_data31: function(file_c){
+var tmp_attr_list = [];	
+var rownumber = 0;
+var colnumber = 0;
+var _combine_input = function () {
+    _data = {};  
+    _calc_pearson_correlation();
+};
+
+//***** start of _calc_pearson_correlation
+  var _calc_pearson_correlation = function () {
+  var _attr_list = [];
+      _attr_list_count = 0;
+  var _csv_lines = file_c;
+
+  var _pair_number;
+
+  for (var _i = 0; _i < _csv_lines.length; _i++) {
+    let _line = _csv_lines[_i]
+    if (_line.indexOf('\t') > -1) {
+      _line = _line.split('\t')
+    } else {
+      _line = _line.split(',')
+    }
+    if (_pair_number === undefined) {
+      _pair_number = _line.length;
+    } else if (_pair_number !== _line.length) {
+      return "";
+    }
+
+    for (var _j = 0; _j < _line.length; _j++) {
+      var _value = _line[_j];
+
+      if (_i === 0) {
+        _data[_value] = [];
+        _attr_list[_j] = _value;
+        _attr_list_count++;
+      } else {
+        if (isNaN(_value)) {
+          continue;
+        }
+        _value = eval(_value);
+        _data[(_attr_list[_j])].push(_value); 
+      }
+    }
+  }
+tmp_attr_list = _attr_list;
+return _draw_result_table();
+};
+//*** end of _calc_pearson_correlation
+
+//*** start of _get_pearson_correlation
+var _get_pearson_correlation = function (_ary1, _ary2) {
+  var _r = pearsonCorrelation(_ary1, _ary2);
+  var _n = _ary1.length;
+  var _t = _r * Math.sqrt((_n - 2) / (1 - (_r * _r)));
+      _t = Math.abs(_t);
+  var _p = ((tprob((_n - 2), _t)) * 2);
+  if (_p === 2) {
+      _p = 0;
+  }
+  
+  if (isNaN(_p)) {
+    console.log({
+      'n-2': _n - 2,
+      't': _t
+    });
+    console.log(['tprob', tprob((_n - 2), _t)]);
+    throw "xx：NaN (r: " + _r + ";t: " + _t + "; _n: " + _n + " )";
+  }
+
+  return {
+    r: _r,
+    p: _p
+    //n: _n
+  };
+};
+//*** end of _get_pearson_correlation
+
+//*** start of pearsonCorrelation
+var pearsonCorrelation = function (_ary1, _ary2) {
+  var _avg1 = _calc_avg(_ary1);
+  var _avg2 = _calc_avg(_ary2);
+  var _a = 0;
+  var _b1 = 0;
+  var _b2 = 0;
+  for (var _i = 0; _i < _ary1.length; _i++) {
+    var _x = (_ary1[_i] - _avg1);
+    var _y = (_ary2[_i] - _avg2);
+    _a += _x * _y;
+    _b1 += _x * _x;
+    _b2 += _y * _y;
+  }
+
+  if (_b1 * _b2 === 0) {
+    return 0;
+  }
+  return _a / (Math.sqrt(_b1) * Math.sqrt(_b2));
+};
+//*** end of pearsonCorrelation
+
+var _calc_avg = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _sum = 0;
+  for (var _i = 0; _i < _ary.length; _i++) {
+    _sum += _ary[_i];
+  }
+  return (_sum / _ary.length);
+};
+
+var _calc_stdev = function (_ary) {
+  if (_ary.length === 0) {
+    return;
+  }
+  var _avg = _calc_avg(_ary);
+  var _var = 0;
+
+  for (var _i = 0; _i < _ary.length; _i++) {
+    var _a = (_ary[_i] - _avg);
+    _var += _a * _a;
+  }
+  return Math.sqrt(_var / (_ary.length - 1));
+};
+
+function tprob ($n, $x) {
+    if (($n <= 0) || ((Math.abs($n) - Math.abs(integer($n))) !==0)) {
+        throw("Invalid n: $n\n");
+    }
+    return _subtprob($n-0, $x-0);
+}
+
+function integer ($i) {
+        if ($i > 0)
+                return Math.floor($i);
+        else
+                return Math.ceil($i);
+}
+
+function _subtprob ($n, $x) {
+	var $a;
+        var $b;
+	var $w = Math.atan2($x / Math.sqrt($n), 1);
+	var $z = Math.pow(Math.cos($w), 2);
+	var $y = 1;
+
+	for (var $i = $n-2; $i >= 2; $i -= 2) {
+		$y = 1 + ($i-1) / $i * $z * $y;
+	} 
+
+	if ($n % 2 === 0) {
+		$a = Math.sin($w)/2;
+		$b = .5;
+	} else {
+		$a = ($n === 1) ? 0 : Math.sin($w)*Math.cos($w)/Math.PI;
+		$b= .5 + $w/Math.PI;
+	}
+	return max(0, 1 - $b - $a * $y);
+}
+
+function max () {
+	var $max = arguments[0];
+	for (var $i = 0; $i < arguments.length; $i++) {
+                if ($max < arguments[$i])
+                        $max = arguments[$i];
+	}	
+	return $max;
+}
+
+//*** start of _draw_result_table
+var _draw_result_table = function () {
+var _attr_list = tmp_attr_list;
+var rows = rownames.length;
+var cols = colnames.length;
+var initial = 0;
+
+Array.matrix = function(rows, cols, initial) {
+var arr = [];
+    for (var i = 0; i < rows; ++i) {
+        var columns = [];
+        for (var j = 0; j < cols; ++j) {
+            columns[j] = initial;
+        }
+        arr[i] = columns;
+    }
+    return arr;
+}
+
+//console.log(rownames);
+//console.log(colnames);    
+    
+    var names = Array.matrix(500);
+    var tpsum = [];
+    //tpsum.push({"x":0,"y":0,"w":15.384615384615385,"h":15.384615384615385});
+    var array1,array2,array3,array4;
+var len = 10; 
+//len = 45;
+var e = 0;
+let s = 0, t = 0, w = 100, h = 100, value = 1;
+var rown = rownames[0];
+var rect = {};
+var vali = 0;
+var nali = 0;
+var sali = 0;
+
+    var _result_data = {};
+    for (var _i = 0; _i < _attr_list.length; _i++) {
+         var _x_attr = _attr_list[_i];
+    
+    colnumber += 1; 
+    rownumber = -1;
+
+    var _ary1 = _data[_x_attr];
+    for (var _j = 0; _i !== _attr_list.length - 1 && _j < _i; _j++) {
+         var _y_attr = _attr_list[_j];
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+
+      if (_j !== _i) {
+        _result_data[_x_attr][_y_attr] = null;
+      }
+    }
+
+    for (var _j = _i + 1; _j < _attr_list.length; _j++) {
+      var _y_attr = _attr_list[_j];
+      
+      rownumber += 1; 
+
+      if (typeof (_result_data[_x_attr]) === "undefined") {
+        _result_data[_x_attr] = {};
+      }
+      var _ary2 = _data[_y_attr];
+      _result_data[_x_attr][_y_attr] = _get_pearson_correlation(_ary1, _ary2);
+
+const myJSON = _result_data[_x_attr][_y_attr];
+//names[colnumber][rownumber]=myJSON.r.toFixed(3);
+//vali += _result_data[_x_attr][_y_attr];
+//console.log(vali,myJSON);
+if(Number(myJSON.r.toFixed(3))>.5){
+nali += 1;
+vali += Number(myJSON.r.toFixed(3));
+
+sali = vali/nali;
+}
+//sali = vali/nali;
+//console.log(names1[colnumber][rownumber],names2[colnumber][rownumber]);
+
+rect = {x: (s * w/len).toFixed(3), y: (t * h/len).toFixed(3), w: (w/len).toFixed(3), h: (h/len).toFixed(3)};
+/*
+if(e==1) {
+var myObj = JSON.parse('{"groupSource":"'+level1[rownumber]+'","groupTarget":"'+level2[colnumber]+'","source":"'+names1[rownumber]+'","target":"'+names2[colnumber]+'","value":"'+nali+'","p_value":"'+myJSON.p.toFixed(3)+'","level":"'+round+'"}');
+
+tpsum.push(Object.assign(myObj, rect));
+nali=0;
+vali=0;
+e=0;
+}
+*/
+//console.log(myObj);
+array1 = [names1[rownumber]];
+array2 = [names2[colnumber]];
+
+array3 = (array1.filter(element => names1.includes(element)));
+array4 = (array2.filter(element => names2.includes(element)));
+
+//console.log(array1);
+//console.log(array2);
+//console.log(array1[0].indexOf(colmarker),array2[0].indexOf(rowmarker));
+ 
+//if (array2[0] == array4[0])
+//tpsum.push(myObj);
+//console.log(tpsum);
+
+/*
+console.log(variables);
+console.log(compname);
+*/
+//console.log(rownames);
+//console.log(colnames);
+
+/*
+console.log(results_a0);
+console.log(results_b0);
+console.log(results_c0);
+*/
+
+/*
+console.log(array1,array2,array3,array4);
+console.log(array1[0],array2[0],array3[0],array4[0]);
+console.log(rownames);
+console.log(colnames);
+*/
+//console.log(myObj);
+//if (array1[0] == array3[0] && array2[0] == array4[0]) {
+
+
+
+if (array1[0] == array3[0] && array2[0] == array4[0]) 
+//console.log(array1,s,array2,t);
+
+
+//console.log(array1,s,array2,t,array3,array4);
+if (array1[0] == array3[0] && array2[0] == array4[0]) 
+//tpsum.push(Object.assign(myObj, rect));
+
+if (array1[0] == array3[0] && array2[0] == array4[0]) 
+t +=1;
+//console.log(tpsum);
+
+//tpsum.push(myObj);
+
+
+if(t == colnames.length) {
+
+var myObj = JSON.parse('{"groupSource":"'+level1[rownumber]+'","groupTarget":"'+level2[colnumber]+'","source":"'+names1[rownumber]+'","target":"'+names2[colnumber]+'","value":"'+sali+'"}');
+
+//console.log(sali);
+if(Number(sali).toFixed(3) > 0)
+tpsum.push(myObj);
+
+
+nali=0;
+sali=0;
+vali=0;
+
+
+
+s +=1;
+t = 0;
+e = 1;
+}
+
+/*
+if(rown != rownames[s]){
+s +=1;
+t = 0;
+rown = rownames[s]
+}
+*/
+
+
+}
+}
+/*
+console.log(colnames);
+console.log(rownames);
+*/
+
+
+/*
+let w = 1, h = 1, value = 1;
+    const len = colnames.length;
+
+    const resultMatrix = [];
+    for(let s = 0; s < rownames.length; s++) {
+      for(let t = 0; t < colnames.length; t++) {
+        const v = +tpsum[s]["r_value"];
+        const rect = {x: t * w/len, y: s * h/len, w: w/len, h: h/len};
+        if(v > 0) {
+          const edge = {source: tpsum[s], target: tpsum[t], value: value = v};
+          resultMatrix.push(Object.assign(edge, rect));
+        } else {
+          resultMatrix.push(Object.assign({}, rect));
+        }
+      }
+    }
+
+console.log(resultMatrix);
+
+*/
+
+console.log(tpsum);
+//diagram.get_data41(rownames,colnames,tpsum); 
+//diagram.get_data4(tpsum); 
+diagram.get_data39(tpsum); 
+
+
+}
+//*** end of _draw_result_table
+
+//*** start of function
+var _panel = _combine_input();
+//*** end of function
+	},
+
+	
+}
+diagram.render();
+</script>
+</body>
+</html>
