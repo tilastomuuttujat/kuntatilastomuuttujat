@@ -854,5 +854,10 @@
 {"source": "Z-emotion 2", "target": "Z-testikanta", "value": "014"},
 {"source": "Z-emotion 3", "target": "Z-testikanta", "value": "015"},
 {"source": "Z-virtue", "target": "Z-testikanta", "value": "016"},
-{"source": "Z-virtue-value", "target": "Z-testikanta", "value": "017"}
+{"source": "Z-virtue-value", "target": "Z-testikanta", "value": "017"},
+{"source": "Z-Sweden", "target": "Z-testikanta", "value": "1001"},
+{"source": "Z-Finland", "target": "Z-testikanta", "value": "1002"},
+{"source": "Z-Norway", "target": "Z-testikanta", "value": "1003"},
+{"source": "Z-Denmark", "target": "Z-testikanta", "value": "1004"},
+{"source": "Z-Russia", "target": "Z-testikanta", "value": "1005"}
 ]}
