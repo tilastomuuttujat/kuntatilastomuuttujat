@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans|PT+Serif|Roboto" rel="stylesheet">
+<title>Eriarvoisuusvarasto työpaja 1</title>
+<style>
+.barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
+}
+
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
+}
+
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
+}
+
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
+}
+
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
+}
+
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+}
+
+.barAxis path,
+.barAxis line {
+	stroke: #999;
+}
+
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+</style>
+</head>
+<body>
+<div id="svganchor" style="width: 100%;height: 100%;margin-left: auto;margin-right: auto;background-color: white;"></div>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+//namespacing with an IIFE
+(function newsQuestConnectivityRisks() {
+	var w = 900;
+	var h = 640;
+
+	var padding = [10, 10, 10, 10];
+
+	var colors = d3.scaleOrdinal()
+		.domain([])
+		.range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
+
+	var svg = d3.select("#svganchor")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
+
+
+var nodesTotal = [];
+var linksTotal = [];
+
+const things = new Object();
+things.thing = new Array();
+
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRgyUgUuu5xaiuCm3XzbttKnUCWXes3Pz1-4NENyktlpkMWWiHwzZJ-CfHdhCR8ESx5ftPmxMwhpTJC/pub?gid=1984448336&single=true&output=csv").then(function(apiData) {
+					try {
+						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+							data: d3.csvFormat(apiData),
+							timestamp: currentDate.getTime()
+						}));
+					} catch (error) {
+					};
+
+for (var i = 0; i < apiData.length; i++) {
+
+things.thing.push({id:apiData[i].source,labelText:apiData[i].source,group:apiData[i].groupSource});
+things.thing.push({id:apiData[i].target,labelText:apiData[i].target,group:apiData[i].groupTarget});
+
+}
+
+const uniqueArray = things.thing.filter((thing, index) => {  
+const _thing = JSON.stringify(thing);
+  return index === things.thing.findIndex(obj => {    
+  return JSON.stringify(obj) === _thing;  });
+  });
+nodesTotal = uniqueArray;
+linksTotal = apiData;
+});
+				
+function checkFlag() {
+    if(things.thing.length == 0) {
+       window.setTimeout(checkFlag, 3000); /* this checks the flag every 100 milliseconds*/
+    } else {
+      finit();
+    }
+}
+checkFlag();
+
+function finit(){
+
+	var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) {
+			return d.id;
+		}))
+		.force("collide", d3.forceCollide(function(d) {
+			return Math.sqrt(d.radius) * 11
+		}))
+		.force("charge", d3.forceManyBody())
+		.force("center", d3.forceCenter(w / 3, h / 2));
+
+	draw(nodesTotal, linksTotal);
+
+	function draw(nodes, links) {
+
+		var nodesConnectionsList = nodes.map(function(d) {
+			return d.id
+		});
+
+		var nodesConnections = [];
+
+		nodesConnectionsList.forEach(function(d, j) {
+			nodesConnections[j] = {
+				risk: d,
+				connections: []
+			};
+			for (var i = 0; i < links.length; i++) {
+				if (links[i].source == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].target,
+						connectionsNumber: links[i].value
+					})
+				} else if (links[i].target == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].source,
+						connectionsNumber: links[i].value
+					})
+				}
+			}
+		});
+
+		nodes.forEach(function(d) {
+			var thisData = nodesConnections.filter(function(e) {
+				return e.risk == d.id
+			});
+			var sum = d3.sum(thisData[0].connections, function(f) {
+				return f.connectionsNumber
+			});
+			d["radius"] = sum;
+		});
+
+		var nodeById = d3.map(nodes, function(d) {
+			return d.id;
+		})
+		var bilinks = [];
+
+		links.forEach(function(link) {
+			var s = link.source = nodeById.get(link.source),
+				t = link.target = nodeById.get(link.target),
+				i = {},
+				val = {
+					lvalue: link.value
+				};
+			nodes.push(i);
+			links.push({
+				source: s,
+				target: i
+			}, {
+				source: i,
+				target: t
+			});
+			bilinks.push([s, i, t, val]);
+		});
+
+		var link = svg.selectAll(".link")
+			.data(bilinks)
+			.enter()
+			.append("path")
+			.attr("stroke-width", function(d) {
+				return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+			})
+			.attr("class", "link");
+
+		var node = svg.selectAll(".node")
+			.data(nodes.filter(function(d) {
+				return d.id;
+			}))
+			.enter()
+			.append("g")
+			.attr("class", "node")
+			.call(d3.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended));
+
+		var circles = node.append("circle")
+			.attr("r", function(d) {
+				return Math.sqrt(d.radius) * 4
+			})
+			.attr("fill", function(d) {
+				return colors(d.group);
+			});
+
+		var backText = node.append("text")
+			.attr("class", "nodesLabelBack")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		var nodesText = node.append("text")
+			.attr("class", "nodesLabel")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		circles.on("mouseover", function(d) {
+			hovered(d);
+		}).on("mouseout", function(d) {
+			hoverOut(d);
+		});
+
+		link.on("mouseover", function(d) {
+			hoveredLink(d);
+		}).on("mouseout", function(d) {
+			hoverLinkOut(d);
+		});
+
+		simulation.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+		drawLegend();
+
+		function ticked() {
+			link.attr("d", positionLink);
+			node.attr("transform", positionNode);
+		}
+
+		function positionLink(d) {
+			return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+		}
+
+		function positionNode(d) {
+			if (d.x < 20) {
+				d.x = 20
+			};
+			if (d.y < 20) {
+				d.y = 20
+			};
+			if (d.x > 580) {
+				d.x = 580
+			};
+			if (d.y > 580) {
+				d.y = 580
+			};
+			return "translate(" + d.x + "," + d.y + ")";
+		}
+
+		function hovered(thisData) {
+
+			drawRisk(thisData);
+
+			var thisNodeConnections = nodesConnections.filter(function(d) {
+				return d.risk == thisData.id;
+			});
+
+			var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+				return d.connection;
+			});
+
+			thisNodeConnectionsList.push(thisData.id);
+			node.attr("opacity", function(d) {
+				return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+			});
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+			});
+
+		}
+
+		function hoverOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			drawLegend();
+		}
+
+		function hoveredLink(thisData) {
+
+			drawLink(thisData);
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[1].index == thisData[1].index) ? 1 : 0.1;
+			});
+			node.attr("opacity", function(d) {
+				return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+			});
+		}
+
+		function hoverLinkOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			drawLegend();
+		}
+
+		function drawLegend() {
+
+			var offset = 630;
+			var paddingText = 30;
+
+			svg.selectAll(".drawriskGroup").remove();
+			svg.selectAll(".drawlinkGroup").remove();
+
+			var legendGroup = svg.append("g")
+				.attr("class", "legendGroup")
+				.attr("transform", "translate(" + offset + ",0)");
+
+			var textDescription = legendGroup.append("text")
+				.attr("x", paddingText)
+				.attr("y", 40)
+				.attr("class", "textDescription")
+				.text("Kunkin ympyrän koko edustaa")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 14)
+				.text("sidoksien määrää muihin riskeihin.")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 14)
+				.text("Mitä suurempi ympyrä, sitä vahvemmat")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 14)
+				.text("sidokset:");
+
+			var dataCircles = [5, 10, 20, 30];
+			var circlesPosition = [0, 30, 65, 110]
+
+			var circlesLegend = legendGroup.selectAll(".circlesLegend")
+				.data(dataCircles)
+				.enter()
+				.append("circle");
+
+			circlesLegend.attr("cx", 48)
+				.attr("cy", function(d, i) {
+					return 110 + circlesPosition[i]
+				})
+				.attr("r", function(d) {
+					return Math.sqrt(d - 2) * 4
+				})
+				.attr("fill", "#999");
+
+			var textCirclesLegend = legendGroup.selectAll(".textCirclesLegend")
+				.data(dataCircles)
+				.enter()
+				.append("text");
+
+			textCirclesLegend.attr("x", function(d) {
+					return 58 + d / 2
+				})
+				.attr("y", function(d, i) {
+					return 110 + circlesPosition[i]
+				})
+				.attr("dominant-baseline", "central")
+				.attr("class", "textDescription2")
+				.text(function(d, i) {
+					return i === 0 ? "Korkeintaan " + d + " sidosta" : i === 1 || i === 2 ? "Välillä " + (dataCircles[i - 1] + 1) + " - " + d + " sidosta" : dataCircles[i - 1] + " sidosta tai enemmän"
+				});
+
+			circlesLegend.on("mouseover", function(d, i) {
+				node.attr("opacity", function(e) {
+					if (i == 0) {
+						return e.radius <= d ? 1 : 0.1;
+					} else if (i < 3) {
+						return e.radius > dataCircles[i - 1] && e.radius <= d ? 1 : 0.1;
+					} else {
+						return e.radius > dataCircles[i - 1] ? 1 : 0.1;
+					}
+				});
+				link.attr("stroke-opacity", 0.1);
+			}).on("mouseout", function() {
+				node.attr("opacity", 1);
+				link.attr("stroke-opacity", 1);
+			});
+
+			textCirclesLegend.on("mouseover", function(d, i) {
+				node.attr("opacity", function(e) {
+					if (i == 0) {
+						return e.radius <= d ? 1 : 0.1;
+					} else if (i < 3) {
+						return e.radius > dataCircles[i - 1] && e.radius < d ? 1 : 0.1;
+					} else {
+						return e.radius > d ? 1 : 0.1;
+					}
+				});
+				link.attr("stroke-opacity", 0.1);
+			}).on("mouseout", function() {
+				node.attr("opacity", 1);
+				link.attr("stroke-opacity", 1);
+			});
+
+			var textDescriptionTwo = legendGroup.append("text")
+				.attr("x", paddingText)
+				.attr("y", 280)
+				.attr("class", "textDescription")
+				.text("Mitä paksumpi viiva kahden riskin välillä")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 14)
+				.text("sitä suurempi on vastaajien määrä")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 14)
+				.text("kuka valitsi sen:")
+
+			var dataLines = [1, 5, 10, 15];
+
+			var linesLegend = legendGroup.selectAll(".linesLegend")
+				.data(dataLines)
+				.enter()
+				.append("line");
+
+			linesLegend.attr("x1", 30)
+				.attr("x2", 50)
+				.attr("y1", function(d, i) {
+					return 324 + i * 20
+				})
+				.attr("y2", function(d, i) {
+					return 324 + i * 20
+				})
+				.attr("stroke-width", function(d) {
+					return d / 1.5 < 1 ? 1 : d / 1.5
+				})
+				.attr("stroke", "#999");
+
+			var linesLegendText = legendGroup.selectAll(".linesLegendText")
+				.data(dataLines)
+				.enter()
+				.append("text");
+
+			linesLegendText.attr("x", 56)
+				.attr("y", function(d, i) {
+					return 324 + i * 20
+				})
+				.attr("class", "textDescription2")
+				.attr("dominant-baseline", "central")
+				.attr("stroke-width", function(d) {
+					return d
+				})
+				.text(function(d, i) {
+					return i === 0 ? "1 vastaaja" : i === 3 ?
+						(dataLines[i - 1] + 1) + " tai enemmän vastaajia" : "välillä " + (dataLines[i - 1] + 1) + " - " + d + " vastaajaa"
+				});
+
+			linesLegend.on("mouseover", function(d, i) {
+				var nodesConnected = [];
+				link.attr("stroke-opacity", function(e) {
+					if (i == 0) {
+						if (e[3].lvalue == d) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue == d ? 1 : 0.1;
+					} else if (i < 3) {
+						if (e[3].lvalue > dataLines[i - 1] && e[3].lvalue <= d) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue > dataLines[i - 1] && e[3].lvalue <= d ? 1 : 0.1;
+					} else if (i === 3) {
+						if (e[3].lvalue > (dataLines[i - 1])) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue > (dataLines[i - 1]) ? 1 : 0.1;
+					}
+				});
+				node.attr("opacity", function(d) {
+					return nodesConnected.indexOf(d.id) > -1 ? 1 : 0.1
+				})
+			}).on("mouseout", function() {
+				link.attr("stroke-opacity", 1);
+				node.attr("opacity", 1);
+			});
+
+			linesLegendText.on("mouseover", function(d, i) {
+				var nodesConnected = [];
+				link.attr("stroke-opacity", function(e) {
+					if (i == 0) {
+						if (e[3].lvalue == d) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue == d ? 1 : 0.1;
+					} else if (i < 3) {
+						if (e[3].lvalue > dataLines[i - 1] && e[3].lvalue <= d) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue > dataLines[i - 1] && e[3].lvalue <= d ? 1 : 0.1;
+					} else if (i === 3) {
+						if (e[3].lvalue > (dataLines[i - 1])) {
+							nodesConnected.push(e[0].id);
+							nodesConnected.push(e[2].id);
+						}
+						return e[3].lvalue > (dataLines[i - 1]) ? 1 : 0.1;
+					}
+				});
+				node.attr("opacity", function(d) {
+					return nodesConnected.indexOf(d.id) > -1 ? 1 : 0.1
+				})
+			}).on("mouseout", function() {
+				link.attr("stroke-opacity", 1);
+				node.attr("opacity", 1);
+			});
+
+			var riskGroupsTitle = legendGroup.append("text")
+				.attr("x", paddingText)
+				.attr("y", 420)
+				.attr("class", "textDescription")
+				.text("Riskiluokat:");
+
+			var riskGroups = legendGroup.selectAll(".riskGroups")
+				.data(colors.domain())
+				.enter()
+				.append("rect");
+
+			riskGroups.attr("x", 30)
+				.attr("y", function(d, i) {
+					return 430 + i * 22
+				})
+				.attr("width", 16)
+				.attr("height", 16)
+				.attr("fill", function(d) {
+					return colors(d)
+				});
+
+			var riskGroupsText = legendGroup.selectAll(".riskGroupsText")
+				.data(colors.domain())
+				.enter()
+				.append("text");
+
+			riskGroupsText.attr("x", 50)
+				.attr("y", function(d, i) {
+					return 442 + i * 22
+				})
+				.attr("class", "textDescription2")
+				.text(function(d) {
+					return d
+				});
+
+			riskGroups.on("mouseover", function(d) {
+				node.attr("opacity", function(e) {
+					return e.group == d ? 1 : 0.1
+				});
+				link.attr("stroke-opacity", 0.1);
+			}).on("mouseout", function() {
+				node.attr("opacity", 1);
+				link.attr("stroke-opacity", 1);
+			});
+
+			riskGroupsText.on("mouseover", function(d) {
+				node.attr("opacity", function(e) {
+					return e.group == d ? 1 : 0.1
+				});
+				link.attr("stroke-opacity", 0.1);
+			}).on("mouseout", function() {
+				node.attr("opacity", 1);
+				link.attr("stroke-opacity", 1);
+			});
+
+			//end of drawLegend
+		}
+
+		function drawRisk(thisRisk) {
+
+			var offset = 630;
+			var widthRisk = w - offset;
+			var paddingText = 80;
+
+			var thisRiskData = nodesConnections.filter(function(d) {
+				return d.risk == thisRisk.id;
+			});
+
+			var label1, label2;
+			var spaceCount = 2;
+
+			if (thisRisk.id.length > 28) {
+				var tempName = thisRisk.id.split(' ')
+				label1 = tempName.slice(0, spaceCount).join(' ')
+				label2 = tempName.slice(spaceCount).join(' ');
+			} else {
+				label1 = thisRisk.id;
+				label2 = "";
+			};
+
+			svg.selectAll(".legendGroup").remove();
+			svg.selectAll(".drawlinkGroup").remove();
+
+			var drawriskGroup = svg.append("g")
+				.attr("class", "drawriskGroup")
+				.attr("transform", "translate(" + offset + ",0)");
+
+			var riskTitle = drawriskGroup.append("text")
+				.attr("y", 50)
+				.attr("x", 150)
+				.attr("text-anchor", "middle")
+				.attr("class", "legendTitle")
+				.text("RISKI: " + label1)
+				.append("tspan")
+				.attr("x", 150)
+				.attr("dy", 20)
+				.text(label2);
+
+			var riskData1 = drawriskGroup.append("text")
+				.attr("y", 100)
+				.attr("x", paddingText)
+				.attr("class", "textDescriptionRisk")
+				.text("Luokka: ")
+				.append("tspan")
+				.style("font-size", 18)
+				.style("fill", "darkslategray")
+				.text((thisRisk.group === "Business and Strategic") ? "Business" : thisRisk.group);
+
+			var riskData2 = drawriskGroup.append("text")
+				.attr("y", 126)
+				.attr("x", paddingText)
+				.attr("class", "textDescriptionRisk")
+				.text("Eri riskien määrä")
+				.append("tspan")
+				.attr("x", paddingText)
+				.attr("dy", 20)
+				.text("sidoksessa: ")
+				.append("tspan")
+				.style("font-size", 18)
+				.style("fill", "darkslategray")
+				.text(thisRiskData[0].connections.length);
+
+			var barChartTitle = drawriskGroup.append("text")
+				.attr("y", 190)
+				.attr("x", paddingText)
+				.attr("class", "textDescriptionRisk")
+				.text("Sidoksien vahvuudet")
+				.append("tspan")
+				.attr("dy", 20)
+				.attr("x", paddingText)
+				.text("muihin riskeihin:");
+
+			var padding = [10, 16, 10, 80];
+
+			var xScale = d3.scaleLinear()
+				.domain([0, d3.max(thisRiskData[0].connections, function(d) {
+					return d.connectionsNumber;
+				})])
+				.range([padding[3], widthRisk - padding[1]]);
+
+			var barScale = d3.scaleOrdinal()
+				.domain(["Matala", "Keskitaso", "Korkea"])
+				.range([padding[3], (padding[3] + widthRisk - padding[1]) / 2,
+					widthRisk - padding[1]
+				]);
+
+			var barAxis = d3.axisTop(barScale);
+
+			var gX = drawriskGroup.append("g")
+				.attr("class", "barAxis")
+				.attr("transform", "translate(0," + 246 + ")")
+				.call(barAxis);
+
+			var barHeight = (thisRiskData[0].connections.length < 12) ? 30 :
+				(thisRiskData[0].connections.length < 16) ? 24 :
+				(thisRiskData[0].connections.length < 20) ? 20 : 16;
+
+			var yScaleMin = 250;
+			var yScaleMax = yScaleMin + (thisRiskData[0].connections.length * barHeight);
+
+			var yScaleDomain = thisRiskData[0].connections.sort(function(a, b) {
+				return d3.descending(a.connectionsNumber, b.connectionsNumber)
+			}).map(function(d) {
+				return d.connection
+			});
+
+			var yScale = d3.scaleBand()
+				.domain(yScaleDomain)
+				.range([yScaleMin, yScaleMax])
+				.paddingInner(0.2);
+
+			var bars = drawriskGroup.selectAll(".riskBars")
+				.data(thisRiskData[0].connections)
+				.enter()
+				.append("rect");
+
+			bars.attr("x", padding[3])
+				.attr("y", function(d) {
+					return yScale(d.connection)
+				})
+				.attr("height", yScale.bandwidth())
+				.attr("width", 0)
+				.attr("fill", function(d) {
+					var thisGroup = nodesTotal.filter(function(e) {
+						return e.id == d.connection;
+					});
+					return colors(thisGroup[0].group)
+				})
+				.transition()
+				.duration(1000)
+				.attr("width", function(d) {
+					return xScale(d.connectionsNumber) - padding[3];
+				});
+
+			var totalWidth = widthRisk - padding[1] - padding[3];
+			var dataLines = [totalWidth * .166, totalWidth * .333,
+				totalWidth * .5, totalWidth * .666, totalWidth * .833
+			];
+
+			var barLines = drawriskGroup.selectAll(".barLines")
+				.data(dataLines)
+				.enter()
+				.append("line");
+
+			barLines.attr("x1", function(d) {
+					return padding[3] + d
+				})
+				.attr("x2", function(d) {
+					return padding[3] + d
+				})
+				.attr("y1", yScaleMin)
+				.attr("y2", yScaleMax)
+				.attr("stroke", "white")
+				.attr("stroke-width", 1)
+				.attr("stroke-dasharray", "2,2");
+
+			var barsLabels = drawriskGroup.selectAll(".riskBarsLabels")
+				.data(thisRiskData[0].connections)
+				.enter()
+				.append("text");
+
+			barsLabels.attr("x", padding[3] - 2)
+				.attr("text-anchor", "end")
+				.attr("y", function(d) {
+					return yScale(d.connection) + yScale.bandwidth() / 2
+				})
+				.attr("class", "barsNumbers")
+				.attr("dominant-baseline", "central")
+				.text(function(d) {
+					var thisGroup = nodesTotal.filter(function(e) {
+						return e.id == d.connection;
+					});
+					return thisGroup[0].labelText;
+				});
+
+			//end of drawRisk
+		}
+
+		function drawLink(thisData) {
+
+			var offset = 630;
+
+			svg.selectAll(".legendGroup").remove();
+			svg.selectAll(".drawriskGroup").remove();
+
+			var label1, label2, label3, label4;
+			var spaceCount = 3;
+
+			if (thisData[0].id.length > 28) {
+				var tempName = thisData[0].id.split(' ')
+				label1 = tempName.slice(0, spaceCount).join(' ')
+				label2 = tempName.slice(spaceCount).join(' ');
+			} else {
+				label1 = thisData[0].id;
+				label2 = "";
+			};
+
+			if (thisData[2].id.length > 28) {
+				var tempName = thisData[2].id.split(' ')
+				label3 = tempName.slice(0, spaceCount).join(' ')
+				label4 = tempName.slice(spaceCount).join(' ');
+			} else {
+				label3 = thisData[2].id;
+				label4 = "";
+			};
+
+
+			var drawlinkGroup = svg.append("g")
+				.attr("class", "drawlinkGroup")
+				.attr("transform", "translate(" + offset + ",0)");
+
+			var linkTitle = drawlinkGroup.append("text")
+				.attr("y", 50)
+				.attr("x", 50)
+				.attr("class", "legendTitle")
+				.text("SIDOKSET:");
+
+			drawlinkGroup.append("text")
+				.attr("class", "textDescription3")
+				.attr("x", 50)
+				.attr("y", 100)
+				.text("Riskistä:");
+
+			drawlinkGroup.append("text")
+				.attr("class", "textDescription3")
+				.attr("x", 50)
+				.attr("y", 200)
+				.text("Riskiin:");
+
+			drawlinkGroup.append("circle")
+				.attr("cx", 64)
+				.attr("cy", 130)
+				.attr("r", 14)
+				.attr("fill", colors(thisData[0].group));
+
+			drawlinkGroup.append("circle")
+				.attr("cx", 64)
+				.attr("cy", 230)
+				.attr("r", 14)
+				.attr("fill", colors(thisData[2].group));
+
+			drawlinkGroup.append("text")
+				.attr("x", 86)
+				.attr("y", function() {
+					return (label2 === "") ? 133 : 125
+				})
+				.attr("class", "textDescription")
+				.text(label1)
+				.append("tspan")
+				.attr("x", 86)
+				.attr("dy", 16)
+				.text(label2);
+
+			drawlinkGroup.append("text")
+				.attr("x", 86)
+				.attr("y", function() {
+					return (label4 === "") ? 233 : 225
+				})
+				.attr("class", "textDescription")
+				.text(label3)
+				.append("tspan")
+				.attr("x", 86)
+				.attr("dy", 16)
+				.text(label4);
+
+			drawlinkGroup.append("text")
+				.attr("x", 50)
+				.attr("y", 300)
+				.attr("class", "textDescription3")
+				.text("Vastaajien määrä")
+				.append("tspan")
+				.attr("x", 50)
+				.attr("dy", 20)
+				.text("jotka valitsivat tämän sidoksen: ")
+				.append("tspan")
+				.style("font-size", 18)
+				.style("fill", "#222")
+				.text(thisData[3].lvalue);
+
+
+			//end of drawLink
+		}
+
+		//end of draw
+	}
+
+	function dragstarted(d) {
+		if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(d) {
+		d.fx = (d3.event.x > 580) ? 580 : (d3.event.x < 30) ? 30 : d3.event.x;
+		d.fy = (d3.event.y > 570) ? 570 : (d3.event.y < 30) ? 30 : d3.event.y;
+	}
+
+	function dragended(d) {
+		if (!d3.event.active) simulation.alphaTarget(0);
+		d.fx = null;
+		d.fy = null;
+	}
+
+//end of finit
+} 
+
+	//end of newsQuestConnectivityRisks	
+}());
+
+
+
+		</script>
+	</body>
+</html>
