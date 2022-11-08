@@ -112,7 +112,7 @@ var linksTotal = [];
 const things = new Object();
 things.thing = new Array();
 
-d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRgyUgUuu5xaiuCm3XzbttKnUCWXes3Pz1-4NENyktlpkMWWiHwzZJ-CfHdhCR8ESx5ftPmxMwhpTJC/pub?gid=1616737016&single=true&output=csv").then(function(apiData) {
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRgyUgUuu5xaiuCm3XzbttKnUCWXes3Pz1-4NENyktlpkMWWiHwzZJ-CfHdhCR8ESx5ftPmxMwhpTJC/pub?gid=1984448336&single=true&output=csv").then(function(apiData) {
 					try {
 						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
 							data: d3.csvFormat(apiData),
