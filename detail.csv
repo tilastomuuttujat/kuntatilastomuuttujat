@@ -1,0 +1,524 @@
+groupSource,source,groupTarget,value,attack,Involved,vuosi
+Finland,1200,Russia,1,0,0,1227
+Finland,1200,Russia,1,0,0,1292
+Finland,1300,Russia,1,0,0,1311
+Finland,1300,Russia,1,0,0,1318
+Sweden,1000,Civil War,1,0,0,1070
+Sweden,1000,Norway,1,0,0,1098
+Sweden,1100,Civil War,1,0,0,1120
+Sweden,1100,Civil War,1,0,0,1170
+Sweden,1100,Norway,1,0,0,1178
+Sweden,1100,Finland,1,0,0,1187
+Sweden,1200,Russia,1,0,0,1206
+Sweden,1200,Civil War,1,0,0,1205
+Sweden,1200,Crusade,1,0,0,1217
+Sweden,1200,Norway,1,0,0,1225
+Sweden,1200,Baltic,1,0,0,1226
+Sweden,1200,Civil War,1,0,0,1229
+Sweden,1200,Civil War,1,0,0,1234
+Sweden,1200,Finland,0,1,0,1236
+Sweden,1200,Civil War,1,0,0,1247
+Sweden,1200,Civil War,1,0,0,1251
+Sweden,1200,Russia,0,1,0,1256
+Sweden,1200,Finland,1,0,0,1257
+Sweden,1200,Denmark,1,0,0,1275
+Sweden,1200,Civil War,1,0,0,1278
+Sweden,1200,Civil War,1,0,0,1288
+Sweden,1200,Finland,0,1,0,1293
+Sweden,1300,Civil War,1,0,0,1304
+Sweden,1300,Civil War,1,0,0,1313
+Sweden,1300,Civil War,1,0,0,1316
+Sweden,1300,Civil War,1,0,0,1317
+Sweden,1300,Civil War,1,0,0,1323
+Sweden,1300,Denmark,0,1,0,1332
+Sweden,1300,Russia,0,1,0,1338
+Sweden,1300,Civil War,1,0,0,1339
+Sweden,1300,Denmark,1,0,0,1341
+Sweden,1300,Civil War,1,0,0,1356
+Sweden,1300,Denmark,1,0,0,1360
+Sweden,1300,Denmark,1,0,0,1361
+Denmark,1000,England,0,1,1,793
+Denmark,1000,Norway,1,0,1,1048
+Denmark,1100,Civil War,1,0,1,1131
+Denmark,1200,Sweden,0,1,1,1274
+Denmark,1200,Sweden,0,1,1,1276
+Denmark,1200,Norway,1,0,1,1289
+Denmark,1300,Norway,1,0,1,1304
+Denmark,1300,Baltic,0,1,1,1343
+Denmark,1300,Germany,0,1,1,1392
+Denmark,1400,Sweden,0,1,1,1497
+Denmark,1500,Sweden,0,1,1,1501
+Denmark,1500,Baltic,0,1,1,1571
+Denmark,1700,Sweden,1,0,1,1788
+Finland,1300,Russia,1,0,1,1377
+Finland,1300,Russia,1,0,1,1395
+Finland,1300,Russia,1,0,1,1399
+Finland,1400,Denmark,1,0,1,1437
+Finland,1400,Russia,1,0,1,1475
+Finland,1700,Russia,0,1,1,1741
+Finland,1000,Sweden,1,0,1,300
+Finland,1000,Sweden,1,0,1,470
+Finland,1000,Iceland,1,0,1,800
+Finland,1000,Iceland,1,0,1,800
+Finland,1000,Sweden,0,1,1,800
+Finland,1000,Sweden,1,0,1,800
+Finland,1000,Denmark,1,0,1,800
+Finland,1000,Denmark,0,1,1,818
+Finland,1000,Norway,1,0,1,1008
+Finland,1000,Sweden,1,0,1,1030
+Finland,1000,Norway,1,0,1,1030
+Finland,1000,Russia,1,0,1,1042
+Finland,1000,Sweden,1,0,1,1050
+Finland,1000,Sweden,1,0,1,1053
+Finland,1000,Baltic,1,0,1,1060
+Finland,1100,Sweden,1,0,1,1100
+Finland,1100,Russia,1,0,1,1123
+Finland,1100,Russia,0,1,1,1142
+Finland,1100,Civil War,1,0,1,1143
+Finland,1100,Russia,0,1,1,1149
+Finland,1100,Sweden,1,0,1,1155
+Finland,1100,Russia,1,0,1,1186
+Finland,1100,Sweden,0,1,1,1187
+Finland,1100,Denmark,1,0,1,1187
+Finland,1100,Russia,1,0,1,1191
+Finland,1100,Denmark,1,0,1,1191
+Finland,1200,Denmark,1,0,1,1202
+Finland,1200,Russia,0,1,1,1221
+Finland,1200,Norway,0,1,1,1223
+Finland,1200,Russia,1,0,1,1226
+Finland,1200,Russia,0,1,1,1228
+Finland,1200,Civil War,1,0,1,1237
+Finland,1200,Sweden,1,0,1,1249
+Finland,1200,Germany,0,1,1,1253
+Finland,1200,Russia,1,0,1,1256
+Finland,1200,Russia,1,0,1,1256
+Finland,1200,Sweden,0,1,1,1257
+Finland,1200,Sweden,0,1,1,1259
+Finland,1200,Norway,0,1,1,1271
+Finland,1200,Russia,1,0,1,1278
+Finland,1200,Germany,1,0,1,1284
+Finland,1200,Russia,1,0,1,1292
+Finland,1200,Sweden,1,0,1,1292
+Finland,1200,Sweden,1,0,1,1293
+Finland,1200,Russia,1,0,1,1294
+Finland,1200,Russia,1,0,1,1295
+Finland,1300,Russia,1,0,1,1311
+Finland,1300,Russia,0,1,1,1314
+Finland,1300,Russia,1,0,1,1318
+Finland,1300,Baltic,0,1,1,1337
+Finland,1300,Russia,1,0,1,1350
+Finland,1300,Sweden,1,0,1,1364
+Finland,1300,Russia,1,0,1,1377
+Finland,1300,Sweden,0,1,1,1380
+Finland,1300,Sweden,1,0,1,1387
+Finland,1300,Sweden,1,0,1,1396
+Finland,1300,Sweden,1,0,1,1380
+Finland,1400,Russia,1,0,1,1411
+Finland,1400,Civil War,1,0,1,1438
+Finland,1400,Civil War,1,0,1,1446
+Finland,1400,Denmark,1,0,1,1456
+Finland,1400,Russia,1,0,1,1479
+Finland,1400,Sweden,1,0,1,1480
+Norway,1000,Africa,0,1,1,859
+Norway,1000,Sweden,0,1,1,860
+Norway,1000,Sweden,0,1,1,870
+Norway,1000,Denmark,0,1,1,955
+Norway,1000,Denmark,0,1,1,961
+Norway,1000,Spain,0,1,1,968
+Norway,1000,England,0,1,1,991
+Norway,1000,Finland,0,1,1,1007
+Norway,1000,Sweden,0,1,1,1016
+Norway,1000,Denmark,0,1,1,1048
+Norway,1000,England,0,1,1,1066
+Norway,1000,England,0,1,1,1066
+Norway,1000,England,0,1,1,1098
+Norway,1000,Sweden,0,1,1,1099
+Norway,1100,England,0,1,1,1101
+Norway,1200,Denmark,0,1,1,1256
+Norway,1200,England,0,1,1,1261
+Norway,1200,Denmark,0,1,1,1288
+Norway,1300,Denmark,0,1,1,1304
+Norway,1800,Sweden,1,0,1,1814
+Russia,1000,Italy,0,1,1,907
+Russia,1000,Turkey,0,1,1,920
+Russia,1000,Italy,0,1,1,941
+Russia,1000,Italy,0,1,1,944
+Sweden,1000,Norway,0,1,1,1063
+Sweden,1100,Norway,0,1,1,1145
+Sweden,1100,Finland,0,1,1,1156
+Sweden,1100,Russia,0,1,1,1164
+Sweden,1200,Baltic,0,1,1,1220
+Sweden,1200,Finland,0,1,1,1249
+Sweden,1200,Denmark,1,0,1,1276
+Sweden,1200,Russia,0,1,1,1283
+Sweden,1300,Russia,0,1,1,1300
+Sweden,1300,Russia,1,0,1,1321
+Sweden,1300,Denmark,0,1,1,1322
+Sweden,1300,Baltic,0,1,1,1325
+Sweden,1300,Russia,0,1,1,1348
+Sweden,1300,Denmark,0,1,1,1362
+Sweden,1300,Germany,0,1,1,1370
+Sweden,1300,Norway,1,0,1,1375
+Sweden,1300,Denmark,0,1,1,1379
+Sweden,1300,Denmark,0,1,1,1384
+Sweden,1300,Russia,0,1,1,1396
+Sweden,1400,Germany,1,0,1,1403
+Sweden,1400,Russia,0,1,1,1411
+Sweden,1400,Russia,0,1,1,1444
+Sweden,1400,Russia,0,1,1,1448
+Sweden,1400,Norway,0,1,1,1450
+Sweden,1400,Baltic,1,0,1,1457
+Sweden,1400,Denmark,0,1,1,1469
+Sweden,1400,Germany,0,1,1,1473
+Sweden,1400,Germany,0,1,1,1478
+Sweden,1400,Russia,0,1,1,1479
+Sweden,1500,Germany,0,1,1,1500
+Sweden,1600,Baltic,0,1,1,1600
+Sweden,1600,Germany,0,1,1,1630
+Sweden,1600,Germany,0,1,1,1654
+Sweden,1600,Germany,0,1,1,1666
+Sweden,1800,France,0,1,1,1805
+Sweden,1800,Norway,0,1,1,1814
+Denmark,1000,Africa,0,1,2,859
+Denmark,1100,Slavic,0,1,2,1144
+Denmark,1200,Baltic,0,1,2,1203
+Denmark,1200,Germany,0,1,2,1227
+Denmark,1400,Germany,1,0,2,1426
+Denmark,1500,Sweden,1,0,2,1501
+Denmark,1500,Sweden,0,1,2,1521
+Denmark,1500,Iceland,0,1,2,1538
+Denmark,1600,Sweden,1,0,2,1611
+Denmark,1700,Africa,0,1,2,1770
+Denmark,1700,Africa,0,1,2,1784
+Denmark,1700,Sweden,1,0,2,1788
+Denmark,1700,Turkey,0,1,2,1797
+Denmark,1800,England,1,0,2,1807
+Denmark,1800,Germany,1,0,2,1848
+Denmark,1800,Germany,1,0,2,1864
+Denmark,1900,Russia,1,0,2,1939
+Finland,1400,Russia,1,0,2,1499
+Finland,1500,Russia,1,0,2,1554
+Finland,1700,Russia,0,1,2,1788
+Finland,1800,Russia,1,0,2,1808
+Finland,1200,Norway,0,1,2,1226
+Finland,1200,Russia,0,1,2,1240
+Finland,1200,Sweden,0,1,2,1275
+Finland,1200,Russia,0,1,2,1283
+Finland,1300,Russia,1,0,2,1323
+Finland,1300,Germany,1,0,2,1344
+Finland,1400,Russia,1,0,2,1495
+Finland,1500,Denmark,1,0,2,1521
+Finland,1500,Sweden,1,0,2,1534
+Finland,1500,Russia,1,0,2,1570
+Finland,1600,Denmark,1,0,2,1611
+Finland,1600,Germany,1,0,2,1618
+Finland,1600,Denmark,1,0,2,1674
+Finland,1800,Russia,1,0,2,1808
+Finland,1800,Baltic,0,1,2,1830
+Finland,1800,England,0,1,2,1853
+Finland,1800,Turkey,0,1,2,1877
+Finland,1900,Russia,1,0,2,1914
+Norway,1000,Denmark,0,1,2,999
+Norway,1100,Spain,0,1,2,1107
+Norway,1200,Russia,0,1,2,1240
+Norway,1500,Sweden,1,0,2,1521
+Norway,1600,Sweden,1,0,2,1611
+Norway,1600,Germany,1,0,2,1625
+Norway,1600,Sweden,1,0,2,1643
+Norway,1600,Sweden,1,0,2,1657
+Norway,1600,England,1,0,2,1665
+Norway,1700,Africa,1,0,2,1770
+Norway,1700,Sweden,1,0,2,1788
+Norway,1700,Eurasia,0,1,2,1797
+Norway,1800,England,1,0,2,1801
+Norway,1800,England,1,0,2,1807
+Russia,1200,Denmark,0,1,2,1268
+Russia,1900,Eurasia,0,1,2,1917
+Russia,1900,Finland,1,0,2,1918
+Russia,1900,Baltic,0,1,2,1939
+Russia,1900,Baltic,0,1,2,1940
+Russia,1900,Baltic,0,1,2,1944
+Sweden,1100,Crusade,0,1,2,1195
+Sweden,1300,Denmark,1,0,2,1341
+Sweden,1500,Denmark,0,1,2,1504
+Sweden,1500,Germany,1,0,2,1534
+Sweden,1500,Russia,0,1,2,1570
+Sweden,1600,Baltic,0,1,2,1609
+Sweden,1600,Russia,0,1,2,1610
+Sweden,1700,Denmark,1,0,2,1788
+Sweden,1800,England,0,1,2,1810
+Sweden,1800,France,0,1,2,1813
+Denmark,1500,Civil War,1,0,3,1534
+Denmark,1500,Sweden,1,0,3,1563
+Denmark,1600,Sweden,1,0,3,1643
+Denmark,1800,America,1,0,3,1825
+Finland,1100,Russia,0,1,3,1149
+Finland,1600,Russia,1,0,3,1655
+Finland,1700,Sweden,1,0,3,1700
+Finland,1700,Russia,1,0,3,1788
+Norway,1000,Denmark,1,0,3,1026
+Norway,1500,Sweden,1,0,3,1501
+Norway,1800,Sweden,1,0,3,1813
+Russia,1200,Germany,1,0,3,1240
+Russia,1900,Turkey,1,0,3,1919
+Russia,1900,Asia,0,1,3,1945
+Sweden,1100,Crusade,1,0,3,1123
+Sweden,1200,Russia,0,1,3,1240
+Sweden,1300,Germany,0,1,3,1395
+Sweden,1600,Baltic,1,0,3,1655
+Sweden,1600,Denmark,1,0,3,1674
+Sweden,1700,Denmark,1,0,3,1700
+Denmark,1600,England,1,0,4,1665
+Denmark,1600,England,1,0,4,1672
+Denmark,1800,Sweden,1,0,4,1808
+Denmark,1900,Germany,1,0,4,1940
+Norway,1500,Sweden,1,0,4,1563
+Norway,1800,Sweden,1,0,4,1808
+Russia,1900,Eurasia,1,0,4,1916
+Denmark,1600,Sweden,1,0,5,1666
+Denmark,1600,Sweden,1,0,5,1675
+Denmark,1800,England,1,0,5,1801
+Denmark,1900,Germany,1,0,5,1939
+Denmark,1900,Germany,1,0,5,1940
+Finland,1500,Sweden,1,0,5,1563
+Norway,1600,Sweden,1,0,5,1658
+Norway,1600,Sweden,1,0,5,1675
+Denmark,1500,Russia,0,1,6,1558
+Norway,1500,Russia,1,0,6,1558
+Russia,1800,France,1,0,6,1813
+Russia,1900,France,1,0,6,1946
+Denmark,1600,France,1,0,7,1675
+Denmark,1900,Russia,1,0,7,1918
+Finland,1700,Sweden,1,0,7,1756
+Sweden,1700,Germany,1,0,7,1757
+Denmark,1800,Sweden,1,0,8,1808
+Denmark,1700,Spain,0,1,9,1701
+Norway,1700,Sweden,1,0,9,1700
+Denmark,1600,Sweden,1,0,10,1657
+Denmark,1700,Sweden,1,0,10,1700
+Denmark,1700,France,1,0,10,1703
+Russia,1800,France,1,0,10,1806
+Russia,1900,Ukraine,0,1,10,1917
+Denmark,1800,England,1,0,11,1800
+Russia,1700,France,1,0,11,1799
+Denmark,1800,France,1,0,12,1815
+Russia,1700,Germany,1,0,12,1756
+Russia,1700,Germany,1,0,13,1740
+Denmark,1600,Germany,1,0,15,1618
+Russia,1900,Civil War,1,0,15,1917
+Russia,1900,Asia,1,0,15,1955
+Russia,1800,France,1,0,16,1815
+Denmark,1800,Russia,1,0,17,1813
+Russia,1900,Germany,1,0,26,1914
+Norway,1900,Germany,1,0,31,1940
+Russia,1900,Germany,1,0,31,1941
+Finland,1500,Denmark,1,0,0,1506
+Finland,1500,Russia,1,0,0,1516
+Finland,1500,Russia,1,0,0,1555
+Finland,1500,Sweden,1,0,0,1563
+Finland,1500,Civil War,1,0,0,1592
+Finland,1500,Sweden,0,1,0,1596
+Finland,1500,Sweden,1,0,0,1599
+Finland,1600,Russia,0,1,0,1610
+Finland,1700,Russia,0,1,0,1741
+Finland,1900,Civil War,1,0,0,1918
+Finland,1900,Civil War,1,0,0,1918
+Finland,1900,Russia,1,0,0,1939
+Finland,1900,Russia,1,0,0,1941
+Finland,1900,Germany,1,0,0,1944
+Norway,1000,Civil War,1,0,0,870
+Norway,1000,Civil War,1,0,0,870
+Norway,1000,Civil War,1,0,0,870
+Norway,1000,Civil War,1,0,0,870
+Norway,1000,Civil War,1,0,0,872
+Norway,1000,Denmark,1,0,0,986
+Norway,1000,Germany,1,0,0,1030
+Norway,1100,Civil War,1,0,0,1130
+Norway,1300,Germany,1,0,0,1392
+Norway,1400,Germany,1,0,0,1410
+Russia,1000,Turkey,0,1,0,964
+Russia,1000,Slavic,0,1,0,967
+Russia,1000,Baltic,0,1,0,981
+Russia,1000,Slavic,0,1,0,985
+Russia,1000,Italy,0,1,0,987
+Russia,1000,Baltic,0,1,0,1022
+Russia,1000,Italy,0,1,0,1024
+Russia,1000,Slavic,0,1,0,1030
+Russia,1000,Baltic,0,1,0,1030
+Russia,1000,Finland,0,1,0,1042
+Russia,1000,Italy,0,1,0,1043
+Russia,1000,Eurasia,0,1,0,1055
+Russia,1000,Baltic,1,0,0,1061
+Russia,1100,Sweden,1,0,0,1132
+Russia,1100,Germany,0,1,0,1147
+Russia,1200,Baltic,0,1,0,1203
+Russia,1200,Eurasia,1,0,0,1223
+Russia,1300,Baltic,1,0,0,1368
+Russia,1300,Slavic,0,1,0,1376
+Russia,1300,Eurasia,1,0,0,1382
+Russia,1300,Eurasia,1,0,0,1382
+Russia,1300,Eurasia,1,0,0,1382
+Russia,1300,Eurasia,1,0,0,1382
+Russia,1400,Eurasia,1,0,0,1438
+Russia,1400,Civil War,1,0,0,1467
+Russia,1400,Civil War,1,0,0,1471
+Russia,1400,Eurasia,1,0,0,1480
+Russia,1400,Civil War,1,0,0,1485
+Russia,1400,Civil War,1,0,0,1478
+Russia,1400,Baltic,1,0,0,1492
+Russia,1400,Sweden,1,0,0,1495
+Russia,1500,Baltic,0,1,0,1500
+Russia,1500,Civil War,1,0,0,1505
+Russia,1500,Baltic,0,1,0,1507
+Russia,1500,Baltic,0,1,0,1512
+Russia,1500,Baltic,0,1,0,1534
+Russia,1500,Civil War,1,0,0,1552
+Russia,1500,Civil War,1,0,0,1552
+Russia,1500,Sweden,1,0,0,1554
+Russia,1500,Eurasia,0,1,0,1556
+Russia,1500,Denmark,0,1,0,1558
+Russia,1500,Turkey,0,1,0,1568
+Russia,1500,Civil War,1,0,0,1570
+Russia,1500,Civil War,1,0,0,1580
+Russia,1500,Sweden,0,1,0,1590
+Russia,1600,Baltic,1,0,0,1605
+Russia,1600,Civil War,1,0,0,1606
+Russia,1600,Sweden,1,,0,1610
+Russia,1600,Baltic,0,1,0,1632
+Russia,1600,Middle-East,0,1,0,1651
+Russia,1600,Asia,0,1,0,1652
+Russia,1600,Baltic,0,1,0,1654
+Russia,1600,Sweden,1,0,0,1656
+Russia,1600,Civil War,1,0,0,1662
+Russia,1600,Slavic,1,0,0,1670
+Russia,1600,Turkey,1,0,0,1676
+Russia,1600,Turkey,1,0,0,1683
+Russia,1700,Sweden,0,1,0,1700
+Russia,1700,Civil War,1,0,0,1704
+Russia,1700,Civil War,1,0,0,1707
+Russia,1700,Eurasia,0,1,0,1717
+Russia,1700,Eurasia,1,0,0,1717
+Russia,1700,Middle-East,0,1,0,1722
+Russia,1700,Baltic,0,1,0,1733
+Russia,1700,Turkey,0,1,0,1735
+Russia,1700,Civil War,1,0,0,1735
+Russia,1700,Ukraina,1,0,0,1768
+Russia,1700,Baltic,0,1,0,1768
+Russia,1700,Turkey,0,1,0,1768
+Russia,1700,Civil War,1,0,0,1773
+Russia,1700,Turkey,0,1,0,1787
+Russia,1700,Sweden,1,0,0,1788
+Russia,1700,Baltic,0,1,0,1792
+Russia,1700,Baltic,1,0,0,1794
+Russia,1700,Middle-East,0,1,0,1796
+Russia,1800,France,1,0,0,1803
+Russia,1800,Middle-East,1,0,0,1804
+Russia,1800,Turkey,1,0,0,1806
+Russia,1800,England,1,0,0,1807
+Russia,1800,Sweden,0,1,0,1808
+Russia,1800,England,1,0,0,1809
+Russia,1800,France,1,0,0,1812
+Russia,1800,Eurasia,0,1,0,1817
+Russia,1800,Civil War,1,0,0,1825
+Russia,1800,Middle-East,1,0,0,1826
+Russia,1800,Turkey,0,1,0,1827
+Russia,1800,Turkey,1,0,0,1828
+Russia,1800,Baltic,1,0,0,1830
+Russia,1800,Turkey,0,1,0,1839
+Russia,1800,Asia,0,1,0,1839
+Russia,1800,Civil War,1,0,0,1841
+Russia,1800,Civil War,1,0,0,1842
+Russia,1800,Slavic,1,0,0,1848
+Russia,1800,Turkey,1,0,0,1853
+Russia,1800,Baltic,1,0,0,1858
+Russia,1800,Civil War,1,0,0,1861
+Russia,1800,Baltic,1,0,0,1863
+Russia,1800,Baltic,1,0,0,1866
+Russia,1800,Turkey,0,1,0,1877
+Russia,1800,Turkey,1,0,0,1897
+Russia,1800,Asia,1,0,0,1899
+Russia,1900,Eurasia,1,0,0,1902
+Russia,1900,Asia,1,0,0,1904
+Russia,1900,Civil War,1,0,0,1905
+Russia,1900,Middle-East,1,0,0,1905
+Russia,1900,Civil War,1,0,0,1918
+Russia,1900,Baltic,1,0,0,1918
+Russia,1900,Baltic,1,0,0,1918
+Russia,1900,Baltic,0,1,0,1918
+Russia,1900,Civil War,1,0,0,1918
+Russia,1900,Baltic,0,1,0,1919
+Russia,1900,Eurasia,0,1,0,1920
+Russia,1900,Eurasia,0,1,0,1920
+Russia,1900,Eurasia,0,1,0,1921
+Russia,1900,Eurasia,0,1,0,1921
+Russia,1900,Finland,1,0,0,1921
+Russia,1900,Eurasia,1,0,0,1924
+Russia,1900,Eurasia,1,0,0,1925
+Russia,1900,Asia,1,0,0,1929
+Russia,1900,Eurasia,0,1,0,1929
+Russia,1900,Eurasia,0,1,0,1930
+Russia,1900,Eurasia,1,0,0,1932
+Russia,1900,Asia,1,0,0,1932
+Russia,1900,Asia,1,0,0,1937
+Russia,1900,Finland,0,1,0,1939
+Russia,1900,Romania,0,1,0,1940
+Russia,1900,Ukrainia,0,1,0,1944
+Russia,1900,Baltic,0,1,0,1944
+Russia,1900,Asia,1,0,0,1950
+Russia,1900,German,1,0,0,1953
+Russia,1900,Slavic,1,0,0,1956
+Russia,1900,Slavic,1,0,0,1968
+Russia,1900,Asia,1,0,0,1969
+Russia,1900,Middle-East,1,0,0,1969
+Russia,1900,Africa,1,0,0,1974
+Russia,1900,Africa,1,0,0,1975
+Russia,1900,Africa,1,0,0,1977
+Russia,1900,Eurasia,1,0,0,1979
+Russia,1900,Eurasia,1,0,0,1991
+Russia,1900,Eurasia,1,0,0,1991
+Russia,1900,Eurasia,1,0,0,1992
+Russia,1900,Eurasia,1,0,0,1992
+Russia,1900,Eurasia,1,0,0,1992
+Russia,1900,Eurasia,1,0,0,1992
+Russia,1900,Eurasia,1,0,0,1994
+Russia,1900,Eurasia,1,0,0,1999
+Russia,1900,Eurasia,1,0,0,1999
+Russia,2000,Eurasia,1,0,0,2008
+Russia,2000,Eurasia,1,0,0,2009
+Russia,2000,Ukraine,0,1,0,2014
+Russia,2000,Middle-East,1,0,0,2015
+Russia,2000,Africa,1,0,0,2018
+Sweden,1300,Civil War,1,0,0,1363
+Sweden,1300,Denmark,1,0,0,1366
+Sweden,1300,Denmark,1,0,0,1366
+Sweden,1300,Civil War,1,0,0,1388
+Sweden,1300,Germany,1,0,0,1398
+Sweden,1300,Finland,0,1,0,1398
+Sweden,1400,Civil War,1,0,0,1410
+Sweden,1400,Civil War,1,0,0,1434
+Sweden,1400,Civil War,1,0,0,1436
+Sweden,1400,Civil War,1,0,0,1439
+Sweden,1400,Civil War,1,0,0,1446
+Sweden,1400,Civil War,1,0,0,1448
+Sweden,1400,Denmark,0,1,0,1449
+Sweden,1400,Civil War,1,0,0,1457
+Sweden,1400,Civil War,1,0,0,1463
+Sweden,1400,Civil War,1,0,0,1464
+Sweden,1400,Civil War,1,0,0,1466
+Sweden,1400,Denmark,0,1,0,1468
+Sweden,1400,Civil War,1,0,0,1469
+Sweden,1400,Denmark,0,1,0,1471
+Sweden,1400,Germany,0,1,0,1485
+Sweden,1400,Denmark,0,1,0,1487
+Sweden,1400,Russia,1,0,0,1495
+Sweden,1400,Denmark,1,0,0,1497
+Sweden,1500,Civil War,1,0,0,1501
+Sweden,1500,Denmark,0,1,0,1512
+Sweden,1500,Denmark,1,0,0,1521
+Sweden,1500,Civil War,1,0,0,1542
+Sweden,1500,Denmark,1,0,0,1563
+Sweden,1500,Baltic,0,1,0,1561
+Sweden,1500,Finland,0,1,0,1596
+Sweden,1500,Civil War,1,0,0,1597
+Sweden,1600,Denmark,1,0,0,1611
+Sweden,1600,Denmark,1,0,0,1643
