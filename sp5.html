@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<head>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<style>
+  html body {
+    font-family: Poppins, sans-serif;
+    font-size: 12px;
+    /* background-image: linear-gradient(to bottom right, purple, darkblue); */
+    background: linear-gradient(to bottom right, purple, darkblue);
+    background-attachment: fixed; /*edit*/
+  }
+
+  .buttContainer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .divButt {
+    padding: 5px;
+  }
+
+  button {
+    background-image: linear-gradient(to bottom right, purple, darkblue);
+    /* border: solid transparent; */
+    fill: white;
+    color: white;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    font-family: Poppins, sans-serif;
+  }
+
+  button:hover {
+    background-image: linear-gradient(to bottom right, pink, darkblue);
+    fill: white;
+    color: white;
+
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    font-family: Poppins, sans-serif;
+  }
+
+  .active {
+    stroke: #000;
+    stroke-width: 2px;
+  }
+  text {
+    fill: white;
+    font-family: Poppins, sans-serif;
+  }
+  .title {
+    font-size: 3em;
+    text-anchor: middle;
+  }
+
+  div.tooltip {
+    position: absolute;
+    text-align: center;
+    /* width: 80px; */
+    /* height: 30px; */
+    color: white;
+
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom right, purple, darkblue);
+  }
+
+  .domain {
+    stroke: transparent;
+  }
+  .tick line {
+    stroke: transparent;
+  }
+  .titleText {
+    color: white;
+    padding-top: 0.2vh;
+
+    padding-left: 200px;
+  }
+  #my_dataviz {
+    display: flex;
+    flex-wrap: wrap;
+  }
+</style>
+<div class="buttContainer">
+    <div class="divButt">
+        <button class="butt" onClick="dataCx('marketcap')">marketcap</button>
+      </div>    
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('pe')">pe</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('beta')">beta</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('change')">change</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('changepct')">changepct</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('eps')">eps</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('volume')">volume</button>
+  </div>
+  <div class="divButt">
+    <button class="butt" onClick="dataCx('volumeavg')">volumeavg</button>
+  </div>
+</div>
+
+<div id="my_dataviz"></div>
+<svg></svg>
+
+<script>
+  const margin = { top: 20, right: 30, bottom: 30, left: 60 },
+    width = window.innerWidth - margin.left - margin.right,
+    height = window.innerHeight - margin.top - margin.bottom,
+    innerRadius = 200,
+    outerRadius = Math.min(width, height) / 2; // the outerRadius goes from the middle of the SVG area to the border
+
+  const svg = d3
+    .select("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    //   .style('background-color', 'pink')
+    .append("g")
+    .attr("transform", `translate(${width / 2},${height / 2 + 20})`)
+    .attr("class", "gee"); // Add 100 on Y translation, cause upper bars are longer
+
+  let dView, data;
+
+  let n = 0;
+  let re = false;
+
+  let loading = true;
+  if (loading === true) {
+    d3.select("svg")
+      .append("text")
+      .attr("x", width / 2)
+      .attr("y", height / 2)
+      .attr("class", "loading")
+      .text("loading")
+      .style("text-anchor", "middle");
+  }
+  // else {
+  //     d3.select('.loading')
+  //     .remove()
+  // }
+
+  function dataCx(x) {
+    dView = x;
+    // data = data.sort((a,b) => b[dView] - a[dView]).slice(0,data.length)
+    // console.log(data)
+    // console.log(dView)
+    // d3.selectAll('.gee').remove()
+    d3.selectAll(".labelSec").remove();
+    d3.selectAll(".bars").remove();
+    d3.selectAll(".title").remove();
+    d3.selectAll(".tooltip").remove();
+    d3.selectAll(".label").remove();
+    d3.selectAll(".yTick").remove();
+    re = true;
+    n = 0;
+    drawChart(data, dView);
+
+    // console.log('dataCx fired')
+  }
+
+  var promises = [];
+  promises.push(
+    d3.csv(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-zzB5n77R5qBKqR3HnO1LAFEBRwDrQb07IdstxyP-ryNEGrklaeJDRATx_YOwVz4FAm6fqbw5Gax-/pub?gid=1458840559&single=true&output=csv"
+    )
+  );
+  myDataPromises = Promise.all(promises).then(function ([data1]) {
+    // d3.csv("./sp500.csv").then(function(data1){
+
+    loading = false;
+    d3.select(".loading").remove();
+
+    data = data1;
+
+    data.forEach((d) => {
+      d.pe = +d.pe;
+      d.marketcap = +d.marketcap;
+      d.volume = +d.volume;
+      d.volumeavg = +d.volumeavg;
+      d.eps = +d.eps;
+      d.high52 = +d.high52;
+      d.low52 = +d.ow52;
+      d.price = +d.price;
+      d.change = +d.change;
+      d.beta = +d.beta;
+      d.changepct = +d.changepct;
+      d.shares = +d.shares;
+    });
+
+    drawChart(data, "marketcap");
+  });
+
+  function drawChart(dat, dView) {
+    // console.log(dat)
+
+    dat.sort((a, b) => b[dView] - a[dView]);
+    // data.sort((a) => a.sector)
+
+    dat.sort(function (a, b) {
+      let x = a.sector.toLowerCase();
+      let y = b.sector.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+    });
+
+    const unique = [...new Set(dat.map((item) => item.sector))];
+    // console.log(unique)
+
+    secArr = [];
+
+    let secPosition = 0;
+
+    unique.forEach((u) => {
+      let obj = {};
+      let secCount = 0;
+      countData = data.filter((d) => d.sector === u);
+      countData.forEach((c) => {
+        secCount++;
+        secPosition++;
+      });
+      obj["sec"] = u;
+      obj["count"] = secCount;
+      obj["secPos"] = secPosition;
+      secArr.push(obj);
+    });
+
+    let secPosTot = secArr[secArr.length - 1].secPos;
+    console.log(secPosTot);
+    console.log(secArr);
+
+    // set the dimensions and margins of the graph
+
+    // X scale
+    const x = d3
+      .scaleBand()
+      .range([0, 2 * Math.PI]) // X axis goes from 0 to 2pi = all around the circle. If I stop at 1Pi, it will be around a half circle
+      .align(0) // This does nothing ?
+      .domain(dat.map((d) => d.Name)); // The domain of the X axis is the list of states.
+
+    let yMaxMin = d3.extent(dat, (d) => d[dView]);
+    let zMaxMin = d3.extent(secArr, (d) => d.secPos);
+
+    // console.log(yMaxMin);
+    // Y scale
+    const y = d3
+      .scaleRadial()
+      .domain([0, yMaxMin[1]])
+      .range([innerRadius, outerRadius]); // Domain will be define later.
+    //   .domain([0, 10000]); // Domain of Y is from 0 to the max seen in the dat
+    const z = d3
+      .scaleBand()
+      .domain(secArr.map((d) => d.secPos))
+      .range([0, 2 * Math.PI]); // X axis goes from 0 to 2pi = all around the circle. If I stop at 1Pi, it will be around a half circle
+    //   .range([innerRadius, outerRadius]); // Domain will be define later.
+    //   .domain([0, 10000]); // Domain of Y is from 0 to the max seen in the dat
+
+    var myColor = d3.scaleOrdinal().domain(unique).range(d3.schemeSet3);
+
+    var div = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    const padAngl = 0.005;
+
+    let refSize = 12;
+
+    let rf = d3
+      .select("svg")
+      .append("text")
+      .attr("class", "title")
+      .attr("x", width * 0.005)
+      .attr("y", height * 0.9)
+      .html(`source: googlefinance`)
+      .attr("opacity", 0.5)
+      .style("font-size", refSize)
+      .style("text-anchor", "start");
+
+    let dsource = d3
+      .select("svg")
+      .append("text")
+      .attr("class", "title")
+      .attr("x", width * 0.99)
+      .attr("y", height * 0.9)
+      .html(`rupertfleming.com`)
+      .attr("opacity", 0.5)
+      .style("font-size", refSize)
+      .style("text-anchor", "end");
+
+    let title = d3
+      .select("svg")
+      .append("text")
+      .attr("class", "title")
+      .attr("x", width / 2)
+      .attr("y", height / 2)
+      .html(`S&P500 Stocks`)
+      .attr("opacity", 0.5);
+    let title2 = d3
+      .select("svg")
+      .append("text")
+      .attr("class", "title")
+      .attr("x", width / 2)
+      .attr("y", height / 2 + 50)
+      .html(`${dView}`)
+      .attr("opacity", 0.5);
+
+    const t = svg.transition().duration(1500);
+    // Add bars
+    // let bars = svg
+    //   .selectAll("g")
+    //   .data(dat);
+    let bars = svg.selectAll(".gee").data(dat);
+
+    bars
+      .enter()
+      .append("path")
+      .attr("class", (d) => `bars ${d.Name}`)
+      .attr("fill", function (d) {
+        return myColor(d.sector);
+      })
+      .attr(
+        "d",
+        d3
+          .arc() // imagine your doing a part of a donut plot
+          .innerRadius(innerRadius)
+          //   .outerRadius(innerRadius+100)
+          .outerRadius((d) => y(d[dView]))
+
+          .startAngle((d) => x(d.Name))
+          .endAngle((d) => x(d.Name) + x.bandwidth())
+          .padAngle(padAngl)
+          .padRadius(innerRadius)
+      )
+      .attr("opacity", 0.7)
+      .on("mouseover", function (event, d) {
+        d3.select(this).attr("fill", "gold").style("opacity", 1);
+        div.transition().duration(200).style("opacity", 0.9);
+        div
+          .html(
+            d.Name +
+              "<br/>" +
+              d.sector +
+              "<br/>" +
+              dView +
+              ": " +
+              formatAbbreviation(d[dView])
+          )
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px")
+          .style("font-family", "Poppins");
+      })
+      .on("mouseout", function (d) {
+        d3.select(this)
+          .attr("fill", function (d) {
+            return myColor(d.sector);
+          })
+          .style("opacity", 0.4);
+
+        div.transition().duration(500).style("opacity", 0);
+      });
+    //    .transition().duration(1500)
+    //       .attr(
+    //         "d",
+    //         d3
+    //           .arc() // imagine your doing a part of a donut plot
+    //           .innerRadius(innerRadius)
+    //           .outerRadius(d=> y(d[dView]))
+    //           .startAngle(d => x(d.Name))
+    //           .endAngle(d => x(d.Name) + x.bandwidth())
+    //           .padAngle(padAngl)
+    //           .padRadius(innerRadius)
+    //       )
+
+    let labels = svg.append("g").selectAll("g").data(dat);
+    console.log("dat:", dat);
+
+    labels
+      .enter()
+      .append("g")
+      .attr("class", "label")
+
+      .attr("text-anchor", function (d) {
+        return (x(d.Name) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) <
+          Math.PI
+          ? "end"
+          : "start";
+      })
+      .attr("transform", function (d) {
+        return (
+          "rotate(" +
+          (((x(d.Name) + x.bandwidth() / 2) * 180) / Math.PI - 90) +
+          ")" +
+          "translate(" +
+          (y(d[dView]) + 10) +
+          ",0)"
+        );
+      })
+      .append("text")
+      .text(function (d) {
+        return d.Name;
+      })
+      .attr("class", (d, i) => `label ${d.Symbol}`)
+      .attr("transform", function (d) {
+        return (x(d.Name) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) <
+          Math.PI
+          ? "rotate(180)"
+          : "rotate(0)";
+      })
+      .style("font-size", "8px")
+      .attr("alignment-baseline", "middle")
+      .attr("opacity", 0)
+      .style("fill", function (d) {
+        return myColor(d.sector);
+      });
+
+    bars.exit().remove();
+    labels.exit().remove();
+
+    let whip = y.ticks(2).slice(1);
+
+    console.log(whip);
+
+    var yTick = svg.selectAll(".yTick").data(whip).enter().append("g");
+
+    yTick.attr("class", "yTick").attr("opacity", 1);
+
+    yTick
+      .append("circle")
+      .attr("stroke-opacity", 0.5)
+      .attr("r", y)
+      .style("fill", "none")
+      .style("stroke", "white")
+      .style("stroke-dasharray", "2,2")
+      .style("stroke-width", ".5px");
+
+    yTick
+      .append("text")
+      .attr("x", x(20))
+      .attr("y", function (d) {
+        return -y(d);
+      })
+      .attr("dy", "0.35em")
+      //   .text(z.tickFormat(10, "s"))
+      .text(
+        dView === "change" || dView === "changepct"
+          ? (d) => d3.format(".0%")(d / 100)
+          : (d) => formatAbbreviation(d)
+      )
+      .attr("opacity", 0.5)
+      .attr("text-anchor", "middle");
+    //   .attr("transform", function(d) { return "rotate(" + ((x(100) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")translate(" + innerRadius + ",0)"; });
+    //   .attr("transform", function(d) { return `rotate(0) , translate(${innerRadius},0)` });
+    // .attr("transform", function(d) { return "rotate(" + (10 *360)   +")"+"translate(" + (y(yMaxMin[1])-90) + ",0)"; })
+
+    let secLabels = svg.append("g").selectAll("g").data(secArr);
+
+    secLabels
+      .enter()
+      .append("g")
+      .attr("text-anchor", "middle")
+      .attr("transform", function (d) {
+        return (
+          "rotate(" +
+          (((d.secPos - d.count / 2) / 503) * 360 - 90) +
+          ")" +
+          "translate(" +
+          (y(yMaxMin[1]) - 90) +
+          ",0)"
+        );
+      })
+      .append("text")
+      .text(function (d) {
+        return d.sec;
+      })
+      .attr("class", `labelSec`)
+      // .attr("transform", function(d) { return (d.secPos/503 / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+      .attr("transform", "rotate(90)")
+      .style("font-size", "8px")
+      .attr("alignment-baseline", "middle")
+      .attr("opacity", 1)
+      .style("fill", function (d) {
+        return myColor(d.sec);
+      })
+      .style("font-size", 14);
+
+    let tickDuration = 1500;
+
+    let ticker = d3.interval((e) => {
+      if (re === true) {
+        re = false;
+        n = 0;
+        ticker.stop();
+        ticker.restart();
+      }
+
+      if (n > data.length / 3) {
+        n = 0;
+      }
+
+      d3.selectAll(`.${data[n].Symbol}`)
+        .transition()
+        .duration(100)
+
+        .attr("opacity", 1)
+
+        .transition()
+        .duration(0)
+        .delay(tickDuration - 500)
+        .attr("opacity", 0);
+      d3.selectAll(`.${data[n + 167].Symbol}`)
+        .transition()
+        .duration(100)
+        .attr("opacity", 1)
+        .transition()
+        .duration(0)
+        .delay(tickDuration - 500)
+        .attr("opacity", 0);
+      d3.selectAll(`.${data[n + 167 * 2].Symbol}`)
+        .transition()
+        .duration(100)
+        .attr("opacity", 1)
+        .transition()
+        .duration(0)
+        .delay(tickDuration - 500)
+        .attr("opacity", 0);
+
+      n++;
+    }, tickDuration);
+  }
+
+  var formatSi = d3.format(".3s");
+
+  function formatAbbreviation(x) {
+    var s = formatSi(x);
+    switch (s[s.length - 1]) {
+      case "G":
+        return s.slice(0, -1) + "Bn";
+      case "T":
+        return s.slice(0, -1) + "Tn";
+    }
+    return s;
+  }
+</script>
