@@ -8,7 +8,7 @@
 /* ticks */
 .axis line{
 stroke: #706f6f;
-stroke-width: 0.5;
+stroke-width: 5.5;
 shape-rendering: crispEdges;
 }
 
@@ -128,7 +128,8 @@ const xaxis = d3.axisBottom()
 //----------------------------LINES-----------------------------//
 const line = d3.line()
     .x(function(d) { return xScale(d.date); })
-    .y(function(d) { return yScale(d.measurement); });
+    .y(function(d) { return yScale(d.measurement); })
+    .curve(d3.curveBasis);
 
 //-------------------------2. DRAWING---------------------------//
 //-----------------------------AXES-----------------------------//
