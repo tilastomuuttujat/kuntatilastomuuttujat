@@ -9,7 +9,7 @@
 /* ticks */
 .axis line{
 stroke: #706f6f;
-stroke-width: 0.5;
+stroke-width: 4.5;
 shape-rendering: crispEdges;
 }
 
@@ -68,7 +68,7 @@ fill: #9c9c9c;
 <body>
 <div id="container" class="svg-container"></div>
 <script>
-
+/*
 var data = ["text date","A","B","C"
 "20-Jul-2019",10,20,16
 "21-Jul-2019",11,22,18
@@ -84,7 +84,7 @@ var data = ["text date","A","B","C"
 "31-Jul-2019",16,18,21
 "01-Aug-2019",15,20,22
 "02-Aug-2019",14,21,19];
-
+*/
 
 //------------------------1. PREPARATION------------------------//
 //-----------------------------SVG------------------------------//
@@ -146,8 +146,9 @@ const xaxis = d3.axisBottom()
 //----------------------------LINES-----------------------------//
 const line = d3.line()
     .x(function(d) { return xScale(d.date); })
-    .y(function(d) { return yScale(d.measurement); });
-
+    .y(function(d) { return yScale(d.measurement); })
+    .curve(d3.curveBasis);
+    
 let id = 0;
 const ids = function () {
     return "line-"+id++;
