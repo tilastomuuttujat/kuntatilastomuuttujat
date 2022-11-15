@@ -110,8 +110,8 @@
                              .enter()
                              .append("circle")
                              .attr("r", 5)
-                             .attr("cx", (d) => x(+d.leveyspiiri))
-                             .attr("cy", (d) => y(+d.pituuspiiri))
+                             .attr("cx", (d) => x(+d.latitude))
+                             .attr("cy", (d) => y(+d.longitude))
                              .attr("class", "non_brushed");
 
 
@@ -194,8 +194,8 @@
             showTableColNames();
 
             var d_row_filter = [d_row.state, 
-                                formatIncome(d_row.income), 
-                                formatHsGrad(d_row.hs_grad)];
+                                formatIncome(d_row.latitude), 
+                                formatHsGrad(d_row.longitude)];
 
             d3.select("table")
               .append("tr")
