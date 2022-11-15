@@ -41,8 +41,8 @@
         <table>
             <tr>
                 <th>Kunta</th>
-                <th>Y-sijainti</th> 
-                <th>X-sijainti</th> 
+                <th>Leveyspiiri</th> 
+                <th>Pituuspiiri</th> 
             </tr>
         </table>
     </div>
@@ -73,8 +73,8 @@
 
             var n = d.length;
 
-            var d_extent_x = d3.extent(d, d => +d.hs_grad),
-                d_extent_y = d3.extent(d, d => +d.income);
+            var d_extent_x = d3.extent(d, d => +d.leveyspiiri),
+                d_extent_y = d3.extent(d, d => +d.pituuspiiri);
 
             x.domain(d_extent_x);
             y.domain(d_extent_y);
@@ -110,8 +110,8 @@
                              .enter()
                              .append("circle")
                              .attr("r", 5)
-                             .attr("cx", (d) => x(+d.hs_grad))
-                             .attr("cy", (d) => y(+d.income))
+                             .attr("cx", (d) => x(+d.leveyspiiri))
+                             .attr("cy", (d) => y(+d.pituuspiiri))
                              .attr("class", "non_brushed");
 
 
