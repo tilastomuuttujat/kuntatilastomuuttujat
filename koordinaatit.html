@@ -61,9 +61,9 @@
         var x = d3.scaleLinear().range([margin.left, plot_dx]),
             y = d3.scaleLinear().range([plot_dy, margin.top]);
 
-        var formatIncome = d3.format("y,"),
-            formatHsGrad = d3.format("x"),
-            formatHsGradAxis = d3.format("xy");
+        var formatIncome = d3.format(""),
+            formatHsGrad = d3.format(""),
+            formatHsGradAxis = d3.format("");
 
         var svg = d3.select("#chart")
                     .append("svg")
