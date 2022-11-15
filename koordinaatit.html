@@ -74,8 +74,8 @@
 
             var n = d.length;
 
-            var d_extent_x = d3.extent(d, d => +d.income),
-                d_extent_y = d3.extent(d, d => +d.hs_grad);
+            var d_extent_x = d3.extent(d, d => +d.hs_grad),
+                d_extent_y = d3.extent(d, d => +d.income);
 
             x.domain(d_extent_x);
             y.domain(d_extent_y);
@@ -111,8 +111,8 @@
                              .enter()
                              .append("circle")
                              .attr("r", 5)
-                             .attr("cx", (d) => x(+d.income))
-                             .attr("cy", (d) => y(+d.hs_grad))
+                             .attr("cx", (d) => x(+d.hs_grad))
+                             .attr("cy", (d) => y(+d.income))
                              .attr("class", "non_brushed");
 
 
