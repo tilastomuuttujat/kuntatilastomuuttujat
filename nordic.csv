@@ -1,0 +1,1263 @@
+city,lat,lng,country,iso2,admin_name,capital,population,population_proper
+Stockholm,59.3294,18.0686,Sweden,SE,Stockholm,primary,972647,972647
+Gothenburg,57.6717,11.9810,Sweden,SE,Västra Götaland,admin,604829,604829
+Malmö,55.5932,13.0214,Sweden,SE,Skåne,admin,324002,324002
+Uppsala,59.8498,17.6389,Sweden,SE,Uppsala,admin,165456,165456
+Uppsala,59.8601,17.6400,Sweden,SE,Stockholm,,133117,127734
+Västerås,59.6173,16.5422,Sweden,SE,Västmanland,admin,128534,128534
+Örebro,59.2669,15.1965,Sweden,SE,Örebro,admin,126009,126009
+Linköping,58.4094,15.6257,Sweden,SE,Östergötland,admin,115672,115672
+Helsingborg,56.0424,12.7210,Sweden,SE,Skåne,minor,113816,113816
+Umeå,63.8285,20.2706,Sweden,SE,Västerbotten,admin,90412,90412
+Jönköping,57.7833,14.1667,Sweden,SE,Jönköping,admin,89780,83202
+Norrköping,58.5919,16.1856,Sweden,SE,Östergötland,minor,88639,82903
+Karlstad,59.3808,13.5016,Sweden,SE,Värmland,admin,74141,59266
+Sundsvall,62.3902,17.3067,Sweden,SE,Västernorrland,minor,73389,48463
+Gävle,60.6670,17.1666,Sweden,SE,Gävleborg,admin,68635,67836
+Borås,57.7304,12.9200,Sweden,SE,Västra Götaland,minor,65008,63223
+Växjö,56.8837,14.8167,Sweden,SE,Kronoberg,admin,59600,46535
+Halmstad,56.6754,12.8587,Sweden,SE,Halland,admin,55657,55209
+Luleå,65.5838,22.1915,Sweden,SE,Norrbotten,admin,49123,49123
+Östersund,63.1775,14.6414,Sweden,SE,Jämtland,admin,46178,42940
+Trollhättan,58.2671,12.3000,Sweden,SE,Västra Götaland,minor,44543,44522
+Kalmar,56.6694,16.3218,Sweden,SE,Kalmar,admin,41388,41388
+Borlänge,60.4833,15.4167,Sweden,SE,Dalarna,minor,39422,38527
+Mölndal,57.6542,12.0139,Sweden,SE,Västra Götaland,minor,37233,37233
+Falun,60.6130,15.6470,Sweden,SE,Dalarna,admin,36477,36477
+Karlskrona,56.1611,15.5881,Sweden,SE,Blekinge,admin,35212,35212
+Nyköping,58.7582,17.0185,Sweden,SE,Södermanland,admin,33916,33916
+Kristianstad,56.0337,14.1333,Sweden,SE,Skåne,minor,32188,21339
+Skellefteå,64.6500,20.8500,Sweden,SE,Västerbotten,minor,31311,30839
+Örnsköldsvik,63.2940,18.7122,Sweden,SE,Västernorrland,minor,27749,25063
+Kiruna,67.8494,20.2544,Sweden,SE,Norrbotten,minor,26703,26703
+Visby,57.6290,18.3071,Sweden,SE,Gotland,admin,24942,24942
+Huskvarna,57.7919,14.2756,Sweden,SE,Jönköping,,22000,22000
+Vänersborg,58.3630,12.3300,Sweden,SE,Västra Götaland,minor,21835,21835
+Härnösand,62.6323,17.9379,Sweden,SE,Västernorrland,admin,18502,18502
+Höganäs,56.1960,12.5769,Sweden,SE,Skåne,minor,16001,16001
+Kinna,57.4954,12.6805,Sweden,SE,Västra Götaland,minor,15448,15448
+Mariestad,58.7050,13.8280,Sweden,SE,Västra Götaland,minor,14891,14891
+Mjölby,58.3321,15.1312,Sweden,SE,Östergötland,minor,13947,13947
+Bollnäs,61.3484,16.3883,Sweden,SE,Gävleborg,minor,13398,12145
+Mora,61.0096,14.5635,Sweden,SE,Dalarna,minor,12826,12826
+Ulricehamn,57.7917,13.4186,Sweden,SE,Västra Götaland,minor,11399,11399
+Tibro,58.4190,14.1580,Sweden,SE,Västra Götaland,minor,8614,8614
+Habo,57.9066,14.0856,Sweden,SE,Jönköping,minor,8516,8516
+Tidaholm,58.1794,13.9599,Sweden,SE,Västra Götaland,minor,8146,8146
+Strömstad,58.9441,11.1864,Sweden,SE,Västra Götaland,minor,7466,7466
+Haparanda,65.8342,24.1170,Sweden,SE,Norrbotten,minor,6554,6554
+Hjo,58.3044,14.2786,Sweden,SE,Västra Götaland,minor,6357,6357
+Kungsör,59.4227,16.1059,Sweden,SE,Västmanland,minor,5913,5913
+Vårgårda,58.0341,12.8083,Sweden,SE,Västra Götaland,minor,5825,5825
+Hjärup,55.6707,13.1410,Sweden,SE,Skåne,,5591,5591
+Töreboda,58.7020,14.1184,Sweden,SE,Västra Götaland,minor,4723,4723
+Herrljunga,58.0752,13.0238,Sweden,SE,Västra Götaland,minor,4075,4075
+Kisa,57.9857,15.6305,Sweden,SE,Östergötland,minor,3813,3813
+Svenljunga,57.4960,13.1102,Sweden,SE,Västra Götaland,minor,3774,3774
+Karlsborg,58.5268,14.5231,Sweden,SE,Västra Götaland,minor,3749,3749
+Åre,63.3938,12.9351,Sweden,SE,Jämtland,,3430,3430
+Tranemo,57.4838,13.3587,Sweden,SE,Västra Götaland,minor,3323,3323
+Glumslöv,55.9425,12.8079,Sweden,SE,Skåne,,2253,2253
+Sjuntorp,58.2002,12.2367,Sweden,SE,Västra Götaland,,2158,2158
+Anderslöv,55.4378,13.3183,Sweden,SE,Skåne,,1960,1960
+Stenstorp,58.2727,13.7172,Sweden,SE,Västra Götaland,,1794,1794
+Övertorneå,66.3881,23.6436,Sweden,SE,Norrbotten,minor,1737,1737
+Floby,58.1375,13.3365,Sweden,SE,Västra Götaland,,1593,1593
+Gullspång,58.9862,14.0956,Sweden,SE,Västra Götaland,,1567,1567
+Brålanda,58.5634,12.3492,Sweden,SE,Västra Götaland,,1532,1532
+Limmared,57.5379,13.3579,Sweden,SE,Västra Götaland,,1484,1484
+Kvänum,58.2998,13.1875,Sweden,SE,Västra Götaland,,1320,1320
+Horred,57.3570,12.4732,Sweden,SE,Västra Götaland,,1261,1261
+Sätila,57.5395,12.4393,Sweden,SE,Västra Götaland,,1162,1162
+Länghem,57.6000,13.2456,Sweden,SE,Västra Götaland,,1111,1111
+Villie,55.4789,13.5978,Sweden,SE,Skåne,,1101,1101
+Torekov,56.4197,12.6339,Sweden,SE,Skåne,,1089,1089
+Hortlax,65.2819,21.4054,Sweden,SE,Norrbotten,,1085,1085
+Mölltorp,58.4965,14.4141,Sweden,SE,Västra Götaland,,1084,1084
+Vinninga,58.4521,13.2616,Sweden,SE,Västra Götaland,,1055,1055
+Vedum,58.1697,12.9970,Sweden,SE,Västra Götaland,,986,986
+Kinnarp,58.0779,13.5206,Sweden,SE,Västra Götaland,,963,963
+Sexdrega,57.5789,13.1189,Sweden,SE,Västra Götaland,,813,813
+Järpås,58.3796,12.9740,Sweden,SE,Västra Götaland,,790,790
+Stora Levene,58.3256,12.9251,Sweden,SE,Västra Götaland,,790,790
+Velanda,58.2288,12.3099,Sweden,SE,Västra Götaland,,783,783
+Timmele,57.8595,13.4289,Sweden,SE,Västra Götaland,,772,772
+Sparreholm,59.0736,16.8234,Sweden,SE,Södermanland,,736,736
+Hyssna,57.5573,12.5384,Sweden,SE,Västra Götaland,,734,734
+Dalstorp,57.6023,13.5245,Sweden,SE,Västra Götaland,,728,728
+Grimsås,57.4838,13.5503,Sweden,SE,Västra Götaland,,723,723
+Sandhem,57.9868,13.7702,Sweden,SE,Västra Götaland,,700,700
+Ardala,58.3613,13.3365,Sweden,SE,Västra Götaland,,689,689
+Fagersanna,58.4619,14.2689,Sweden,SE,Västra Götaland,,683,683
+Filsbäck,58.4906,13.2497,Sweden,SE,Västra Götaland,,667,667
+Varnhem,58.3857,13.6482,Sweden,SE,Västra Götaland,,667,667
+Hökerum,57.8398,13.2888,Sweden,SE,Västra Götaland,,650,650
+Hillared,57.6296,13.1604,Sweden,SE,Västra Götaland,,633,633
+Frändefors,58.4928,12.2731,Sweden,SE,Västra Götaland,,628,628
+Åsarp,58.0240,13.5651,Sweden,SE,Västra Götaland,,607,607
+Klagstorp,55.3932,13.3730,Sweden,SE,Skåne,,599,599
+Vegby,57.6786,13.3722,Sweden,SE,Västra Götaland,,597,597
+Gällstad,57.6682,13.4299,Sweden,SE,Västra Götaland,,597,597
+Sandhult,57.7710,12.8219,Sweden,SE,Västra Götaland,,571,571
+Blidsberg,57.9289,13.4926,Sweden,SE,Västra Götaland,,561,561
+Björketorp,57.4270,12.5268,Sweden,SE,Västra Götaland,,556,556
+Upphärad,58.1581,12.3048,Sweden,SE,Västra Götaland,,552,552
+Lerdala,58.4777,13.7144,Sweden,SE,Västra Götaland,,540,540
+Vartofta,58.0957,13.6290,Sweden,SE,Västra Götaland,,532,532
+Arentorp,58.2423,12.8737,Sweden,SE,Västra Götaland,,510,510
+Marbäck,57.7410,13.4219,Sweden,SE,Västra Götaland,,510,510
+Överlida,57.3509,12.8992,Sweden,SE,Västra Götaland,,498,498
+Ekedalen,58.1996,13.8407,Sweden,SE,Västra Götaland,,483,483
+Tråvad,58.2504,13.0862,Sweden,SE,Västra Götaland,,477,477
+Torbjörntorp,58.2109,13.6017,Sweden,SE,Västra Götaland,,457,457
+Rydal,57.5517,12.6922,Sweden,SE,Västra Götaland,,434,434
+Gudhem,58.2268,13.5667,Sweden,SE,Västra Götaland,,434,434
+Borgstena,57.8842,13.0170,Sweden,SE,Västra Götaland,,423,423
+Östadkulle,58.0164,12.6425,Sweden,SE,Västra Götaland,,409,409
+Torestorp,57.3892,12.6729,Sweden,SE,Västra Götaland,,406,406
+Jung,58.3258,13.1102,Sweden,SE,Västra Götaland,,396,396
+Berghem,57.4640,12.5873,Sweden,SE,Västra Götaland,,381,381
+Älgarås,58.8125,14.2541,Sweden,SE,Västra Götaland,,374,374
+Kebal,58.9486,11.0003,Sweden,SE,Västra Götaland,,373,373
+Nedre Gärdsjö,60.9397,15.2268,Sweden,SE,Dalarna,,372,372
+Nitta,57.8277,13.1885,Sweden,SE,Västra Götaland,,361,361
+Grangärde,60.2667,14.9833,Sweden,SE,Dalarna,,351,351
+Skattungbyn,61.1848,14.8511,Sweden,SE,Dalarna,,350,350
+Furusjö,57.9286,13.9606,Sweden,SE,Västra Götaland,,346,346
+Rånnaväg,57.6769,13.4679,Sweden,SE,Västra Götaland,,336,336
+Östra Frölunda,57.3430,13.0323,Sweden,SE,Västra Götaland,,329,329
+Öxabäck,57.3959,12.8046,Sweden,SE,Västra Götaland,,326,326
+Forsvik,58.5800,14.4342,Sweden,SE,Västra Götaland,,323,323
+Fagerhult,58.0006,14.1238,Sweden,SE,Västra Götaland,,322,322
+Sundbyberg,59.3607,17.9717,Sweden,SE,Stockholm,minor,,
+Solna,59.3667,18.0167,Sweden,SE,Stockholm,minor,,
+Lund,55.7000,13.1833,Sweden,SE,Skåne,minor,,
+Trelleborg,55.3667,13.1667,Sweden,SE,Skåne,minor,,
+Kungsbacka,57.4833,12.0667,Sweden,SE,Halland,minor,,
+Lidingö,59.3642,18.1310,Sweden,SE,Stockholm,minor,,
+Jakobsberg,59.4167,17.8333,Sweden,SE,Stockholm,minor,,
+Sollentuna,59.4667,17.9000,Sweden,SE,Stockholm,minor,,
+Varberg,57.1086,12.2661,Sweden,SE,Halland,minor,,
+Djursholm,59.4000,18.0833,Sweden,SE,Stockholm,minor,,
+Ystad,55.4167,13.8167,Sweden,SE,Skåne,minor,,
+Nacka,59.3000,18.1667,Sweden,SE,Stockholm,minor,,
+Falkenberg,56.8981,12.5019,Sweden,SE,Halland,minor,,
+Täby,59.5000,18.0500,Sweden,SE,Stockholm,minor,,
+Lysekil,58.2833,11.4333,Sweden,SE,Västra Götaland,minor,,
+Tumba,59.2000,17.8167,Sweden,SE,Stockholm,minor,,
+Arlöv,55.6333,13.0667,Sweden,SE,Skåne,minor,,
+Kungälv,57.8667,11.9667,Sweden,SE,Västra Götaland,minor,,
+Lidköping,58.5000,13.1667,Sweden,SE,Västra Götaland,minor,,
+Hässleholm,56.1568,13.7702,Sweden,SE,Skåne,minor,,
+Eskilstuna,59.3487,16.4490,Sweden,SE,Södermanland,minor,,
+Lomma,55.6833,13.0833,Sweden,SE,Skåne,minor,,
+Södertälje,59.1978,17.6272,Sweden,SE,Stockholm,minor,,
+Borgholm,56.8833,16.6500,Sweden,SE,Kalmar,minor,,
+Tyresö,59.2333,18.3000,Sweden,SE,Stockholm,minor,,
+Uddevalla,58.3667,11.9333,Sweden,SE,Västra Götaland,minor,,
+Huddinge,59.2333,17.9833,Sweden,SE,Stockholm,minor,,
+Norrtälje,59.7667,18.7000,Sweden,SE,Stockholm,minor,,
+Oskarshamn,57.2667,16.4333,Sweden,SE,Kalmar,minor,,
+Skövde,58.4000,13.8500,Sweden,SE,Västra Götaland,minor,,
+Landskrona,55.8667,12.8333,Sweden,SE,Skåne,minor,,
+Arvika,59.6578,12.5942,Sweden,SE,Värmland,minor,,
+Västervik,57.7500,16.6333,Sweden,SE,Kalmar,minor,,
+Mölnlycke,57.6500,12.1333,Sweden,SE,Västra Götaland,minor,,
+Avesta,60.1500,16.2000,Sweden,SE,Dalarna,minor,,
+Ängelholm,56.2500,12.8667,Sweden,SE,Skåne,minor,,
+Partille,57.7333,12.1167,Sweden,SE,Västra Götaland,minor,,
+Nynäshamn,58.9076,17.9446,Sweden,SE,Stockholm,minor,,
+Stenungsund,58.0833,11.8167,Sweden,SE,Västra Götaland,minor,,
+Öckerö,57.7081,11.6413,Sweden,SE,Västra Götaland,minor,,
+Bålsta,59.5833,17.5000,Sweden,SE,Uppsala,minor,,
+Åstorp,56.1333,12.9500,Sweden,SE,Skåne,minor,,
+Märsta,59.6167,17.8500,Sweden,SE,Stockholm,minor,,
+Ekerö,59.2667,17.7333,Sweden,SE,Stockholm,minor,,
+Enköping,59.6333,17.0667,Sweden,SE,Uppsala,minor,,
+Älmhult,56.5500,14.1333,Sweden,SE,Kronoberg,minor,,
+Söderhamn,61.3084,17.0526,Sweden,SE,Gävleborg,minor,,
+Skara,58.3667,13.4167,Sweden,SE,Västra Götaland,minor,,
+Staffanstorp,55.6333,13.2167,Sweden,SE,Skåne,minor,,
+Oxelösund,58.6667,17.1000,Sweden,SE,Södermanland,minor,,
+Rönninge,59.2000,17.7333,Sweden,SE,Stockholm,minor,,
+Lerum,57.7667,12.2667,Sweden,SE,Västra Götaland,minor,,
+Motala,58.5500,15.0500,Sweden,SE,Östergötland,minor,,
+Ljungby,56.8333,13.9333,Sweden,SE,Kronoberg,minor,,
+Falköping,58.1700,13.5551,Sweden,SE,Västra Götaland,minor,,
+Kävlinge,55.8000,13.1000,Sweden,SE,Skåne,minor,,
+Skoghall,59.3333,13.4333,Sweden,SE,Värmland,minor,,
+Skurup,55.4667,13.5000,Sweden,SE,Skåne,minor,,
+Upplands Väsby,59.5167,17.9000,Sweden,SE,Stockholm,minor,,
+Åkersberga,59.4833,18.3000,Sweden,SE,Stockholm,minor,,
+Emmaboda,56.6333,15.5333,Sweden,SE,Kalmar,minor,,
+Knivsta,59.7167,17.8000,Sweden,SE,Uppsala,minor,,
+Gustavsberg,59.3167,18.3833,Sweden,SE,Stockholm,minor,,
+Alingsås,57.9333,12.5167,Sweden,SE,Västra Götaland,minor,,
+Kungsängen,59.4833,17.7500,Sweden,SE,Stockholm,minor,,
+Nybro,56.7500,15.9000,Sweden,SE,Kalmar,minor,,
+Vallentuna,59.5333,18.0833,Sweden,SE,Stockholm,minor,,
+Kumla,59.1333,15.1333,Sweden,SE,Örebro,minor,,
+Sjöbo,55.6333,13.7000,Sweden,SE,Skåne,minor,,
+Sandviken,60.6167,16.7667,Sweden,SE,Gävleborg,minor,,
+Nässjö,57.6500,14.6833,Sweden,SE,Jönköping,minor,,
+Eslöv,55.8333,13.3333,Sweden,SE,Skåne,minor,,
+Vellinge,55.4667,13.0167,Sweden,SE,Skåne,minor,,
+Hudiksvall,61.7290,17.1121,Sweden,SE,Gävleborg,minor,,
+Bjuv,56.0833,12.9000,Sweden,SE,Skåne,minor,,
+Forshaga,59.5333,13.4667,Sweden,SE,Värmland,minor,,
+Bromölla,56.0667,14.4667,Sweden,SE,Skåne,minor,,
+Simrishamn,55.5500,14.3333,Sweden,SE,Skåne,minor,,
+Lilla Edet,58.1333,12.1333,Sweden,SE,Västra Götaland,minor,,
+Strängnäs,59.3833,17.0333,Sweden,SE,Södermanland,minor,,
+Timrå,62.4778,17.3069,Sweden,SE,Västernorrland,minor,,
+Laholm,56.5167,13.0333,Sweden,SE,Halland,minor,,
+Grästorp,58.3333,12.6833,Sweden,SE,Västra Götaland,minor,,
+Västerhaninge,59.1167,18.1000,Sweden,SE,Stockholm,minor,,
+Svedala,55.5000,13.2333,Sweden,SE,Skåne,minor,,
+Vetlanda,57.4333,15.0667,Sweden,SE,Jönköping,minor,,
+Båstad,56.4322,12.8333,Sweden,SE,Skåne,minor,,
+Hultsfred,57.4833,15.8333,Sweden,SE,Kalmar,minor,,
+Gislaved,57.3000,13.5333,Sweden,SE,Jönköping,minor,,
+Värnamo,57.1833,14.0333,Sweden,SE,Jönköping,minor,,
+Hallstahammar,59.6167,16.2167,Sweden,SE,Västmanland,minor,,
+Säffle,59.1330,12.9213,Sweden,SE,Värmland,minor,,
+Alafors,57.9333,12.0833,Sweden,SE,Västra Götaland,minor,,
+Tomelilla,55.5500,13.9500,Sweden,SE,Skåne,minor,,
+Ludvika,60.1333,15.1833,Sweden,SE,Dalarna,minor,,
+Vadstena,58.4500,14.9000,Sweden,SE,Östergötland,minor,,
+Sala,59.9167,16.6000,Sweden,SE,Västmanland,minor,,
+Tranås,58.0322,14.9750,Sweden,SE,Jönköping,minor,,
+Skärhamn,57.9967,11.5561,Sweden,SE,Västra Götaland,minor,,
+Eksjö,57.6667,14.9500,Sweden,SE,Jönköping,minor,,
+Kristinehamn,59.3333,14.1167,Sweden,SE,Värmland,minor,,
+Gnosjö,57.3667,13.7333,Sweden,SE,Jönköping,minor,,
+Klippan,56.1333,13.1333,Sweden,SE,Skåne,minor,,
+Kungshamn,58.3500,11.2500,Sweden,SE,Västra Götaland,minor,,
+Hallsberg,59.0667,15.1167,Sweden,SE,Örebro,minor,,
+Vara,58.2667,12.9500,Sweden,SE,Västra Götaland,minor,,
+Köping,59.5141,15.9915,Sweden,SE,Västmanland,minor,,
+Nykvarn,59.1833,17.4333,Sweden,SE,Stockholm,minor,,
+Henån,58.2333,11.6833,Sweden,SE,Västra Götaland,minor,,
+Lessebo,56.7500,15.2667,Sweden,SE,Kronoberg,minor,,
+Karlskoga,59.3151,14.4917,Sweden,SE,Örebro,minor,,
+Kil,59.5167,13.3167,Sweden,SE,Värmland,minor,,
+Hofors,60.5500,16.2833,Sweden,SE,Gävleborg,minor,,
+Höör,55.9333,13.5333,Sweden,SE,Skåne,minor,,
+Trosa,58.9000,17.5500,Sweden,SE,Södermanland,minor,,
+Vimmerby,57.6657,15.8579,Sweden,SE,Kalmar,minor,,
+Mellerud,58.7000,12.4667,Sweden,SE,Västra Götaland,minor,,
+Olofström,56.2667,14.5000,Sweden,SE,Blekinge,minor,,
+Hörby,55.8500,13.6500,Sweden,SE,Skåne,minor,,
+Svalöv,55.9167,13.1000,Sweden,SE,Skåne,minor,,
+Surahammar,59.7167,16.2167,Sweden,SE,Västmanland,minor,,
+Gnesta,59.0500,17.3000,Sweden,SE,Södermanland,minor,,
+Flen,59.0667,16.5833,Sweden,SE,Södermanland,minor,,
+Finspång,58.7167,15.7833,Sweden,SE,Östergötland,minor,,
+Hyltebruk,57.0000,13.2333,Sweden,SE,Halland,minor,,
+Fagersta,60.0000,15.7833,Sweden,SE,Västmanland,minor,,
+Örkelljunga,56.2833,13.2833,Sweden,SE,Skåne,minor,,
+Bollebygd,57.6667,12.5500,Sweden,SE,Västra Götaland,minor,,
+Perstorp,56.1333,13.3833,Sweden,SE,Skåne,minor,,
+Skutskär,60.6333,17.4167,Sweden,SE,Uppsala,minor,,
+Alvesta,56.9000,14.5500,Sweden,SE,Kronoberg,minor,,
+Götene,58.5333,13.4833,Sweden,SE,Västra Götaland,minor,,
+Arboga,59.4000,15.8333,Sweden,SE,Västmanland,minor,,
+Sollefteå,63.1667,17.2667,Sweden,SE,Västernorrland,minor,,
+Ronneby,56.2000,15.3000,Sweden,SE,Blekinge,minor,,
+Katrineholm,59.0000,16.2000,Sweden,SE,Södermanland,minor,,
+Broby,56.2500,14.0833,Sweden,SE,Skåne,minor,,
+Skillingaryd,57.4333,14.0833,Sweden,SE,Jönköping,minor,,
+Mönsterås,57.0333,16.4333,Sweden,SE,Kalmar,minor,,
+Nossebro,58.1833,12.7167,Sweden,SE,Västra Götaland,minor,,
+Osby,56.3667,13.9833,Sweden,SE,Skåne,minor,,
+Kramfors,62.9248,17.7963,Sweden,SE,Västernorrland,minor,,
+Mullsjö,57.9167,13.8833,Sweden,SE,Jönköping,minor,,
+Markaryd,56.4333,13.6000,Sweden,SE,Kronoberg,minor,,
+Sävsjö,57.4000,14.6667,Sweden,SE,Jönköping,minor,,
+Munkedal,58.4833,11.6833,Sweden,SE,Västra Götaland,minor,,
+Krokom,63.3333,14.4500,Sweden,SE,Jämtland,minor,,
+Bengtsfors,59.0333,12.2167,Sweden,SE,Västra Götaland,minor,,
+Vingåker,59.0333,15.8667,Sweden,SE,Södermanland,minor,,
+Mörbylånga,56.5167,16.3833,Sweden,SE,Kalmar,minor,,
+Munkfors,59.8333,13.5333,Sweden,SE,Värmland,minor,,
+Tingsryd,56.5333,14.9833,Sweden,SE,Kronoberg,minor,,
+Åmål,59.0500,12.7000,Sweden,SE,Västra Götaland,minor,,
+Hedemora,60.2833,15.9833,Sweden,SE,Dalarna,minor,,
+Degerfors,59.2333,14.4333,Sweden,SE,Örebro,minor,,
+Söderköping,58.4833,16.3000,Sweden,SE,Östergötland,minor,,
+Aneby,57.8333,14.8000,Sweden,SE,Jönköping,minor,,
+Tanumshede,58.7333,11.3167,Sweden,SE,Västra Götaland,minor,,
+Charlottenberg,59.8833,12.2833,Sweden,SE,Värmland,minor,,
+Heby,59.9333,16.8833,Sweden,SE,Uppsala,minor,,
+Laxå,58.9833,14.6167,Sweden,SE,Örebro,minor,,
+Askersund,58.8869,14.9151,Sweden,SE,Örebro,minor,,
+Vaxholm,59.4000,18.3333,Sweden,SE,Stockholm,minor,,
+Fjugesta,59.1667,14.8667,Sweden,SE,Örebro,minor,,
+Årjäng,59.3833,12.1333,Sweden,SE,Värmland,minor,,
+Säter,60.3500,15.7500,Sweden,SE,Dalarna,minor,,
+Gagnef,60.5833,15.0667,Sweden,SE,Dalarna,minor,,
+Lindesberg,59.6024,15.2130,Sweden,SE,Örebro,minor,,
+Färgelanda,58.5667,12.0000,Sweden,SE,Västra Götaland,minor,,
+Smedjebacken,60.1333,15.4167,Sweden,SE,Dalarna,minor,,
+Boden,65.8333,21.7000,Sweden,SE,Norrbotten,minor,,
+Nora,59.5167,15.0333,Sweden,SE,Örebro,minor,,
+Sunne,59.8333,13.1500,Sweden,SE,Värmland,minor,,
+Åtvidaberg,58.2000,16.0000,Sweden,SE,Östergötland,minor,,
+Vännäs,63.9167,19.7500,Sweden,SE,Västerbotten,minor,,
+Grums,59.3167,13.1000,Sweden,SE,Värmland,minor,,
+Kalix,65.8500,23.1333,Sweden,SE,Norrbotten,minor,,
+Torsås,56.4000,16.0000,Sweden,SE,Kalmar,minor,,
+Torsby,60.1333,13.0000,Sweden,SE,Värmland,minor,,
+Hova,58.8667,14.1833,Sweden,SE,Västra Götaland,minor,,
+Norberg,60.0667,15.9333,Sweden,SE,Västmanland,minor,,
+Piteå,65.3333,21.5000,Sweden,SE,Norrbotten,minor,,
+Östhammar,60.2589,18.3736,Sweden,SE,Uppsala,minor,,
+Åseda,57.1667,15.3333,Sweden,SE,Kronoberg,minor,,
+Tierp,60.3333,17.5000,Sweden,SE,Uppsala,minor,,
+Leksand,60.7333,15.0167,Sweden,SE,Dalarna,minor,,
+Högsby,57.1667,16.0333,Sweden,SE,Kalmar,minor,,
+Ödeshög,58.2333,14.6500,Sweden,SE,Östergötland,minor,,
+Storfors,59.5333,14.2667,Sweden,SE,Värmland,minor,,
+Boxholm,58.2000,15.0500,Sweden,SE,Östergötland,minor,,
+Valdemarsvik,58.1997,16.5940,Sweden,SE,Östergötland,minor,,
+Hällefors,59.7833,14.5000,Sweden,SE,Örebro,minor,,
+Kopparberg,59.8667,14.9833,Sweden,SE,Örebro,minor,,
+Bergsjö,61.9833,17.0667,Sweden,SE,Gävleborg,minor,,
+Edsbyn,61.3833,15.8167,Sweden,SE,Gävleborg,minor,,
+Skinnskatteberg,59.8333,15.6833,Sweden,SE,Västmanland,minor,,
+Filipstad,59.7167,14.1667,Sweden,SE,Värmland,minor,,
+Ed,58.9167,11.9167,Sweden,SE,Västra Götaland,minor,,
+Hagfors,60.0333,13.6500,Sweden,SE,Värmland,minor,,
+Nordmaling,63.5667,19.5000,Sweden,SE,Västerbotten,minor,,
+Ockelbo,60.8833,16.7167,Sweden,SE,Gävleborg,minor,,
+Ljusdal,61.8333,16.1000,Sweden,SE,Gävleborg,minor,,
+Robertsfors,64.1833,20.8500,Sweden,SE,Västerbotten,minor,,
+Österbymo,57.8333,15.2667,Sweden,SE,Östergötland,minor,,
+Älvsbyn,65.6667,21.0000,Sweden,SE,Norrbotten,minor,,
+Vansbro,60.5167,14.2167,Sweden,SE,Dalarna,minor,,
+Orsa,61.1167,14.6167,Sweden,SE,Dalarna,minor,,
+Malung,60.6667,13.7000,Sweden,SE,Dalarna,minor,,
+Svenstavik,62.7667,14.4500,Sweden,SE,Jämtland,minor,,
+Hammarstrand,63.1000,16.3500,Sweden,SE,Jämtland,minor,,
+Ånge,62.5167,15.6167,Sweden,SE,Västernorrland,minor,,
+Strömsund,63.8500,15.5833,Sweden,SE,Jämtland,minor,,
+Bräcke,62.7500,15.4167,Sweden,SE,Jämtland,minor,,
+Norsjö,64.9167,19.4833,Sweden,SE,Västerbotten,minor,,
+Järpen,63.3500,13.4833,Sweden,SE,Jämtland,minor,,
+Lycksele,64.6000,18.6667,Sweden,SE,Västerbotten,minor,,
+Vindeln,64.2000,19.7333,Sweden,SE,Västerbotten,minor,,
+Älvdalen,61.2333,14.0333,Sweden,SE,Dalarna,minor,,
+Malå,65.1833,18.7500,Sweden,SE,Västerbotten,minor,,
+Bjurholm,63.9333,19.2167,Sweden,SE,Västerbotten,minor,,
+Överkalix,66.3167,22.8333,Sweden,SE,Norrbotten,minor,,
+Storuman,65.1000,17.1000,Sweden,SE,Västerbotten,minor,,
+Arvidsjaur,65.5833,19.1667,Sweden,SE,Norrbotten,minor,,
+Sveg,62.0333,14.3500,Sweden,SE,Jämtland,minor,,
+Dorotea,64.2667,16.4000,Sweden,SE,Västerbotten,minor,,
+Vilhelmina,64.6167,16.6500,Sweden,SE,Västerbotten,minor,,
+Gällivare,67.1333,20.7000,Sweden,SE,Norrbotten,minor,,
+Pajala,67.2094,23.3798,Sweden,SE,Norrbotten,minor,,
+Åsele,64.1667,17.3333,Sweden,SE,Västerbotten,minor,,
+Jokkmokk,66.6050,19.8329,Sweden,SE,Norrbotten,minor,,
+Sorsele,65.5324,17.5431,Sweden,SE,Västerbotten,minor,,
+Sölvesborg,56.0500,14.5500,Sweden,SE,Blekinge,minor,,
+Arjeplog,66.0486,17.8850,Sweden,SE,Norrbotten,minor,,
+Rättvik,60.8833,15.1000,Sweden,SE,Dalarna,minor,,
+Oslo,59.9111,10.7528,Norway,NO,Oslo,primary,693494,693494
+Bergen,60.3925,5.3233,Norway,NO,Hordaland,admin,257087,257087
+Trondheim,63.4400,10.4000,Norway,NO,Sør-Trøndelag,minor,183378,183378
+Stavanger,58.9701,5.7333,Norway,NO,Rogaland,admin,129300,129300
+Drammen,59.7439,10.2045,Norway,NO,Buskerud,minor,117510,117510
+Kristiansand,58.1467,7.9956,Norway,NO,Vest-Agder,minor,111633,111633
+Fredrikstad,59.2167,10.9500,Norway,NO,Østfold,minor,82385,82385
+Skien,59.2096,9.6090,Norway,NO,Telemark,admin,73330,73330
+Sandefjord,59.1288,10.2197,Norway,NO,Vestfold,,63764,63764
+Asker,59.8331,10.4392,Norway,NO,Akershus,minor,61523,61523
+Nordre Fåle,59.7500,10.8667,Norway,NO,Akershus,,59288,59288
+Sandnes,58.8500,5.7333,Norway,NO,Rogaland,minor,58694,58694
+Tønsberg,59.2981,10.4236,Norway,NO,Vestfold,minor,56293,56293
+Sarpsborg,59.2839,11.1096,Norway,NO,Østfold,minor,54678,54678
+Ålesund,62.4723,6.1549,Norway,NO,Møre og Romsdal,minor,52163,52163
+Bodø,67.2833,14.3833,Norway,NO,Nordland,admin,51558,51558
+Moss,59.4340,10.6577,Norway,NO,Østfold,minor,49273,49273
+Lørenskog,59.8989,10.9642,Norway,NO,Akershus,minor,41460,41460
+Tromsø,69.6546,18.9637,Norway,NO,Troms,admin,38980,38980
+Haugesund,59.4102,5.2755,Norway,NO,Rogaland,minor,37357,37357
+Porsgrunn,59.1419,9.6568,Norway,NO,Telemark,minor,36397,36397
+Ringsaker,61.0242,10.8019,Norway,NO,Hedmark,,34768,34768
+Molde,62.7333,7.1833,Norway,NO,Møre og Romsdal,admin,31967,31967
+Halden,59.1264,11.4828,Norway,NO,Østfold,minor,31373,31373
+Arendal,58.4617,8.7721,Norway,NO,Aust-Agder,admin,30916,30916
+Ski,59.7419,10.8939,Norway,NO,Akershus,minor,30843,30843
+Askøy,60.4667,5.1500,Norway,NO,Hordaland,,29553,29553
+Lillehammer,61.1146,10.4674,Norway,NO,Oppland,minor,28345,28345
+Hamar,60.7944,11.0678,Norway,NO,Hedmark,admin,27947,27947
+Kongsberg,59.6650,9.6464,Norway,NO,Buskerud,minor,27723,27723
+Oppegård,59.7925,10.7903,Norway,NO,Akershus,,27394,27394
+Sola,58.8800,5.6286,Norway,NO,Rogaland,minor,27153,27153
+Lier,59.8675,10.2142,Norway,NO,Buskerud,minor,26811,26811
+Eidsvoll,60.3475,11.2508,Norway,NO,Akershus,,25436,25436
+Nedre Eiker,59.7647,10.0333,Norway,NO,Buskerud,,24963,24963
+Larvik,59.0532,10.0271,Norway,NO,Vestfold,,24647,24647
+Nittedal,60.0731,10.8722,Norway,NO,Akershus,minor,24249,24249
+Stjørdal,63.4750,11.1708,Norway,NO,Nord-Trøndelag,minor,24145,24145
+Røyken,59.7336,10.4289,Norway,NO,Buskerud,minor,22635,22635
+Nøtterøy,59.2011,10.4078,Norway,NO,Vestfold,,21621,21621
+Elverum,60.8833,11.5667,Norway,NO,Hedmark,minor,21292,21292
+Harstad,68.7989,16.5314,Norway,NO,Troms,minor,21070,21070
+Stange,60.6494,11.3664,Norway,NO,Hedmark,minor,21064,21064
+Gjøvik,60.7957,10.6916,Norway,NO,Oppland,minor,20589,20589
+Horten,59.4172,10.4834,Norway,NO,Vestfold,,20504,20504
+Ås,59.6603,10.7836,Norway,NO,Akershus,minor,20439,20439
+Os,60.2269,5.4758,Norway,NO,Hordaland,minor,19742,19742
+Nesoddtangen,59.8086,10.6556,Norway,NO,Oslo,minor,19616,19616
+Kleppe,58.7772,5.5967,Norway,NO,Rogaland,minor,19588,19588
+Time,58.7228,5.7653,Norway,NO,Rogaland,,18916,18916
+Mo i Rana,66.3167,14.1667,Norway,NO,Nordland,minor,18899,18899
+Stord,59.8081,5.4664,Norway,NO,Hordaland,minor,18759,18759
+Kristiansund,63.1105,7.7279,Norway,NO,Møre og Romsdal,minor,18273,18273
+Sørum,59.9871,11.2402,Norway,NO,Akershus,,18263,18263
+Vestby,59.5750,10.7319,Norway,NO,Akershus,,18042,18042
+Kosvik,58.1418,8.0802,Norway,NO,Vest-Agder,,17981,17981
+Kongsvinger,60.1912,11.9992,Norway,NO,Hedmark,minor,17829,17829
+Rygge,59.3747,10.7147,Norway,NO,Østfold,minor,16145,16145
+Frogn,59.6989,10.6553,Norway,NO,Akershus,,15877,15877
+Voss,60.7025,6.4231,Norway,NO,Hordaland,minor,15740,15740
+Lindås,60.6247,5.3283,Norway,NO,Hordaland,,15607,15607
+Mandal,58.0333,7.4833,Norway,NO,Vest-Agder,minor,15529,15529
+Alta,69.9686,23.2714,Norway,NO,Finnmark,minor,15342,15342
+Verdal,63.7922,11.4817,Norway,NO,Nord-Trøndelag,minor,14948,14948
+Vennesla,58.3106,7.8569,Norway,NO,Vest-Agder,minor,14774,14774
+Askim,59.5832,11.1629,Norway,NO,Østfold,minor,14488,14488
+Malvik,63.3728,10.7508,Norway,NO,Sør-Trøndelag,,14148,14148
+Narvik,68.4383,17.4278,Norway,NO,Nordland,minor,14148,14148
+Nannestad,60.2456,10.9528,Norway,NO,Akershus,minor,14139,14139
+Bamble,59.0197,9.5608,Norway,NO,Telemark,,14061,14061
+Gran,60.4411,10.4956,Norway,NO,Oppland,,13630,13630
+Drøbak,59.6667,10.6333,Norway,NO,Akershus,,13393,13393
+Grimstad,58.3405,8.5934,Norway,NO,Aust-Agder,minor,13304,13304
+Notodden,59.5617,9.2658,Norway,NO,Telemark,minor,13049,13049
+Steinkjer,64.0147,11.4942,Norway,NO,Nord-Trøndelag,admin,12985,12985
+Strand,59.0633,6.0278,Norway,NO,Rogaland,,12968,12968
+Bømlo,59.7794,5.2183,Norway,NO,Hordaland,,11957,11957
+Sogndal,61.2297,7.1006,Norway,NO,Sogn og Fjordane,minor,11847,11847
+Stokke,59.2400,10.2708,Norway,NO,Vestfold,,11657,11657
+Lenvik,69.3836,17.9675,Norway,NO,Troms,,11618,11618
+Egersund,58.4500,6.0067,Norway,NO,Rogaland,minor,11433,11433
+Eidsberg,59.5369,11.3603,Norway,NO,Østfold,,11396,11396
+Søgne,58.0942,7.7725,Norway,NO,Vest-Agder,minor,11260,11260
+Randaberg,59.0017,5.6153,Norway,NO,Rogaland,minor,11221,11221
+Lommedalen,59.9500,10.4667,Norway,NO,Oslo,,11200,11200
+Enebakk,59.7639,11.1444,Norway,NO,Akershus,,11110,11110
+Tysvær,59.3617,5.5428,Norway,NO,Rogaland,,11065,11065
+Ørsta,62.2003,6.1322,Norway,NO,Møre og Romsdal,minor,10825,10825
+Sortland,68.6962,15.4117,Norway,NO,Nordland,minor,10566,10566
+Volda,62.1468,6.0680,Norway,NO,Møre og Romsdal,minor,10473,10473
+Kragerø,58.8869,9.3469,Norway,NO,Telemark,minor,10380,10380
+Lyngdal,58.1333,7.0833,Norway,NO,Vest-Agder,minor,10365,10365
+Førde,61.4519,5.8569,Norway,NO,Sogn og Fjordane,minor,10339,10339
+Levanger,63.7464,11.2996,Norway,NO,Nord-Trøndelag,minor,10333,10333
+Sande,59.5936,10.2076,Norway,NO,Vestfold,,9904,9904
+Fauske,67.2596,15.3941,Norway,NO,Nordland,minor,9739,9739
+Farsund,58.0828,6.7528,Norway,NO,Vest-Agder,minor,9691,9691
+Haram,62.5675,6.3722,Norway,NO,Møre og Romsdal,,9200,9200
+Lunner,60.2528,10.6672,Norway,NO,Oppland,,9048,9048
+Flekkefjord,58.3272,6.6667,Norway,NO,Vest-Agder,minor,9028,9028
+Florø,61.5986,5.0172,Norway,NO,Sogn og Fjordane,minor,8925,8925
+Ulstein,62.3564,5.8539,Norway,NO,Møre og Romsdal,,8571,8571
+Namsos,64.4670,11.4940,Norway,NO,Nord-Trøndelag,minor,8471,8471
+Rakkestad,59.3731,11.4203,Norway,NO,Østfold,minor,8255,8255
+Hammerfest,70.6634,23.6821,Norway,NO,Finnmark,minor,8073,8073
+Lillesand,58.2488,8.3778,Norway,NO,Aust-Agder,minor,7930,7930
+Åkrehamn,59.2603,5.1856,Norway,NO,Rogaland,,7873,7873
+Meland,60.5642,5.1186,Norway,NO,Hordaland,,7812,7812
+Løten,60.8253,11.3908,Norway,NO,Hedmark,minor,7674,7674
+Sykkylven,62.3756,6.6442,Norway,NO,Møre og Romsdal,minor,7625,7625
+Holmestrand,59.4875,10.3175,Norway,NO,Vestfold,,7514,7514
+Råde,59.3489,10.8550,Norway,NO,Østfold,minor,7508,7508
+Alstahaug,65.9567,12.5728,Norway,NO,Nordland,,7447,7447
+Åsnes,60.6536,12.1531,Norway,NO,Hedmark,,7203,7203
+Stryn,61.8386,6.8628,Norway,NO,Sogn og Fjordane,minor,7130,7130
+Sunndalsøra,62.6128,8.6342,Norway,NO,Møre og Romsdal,minor,7036,7036
+Oppdal,62.5667,9.6000,Norway,NO,Sør-Trøndelag,minor,7001,7001
+Jevnaker,60.2389,10.3931,Norway,NO,Oppland,minor,6852,6852
+Risør,58.7247,9.2300,Norway,NO,Aust-Agder,minor,6809,6809
+Svelvik,59.6236,10.3717,Norway,NO,Vestfold,,6685,6685
+Rissa,63.6556,10.0397,Norway,NO,Sør-Trøndelag,minor,6644,6644
+Trysil,61.3100,12.3150,Norway,NO,Hedmark,minor,6627,6627
+Vestnes,62.6213,7.0897,Norway,NO,Møre og Romsdal,minor,6532,6532
+Melhus,63.2856,10.2781,Norway,NO,Sør-Trøndelag,minor,6517,6517
+Mesøy,66.7881,13.6758,Norway,NO,Nordland,,6288,6288
+Bø,59.4572,9.0314,Norway,NO,Telemark,minor,6101,6101
+Klæbu,63.2761,10.5142,Norway,NO,Sør-Trøndelag,minor,6067,6067
+Sandnessjøen,66.0167,12.6333,Norway,NO,Nordland,minor,6052,6052
+Spydeberg,59.6153,11.0764,Norway,NO,Østfold,minor,6042,6042
+Kvinesdal,58.3381,7.0231,Norway,NO,Vest-Agder,minor,5987,5987
+Andebu,59.2972,10.1050,Norway,NO,Vestfold,,5937,5937
+Surnadal,62.9475,8.7700,Norway,NO,Møre og Romsdal,minor,5920,5920
+Vereide,61.7773,6.2156,Norway,NO,Sogn og Fjordane,,5854,5854
+Vadsø,70.0733,29.7497,Norway,NO,Finnmark,minor,5788,5788
+Stavern,59.0000,10.0333,Norway,NO,Vestfold,,5773,5773
+Sveio,59.5736,5.3633,Norway,NO,Hordaland,minor,5766,5766
+Våler,59.4725,10.9169,Norway,NO,Østfold,minor,5736,5736
+Nord-Fron,61.5956,9.7481,Norway,NO,Oppland,,5723,5723
+Tynset,62.2753,10.8325,Norway,NO,Hedmark,minor,5578,5578
+Vossevangen,60.6300,6.4410,Norway,NO,Hordaland,,5571,5571
+Balsfjord,69.3047,19.2036,Norway,NO,Troms,,5559,5559
+Hobøl,59.5931,10.9458,Norway,NO,Østfold,minor,5382,5382
+Trøgstad,59.6514,11.3397,Norway,NO,Østfold,minor,5347,5347
+Frei,63.0625,7.8031,Norway,NO,Møre og Romsdal,,5274,5274
+Austevoll,60.0378,5.2683,Norway,NO,Hordaland,,5236,5236
+Birkenes,58.4494,8.2333,Norway,NO,Aust-Agder,,5226,5226
+Hareid,62.3642,6.0014,Norway,NO,Møre og Romsdal,minor,5175,5175
+Øyer,61.2653,10.4133,Norway,NO,Oppland,minor,5100,5100
+Hitra,63.5472,8.8547,Norway,NO,Sør-Trøndelag,,5050,5050
+Sand,60.4422,11.5681,Norway,NO,Hedmark,,5016,5016
+Odda,60.0689,6.5456,Norway,NO,Hordaland,minor,4876,4876
+Svolvær,68.2333,14.5667,Norway,NO,Nordland,minor,4686,4686
+Ål,60.6756,8.5769,Norway,NO,Buskerud,minor,4674,4674
+Skodje,62.5161,6.6997,Norway,NO,Møre og Romsdal,minor,4620,4620
+Gol,60.7503,8.9847,Norway,NO,Buskerud,minor,4608,4608
+Sauda,59.6875,6.4372,Norway,NO,Rogaland,minor,4595,4595
+Stranda,62.1667,6.9667,Norway,NO,Møre og Romsdal,minor,4523,4523
+Hol,60.6150,8.3022,Norway,NO,Buskerud,minor,4441,4441
+Norheimsund,60.3667,6.1333,Norway,NO,Hordaland,minor,4399,4399
+Ringebu,61.5356,10.3081,Norway,NO,Oppland,minor,4392,4392
+Åmot,61.1464,11.4158,Norway,NO,Hedmark,,4356,4356
+Sauar,59.4333,9.2653,Norway,NO,Telemark,,4338,4338
+Åfjord,63.9778,10.3856,Norway,NO,Sør-Trøndelag,,4288,4288
+Høyanger,61.1881,5.8956,Norway,NO,Sogn og Fjordane,minor,4101,4101
+Etne,59.6839,6.0475,Norway,NO,Hordaland,minor,4062,4062
+Selbu,63.1983,11.1403,Norway,NO,Sør-Trøndelag,minor,4062,4062
+Drangedal,59.1233,8.9819,Norway,NO,Telemark,minor,4060,4060
+Bardu,68.8606,18.3505,Norway,NO,Troms,minor,4005,4005
+Vaksdal,60.6069,5.8161,Norway,NO,Hordaland,,3977,3977
+Meldal,63.0460,9.7109,Norway,NO,Sør-Trøndelag,minor,3954,3954
+Finnsnes,69.2406,18.0086,Norway,NO,Troms,minor,3907,3315
+Røros,62.5747,11.3842,Norway,NO,Sør-Trøndelag,minor,3851,3851
+Skiptvet,59.4806,11.1444,Norway,NO,Østfold,minor,3805,3805
+Suldalsosen,59.4683,6.4997,Norway,NO,Rogaland,,3804,3804
+Vinje,59.8014,7.7792,Norway,NO,Telemark,minor,3676,3676
+Våler,60.6784,11.8331,Norway,NO,Hedmark,minor,3662,3662
+Tiller,63.3428,10.4261,Norway,NO,Sør-Trøndelag,,3595,3595
+Vågå,61.8750,9.0958,Norway,NO,Oppland,minor,3570,3570
+Fosnavåg,62.3417,5.6339,Norway,NO,Møre og Romsdal,minor,3563,3563
+Leksvik,63.6767,10.6100,Norway,NO,Nord-Trøndelag,,3531,3531
+Kirkenes,69.7271,30.0451,Norway,NO,Finnmark,minor,3529,3529
+Aukra,62.8050,6.8872,Norway,NO,Møre og Romsdal,,3509,3509
+Aure,63.2686,8.6078,Norway,NO,Møre og Romsdal,minor,3507,3507
+Eide,62.9157,7.4450,Norway,NO,Møre og Romsdal,minor,3467,3467
+Sørreisa,69.0919,18.1936,Norway,NO,Troms,minor,3464,3464
+Sagvåg,59.7753,5.3947,Norway,NO,Hordaland,,3419,3419
+Stokmarknes,68.5656,14.9058,Norway,NO,Nordland,minor,3395,3395
+Måløy,61.9333,5.1167,Norway,NO,Sogn og Fjordane,minor,3313,3313
+Nesbyen,60.5583,9.1011,Norway,NO,Buskerud,minor,3273,3273
+Fitjar,59.9189,5.3714,Norway,NO,Hordaland,minor,3189,3189
+Rjukan,59.8811,8.5831,Norway,NO,Telemark,minor,3171,3171
+Hov,59.5656,10.0361,Norway,NO,Buskerud,,3163,3163
+Sør-Fron,61.5689,9.9233,Norway,NO,Oppland,minor,3119,3119
+Tingvoll,62.9000,8.2000,Norway,NO,Møre og Romsdal,minor,3103,3103
+Åsgårdstrand,59.3500,10.4667,Norway,NO,Vestfold,,3095,3095
+Store Skånland,68.5836,16.5730,Norway,NO,Troms,,3041,3041
+Askvoll,61.4058,5.2422,Norway,NO,Sogn og Fjordane,minor,3011,3011
+Brevik,59.0589,9.6875,Norway,NO,Telemark,,3000,3000
+Skjervøy,70.0853,20.6594,Norway,NO,Troms,minor,2927,2927
+Kautokeino,69.0115,23.0415,Norway,NO,Finnmark,minor,2910,2910
+Seljord,59.5133,8.6489,Norway,NO,Telemark,minor,2888,2888
+Orkanger,63.3122,9.8533,Norway,NO,Sør-Trøndelag,minor,2874,2874
+Austrheim,60.7711,4.9261,Norway,NO,Hordaland,minor,2870,2870
+Tysnes,59.9983,5.5772,Norway,NO,Hordaland,,2869,2869
+Hurdal,60.4158,11.0086,Norway,NO,Akershus,minor,2854,2854
+Naustdal,61.5606,5.8553,Norway,NO,Sogn og Fjordane,minor,2840,2840
+Dale,61.3061,5.4633,Norway,NO,Sogn og Fjordane,minor,2802,2802
+Bjerkreim,58.6569,6.1467,Norway,NO,Rogaland,,2787,2787
+Selje,62.1372,5.2231,Norway,NO,Sogn og Fjordane,minor,2774,2774
+Flesberg,59.8478,9.4822,Norway,NO,Buskerud,,2688,2688
+Karasjok,69.4722,25.5189,Norway,NO,Finnmark,minor,2628,2628
+Frosta,63.6039,10.7744,Norway,NO,Nord-Trøndelag,minor,2627,2627
+Rørvik,64.8680,11.2053,Norway,NO,Nord-Trøndelag,minor,2615,2615
+Steigen,67.7983,15.1719,Norway,NO,Nordland,,2608,2608
+Tvedestrand,58.6219,8.9314,Norway,NO,Aust-Agder,minor,2592,2592
+Hjelmeland,59.2172,6.4611,Norway,NO,Rogaland,minor,2574,2574
+Bø,68.6953,14.5794,Norway,NO,Nordland,,2569,2569
+Ballangen,68.3064,16.7442,Norway,NO,Nordland,minor,2556,2556
+Dovre,62.0350,9.4675,Norway,NO,Oppland,minor,2553,2553
+Hemsedal,60.9058,8.5147,Norway,NO,Buskerud,minor,2486,2486
+Brattvåg,62.6000,6.4433,Norway,NO,Møre og Romsdal,minor,2481,2481
+Honningsvåg,70.9758,25.9831,Norway,NO,Finnmark,minor,2465,2465
+Alvdal,62.1094,10.6344,Norway,NO,Hedmark,minor,2432,2432
+Meråker,63.4381,11.8494,Norway,NO,Nord-Trøndelag,minor,2422,2422
+Åndalsnes,62.5672,7.6869,Norway,NO,Møre og Romsdal,minor,2416,2416
+Grong,64.5314,12.6200,Norway,NO,Nord-Trøndelag,minor,2359,2359
+Siljan,59.2975,9.7064,Norway,NO,Telemark,minor,2340,2340
+Ørskog,62.4789,6.8853,Norway,NO,Møre og Romsdal,minor,2310,2310
+Marnardal,58.2428,7.4969,Norway,NO,Vest-Agder,minor,2290,2290
+Brekstad,63.6870,9.6654,Norway,NO,Sør-Trøndelag,minor,2230,2230
+Lom,61.8108,8.6392,Norway,NO,Oppland,minor,2228,2228
+Båtsfjord,70.4833,29.9333,Norway,NO,Finnmark,minor,2221,2221
+Lærdalsøyri,61.0511,7.5978,Norway,NO,Sogn og Fjordane,minor,2126,2126
+Vegårshei,58.7756,8.8322,Norway,NO,Aust-Agder,minor,2097,2097
+Midsund,62.7086,6.7967,Norway,NO,Møre og Romsdal,minor,2088,2088
+Brønnøysund,65.4749,12.2120,Norway,NO,Nordland,minor,2064,2064
+Snåsa,64.2461,12.3830,Norway,NO,Nord-Trøndelag,minor,2063,2063
+Lødingen,68.4042,15.5714,Norway,NO,Nordland,minor,2034,2034
+Rindal,63.0422,9.2894,Norway,NO,Møre og Romsdal,minor,2003,2003
+Lesja,62.2106,8.6447,Norway,NO,Oppland,minor,1975,1975
+Lurøy,66.4319,12.8550,Norway,NO,Nordland,minor,1923,1923
+Fagernes,60.9850,9.2306,Norway,NO,Oppland,minor,1921,1921
+Os,62.4761,11.2431,Norway,NO,Hedmark,minor,1891,1891
+Vardø,70.3705,31.1095,Norway,NO,Finnmark,minor,1846,1846
+Nesna,66.2578,13.0350,Norway,NO,Nordland,minor,1761,1761
+Otta,61.7706,9.5414,Norway,NO,Oppland,minor,1737,1737
+Kolvereid,64.8653,11.6044,Norway,NO,Nord-Trøndelag,minor,1709,1709
+Masfjordnes,60.8383,5.4486,Norway,NO,Hordaland,minor,1691,1691
+Namdalseid,64.2892,11.1764,Norway,NO,Nord-Trøndelag,minor,1622,1622
+Vang,61.2144,8.5042,Norway,NO,Oppland,minor,1578,1578
+Tolga,62.4014,11.0222,Norway,NO,Hedmark,minor,1562,1562
+Folldal,62.1992,10.0353,Norway,NO,Hedmark,minor,1545,1545
+Rollag,59.9839,9.2953,Norway,NO,Buskerud,minor,1390,1390
+Iveland,58.4411,7.9558,Norway,NO,Aust-Agder,minor,1331,1331
+Hyllestad,61.1633,5.3389,Norway,NO,Sogn og Fjordane,minor,1328,1328
+Hattfjelldal,65.5475,14.1344,Norway,NO,Nordland,minor,1297,1297
+Balestrand,61.1775,6.4039,Norway,NO,Sogn og Fjordane,minor,1294,1294
+Fyresdal,59.1658,8.0197,Norway,NO,Telemark,minor,1287,1287
+Bruflat,60.9672,9.6536,Norway,NO,Oppland,minor,1279,1279
+Engerdal,61.8833,12.0333,Norway,NO,Hedmark,minor,1268,1268
+Forsand,58.9094,6.2011,Norway,NO,Rogaland,minor,1238,1238
+Høylandet,64.7242,12.3339,Norway,NO,Nord-Trøndelag,minor,1231,1231
+Hornindal,61.9986,6.5842,Norway,NO,Møre og Romsdal,minor,1200,1200
+Valle,59.1642,7.4725,Norway,NO,Aust-Agder,minor,1164,1164
+Bygland,58.8244,7.8019,Norway,NO,Aust-Agder,minor,1162,1162
+Jondal,60.2683,6.3292,Norway,NO,Hordaland,minor,1104,1104
+Ulvik,60.6211,7.0803,Norway,NO,Hordaland,minor,1080,1080
+Flå,60.4086,9.4842,Norway,NO,Buskerud,minor,1050,1050
+Kvalsund,70.4990,23.9739,Norway,NO,Finnmark,minor,1035,1035
+Stordal,62.3900,7.1106,Norway,NO,Møre og Romsdal,minor,1020,1020
+Roa,60.2881,10.6000,Norway,NO,Oppland,minor,967,967
+Bykle,59.4431,7.2550,Norway,NO,Aust-Agder,minor,965,965
+Roan,64.1503,10.3025,Norway,NO,Sør-Trøndelag,minor,961,961
+Berlevåg,70.8570,29.0930,Norway,NO,Finnmark,minor,957,957
+Åseral,58.7019,7.3936,Norway,NO,Vest-Agder,minor,932,932
+Granvin,60.5269,6.7194,Norway,NO,Hordaland,minor,920,920
+Eidfjord,60.4966,7.1411,Norway,NO,Hordaland,minor,906,906
+Bokn,59.2003,5.4231,Norway,NO,Rogaland,minor,852,852
+Namsskogan,64.8719,12.9764,Norway,NO,Nord-Trøndelag,minor,843,843
+Kviteseid,59.4042,8.4911,Norway,NO,Telemark,minor,790,790
+Tydal,63.0183,11.8150,Norway,NO,Sør-Trøndelag,minor,769,769
+Åmli,58.7657,8.4839,Norway,NO,Aust-Agder,minor,690,690
+Rømskog,59.7144,11.8086,Norway,NO,Østfold,minor,673,673
+Bagn,60.8167,9.5667,Norway,NO,Oppland,minor,654,654
+Leka,65.0833,11.6336,Norway,NO,Nord-Trøndelag,minor,557,557
+Fedje,60.7689,4.7306,Norway,NO,Sogn og Fjordane,minor,548,548
+Kvitsøy,59.0622,5.4117,Norway,NO,Rogaland,minor,517,517
+Røst,67.5200,12.0989,Norway,NO,Nordland,minor,498,498
+Vevelstad,65.6683,12.5186,Norway,NO,Nordland,minor,462,462
+Røyrvik,64.8838,13.5631,Norway,NO,Nord-Trøndelag,minor,461,461
+Træna,66.5075,12.0308,Norway,NO,Nordland,minor,435,435
+Burfjord,69.9378,22.0519,Norway,NO,Troms,minor,384,384
+Gjerstad,58.8809,9.0175,Norway,NO,Aust-Agder,minor,264,264
+Utsira,59.3072,4.8861,Norway,NO,Rogaland,minor,198,198
+Kolbotn,59.8112,10.8000,Norway,NO,Akershus,minor,,
+Lillestrøm,59.9500,11.0833,Norway,NO,Akershus,minor,,
+Sandvika,59.8900,10.5264,Norway,NO,Akershus,minor,,
+Kleppestø,60.4094,5.2286,Norway,NO,Hordaland,minor,,
+Mjøndalen,59.7500,10.0167,Norway,NO,Buskerud,minor,,
+Straume,60.3558,5.1196,Norway,NO,Hordaland,minor,,
+Kopervik,59.2833,5.3000,Norway,NO,Rogaland,minor,,
+Valderhaug,62.4985,6.1277,Norway,NO,Møre og Romsdal,minor,,
+Fjerdingby,59.9255,11.0865,Norway,NO,Akershus,minor,,
+Jessheim,60.1500,11.1833,Norway,NO,Akershus,minor,,
+Langevåg,62.4372,6.1889,Norway,NO,Møre og Romsdal,minor,,
+Bryne,58.7333,5.6500,Norway,NO,Rogaland,minor,,
+Rong,60.5133,4.9033,Norway,NO,Hordaland,minor,,
+Ulsteinvik,62.3333,5.8833,Norway,NO,Møre og Romsdal,minor,,
+Sørumsand,59.9667,11.2500,Norway,NO,Akershus,minor,,
+Frekhaug,60.5172,5.2461,Norway,NO,Hordaland,minor,,
+Fetsund,59.9333,11.1667,Norway,NO,Akershus,minor,,
+Skogsvåg,60.2556,5.1017,Norway,NO,Hordaland,minor,,
+Hommelvik,63.4087,10.7995,Norway,NO,Sør-Trøndelag,minor,,
+Varhaug,58.6181,5.6569,Norway,NO,Rogaland,minor,,
+Vikevåg,59.0981,5.6981,Norway,NO,Rogaland,minor,,
+Steinshamn,62.7833,6.4833,Norway,NO,Møre og Romsdal,minor,,
+Sætre,59.6817,10.5247,Norway,NO,Buskerud,minor,,
+Falkhytta,62.8058,6.8858,Norway,NO,Møre og Romsdal,minor,,
+Eidsvoll,60.3167,11.2333,Norway,NO,Akershus,minor,,
+Jørpeland,59.0167,6.0500,Norway,NO,Rogaland,minor,,
+Raufoss,60.7167,10.6167,Norway,NO,Oppland,minor,,
+Mysen,59.5500,11.3333,Norway,NO,Østfold,minor,,
+Manger,60.6417,5.0392,Norway,NO,Hordaland,minor,,
+Bremnes,59.7953,5.1753,Norway,NO,Hordaland,minor,,
+Skjærhalden,59.0333,11.0333,Norway,NO,Østfold,minor,,
+Langesund,59.0000,9.7500,Norway,NO,Telemark,minor,,
+Storebø,60.0924,5.2322,Norway,NO,Hordaland,minor,,
+Hokksund,59.7719,9.8839,Norway,NO,Buskerud,minor,,
+Straumen,63.8712,11.2994,Norway,NO,Nord-Trøndelag,minor,,
+Røyse,60.0769,10.1965,Norway,NO,Buskerud,minor,,
+Sørland,67.6667,12.7000,Norway,NO,Nordland,minor,,
+Isdalstø,60.5556,5.2692,Norway,NO,Hordaland,minor,,
+Børsa,63.3277,10.0683,Norway,NO,Sør-Trøndelag,minor,,
+Bruhagen,63.0533,7.6323,Norway,NO,Møre og Romsdal,minor,,
+Årnes,60.1500,11.4667,Norway,NO,Akershus,minor,,
+Lena,60.6667,10.8000,Norway,NO,Oppland,minor,,
+Nodeland,58.1500,7.8500,Norway,NO,Vest-Agder,minor,,
+Brumunddal,60.8833,10.9333,Norway,NO,Hedmark,minor,,
+Lonevåg,60.5333,5.5000,Norway,NO,Hordaland,minor,,
+Sistranda,63.7277,8.8267,Norway,NO,Sør-Trøndelag,minor,,
+Vikersund,59.9833,10.0333,Norway,NO,Buskerud,minor,,
+Judaberg,59.1833,5.8500,Norway,NO,Rogaland,minor,,
+Aksdal,59.4259,5.4290,Norway,NO,Rogaland,minor,,
+Leknes,68.1452,13.5993,Norway,NO,Nordland,minor,,
+Elnesvågen,62.8538,7.1536,Norway,NO,Møre og Romsdal,minor,,
+Ålgård,58.7667,5.8500,Norway,NO,Rogaland,minor,,
+Jaren,60.3833,10.5500,Norway,NO,Oppland,minor,,
+Hønefoss,60.1667,10.3000,Norway,NO,Buskerud,minor,,
+Larsnes,62.2167,5.6000,Norway,NO,Møre og Romsdal,minor,,
+Ølen,59.6042,5.8078,Norway,NO,Rogaland,minor,,
+Ulefoss,59.2833,9.2667,Norway,NO,Telemark,minor,,
+Skarnes,60.2500,11.6833,Norway,NO,Hedmark,minor,,
+Vigeland,58.0833,7.3000,Norway,NO,Vest-Agder,minor,,
+Akkerhaugen,59.3940,9.2471,Norway,NO,Telemark,minor,,
+Nordfjordeid,61.9000,6.0000,Norway,NO,Sogn og Fjordane,minor,,
+Rosendal,59.9833,6.0167,Norway,NO,Hordaland,minor,,
+Myre,68.9000,15.0833,Norway,NO,Nordland,minor,,
+Botngård,63.7688,9.8115,Norway,NO,Sør-Trøndelag,minor,,
+Hermansverk,61.1833,6.8500,Norway,NO,Sogn og Fjordane,minor,,
+Hauge,58.3500,6.2833,Norway,NO,Rogaland,minor,,
+Sagstua,60.3885,11.5376,Norway,NO,Hedmark,minor,,
+Straumsjøen,68.6944,14.4718,Norway,NO,Nordland,minor,,
+Vik,65.3000,12.1500,Norway,NO,Nordland,minor,,
+Uggdal,60.0089,5.5122,Norway,NO,Hordaland,minor,,
+Ørnes,66.8667,13.7000,Norway,NO,Nordland,minor,,
+Skotterud,59.9833,12.1167,Norway,NO,Hedmark,minor,,
+Tysse,60.3708,5.7561,Norway,NO,Hordaland,minor,,
+Eikelandsosen,60.2394,5.7539,Norway,NO,Hordaland,minor,,
+Fiskå,62.0999,5.5566,Norway,NO,Møre og Romsdal,minor,,
+Moi,58.4667,6.5333,Norway,NO,Rogaland,minor,,
+Ørje,59.4833,11.6500,Norway,NO,Østfold,minor,,
+Reine,67.9337,13.0891,Norway,NO,Nordland,minor,,
+Froland,58.5306,8.6546,Norway,NO,Aust-Agder,minor,,
+Hov,60.7000,10.3500,Norway,NO,Oppland,minor,,
+Hopen,63.4667,8.0167,Norway,NO,Møre og Romsdal,minor,,
+Mosjøen,65.8333,13.2000,Norway,NO,Nordland,minor,,
+Solfjellsjøen,66.1167,12.4833,Norway,NO,Nordland,minor,,
+Birkeland,58.3333,8.2333,Norway,NO,Aust-Agder,minor,,
+Ramberg,68.0833,13.2333,Norway,NO,Nordland,minor,,
+Dokka,60.8333,10.0833,Norway,NO,Oppland,minor,,
+Flisa,60.6078,12.0521,Norway,NO,Hedmark,minor,,
+Fillan,63.6063,8.9696,Norway,NO,Sør-Trøndelag,minor,,
+Evje,58.5850,7.8083,Norway,NO,Aust-Agder,minor,,
+Batnfjordsøra,62.8833,7.7000,Norway,NO,Møre og Romsdal,minor,,
+Kyrksæterøra,63.2906,9.0899,Norway,NO,Sør-Trøndelag,minor,,
+Dale,60.5833,5.8167,Norway,NO,Hordaland,minor,,
+Noresund,60.1667,9.6167,Norway,NO,Buskerud,minor,,
+Sandane,61.7667,6.2167,Norway,NO,Sogn og Fjordane,minor,,
+Kirkenær,60.4667,12.0500,Norway,NO,Hedmark,minor,,
+Evenskjer,68.5833,16.5667,Norway,NO,Troms,minor,,
+Konsmo,58.2853,7.3558,Norway,NO,Vest-Agder,minor,,
+Årdalstangen,61.2333,7.7167,Norway,NO,Sogn og Fjordane,minor,,
+Skei,61.5716,6.4790,Norway,NO,Sogn og Fjordane,minor,,
+Bogen,68.5262,16.9923,Norway,NO,Nordland,minor,,
+Hamnvik,68.7833,17.1833,Norway,NO,Troms,minor,,
+Vinstra,61.6000,9.7500,Norway,NO,Oppland,minor,,
+Østre Gausdal,61.2500,10.1500,Norway,NO,Oppland,minor,,
+Liabøen,63.1167,8.3000,Norway,NO,Møre og Romsdal,minor,,
+Ranemsletta,64.4936,11.9483,Norway,NO,Nord-Trøndelag,minor,,
+Slidre,61.0883,8.9808,Norway,NO,Oppland,minor,,
+Sande,61.3333,5.8000,Norway,NO,Sogn og Fjordane,minor,,
+Lensvik,63.5110,9.8089,Norway,NO,Sør-Trøndelag,minor,,
+Lampeland,59.8342,9.5759,Norway,NO,Buskerud,minor,,
+Fossby,59.2167,11.7000,Norway,NO,Østfold,minor,,
+Svelgen,61.7667,5.3000,Norway,NO,Sogn og Fjordane,minor,,
+Sjøvegan,68.8733,17.8644,Norway,NO,Troms,minor,,
+Vikeså,58.6333,6.1000,Norway,NO,Rogaland,minor,,
+Borkenes,68.7833,16.1833,Norway,NO,Troms,minor,,
+Leland,66.0667,12.9500,Norway,NO,Nordland,minor,,
+Malm,64.0719,11.2187,Norway,NO,Nord-Trøndelag,minor,,
+Prestfoss,60.0333,9.6333,Norway,NO,Buskerud,minor,,
+Brøstadbotn,69.0886,17.6947,Norway,NO,Troms,minor,,
+Hardbakke,61.0833,4.8500,Norway,NO,Sogn og Fjordane,minor,,
+Hol,68.5333,16.4000,Norway,NO,Nordland,minor,,
+Lyngseidet,69.5833,20.2167,Norway,NO,Troms,minor,,
+Eivinvik,60.9833,5.0667,Norway,NO,Sogn og Fjordane,minor,,
+Storsteinnes,69.2407,19.2344,Norway,NO,Troms,minor,,
+Tingvatn,58.4000,7.2333,Norway,NO,Vest-Agder,minor,,
+Gryllefjord,69.3667,17.0167,Norway,NO,Troms,minor,,
+Årnes,63.9611,10.2274,Norway,NO,Sør-Trøndelag,minor,,
+Heggenes,61.1500,9.0833,Norway,NO,Oppland,minor,,
+Vikøyri,61.0833,6.5833,Norway,NO,Sogn og Fjordane,minor,,
+Rena,61.1333,11.3667,Norway,NO,Hedmark,minor,,
+Årstein,68.6890,17.5449,Norway,NO,Troms,minor,,
+Tennevoll,68.7466,17.8038,Norway,NO,Troms,minor,,
+Støren,63.0372,10.2856,Norway,NO,Sør-Trøndelag,minor,,
+Korgen,66.0833,13.8333,Norway,NO,Nordland,minor,,
+Skaland,69.4500,17.3000,Norway,NO,Troms,minor,,
+Eidsvåg,62.7819,8.0711,Norway,NO,Møre og Romsdal,minor,,
+Inndyr,67.0333,14.0333,Norway,NO,Nordland,minor,,
+Vangsvik,69.1667,17.7333,Norway,NO,Troms,minor,,
+Berkåk,62.8286,10.0101,Norway,NO,Sør-Trøndelag,minor,,
+Steinsdalen,64.2429,10.6926,Norway,NO,Sør-Trøndelag,minor,,
+Dalen,59.4500,8.0000,Norway,NO,Telemark,minor,,
+Kinsarvik,60.3744,6.7200,Norway,NO,Hordaland,minor,,
+Leinesfjord,67.7765,15.0147,Norway,NO,Nordland,minor,,
+Sand,59.4867,6.2511,Norway,NO,Rogaland,minor,,
+Lauvsnes,64.5007,10.8959,Norway,NO,Nord-Trøndelag,minor,,
+Hansnes,69.9667,19.6000,Norway,NO,Troms,minor,,
+Gaupne,61.4048,7.2942,Norway,NO,Sogn og Fjordane,minor,,
+Rognan,67.1000,15.3833,Norway,NO,Nordland,minor,,
+Olderdalen,69.6030,20.5371,Norway,NO,Troms,minor,,
+Sauland,59.6203,8.9278,Norway,NO,Telemark,minor,,
+Krokstadøra,63.3998,9.4987,Norway,NO,Sør-Trøndelag,minor,,
+Moen,69.1333,18.6167,Norway,NO,Troms,minor,,
+Vågaholmen,66.7091,13.2693,Norway,NO,Nordland,minor,,
+Valldal,62.3333,7.3500,Norway,NO,Møre og Romsdal,minor,,
+Oppeid,68.0856,15.6117,Norway,NO,Nordland,minor,,
+Treungen,59.0333,8.5500,Norway,NO,Telemark,minor,,
+Ålen,62.8433,11.2994,Norway,NO,Sør-Trøndelag,minor,,
+Breivikbotn,70.5879,22.2848,Norway,NO,Finnmark,minor,,
+Øksfjord,70.2392,22.3714,Norway,NO,Finnmark,minor,,
+Storslett,69.7675,21.0326,Norway,NO,Troms,minor,,
+Kjøpsvik,68.0966,16.3752,Norway,NO,Nordland,minor,,
+Tonstad,58.6642,6.7164,Norway,NO,Vest-Agder,minor,,
+Straumen,67.3481,15.5972,Norway,NO,Nordland,minor,,
+Terråk,65.0833,12.4167,Norway,NO,Nordland,minor,,
+Koppang,61.5667,11.0667,Norway,NO,Hedmark,minor,,
+Oteren,69.2554,19.8816,Norway,NO,Troms,minor,,
+Skjåk,61.8811,8.3693,Norway,NO,Oppland,minor,,
+Dun,64.6586,11.2661,Norway,NO,Nord-Trøndelag,minor,,
+Aurlandsvangen,60.9063,7.1864,Norway,NO,Sogn og Fjordane,minor,,
+Havøysund,70.9988,24.6603,Norway,NO,Finnmark,minor,,
+Rødberg,60.2711,8.9537,Norway,NO,Buskerud,minor,,
+Moldjord,67.0067,14.5764,Norway,NO,Nordland,minor,,
+Mo,60.8161,5.8053,Norway,NO,Hordaland,minor,,
+Lakselv,70.0436,24.9758,Norway,NO,Finnmark,minor,,
+Tana Bru,70.1977,28.1849,Norway,NO,Finnmark,minor,,
+Trofors,65.5333,13.4063,Norway,NO,Nordland,minor,,
+Bergset,61.8897,11.0773,Norway,NO,Hedmark,minor,,
+Varangerbotn,70.1762,28.5541,Norway,NO,Finnmark,minor,,
+Mehamn,71.0373,27.8507,Norway,NO,Finnmark,minor,,
+Kjøllefjord,70.9457,27.3463,Norway,NO,Finnmark,minor,,
+Nordli,64.4675,13.5908,Norway,NO,Nord-Trøndelag,minor,,
+Andenes,69.3203,16.1428,Norway,NO,Nordland,minor,,
+Copenhagen,55.6761,12.5689,Denmark,DK,Hovedstaden,primary,602481,602481
+Aarhus,56.1572,10.2107,Denmark,DK,Midtjylland,minor,237551,227100
+Odense,55.4004,10.3833,Denmark,DK,Syddanmark,minor,158222,145931
+Aalborg,57.0337,9.9166,Denmark,DK,Nordjylland,admin,122219,101616
+Esbjerg,55.4670,8.4500,Denmark,DK,Syddanmark,minor,72205,63947
+Vejle,55.7090,9.5350,Denmark,DK,Syddanmark,admin,51177,51177
+Roskilde,55.6500,12.0833,Denmark,DK,Sjælland,minor,44285,40284
+Viborg,56.4333,9.4000,Denmark,DK,Midtjylland,admin,34831,31057
+Svendborg,55.0704,10.6167,Denmark,DK,Syddanmark,minor,29180,27553
+Hillerød,55.9333,12.3167,Denmark,DK,Hovedstaden,admin,28313,28313
+Frederikshavn,57.4337,10.5333,Denmark,DK,Nordjylland,minor,24103,20667
+Sorø,55.4330,11.5667,Denmark,DK,Sjælland,admin,7167,7167
+Frederiksberg,55.6785,12.5221,Denmark,DK,Hovedstaden,minor,,
+Søborg,55.7302,12.5098,Denmark,DK,Hovedstaden,minor,,
+Hvidovre,55.6503,12.4758,Denmark,DK,Hovedstaden,minor,,
+Rødovre,55.6827,12.4644,Denmark,DK,Hovedstaden,minor,,
+Charlottenlund,55.7537,12.5918,Denmark,DK,Hovedstaden,minor,,
+Horsens,55.8657,9.8735,Denmark,DK,Midtjylland,minor,,
+Slagelse,55.4027,11.3541,Denmark,DK,Sjælland,minor,,
+Sønderborg,54.9106,9.7928,Denmark,DK,Syddanmark,minor,,
+Randers,56.4607,10.0364,Denmark,DK,Midtjylland,minor,,
+Helsingør,56.0294,12.5863,Denmark,DK,Hovedstaden,minor,,
+Ringkøbing,56.0864,8.2487,Denmark,DK,Midtjylland,minor,,
+Herlev,55.7235,12.4404,Denmark,DK,Hovedstaden,minor,,
+Kongens Lyngby,55.7718,12.5060,Denmark,DK,Hovedstaden,minor,,
+Kolding,55.4929,9.4681,Denmark,DK,Syddanmark,minor,,
+Ballerup,55.7198,12.3520,Denmark,DK,Hovedstaden,minor,,
+Taastrup,55.6475,12.3120,Denmark,DK,Hovedstaden,minor,,
+Vallensbæk Strand,55.6139,12.3895,Denmark,DK,Hovedstaden,minor,,
+Glostrup,55.6666,12.4038,Denmark,DK,Hovedstaden,minor,,
+Brøndby,55.6541,12.4215,Denmark,DK,Hovedstaden,minor,,
+Frederiksværk,55.9677,12.0215,Denmark,DK,Hovedstaden,minor,,
+Holbæk,55.7135,11.7169,Denmark,DK,Sjælland,minor,,
+Næstved,55.2249,11.7842,Denmark,DK,Sjælland,minor,,
+Dragør,55.5946,12.6690,Denmark,DK,Hovedstaden,minor,,
+Albertslund,55.6623,12.3351,Denmark,DK,Hovedstaden,minor,,
+Holstebro,56.3595,8.6208,Denmark,DK,Midtjylland,minor,,
+Hørsholm,55.8810,12.5011,Denmark,DK,Hovedstaden,minor,,
+Hjørring,57.4663,9.9889,Denmark,DK,Nordjylland,minor,,
+Struer,56.4862,8.6044,Denmark,DK,Midtjylland,minor,,
+Frederikssund,55.8389,12.0676,Denmark,DK,Hovedstaden,minor,,
+Rudkøbing,54.9380,10.7214,Denmark,DK,Syddanmark,minor,,
+Ishøj,55.6184,12.3281,Denmark,DK,Hovedstaden,minor,,
+Køge,55.4600,12.1834,Denmark,DK,Sjælland,minor,,
+Rønne,55.1009,14.7066,Denmark,DK,Hovedstaden,minor,,
+Herning,56.1333,8.9833,Denmark,DK,Midtjylland,minor,,
+Kerteminde,55.4505,10.6584,Denmark,DK,Syddanmark,minor,,
+Allerød,55.8703,12.3574,Denmark,DK,Hovedstaden,minor,,
+Haderslev,55.2524,9.4893,Denmark,DK,Syddanmark,minor,,
+Fredericia,55.5758,9.7617,Denmark,DK,Syddanmark,minor,,
+Farum,55.8099,12.3623,Denmark,DK,Hovedstaden,minor,,
+Kalundborg,55.6820,11.1004,Denmark,DK,Sjælland,minor,,
+Assens,55.2712,9.9053,Denmark,DK,Syddanmark,minor,,
+Nykøbing Falster,54.7655,11.8751,Denmark,DK,Sjælland,minor,,
+Solrød Strand,55.5364,12.2252,Denmark,DK,Sjælland,minor,,
+Middelfart,55.4992,9.7445,Denmark,DK,Syddanmark,minor,,
+Nykøbing Mors,56.7917,8.8499,Denmark,DK,Nordjylland,minor,,
+Skive,56.5638,9.0402,Denmark,DK,Midtjylland,minor,,
+Nyborg,55.3058,10.8034,Denmark,DK,Syddanmark,minor,,
+Aabenraa,55.0362,9.4180,Denmark,DK,Syddanmark,minor,,
+Holte,55.8167,12.4667,Denmark,DK,Hovedstaden,minor,,
+Hobro,56.6381,9.7953,Denmark,DK,Nordjylland,minor,,
+Thisted,56.9588,8.6964,Denmark,DK,Nordjylland,minor,,
+Greve,55.5966,12.2492,Denmark,DK,Sjælland,minor,,
+Kokkedal,55.9098,12.5152,Denmark,DK,Hovedstaden,minor,,
+Silkeborg,56.1701,9.5652,Denmark,DK,Midtjylland,minor,,
+Grenaa,56.4128,10.8956,Denmark,DK,Midtjylland,minor,,
+Haslev,55.3179,11.9740,Denmark,DK,Sjælland,minor,,
+Skanderborg,56.0313,9.9317,Denmark,DK,Midtjylland,minor,,
+Ringsted,55.4411,11.8094,Denmark,DK,Sjælland,minor,,
+Maribo,54.7752,11.5024,Denmark,DK,Sjælland,minor,,
+Kastrup,55.6352,12.6489,Denmark,DK,Hovedstaden,minor,,
+Bogense,55.5652,10.0929,Denmark,DK,Syddanmark,minor,,
+Hedensted,55.7701,9.6967,Denmark,DK,Midtjylland,minor,,
+Vejen,55.4812,9.1379,Denmark,DK,Syddanmark,minor,,
+Helsinge,56.0197,12.1990,Denmark,DK,Hovedstaden,minor,,
+Brønderslev,57.2651,9.9599,Denmark,DK,Nordjylland,minor,,
+Vordingborg,55.0104,11.9039,Denmark,DK,Sjælland,minor,,
+Stenløse,55.7677,12.1960,Denmark,DK,Hovedstaden,minor,,
+Odder,55.9772,10.1683,Denmark,DK,Midtjylland,minor,,
+Ærøskøbing,54.8912,10.4083,Denmark,DK,Syddanmark,minor,,
+Tønder,54.9431,8.8693,Denmark,DK,Syddanmark,minor,,
+Hinnerup,56.2661,10.0630,Denmark,DK,Midtjylland,minor,,
+Støvring,56.8909,9.8310,Denmark,DK,Nordjylland,minor,,
+Aars,56.8038,9.5158,Denmark,DK,Nordjylland,minor,,
+Ikast,56.1367,9.1600,Denmark,DK,Midtjylland,minor,,
+Kirke Hvalsø,55.5958,11.8616,Denmark,DK,Sjælland,minor,,
+Ringe,55.2451,10.4706,Denmark,DK,Syddanmark,minor,,
+Varde,55.6216,8.4807,Denmark,DK,Syddanmark,minor,,
+Rønde,56.3015,10.4751,Denmark,DK,Midtjylland,minor,,
+Aabybro,57.1500,9.7500,Denmark,DK,Nordjylland,minor,,
+Store Heddinge,55.3100,12.3898,Denmark,DK,Sjælland,minor,,
+Grindsted,55.7540,8.9123,Denmark,DK,Syddanmark,minor,,
+Højby,55.9115,11.5976,Denmark,DK,Sjælland,minor,,
+Tranebjerg,55.8326,10.5972,Denmark,DK,Midtjylland,minor,,
+Byrum,57.2568,10.9974,Denmark,DK,Nordjylland,minor,,
+Lemvig,56.5333,8.3000,Denmark,DK,Midtjylland,minor,,
+Helsinki,60.1756,24.9342,Finland,FI,Uusimaa,primary,642045,642045
+Espoo,60.2100,24.6600,Finland,FI,Uusimaa,minor,269802,269802
+Tampere,61.4981,23.7608,Finland,FI,Pirkanmaa,admin,225118,225118
+Vantaa,60.3000,25.0333,Finland,FI,Uusimaa,minor,214605,214605
+Oulu,65.0142,25.4719,Finland,FI,Pohjois-Pohjanmaa,admin,200526,200526
+Turku,60.4517,22.2700,Finland,FI,Varsinais-Suomi,admin,187604,187604
+Jyväskylä,62.2333,25.7333,Finland,FI,Keski-Suomi,admin,137368,137368
+Kuopio,62.8925,27.6783,Finland,FI,Pohjois-Savo,admin,120246,120246
+Lahti,60.9804,25.6550,Finland,FI,Päijät-Häme,admin,118119,118119
+Kouvola,60.8681,26.7042,Finland,FI,Kymenlaakso,admin,85855,85855
+Pori,61.4847,21.7972,Finland,FI,Satakunta,admin,85363,85363
+Joensuu,62.6000,29.7639,Finland,FI,Pohjois-Karjala,admin,75514,75514
+Lappeenranta,61.0583,28.1861,Finland,FI,Etelä-Karjala,admin,72875,72875
+Hämeenlinna,61.0000,24.4414,Finland,FI,Kanta-Häme,admin,68011,68011
+Vaasa,63.1000,21.6167,Finland,FI,Pohjanmaa,admin,67619,67619
+Rovaniemi,66.5028,25.7285,Finland,FI,Lappi,admin,61763,61763
+Seinäjoki,62.7903,22.8403,Finland,FI,Etelä-Pohjanmaa,admin,61530,61530
+Mikkeli,61.6875,27.2736,Finland,FI,Etelä-Savo,admin,54665,54665
+Kotka,60.4667,26.9458,Finland,FI,Kymenlaakso,minor,54319,54319
+Salo,60.3831,23.1331,Finland,FI,Varsinais-Suomi,minor,53890,53890
+Porvoo,60.3931,25.6639,Finland,FI,Uusimaa,minor,49928,49928
+Kokkola,63.8376,23.1320,Finland,FI,Keski-Pohjanmaa,admin,47570,47570
+Lohja,60.2500,24.0667,Finland,FI,Uusimaa,minor,47353,47353
+Hyvinkää,60.6306,24.8597,Finland,FI,Uusimaa,minor,46463,46463
+Nurmijärvi,60.4667,24.8083,Finland,FI,Uusimaa,minor,42709,42709
+Järvenpää,60.4722,25.0889,Finland,FI,Uusimaa,minor,40106,40106
+Rauma,61.1167,21.5000,Finland,FI,Satakunta,minor,39809,39809
+Kirkkonummi,60.1167,24.4167,Finland,FI,Uusimaa,minor,38649,38649
+Tuusula,60.4028,25.0292,Finland,FI,Uusimaa,minor,38646,38646
+Kajaani,64.2250,27.7333,Finland,FI,Kainuu,admin,37622,37622
+Jyväskylän Maalaiskunta,62.2889,25.7417,Finland,FI,Keski-Suomi,,36100,36100
+Savonlinna,61.8667,28.8831,Finland,FI,Etelä-Savo,minor,35523,35523
+Kerava,60.4028,25.1000,Finland,FI,Uusimaa,minor,35293,35293
+Nokia,61.4767,23.5053,Finland,FI,Pirkanmaa,minor,33322,33322
+Ylöjärvi,61.5500,23.5833,Finland,FI,Pirkanmaa,minor,32738,32738
+Kaarina,60.4069,22.3722,Finland,FI,Varsinais-Suomi,minor,32590,32590
+Kangasala,61.4639,24.0650,Finland,FI,Pirkanmaa,minor,32229,32229
+Riihimäki,60.7333,24.7667,Finland,FI,Kanta-Häme,minor,29269,29269
+Vihti,60.4167,24.3331,Finland,FI,Uusimaa,,28919,28919
+Raseborg,59.9750,23.4361,Finland,FI,Uusimaa,minor,28405,28405
+Imatra,61.1931,28.7764,Finland,FI,Etelä-Karjala,minor,27835,27835
+Sastamala,61.3417,22.9083,Finland,FI,Pirkanmaa,minor,25220,25220
+Raahe,64.6847,24.4792,Finland,FI,Pohjois-Pohjanmaa,minor,25165,25165
+Raisio,60.4861,22.1694,Finland,FI,Varsinais-Suomi,minor,24290,24290
+Hollola,60.9886,25.5128,Finland,FI,Päijät-Häme,minor,23915,23915
+Lempäälä,61.3139,23.7528,Finland,FI,Pirkanmaa,minor,22536,22536
+Iisalmi,63.5611,27.1889,Finland,FI,Pohjois-Savo,minor,21945,21945
+Tornio,65.8497,24.1441,Finland,FI,Lappi,minor,21928,21928
+Siilinjärvi,63.0750,27.6600,Finland,FI,Pohjois-Savo,minor,21794,21794
+Kemi,65.7336,24.5634,Finland,FI,Lappi,minor,21758,21758
+Kurikka,62.6167,22.4000,Finland,FI,Etelä-Pohjanmaa,minor,21734,21734
+Jämsä,61.8639,25.1903,Finland,FI,Keski-Suomi,minor,21542,21542
+Varkaus,62.3167,27.8833,Finland,FI,Pohjois-Savo,minor,21155,21155
+Valkeakoski,61.2667,24.0306,Finland,FI,Pirkanmaa,minor,20800,20800
+Mäntsälä,60.6331,25.3167,Finland,FI,Uusimaa,minor,20685,20685
+Äänekoski,62.6042,25.7264,Finland,FI,Keski-Suomi,minor,19919,19919
+Hamina,60.5697,27.1981,Finland,FI,Kymenlaakso,minor,19877,19877
+Heinola,61.2028,26.0319,Finland,FI,Päijät-Häme,minor,19575,19575
+Jakobstad,63.6667,22.7000,Finland,FI,Pohjanmaa,minor,19436,19436
+Sipoo,60.3764,25.2722,Finland,FI,Uusimaa,minor,19399,19399
+Korsholm,63.1125,21.6778,Finland,FI,Pohjanmaa,minor,19302,19302
+Lieto,60.5000,22.4497,Finland,FI,Varsinais-Suomi,minor,19263,19263
+Naantali,60.4681,22.0264,Finland,FI,Varsinais-Suomi,minor,18916,18916
+Pirkkala,61.4667,23.6500,Finland,FI,Pirkanmaa,minor,18913,18913
+Laukaa,62.4167,25.9500,Finland,FI,Keski-Suomi,minor,18865,18865
+Pieksämäki,62.3000,27.1583,Finland,FI,Etelä-Savo,minor,18220,18220
+Forssa,60.8167,23.6167,Finland,FI,Kanta-Häme,minor,17422,17422
+Kempele,64.9125,25.5083,Finland,FI,Pohjois-Pohjanmaa,minor,17066,17066
+Toijala,61.1667,23.8681,Finland,FI,Pirkanmaa,minor,17043,17043
+Kauhava,63.1014,23.0639,Finland,FI,Etelä-Pohjanmaa,minor,16784,16784
+Loimaa,60.8514,23.0583,Finland,FI,Varsinais-Suomi,minor,16467,16467
+Orimattila,60.8042,25.7333,Finland,FI,Päijät-Häme,minor,16326,16326
+Kuusamo,65.9667,29.1667,Finland,FI,Pohjois-Pohjanmaa,minor,15688,15688
+Uusikaupunki,60.7833,21.4167,Finland,FI,Varsinais-Suomi,minor,15510,15510
+Pargas,60.3000,22.3000,Finland,FI,Varsinais-Suomi,minor,15457,15457
+Loviisa,60.4569,26.2250,Finland,FI,Uusimaa,minor,15311,15311
+Ylivieska,64.0722,24.5375,Finland,FI,Pohjois-Pohjanmaa,minor,15039,15039
+Nastola,60.9477,25.9301,Finland,FI,Päijät-Häme,minor,14890,14890
+Kontiolahti,62.7667,29.8500,Finland,FI,Pohjois-Karjala,minor,14827,14827
+Lapua,62.9708,23.0069,Finland,FI,Etelä-Pohjanmaa,minor,14609,14609
+Kauhajoki,62.4319,22.1794,Finland,FI,Etelä-Pohjanmaa,minor,13875,13875
+Ulvila,61.4292,21.8750,Finland,FI,Satakunta,minor,13237,13237
+Kalajoki,64.2597,23.9486,Finland,FI,Pohjois-Pohjanmaa,minor,12621,12621
+Ilmajoki,62.7333,22.5833,Finland,FI,Etelä-Pohjanmaa,minor,12159,12159
+Liperi,62.5333,29.3833,Finland,FI,Pohjois-Karjala,minor,12150,12150
+Eura,61.1333,22.0833,Finland,FI,Satakunta,minor,12128,12128
+Alavus,62.5861,23.6194,Finland,FI,Etelä-Pohjanmaa,minor,12044,12044
+Lieksa,63.3167,30.0167,Finland,FI,Pohjois-Karjala,minor,11772,11772
+Kankaanpää,61.8042,22.3944,Finland,FI,Satakunta,minor,11769,11769
+Mariehamn,60.0986,19.9444,Finland,FI,Åland,admin,11461,11461
+Nivala,63.9292,24.9778,Finland,FI,Pohjois-Pohjanmaa,minor,10876,10876
+Kitee,62.0986,30.1375,Finland,FI,Pohjois-Karjala,minor,10832,10832
+Hämeenkyrö,61.6333,23.2000,Finland,FI,Pirkanmaa,minor,10667,10667
+Paimio,60.4569,22.6861,Finland,FI,Varsinais-Suomi,minor,10620,10620
+Sotkamo,64.1333,28.3833,Finland,FI,Kainuu,minor,10523,10523
+Huittinen,61.1764,22.6986,Finland,FI,Satakunta,minor,10473,10473
+Keuruu,62.2597,24.7069,Finland,FI,Keski-Suomi,minor,10117,10117
+Alajärvi,63.0000,23.8167,Finland,FI,Etelä-Pohjanmaa,minor,10006,10006
+Lapinlahti,63.3667,27.3833,Finland,FI,Pohjois-Savo,minor,9982,9982
+Ii,65.3167,25.3722,Finland,FI,Pohjois-Pohjanmaa,minor,9966,9966
+Leppävirta,62.4917,27.7875,Finland,FI,Pohjois-Savo,minor,9953,9953
+Liminka,64.8083,25.4167,Finland,FI,Pohjois-Pohjanmaa,minor,9937,9937
+Saarijärvi,62.7056,25.2569,Finland,FI,Keski-Suomi,minor,9915,9915
+Muurame,62.1292,25.6722,Finland,FI,Keski-Suomi,minor,9791,9791
+Masku,60.5708,22.1000,Finland,FI,Varsinais-Suomi,minor,9706,9706
+Kauniainen,60.2097,24.7264,Finland,FI,Uusimaa,minor,9486,9486
+Orivesi,61.6778,24.3569,Finland,FI,Pirkanmaa,minor,9408,9408
+Närpes,62.4736,21.3375,Finland,FI,Pohjanmaa,minor,9387,9387
+Somero,60.6292,23.5139,Finland,FI,Varsinais-Suomi,minor,9093,9093
+Muhos,64.8000,26.0000,Finland,FI,Pohjois-Pohjanmaa,minor,9063,9063
+Karkkila,60.5347,24.2097,Finland,FI,Uusimaa,minor,8969,8969
+Hanko,59.8236,22.9681,Finland,FI,Uusimaa,minor,8864,8864
+Kuhmo,64.1250,29.5167,Finland,FI,Kainuu,minor,8806,8806
+Sodankylä,67.4149,26.5907,Finland,FI,Lappi,minor,8782,8782
+Kiuruvesi,63.6528,26.6194,Finland,FI,Pohjois-Savo,minor,8600,8600
+Laitila,60.8792,21.6931,Finland,FI,Varsinais-Suomi,minor,8520,8520
+Keminmaa,65.7990,24.5426,Finland,FI,Lappi,minor,8388,8388
+Suomussalmi,64.8833,28.9167,Finland,FI,Kainuu,minor,8336,8336
+Pudasjärvi,65.3583,27.0000,Finland,FI,Pohjois-Pohjanmaa,minor,8257,8257
+Loppi,60.7181,24.4417,Finland,FI,Kanta-Häme,minor,8175,8175
+Laihia,62.9764,22.0111,Finland,FI,Pohjanmaa,minor,8090,8090
+Nurmes,63.5444,29.1333,Finland,FI,Pohjois-Karjala,minor,7996,7996
+Jalasjärvi,62.4917,22.7667,Finland,FI,Etelä-Pohjanmaa,minor,7885,7885
+Mynämäki,60.6833,21.9833,Finland,FI,Varsinais-Suomi,minor,7859,7859
+Kemijärvi,66.7150,27.4306,Finland,FI,Lappi,minor,7766,7766
+Oulainen,64.2667,24.8167,Finland,FI,Pohjois-Pohjanmaa,minor,7610,7610
+Kokemäki,61.2556,22.3486,Finland,FI,Satakunta,minor,7591,7591
+Nykarleby,63.5167,22.5333,Finland,FI,Pohjanmaa,minor,7564,7564
+Haapajärvi,63.7486,25.3181,Finland,FI,Pohjois-Pohjanmaa,minor,7438,7438
+Suonenjoki,62.6250,27.1222,Finland,FI,Pohjois-Savo,minor,7390,7390
+Harjavalta,61.3139,22.1417,Finland,FI,Satakunta,minor,7296,7296
+Ikaalinen,61.7694,23.0681,Finland,FI,Pirkanmaa,minor,7207,7207
+Haapavesi,64.1375,25.3667,Finland,FI,Pohjois-Pohjanmaa,minor,7167,7167
+Outokumpu,62.7250,29.0167,Finland,FI,Pohjois-Karjala,minor,7139,7139
+Mänttä,62.0292,24.6236,Finland,FI,Pirkanmaa,minor,7077,7077
+Säkylä,61.0500,22.3500,Finland,FI,Satakunta,minor,7070,7070
+Virrat,62.2403,23.7708,Finland,FI,Pirkanmaa,minor,7002,7002
+Inari,68.9055,27.0176,Finland,FI,Lappi,minor,6804,6804
+Tyrnävä,64.7500,25.6500,Finland,FI,Pohjois-Pohjanmaa,minor,6793,6793
+Kristinestad,62.2736,21.3778,Finland,FI,Pohjanmaa,minor,6793,6793
+Parkano,62.0097,23.0250,Finland,FI,Pirkanmaa,minor,6766,6766
+Vörå,63.1333,22.2500,Finland,FI,Pohjanmaa,minor,6714,6714
+Kronoby,63.7250,23.0333,Finland,FI,Pohjanmaa,minor,6682,6682
+Pälkäne,61.3389,24.2681,Finland,FI,Pirkanmaa,minor,6676,6676
+Viitasaari,63.0750,25.8597,Finland,FI,Keski-Suomi,minor,6666,6666
+Juva,61.8972,27.8569,Finland,FI,Etelä-Savo,minor,6548,6548
+Kittilä,67.6531,24.9114,Finland,FI,Lappi,minor,6416,6416
+Tammela,60.8000,23.7667,Finland,FI,Kanta-Häme,minor,6280,6280
+Siuntio,60.1333,24.2167,Finland,FI,Uusimaa,minor,6182,6182
+Mäntyharju,61.4181,26.8792,Finland,FI,Etelä-Savo,minor,6159,6159
+Rusko,60.5417,22.2222,Finland,FI,Varsinais-Suomi,minor,6110,6110
+Ähtäri,62.5500,24.0694,Finland,FI,Etelä-Pohjanmaa,minor,6068,6068
+Eurajoki,61.2000,21.7333,Finland,FI,Satakunta,minor,5938,5938
+Nakkila,61.3653,22.0042,Finland,FI,Satakunta,minor,5651,5651
+Kangasniemi,61.9900,26.6417,Finland,FI,Etelä-Savo,minor,5628,5628
+Malax,62.9417,21.5500,Finland,FI,Pohjanmaa,minor,5545,5545
+Ingå,60.0458,24.0056,Finland,FI,Uusimaa,minor,5541,5541
+Kannus,63.9017,23.9151,Finland,FI,Keski-Pohjanmaa,minor,5520,5520
+Teuva,62.4861,21.7472,Finland,FI,Etelä-Pohjanmaa,minor,5482,5482
+Jokioinen,60.8042,23.4861,Finland,FI,Kanta-Häme,minor,5425,5425
+Ilomantsi,62.6667,30.9333,Finland,FI,Pohjois-Karjala,minor,5336,5336
+Ruokolahti,61.2917,28.8167,Finland,FI,Etelä-Karjala,minor,5312,5312
+Hankasalmi,62.3889,26.4361,Finland,FI,Keski-Suomi,minor,5240,5240
+Parikkala,61.5500,29.5000,Finland,FI,Etelä-Karjala,minor,5235,5235
+Larsmo,63.7500,22.8000,Finland,FI,Pohjanmaa,minor,5147,5147
+Pornainen,60.4750,25.3750,Finland,FI,Uusimaa,minor,5125,5125
+Sievi,63.9069,24.5167,Finland,FI,Pohjois-Pohjanmaa,minor,5124,5124
+Joroinen,62.1792,27.8278,Finland,FI,Etelä-Savo,minor,5110,5110
+Askola,60.5278,25.6000,Finland,FI,Uusimaa,minor,5104,5104
+Juuka,63.2417,29.2500,Finland,FI,Pohjois-Karjala,minor,5034,5034
+Nousiainen,60.6000,22.0833,Finland,FI,Varsinais-Suomi,minor,4859,4859
+Urjala,61.0833,23.5500,Finland,FI,Pirkanmaa,minor,4829,4829
+Taipalsaari,61.1597,28.0597,Finland,FI,Etelä-Karjala,minor,4815,4815
+Juankoski,63.0639,28.3278,Finland,FI,Pohjois-Savo,minor,4804,4804
+Isokyrö,63.0000,22.3167,Finland,FI,Pohjanmaa,minor,4785,4785
+Pielavesi,63.2333,26.7583,Finland,FI,Pohjois-Savo,minor,4740,4740
+Tohmajärvi,62.2264,30.3319,Finland,FI,Pohjois-Karjala,minor,4738,4738
+Ruukki,64.6639,25.1014,Finland,FI,Pohjois-Pohjanmaa,minor,4721,4721
+Joutsa,61.7417,26.1153,Finland,FI,Keski-Suomi,minor,4688,4688
+Jomala,60.1500,19.9500,Finland,FI,Åland,minor,4648,4648
+Ruovesi,61.9833,24.0833,Finland,FI,Pirkanmaa,minor,4623,4623
+Polvijärvi,62.8550,29.3667,Finland,FI,Pohjois-Karjala,minor,4556,4556
+Vesilahti,61.3167,23.6167,Finland,FI,Pirkanmaa,minor,4489,4489
+Ylitornio,66.3167,23.6667,Finland,FI,Lappi,minor,4291,4291
+Sonkajärvi,63.6667,27.5167,Finland,FI,Pohjois-Savo,minor,4278,4278
+Karstula,62.8750,24.8000,Finland,FI,Keski-Suomi,minor,4268,4268
+Pihtipudas,63.3667,25.5750,Finland,FI,Keski-Suomi,minor,4221,4221
+Taivalkoski,65.5750,28.2417,Finland,FI,Pohjois-Pohjanmaa,minor,4199,4199
+Sysmä,61.5028,25.6847,Finland,FI,Päijät-Häme,minor,4040,4040
+Ranua,65.9275,26.5184,Finland,FI,Lappi,minor,4020,4020
+Petäjävesi,62.2500,25.1833,Finland,FI,Keski-Suomi,minor,4008,4008
+Aura,60.6472,22.5903,Finland,FI,Varsinais-Suomi,minor,3991,3991
+Maaninka,63.1583,27.3000,Finland,FI,Pohjois-Savo,minor,3773,3773
+Vieremä,63.7431,27.0014,Finland,FI,Pohjois-Savo,minor,3757,3757
+Rantasalmi,62.0667,28.3000,Finland,FI,Etelä-Savo,minor,3733,3733
+Salla,66.8333,28.6667,Finland,FI,Lappi,minor,3727,3727
+Kuortane,62.8083,23.5083,Finland,FI,Etelä-Pohjanmaa,minor,3715,3715
+Uurainen,62.5000,25.4367,Finland,FI,Keski-Suomi,minor,3666,3666
+Pello,66.7756,23.9635,Finland,FI,Lappi,minor,3623,3623
+Savitaipale,61.2000,27.6833,Finland,FI,Etelä-Karjala,minor,3613,3613
+Heinävesi,62.4250,28.6333,Finland,FI,Etelä-Savo,minor,3574,3574
+Paltamo,64.4083,27.8417,Finland,FI,Kainuu,minor,3488,3488
+Posio,66.1097,28.1739,Finland,FI,Lappi,minor,3477,3477
+Luvia,61.3611,21.6250,Finland,FI,Satakunta,minor,3349,3349
+Virolahti,60.5833,27.7000,Finland,FI,Kymenlaakso,minor,3347,3347
+Kimito,60.1639,22.7278,Finland,FI,Varsinais-Suomi,minor,3339,3339
+Toholampi,63.7750,24.2500,Finland,FI,Keski-Pohjanmaa,minor,3311,3311
+Rautalampi,62.6217,26.8333,Finland,FI,Pohjois-Savo,minor,3303,3303
+Veteli,63.4753,23.7886,Finland,FI,Keski-Pohjanmaa,minor,3302,3302
+Simo,65.6613,25.0623,Finland,FI,Lappi,minor,3238,3238
+Lappajärvi,63.2167,23.6333,Finland,FI,Etelä-Pohjanmaa,minor,3215,3215
+Pyhäjoki,64.4667,24.2583,Finland,FI,Pohjois-Pohjanmaa,minor,3211,3211
+Tervola,66.0821,24.8080,Finland,FI,Lappi,minor,3195,3195
+Kaavi,62.9750,28.4833,Finland,FI,Pohjois-Savo,minor,3194,3194
+Merikarvia,61.8583,21.5000,Finland,FI,Satakunta,minor,3185,3185
+Padasjoki,61.3500,25.2750,Finland,FI,Päijät-Häme,minor,3143,3143
+Vaala,64.5500,26.8333,Finland,FI,Kainuu,minor,3074,3074
+Lemi,61.0611,27.8042,Finland,FI,Etelä-Karjala,minor,3073,3073
+Vimpeli,63.1617,23.8167,Finland,FI,Etelä-Pohjanmaa,minor,3073,3073
+Punkalaidun,61.1117,23.1050,Finland,FI,Pirkanmaa,minor,3049,3049
+Sauvo,60.3417,22.6917,Finland,FI,Varsinais-Suomi,minor,3019,3019
+Hartola,61.5784,26.0142,Finland,FI,Päijät-Häme,minor,2982,2982
+Reisjärvi,63.6056,24.9319,Finland,FI,Pohjois-Pohjanmaa,minor,2894,2894
+Utajärvi,64.7500,26.4167,Finland,FI,Pohjois-Pohjanmaa,minor,2861,2861
+Perho,63.2167,24.4167,Finland,FI,Keski-Pohjanmaa,minor,2860,2860
+Puolanka,64.8681,27.6708,Finland,FI,Kainuu,minor,2776,2776
+Lappträsk,60.6167,26.2000,Finland,FI,Uusimaa,minor,2774,2774
+Konnevesi,62.6283,26.2833,Finland,FI,Keski-Suomi,minor,2757,2757
+Sulkava,61.7875,28.3708,Finland,FI,Etelä-Savo,minor,2724,2724
+Alavieska,64.1667,24.3083,Finland,FI,Pohjois-Pohjanmaa,minor,2687,2687
+Kärsämäki,63.9750,25.7583,Finland,FI,Pohjois-Pohjanmaa,minor,2658,2658
+Köyliö,61.1167,22.3083,Finland,FI,Satakunta,minor,2647,2647
+Tuusniemi,62.8083,28.4917,Finland,FI,Pohjois-Savo,minor,2597,2597
+Evijärvi,63.3667,23.4750,Finland,FI,Etelä-Pohjanmaa,minor,2499,2499
+Karvia,62.1333,22.5583,Finland,FI,Satakunta,minor,2475,2475
+Toivakka,62.1000,26.0833,Finland,FI,Keski-Suomi,minor,2431,2431
+Hyrynsalmi,64.6750,28.4917,Finland,FI,Kainuu,minor,2422,2422
+Ypäjä,60.8083,23.2833,Finland,FI,Kanta-Häme,minor,2411,2411
+Humppila,60.9250,23.3667,Finland,FI,Kanta-Häme,minor,2388,2388
+Keitele,63.1783,26.3500,Finland,FI,Pohjois-Savo,minor,2379,2379
+Koski Tl,60.6542,23.1403,Finland,FI,Varsinais-Suomi,minor,2359,2359
+Muonio,67.9593,23.6772,Finland,FI,Lappi,minor,2358,2358
+Rääkkylä,62.3133,29.6250,Finland,FI,Pohjois-Karjala,minor,2349,2349
+Kuhmoinen,61.5667,25.1833,Finland,FI,Keski-Suomi,minor,2334,2334
+Valtimo,63.6800,28.8167,Finland,FI,Pohjois-Karjala,minor,2324,2324
+Hirvensalmi,61.6389,26.7806,Finland,FI,Etelä-Savo,minor,2290,2290
+Puumala,61.5250,28.1833,Finland,FI,Etelä-Savo,minor,2260,2260
+Pomarkku,61.6917,22.0083,Finland,FI,Satakunta,minor,2240,2240
+Soini,62.8750,24.2083,Finland,FI,Etelä-Pohjanmaa,minor,2224,2224
+Korsnäs,62.7833,21.1833,Finland,FI,Pohjanmaa,minor,2201,2201
+Vesanto,62.9333,26.4167,Finland,FI,Pohjois-Savo,minor,2191,2191
+Pyhäranta,60.9500,21.4417,Finland,FI,Varsinais-Suomi,minor,2136,2136
+Isojoki,62.1139,21.9583,Finland,FI,Etelä-Pohjanmaa,minor,2123,2123
+Hämeenkoski,61.0250,25.1500,Finland,FI,Päijät-Häme,minor,2104,2104
+Miehikkälä,60.6708,27.7000,Finland,FI,Kymenlaakso,minor,2085,2085
+Lumijoki,64.8367,25.1867,Finland,FI,Pohjois-Pohjanmaa,minor,2076,2076
+Kihniö,62.2083,23.1792,Finland,FI,Pirkanmaa,minor,2038,2038
+Marttila,60.5833,22.9000,Finland,FI,Varsinais-Suomi,minor,2028,2028
+Lemland,60.0806,20.1000,Finland,FI,Åland,minor,1991,1991
+Pukkila,60.6450,25.5833,Finland,FI,Uusimaa,minor,1971,1971
+Myrskylä,60.6667,25.8500,Finland,FI,Uusimaa,minor,1969,1969
+Tarvasjoki,60.5833,22.7333,Finland,FI,Varsinais-Suomi,minor,1958,1958
+Jämijärvi,61.8167,22.6917,Finland,FI,Satakunta,minor,1948,1948
+Lavia,61.5958,22.5861,Finland,FI,Satakunta,minor,1890,1890
+Enontekiö,68.3847,23.6389,Finland,FI,Lappi,minor,1861,1861
+Pulkkila,64.2667,25.8667,Finland,FI,Pohjois-Pohjanmaa,minor,1843,1843
+Pertunmaa,61.5028,26.4792,Finland,FI,Etelä-Savo,minor,1817,1817
+Honkajoki,61.9931,22.2639,Finland,FI,Satakunta,minor,1793,1793
+Kinnula,63.3667,24.9667,Finland,FI,Keski-Suomi,minor,1745,1745
+Rautavaara,63.4944,28.2986,Finland,FI,Pohjois-Savo,minor,1737,1737
+Multia,62.4083,24.7950,Finland,FI,Keski-Suomi,minor,1710,1710
+Taivassalo,60.5617,21.6083,Finland,FI,Varsinais-Suomi,minor,1633,1633
+Tervo,62.9556,26.7556,Finland,FI,Pohjois-Savo,minor,1608,1608
+Pyhäntä,64.0972,26.3306,Finland,FI,Pohjois-Pohjanmaa,minor,1587,1587
+Hammarland,60.2167,19.7403,Finland,FI,Åland,minor,1537,1537
+Siikainen,61.8833,21.8167,Finland,FI,Satakunta,minor,1527,1527
+Enonkoski,62.0889,28.9333,Finland,FI,Etelä-Savo,minor,1473,1473
+Kannonkoski,62.9750,25.2667,Finland,FI,Keski-Suomi,minor,1462,1462
+Kyyjärvi,63.0431,24.5639,Finland,FI,Keski-Suomi,minor,1379,1379
+Oripää,60.8556,22.6972,Finland,FI,Varsinais-Suomi,minor,1377,1377
+Karijoki,62.3083,21.7083,Finland,FI,Etelä-Pohjanmaa,minor,1369,1369
+Ristijärvi,64.5056,28.2139,Finland,FI,Kainuu,minor,1351,1351
+Kaskinen,62.3847,21.2222,Finland,FI,Pohjanmaa,minor,1285,1285
+Utsjoki,69.9078,27.0265,Finland,FI,Lappi,minor,1250,1250
+Halsua,63.4633,24.1667,Finland,FI,Keski-Pohjanmaa,minor,1225,1225
+Kivijärvi,63.1200,25.0750,Finland,FI,Keski-Suomi,minor,1200,1200
+Merijärvi,64.2967,24.4467,Finland,FI,Pohjois-Pohjanmaa,minor,1134,1134
+Savukoski,67.2917,28.1667,Finland,FI,Lappi,minor,1061,1061
+Hailuoto,65.0167,24.7167,Finland,FI,Pohjois-Pohjanmaa,minor,993,993
+Pelkosenniemi,67.1083,27.5167,Finland,FI,Lappi,minor,958,958
+Eckerö,60.2167,19.5500,Finland,FI,Åland,minor,935,935
+Kustavi,60.5467,21.3583,Finland,FI,Varsinais-Suomi,minor,895,895
+Lestijärvi,63.5250,24.6653,Finland,FI,Keski-Pohjanmaa,minor,798,798
+Luhanka,61.8000,25.7000,Finland,FI,Keski-Suomi,minor,761,761
+Brändö,60.4117,21.0453,Finland,FI,Åland,minor,515,515
+Geta,60.3750,19.8500,Finland,FI,Åland,minor,495,495
+Vårdö,60.2417,20.3750,Finland,FI,Åland,minor,441,441
+Lumparland,60.1167,20.2583,Finland,FI,Åland,minor,398,398
+Kumlinge,60.2583,20.7783,Finland,FI,Åland,minor,317,317
+Sottunga,60.1333,20.6667,Finland,FI,Åland,minor,92,92
+Nummela,60.3333,24.3333,Finland,FI,Uusimaa,minor,,
+Turenki,60.9167,24.6333,Finland,FI,Kanta-Häme,minor,,
+Parola,61.0500,24.3667,Finland,FI,Kanta-Häme,minor,,
+Oitti,60.7833,25.0333,Finland,FI,Kanta-Häme,minor,,
+Godby,60.2300,19.9881,Finland,FI,Åland,minor,,
+Järvelä,60.8680,25.2730,Finland,FI,Päijät-Häme,minor,,
+Siltakylä,60.4958,26.7097,Finland,FI,Kymenlaakso,minor,,
+Vääksy,61.1722,25.5472,Finland,FI,Päijät-Häme,minor,,
+Ödkarby,60.3073,19.9862,Finland,FI,Åland,minor,,
+Bennäs,63.6000,22.7917,Finland,FI,Pohjanmaa,minor,,
+Kaustinen,63.5481,23.6999,Finland,FI,Keski-Pohjanmaa,minor,,
+Kyrö,60.7000,22.7500,Finland,FI,Varsinais-Suomi,minor,,
+Vinkkilä,60.6833,21.7167,Finland,FI,Varsinais-Suomi,minor,,
+Kausala,60.8928,26.3394,Finland,FI,Kymenlaakso,minor,,
+Simpele,61.4333,29.3670,Finland,FI,Etelä-Karjala,minor,,
+Dalsbruk,60.0333,22.5167,Finland,FI,Varsinais-Suomi,minor,,
+Björby,60.2572,20.1342,Finland,FI,Åland,minor,,
+Korkeakoski,61.8000,24.3667,Finland,FI,Pirkanmaa,minor,,
+Taavetti,60.9167,27.5667,Finland,FI,Etelä-Karjala,minor,,
+Föglö,60.0000,20.4333,Finland,FI,Åland,minor,,
+Pyhäsalmi,63.6833,25.9833,Finland,FI,Pohjois-Pohjanmaa,minor,,
+Karlby,59.9167,20.9000,Finland,FI,Åland,minor,,
+Polvijärvi,62.4167,28.3333,Finland,FI,Etelä-Savo,minor,,
+Kolari,67.3317,23.7913,Finland,FI,Lappi,minor,,
+Ivalo,68.6565,27.5404,Finland,FI,Lappi,minor,,
+Åva,60.4667,21.0833,Finland,FI,Åland,minor,,
