@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="country_data.js"></script>
+<script src="continent_data.js"></script>
+<script src="region_data.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Explore all crime data through our Interactive Tool -  The Organized Crime Index</title>
+    
+    <meta name="copyright" content="Global Initiative Against Transnational Organized Crime">
+
+    <!-- Primary Meta Tags -->
+    <title>Explore all crime data through our Interactive Tool -  The Organized Crime Index</title>
+    <meta name="title" content="Explore all crime data through our Interactive Tool -  The Organized Crime Index">
+    <meta name="description" content="Based on the 2019 ENACT Organised Crime Index for Africa, the Global Organized Crime Index is a key flagship project of the Global Initiative Against Transnational Organized Crime.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ocindex.net/">
+    <meta property="og:title" content="Explore all crime data through our Interactive Tool -  The Organized Crime Index">
+    <meta property="og:description" content="Based on the 2019 ENACT Organised Crime Index for Africa, the Global Organized Crime Index is a key flagship project of the Global Initiative Against Transnational Organized Crime.">
+    <meta property="og:image" content="https://ocindex.net/assets/images/share.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ocindex.net/">
+    <meta property="twitter:title" content="Explore all crime data through our Interactive Tool -  The Organized Crime Index">
+    <meta property="twitter:description" content="Based on the 2019 ENACT Organised Crime Index for Africa, the Global Organized Crime Index is a key flagship project of the Global Initiative Against Transnational Organized Crime.">
+    <meta property="twitter:image" content="https://ocindex.net/assets/images/share.jpg">
+
+    <link href="https://ocindex.net/assets/images/icon.png" rel="shortcut icon">
+    <link rel="icon" sizes="192x192" href="https://ocindex.net/assets/images/icon.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="https://ocindex.net/assets/images/icon.png">
+    
+    <link rel="stylesheet" href="style.css">
+
+    
+</head>
+<body  >
+
+    <aside class="loader">
+        <img src="https://ocindex.net/assets/images/loader.gif" alt="Loading...">
+    </aside>
+
+    <!-- Header -->
+    <header id="top-bar" class="top-bar">
+        <section class="container-fluid pt05 pb05">
+            <div class="row">
+                <div class="col-xs-12 relative">
+                    <div class="flex between-xs middle-xs">
+                        <a href="https://ocindex.net/">
+                            <img class="logo" src="https://ocindex.net/assets/images/logos/logo0.svg" alt="The Organized Crime Index | ENACT">
+                        </a>
+                        <div class="flex between-xs middle-xs">
+                                                            
+                            <label class="drop-download mr1 visible-md">
+                                <input type="checkbox">
+                                <span class="btn btn-download-rep">Download the report</span>
+                                <ul>
+                                    <li><a href="https://ocindex.net/assets/downloads/global-ocindex-report.pdf" target="_blank">English</a></li>
+                                    <li><a href="https://ocindex.net/assets/downloads/global-ocindex-report-spanish.pdf" target="_blank">Spanish</a></li>
+                                    <li><a href="https://ocindex.net/assets/downloads/global-ocindex-report-french.pdf" target="_blank">French</a></li>
+                                    <li><a href="https://ocindex.net/assets/downloads/global-ocindex-report-arabic.pdf" target="_blank">Arabic</a></li>
+                                </ul>
+                            </label>
+                            <button class="btn-menu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <nav class="bg-purple">
+            <section class="container-fluid pt05 pb05">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="flex between-xs middle-xs">
+                            <a href="https://ocindex.net/" style="background-image=url()">
+                                <img class="logo" src="https://ocindex.net/assets/images/logos/white/logo4.svg" alt="The Organized Crime Index | ENACT">
+                            </a>
+                            <button class="btn-close-menu"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="container-fluid wrap pt3 pb3">
+                <div class="row between-xs h100-md">
+                    <div class="col-xs-12 col-sm-7 col-md-4 h100-md">
+                        <div class="flex flex-column between-xs h100-md">
+                            <ul class="relative mb3 mb5-md">
+                                <li class="tcw link active"><a href="https://ocindex.net/" class="t5 w600 block mb1">Score heatmaps</a></li>
+                                <li class="tcw link"><a href="https://ocindex.net/rankings" class="t5 w600 block mb1">Rankings</a></li>
+                                <li class="tcw link submenu"><a class="t5 w600 block mb1">Criminal markets</a>
+                                    <div>
+                                        <ul>
+                                                                                        <li><a href="https://ocindex.net/crime/human_trafficking" class="t4 w600 tcw block mb1 link">Human trafficking</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/human_smuggling" class="t4 w600 tcw block mb1 link">Human smuggling</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/arms_trafficking" class="t4 w600 tcw block mb1 link">Arms trafficking</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/flora_crimes" class="t4 w600 tcw block mb1 link">Flora crimes</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/fauna_crimes" class="t4 w600 tcw block mb1 link">Fauna crimes</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/non-renewable_resource_crimes" class="t4 w600 tcw block mb1 link">Non-renewable resource crimes</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/heroin_trade" class="t4 w600 tcw block mb1 link">Heroin trade</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/cocaine_trade" class="t4 w600 tcw block mb1 link">Cocaine trade</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/cannabis_trade" class="t4 w600 tcw block mb1 link">Cannabis trade</a></li>
+                                                                                        <li><a href="https://ocindex.net/crime/synthetic_drug_trade" class="t4 w600 tcw block mb1 link">Synthetic drug trade</a></li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                <li class="tcw link submenu"><a class="t5 w600 block mb1">Regions/Countries</a>
+                                    <div>                                        
+                                        <div class="search-input mb2 visible-md">
+                                            <input type="text" name="search-input" id="menu-search" placeholder="Search a country or region" autocomplete="new-password">
+                                            <div class="search-icon"></div>
+                                        </div>
+                                        <ul id="menu-search-items"></ul>
+                                    </div>
+                                </li>
+                                <li class="tcw link"><a href="https://ocindex.net/explorer" class="t5 w600 block mb1">Data explorer</a></li>
+                                <li class="tcw link"><a href="https://ocindex.net/about" class="t5 w600 block mb1">About</a></li>
+                                <li class="tcw link"><a href="https://ocindex.net/downloads" class="t5 w600 block mb1">Downloads</a></li>
+                                <!-- <li class="tcw link"><a href="https://ocindex.net/contact" class="t5 w600 block">Contact</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </nav>
+    </header>    <!-- Data Explorer -->
+    <article class="bg-white pt3 pb5 bg-shape shape-asc shape-up" id="graph-explorer">
+        <div class="container-fluid wrap">
+            <div class="row relative pt5">
+                <h2 class="section-title">Compare</h2>
+                <div class="col-xs-12 col-md-10">
+                    <h1 class="ff1 t7 w900 mb1">Data explorer</h1>
+                </div>
+            </div>
+            <div class="row mb2">
+                <div class="col-xs-12 flex between-xs end-xs">
+                    <form class="explorer-filters">
+                        <div>
+                            <button class="btn-filter mb1" data-box="filters" type="button">Filter Countries</button>
+                            <div class="graph-order ml1"></div>
+                        </div>
+                        <div>
+                            <h3>You can explore up to 4 variables simultaneously</h3>
+                            <div class="graph-selectors"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row reverse">
+                <div class="col-xs-12">
+                    <article class="explorer-graph">
+                        <div class="graph-guides"></div>
+                        <div class="graph-elements"></div>
+                        <div class="tooltip"></div>
+                    </article>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 mt2">
+                    <section class="graph-legend"></section>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Filters-->
+    <section class="box box-medium box-hidden box-fixed explorer-filters" data-box="filters">
+        <button class="btn-close"></button>
+        <form id="change-countries">
+            <div class="mb2">
+                <!--div class="filter mb1">
+                    <ul>
+                        <li>
+                            <label class="radio uc"><input type="checkbox" name="r" class="changeregion" value="" checked/><span>All Regions</span></label>
+                            <ul>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Australia,New Zealand" /><span>Australia and New Zealand</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Antigua and Barbuda,Bahamas,Barbados,Cuba,Dominica,Dominican Republic,Grenada,Haiti,Jamaica,St. Kitts and Nevis,St. Lucia,St. Vincent and the Grenadines,Trinidad and Tobago" /><span>Caribbean</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Angola,Burundi,Cameroon,Central African Republic,Chad,Congo, Dem. Rep.,Congo, Rep.,Equatorial Guinea,Gabon,Rwanda,Sao Tome and Principe" /><span>Central Africa</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Belize,Costa Rica,El Salvador,Guatemala,Honduras,Mexico,Nicaragua,Panama" /><span>Central America</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Armenia,Azerbaijan,Georgia,Kazakhstan,Kyrgyzstan,Tajikistan,Turkmenistan,Uzbekistan" /><span>Central Asia and the Caucasus</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Albania,Belarus,Bosnia and Herzegovina,Bulgaria,Croatia,Czech Republic,Hungary,Moldova,Montenegro,North Macedonia,Poland,Romania,Russia,Serbia,Slovakia,Slovenia,Ukraine" /><span>Central & Eastern Europe</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Djibouti,Eritrea,Ethiopia,Kenya,Somalia,South Sudan,Sudan,Tanzania,Uganda" /><span>East Africa</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="China,Japan,Korea, DPR,Korea, Rep.,Mongolia" /><span>Eastern Asia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Fiji,Kiribati,Papua New Guinea,Solomon Islands,Vanuatu" /><span>Melanesia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Marshall Islands,Micronesia (Federated States of),Nauru,Palau" /><span>Micronesia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Algeria,Egypt,Libya,Mauritania,Morocco,Tunisia" /><span>North Africa</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Canada,United States" /><span>North America</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Denmark,Estonia,Finland,Iceland,Latvia,Lithuania,Norway,Sweden" /><span>Northern Europe</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Samoa,Tonga,Tuvalu" /><span>Polynesia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Brunei,Cambodia,Indonesia,Laos,Malaysia,Myanmar,Philippines,Singapore,Thailand,Timor-Leste,Vietnam" /><span>South-Eastern Asia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Argentina,Bolivia,Brazil,Chile,Colombia,Ecuador,Guyana,Paraguay,Peru,Suriname,Uruguay,Venezuela" /><span>South America</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Botswana,Comoros,Eswatini,Lesotho,Madagascar,Malawi,Mauritius,Mozambique,Namibia,Seychelles,South Africa,Zambia,Zimbabwe" /><span>Southern Africa</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Afghanistan,Bangladesh,Bhutan,India,Maldives,Nepal,Pakistan,Sri Lanka" /><span>Southern Asia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Cyprus,Greece,Italy,Malta,Monaco,Portugal,San Marino,Spain" /><span>Southern Europe</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Benin,Burkina Faso,Cabo Verde,Côte d'Ivoire,Gambia,Ghana,Guinea,Guinea-Bissau,Liberia,Mali,Niger,Nigeria,Senegal,Sierra Leone,Togo" /><span>West Africa</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Bahrain,Iran,Iraq,Israel,Jordan,Kuwait,Lebanon,Oman,Qatar,Saudi Arabia,Syria,Turkey,United Arab Emirates,Yemen" /><span>Western Asia</span></label></li>
+                                                                    <li><label class="radio"><input type="checkbox" name="r" class="changeregion" value="Andorra,Austria,Belgium,France,Germany,Ireland,Liechtenstein,Luxembourg,Netherlands,Switzerland,United Kingdom" /><span>Western Europe</span></label></li>
+                                                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="mt1 mb1" /-->
+                <div class="secondary-explorer-filters">
+                    <div class="filter">
+                        <p class="filter-counter"><span id="countriesCounter">193</span> of 193</p>
+                        <ul>
+                            <li>
+                                <label class="radio uc"><input type="checkbox" name="country" value="" checked/><span>All Countries</span></label>
+                                <ul>        
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Afghanistan"/><span>Afghanistan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Albania"/><span>Albania</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Algeria"/><span>Algeria</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Andorra"/><span>Andorra</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Angola"/><span>Angola</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Antigua and Barbuda"/><span>Antigua and Barbuda</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Argentina"/><span>Argentina</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Armenia"/><span>Armenia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Australia"/><span>Australia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Austria"/><span>Austria</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Azerbaijan"/><span>Azerbaijan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bahamas"/><span>Bahamas</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bahrain"/><span>Bahrain</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bangladesh"/><span>Bangladesh</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Barbados"/><span>Barbados</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Belarus"/><span>Belarus</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Belgium"/><span>Belgium</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Belize"/><span>Belize</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Benin"/><span>Benin</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bhutan"/><span>Bhutan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bolivia"/><span>Bolivia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bosnia and Herzegovina"/><span>Bosnia and Herzegovina</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Botswana"/><span>Botswana</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Brazil"/><span>Brazil</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Brunei"/><span>Brunei</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Bulgaria"/><span>Bulgaria</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Burkina Faso"/><span>Burkina Faso</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Burundi"/><span>Burundi</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Cabo Verde"/><span>Cabo Verde</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Cambodia"/><span>Cambodia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Cameroon"/><span>Cameroon</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Canada"/><span>Canada</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Central African Republic"/><span>Central African Republic</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Chad"/><span>Chad</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Chile"/><span>Chile</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="China"/><span>China</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Colombia"/><span>Colombia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Comoros"/><span>Comoros</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Congo, Dem. Rep."/><span>Congo, Dem. Rep.</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Congo, Rep."/><span>Congo, Rep.</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Costa Rica"/><span>Costa Rica</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Côte d'Ivoire"/><span>Côte d'Ivoire</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Croatia"/><span>Croatia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Cuba"/><span>Cuba</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Cyprus"/><span>Cyprus</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Czech Republic"/><span>Czech Republic</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Denmark"/><span>Denmark</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Djibouti"/><span>Djibouti</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Dominica"/><span>Dominica</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Dominican Republic"/><span>Dominican Republic</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Ecuador"/><span>Ecuador</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Egypt"/><span>Egypt</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="El Salvador"/><span>El Salvador</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Equatorial Guinea"/><span>Equatorial Guinea</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Eritrea"/><span>Eritrea</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Estonia"/><span>Estonia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Eswatini"/><span>Eswatini</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Ethiopia"/><span>Ethiopia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Fiji"/><span>Fiji</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Finland"/><span>Finland</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="France"/><span>France</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Gabon"/><span>Gabon</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Gambia"/><span>Gambia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Georgia"/><span>Georgia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Germany"/><span>Germany</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Ghana"/><span>Ghana</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Greece"/><span>Greece</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Grenada"/><span>Grenada</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Guatemala"/><span>Guatemala</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Guinea"/><span>Guinea</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Guinea-Bissau"/><span>Guinea-Bissau</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Guyana"/><span>Guyana</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Haiti"/><span>Haiti</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Honduras"/><span>Honduras</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Hungary"/><span>Hungary</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Iceland"/><span>Iceland</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="India"/><span>India</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Indonesia"/><span>Indonesia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Iran"/><span>Iran</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Iraq"/><span>Iraq</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Ireland"/><span>Ireland</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Israel"/><span>Israel</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Italy"/><span>Italy</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Jamaica"/><span>Jamaica</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Japan"/><span>Japan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Jordan"/><span>Jordan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Kazakhstan"/><span>Kazakhstan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Kenya"/><span>Kenya</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Kiribati"/><span>Kiribati</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Korea, DPR"/><span>Korea, DPR</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Korea, Rep."/><span>Korea, Rep.</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Kuwait"/><span>Kuwait</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Kyrgyzstan"/><span>Kyrgyzstan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Laos"/><span>Laos</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Latvia"/><span>Latvia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Lebanon"/><span>Lebanon</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Lesotho"/><span>Lesotho</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Liberia"/><span>Liberia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Libya"/><span>Libya</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Liechtenstein"/><span>Liechtenstein</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Lithuania"/><span>Lithuania</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Luxembourg"/><span>Luxembourg</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Madagascar"/><span>Madagascar</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Malawi"/><span>Malawi</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Malaysia"/><span>Malaysia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Maldives"/><span>Maldives</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mali"/><span>Mali</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Malta"/><span>Malta</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Marshall Islands"/><span>Marshall Islands</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mauritania"/><span>Mauritania</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mauritius"/><span>Mauritius</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mexico"/><span>Mexico</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Micronesia (Federated States of)"/><span>Micronesia (Federated States of)</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Moldova"/><span>Moldova</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Monaco"/><span>Monaco</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mongolia"/><span>Mongolia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Montenegro"/><span>Montenegro</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Morocco"/><span>Morocco</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Mozambique"/><span>Mozambique</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Myanmar"/><span>Myanmar</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Namibia"/><span>Namibia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Nauru"/><span>Nauru</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Nepal"/><span>Nepal</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Netherlands"/><span>Netherlands</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="New Zealand"/><span>New Zealand</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Nicaragua"/><span>Nicaragua</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Niger"/><span>Niger</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Nigeria"/><span>Nigeria</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="North Macedonia"/><span>North Macedonia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Norway"/><span>Norway</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Oman"/><span>Oman</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Pakistan"/><span>Pakistan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Palau"/><span>Palau</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Panama"/><span>Panama</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Papua New Guinea"/><span>Papua New Guinea</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Paraguay"/><span>Paraguay</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Peru"/><span>Peru</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Philippines"/><span>Philippines</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Poland"/><span>Poland</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Portugal"/><span>Portugal</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Qatar"/><span>Qatar</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Romania"/><span>Romania</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Russia"/><span>Russia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Rwanda"/><span>Rwanda</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Samoa"/><span>Samoa</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="San Marino"/><span>San Marino</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Sao Tome and Principe"/><span>Sao Tome and Principe</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Saudi Arabia"/><span>Saudi Arabia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Senegal"/><span>Senegal</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Serbia"/><span>Serbia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Seychelles"/><span>Seychelles</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Sierra Leone"/><span>Sierra Leone</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Singapore"/><span>Singapore</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Slovakia"/><span>Slovakia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Slovenia"/><span>Slovenia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Solomon Islands"/><span>Solomon Islands</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Somalia"/><span>Somalia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="South Africa"/><span>South Africa</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="South Sudan"/><span>South Sudan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Spain"/><span>Spain</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Sri Lanka"/><span>Sri Lanka</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="St. Kitts and Nevis"/><span>St. Kitts and Nevis</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="St. Lucia"/><span>St. Lucia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="St. Vincent and the Grenadines"/><span>St. Vincent and the Grenadines</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Sudan"/><span>Sudan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Suriname"/><span>Suriname</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Sweden"/><span>Sweden</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Switzerland"/><span>Switzerland</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Syria"/><span>Syria</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Tajikistan"/><span>Tajikistan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Tanzania"/><span>Tanzania</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Thailand"/><span>Thailand</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Timor-Leste"/><span>Timor-Leste</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Togo"/><span>Togo</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Tonga"/><span>Tonga</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Trinidad and Tobago"/><span>Trinidad and Tobago</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Tunisia"/><span>Tunisia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Turkey"/><span>Turkey</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Turkmenistan"/><span>Turkmenistan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Tuvalu"/><span>Tuvalu</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Uganda"/><span>Uganda</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Ukraine"/><span>Ukraine</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="United Arab Emirates"/><span>United Arab Emirates</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="United Kingdom"/><span>United Kingdom</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="United States"/><span>United States</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Uruguay"/><span>Uruguay</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Uzbekistan"/><span>Uzbekistan</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Vanuatu"/><span>Vanuatu</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Venezuela"/><span>Venezuela</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Vietnam"/><span>Vietnam</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Yemen"/><span>Yemen</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Zambia"/><span>Zambia</span></label></li>
+                                                                            <li><label class="radio"><input type="checkbox" name="country" value="Zimbabwe"/><span>Zimbabwe</span></label></li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-purple p1">
+                <div class="flex between-xs">
+                    <button class="btn btn-white" type="reset">Reset</button>
+                    <button class="btn btn-white" type="submit">Apply</button>
+                </div>
+            </footer>
+        </form>
+    </section>
+
+    <!-- Selectors-->
+    <section class="modal" data-box="modalc">
+        <section class="box box-large">
+            <button class="btn-close"></button>
+            <div class="row"><div class="col-xs-12"><h3 class="t3 ff2 uc tcg mb1">Color selection</h3></div></div>
+            <form class="row graph-forms filter">
+                <div class="col-xs-12 col-md-8">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Index scores</h4>
+                        <hr class="mb05" />
+                        <div class="flex">
+                                                        <ul >
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="selc" value="1"/><span>Criminality</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="selc" value="1.1"/><span>Criminal market</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.1"/><span>Human trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.2"/><span>Human smuggling</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.3"/><span>Arms trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.4"/><span>Flora crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.5"/><span>Fauna crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.6"/><span>Non-renewable resource crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.7"/><span>Heroin trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.8"/><span>Cocaine trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.9"/><span>Cannabis trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.1.10"/><span>Synthetic drug trade</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="selc" value="1.2"/><span>Criminal actors</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.2.1"/><span>Mafia-style groups</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.2.2"/><span>Criminal networks</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.2.3"/><span>State-embedded actors</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selc" value="1.2.4"/><span>Foreign actors</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                        <ul class="ml2">
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="selc" value="2"/><span>Resilience</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.1"/><span>Political leadership and governance</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.2"/><span>Government transparency and accountability</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.3"/><span>International cooperation</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.4"/><span>National policies and laws</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.5"/><span>Judicial system and detention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.6"/><span>Law enforcement</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.7"/><span>Territorial integrity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.8"/><span>Anti-money laundering</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.9"/><span>Economic regulatory capacity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.10"/><span>Victim and witness support</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.11"/><span>Prevention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selc" value="2.12"/><span>Non-state actors</span></label>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Localization</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <!-- <li>
+                                <label class="radio uc"><input type="radio" name="selc" value="Region"/><span>Regions</span></label>
+                            </li> -->
+                            <li>
+                                <label class="radio uc"><input type="radio" name="selc" value="Continent"/><span>Continent</span></label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Social Economic</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <!-- <li><label class="radio uc"><input type="radio" name="selc" value="GINI index"/><span>GINI Index</span></label></li> -->
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Income group"/><span>Income group</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="GDP per capita (current $US)"/><span>GDP per capita (US$)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="GDP (current $US million)"/><span>GDP total (US$ millions)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Population"/><span>Population</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Regime Type"/><span>Regime Type</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Territorial</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Land Area (sq. km)"/><span>Area(km2)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Geography type"/><span>Geography type</span></label></li>
+                            <!-- <li><label class="radio uc"><input type="radio" name="selc" value="Coastline (km)"/><span>Coastline(km)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Land Boundaries (km)"/><span>Landborder(km)</span></label></li> -->
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Other indexes</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Corruption Perceptions Index"/><span>Corruption Perceptions Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Democracy Index"/><span>Democracy Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Fragile States Index"/><span>Fragile States Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Freedom in the World Index"/><span>Freedom in the World Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Global Peace Index"/><span>Global Peace Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="Human Development Index"/><span>Human Development Index</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mt1 vh">
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selc" value="" class="disabled"/><span>DISABLED</span></label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 tr">
+                    <button class="btn btn-purple mr1" onclick="$('[name=selc].disabled').trigger('click')">Disable</button>
+                    <button class="btn btn-purple" type="submit">Apply</button>
+                </div>
+            </form>
+        </section>
+    </section>
+    <section class="modal" data-box="modaly">
+        <section class="box box-large">
+            <button class="btn-close"></button>
+            <div class="row"><div class="col-xs-12"><h3 class="t3 ff2 uc tcg mb1">Y-axis selection</h3></div></div>
+            <form class="row graph-forms filter">
+                <div class="col-xs-12 col-md-8">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Index scores</h4>
+                        <hr class="mb05" />
+                        <div class="flex">
+                                                        <ul >
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="sely" value="1"/><span>Criminality</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="sely" value="1.1"/><span>Criminal market</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.1"/><span>Human trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.2"/><span>Human smuggling</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.3"/><span>Arms trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.4"/><span>Flora crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.5"/><span>Fauna crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.6"/><span>Non-renewable resource crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.7"/><span>Heroin trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.8"/><span>Cocaine trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.9"/><span>Cannabis trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.1.10"/><span>Synthetic drug trade</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="sely" value="1.2"/><span>Criminal actors</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.2.1"/><span>Mafia-style groups</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.2.2"/><span>Criminal networks</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.2.3"/><span>State-embedded actors</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sely" value="1.2.4"/><span>Foreign actors</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                        <ul class="ml2">
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="sely" value="2"/><span>Resilience</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.1"/><span>Political leadership and governance</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.2"/><span>Government transparency and accountability</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.3"/><span>International cooperation</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.4"/><span>National policies and laws</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.5"/><span>Judicial system and detention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.6"/><span>Law enforcement</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.7"/><span>Territorial integrity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.8"/><span>Anti-money laundering</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.9"/><span>Economic regulatory capacity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.10"/><span>Victim and witness support</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.11"/><span>Prevention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sely" value="2.12"/><span>Non-state actors</span></label>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Social economic</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <!-- <li><label class="radio uc"><input type="radio" name="sely" value="GINI index"/><span>GINI Index</span></label></li> -->
+                            <li><label class="radio uc"><input type="radio" name="sely" value="GDP per capita (current $US)"/><span>GDP per capita (US$)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="GDP (current $US million)"/><span>GDP total (US$ MILLIONS)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Population"/><span>Population</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Territorial</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Land Area (sq. km)"/><span>Area(km2)</span></label></li>
+                            <!-- <li><label class="radio uc"><input type="radio" name="sely" value="Coastline (km)"/><span>Coastline(km)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Land Boundaries (km)"/><span>Landborder(km)</span></label></li> -->
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Other indexes</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Corruption Perceptions Index"/><span>Corruption Perceptions Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Democracy Index"/><span>Democracy Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Fragile States Index"/><span>Fragile States Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Freedom in the World Index"/><span>Freedom in the World Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Global Peace Index"/><span>Global Peace Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="Human Development Index"/><span>Human Development Index</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mt2 vh">
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sely" value="" class="disabled"/><span>DISABLED</span></label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 tr">
+                    <button class="btn btn-purple mr1" onclick="$('[name=sely].disabled').trigger('click')">Disable</button>
+                    <button class="btn btn-purple" type="submit">Apply</button>
+                </div>
+            </form>
+        </section>
+    </section>
+    <section class="modal" data-box="modalx">
+        <section class="box box-large">
+            <button class="btn-close"></button>
+            <div class="row"><div class="col-xs-12"><h3 class="t3 ff2 uc tcg mb1">X-axis selection</h3></div></div>
+            <form class="row graph-forms filter">
+                <div class="col-xs-12 col-md-8">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Index scores</h4>
+                        <hr class="mb05" />
+                        <div class="flex">
+                                                        <ul >
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="selx" value="1"/><span>Criminality</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="selx" value="1.1"/><span>Criminal market</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.1"/><span>Human trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.2"/><span>Human smuggling</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.3"/><span>Arms trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.4"/><span>Flora crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.5"/><span>Fauna crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.6"/><span>Non-renewable resource crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.7"/><span>Heroin trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.8"/><span>Cocaine trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.9"/><span>Cannabis trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.1.10"/><span>Synthetic drug trade</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="selx" value="1.2"/><span>Criminal actors</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.2.1"/><span>Mafia-style groups</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.2.2"/><span>Criminal networks</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.2.3"/><span>State-embedded actors</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="selx" value="1.2.4"/><span>Foreign actors</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                        <ul class="ml2">
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="selx" value="2"/><span>Resilience</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.1"/><span>Political leadership and governance</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.2"/><span>Government transparency and accountability</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.3"/><span>International cooperation</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.4"/><span>National policies and laws</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.5"/><span>Judicial system and detention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.6"/><span>Law enforcement</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.7"/><span>Territorial integrity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.8"/><span>Anti-money laundering</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.9"/><span>Economic regulatory capacity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.10"/><span>Victim and witness support</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.11"/><span>Prevention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="selx" value="2.12"/><span>Non-state actors</span></label>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Social economic</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <!-- <li><label class="radio uc"><input type="radio" name="selx" value="GINI index"/><span>GINI Index</span></label></li> -->
+                            <li><label class="radio uc"><input type="radio" name="selx" value="GDP per capita (current $US)"/><span>GDP per capita (US$)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="GDP (current $US million)"/><span>GDP total (US$ MILLIONS)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Population"/><span>Population</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Territorial</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Land Area (sq. km)"/><span>Area(km2)</span></label></li>
+                            <!-- <li><label class="radio uc"><input type="radio" name="selx" value="Coastline (km)"/><span>Coastline(km)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Land Boundaries (km)"/><span>Landborder(km)</span></label></li> -->
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Other indexes</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Corruption Perceptions Index"/><span>Corruption Perceptions Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Democracy Index"/><span>Democracy Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Fragile States Index"/><span>Fragile States Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Freedom in the World Index"/><span>Freedom in the World Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Global Peace Index"/><span>Global Peace Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="Human Development Index"/><span>Human Development Index</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mt2 vh">
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="selx" value="" class="disabled"/><span>DISABLED</span></label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 tr">
+                    <button class="btn btn-purple mr1" onclick="$('[name=selx].disabled').trigger('click')">Disable</button>
+                    <button class="btn btn-purple" type="submit">Apply</button>
+                </div>
+            </form>
+        </section>
+    </section>
+    <section class="modal" data-box="modals">
+        <section class="box box-large">
+            <button class="btn-close"></button>
+            <div class="row"><div class="col-xs-12"><h3 class="t3 ff2 uc tcg mb1">Size selection</h3></div></div>
+            <form class="row graph-forms filter">
+                <div class="col-xs-12 col-md-8">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Index scores</h4>
+                        <hr class="mb05" />
+                        <div class="flex">
+                                                        <ul >
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="sels" value="1"/><span>Criminality</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="sels" value="1.1"/><span>Criminal market</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.1"/><span>Human trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.2"/><span>Human smuggling</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.3"/><span>Arms trafficking</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.4"/><span>Flora crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.5"/><span>Fauna crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.6"/><span>Non-renewable resource crimes</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.7"/><span>Heroin trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.8"/><span>Cocaine trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.9"/><span>Cannabis trade</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.1.10"/><span>Synthetic drug trade</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio uc"><input type="radio" name="sels" value="1.2"/><span>Criminal actors</span></label>
+                                                                                        <ul>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.2.1"/><span>Mafia-style groups</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.2.2"/><span>Criminal networks</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.2.3"/><span>State-embedded actors</span></label>
+                                                </li>
+                                                                                                <li>
+                                                    <label class="radio"><input type="radio" name="sels" value="1.2.4"/><span>Foreign actors</span></label>
+                                                </li>
+                                                                                            </ul>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                        <ul class="ml2">
+                                <li>
+                                    <label class="radio uc"><input type="radio" name="sels" value="2"/><span>Resilience</span></label>
+                                    <ul>        
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.1"/><span>Political leadership and governance</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.2"/><span>Government transparency and accountability</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.3"/><span>International cooperation</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.4"/><span>National policies and laws</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.5"/><span>Judicial system and detention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.6"/><span>Law enforcement</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.7"/><span>Territorial integrity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.8"/><span>Anti-money laundering</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.9"/><span>Economic regulatory capacity</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.10"/><span>Victim and witness support</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.11"/><span>Prevention</span></label>
+                                                                                    </li>
+                                                                                <li>
+                                            <label class="radio "><input type="radio" name="sels" value="2.12"/><span>Non-state actors</span></label>
+                                                                                    </li>
+                                                                            </ul>
+                                </li>
+                            </ul>
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Social economic</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <!-- <li><label class="radio uc"><input type="radio" name="sels" value="GINI index"/><span>GINI Index</span></label></li> -->
+                            <li><label class="radio uc"><input type="radio" name="sels" value="GDP per capita (current $US)"/><span>GDP per capita (US$)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="GDP (current $US million)"/><span>GDP total (US$ MILLIONS)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Population"/><span>Population</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Territorial</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Land Area (sq. km)"/><span>Area(km2)</span></label></li>
+                            <!-- <li><label class="radio uc"><input type="radio" name="sels" value="Coastline (km)"/><span>Coastline(km)</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Land Boundaries (km)"/><span>Landborder(km)</span></label></li> -->
+                        </ul>
+                    </div>
+                    <div class="mb1">
+                        <h4 class="t1 ff2 w900 uc tcp mb05">Other indexes</h4>
+                        <hr class="mb05" />
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Corruption Perceptions Index"/><span>Corruption Perceptions Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Democracy Index"/><span>Democracy Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Fragile States Index"/><span>Fragile States Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Freedom in the World Index"/><span>Freedom in the World Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Global Peace Index"/><span>Global Peace Index</span></label></li>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="Human Development Index"/><span>Human Development Index</span></label></li>
+                        </ul>
+                    </div>
+                    <div class="mt2 vh">
+                        <ul>
+                            <li><label class="radio uc"><input type="radio" name="sels" value="" class="disabled"/><span>DISABLED</span></label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 tr">
+                    <button class="btn btn-purple mr1" onclick="$('[name=sels].disabled').trigger('click')">Disable</button>
+                    <button class="btn btn-purple" type="submit">Apply</button>
+                </div>
+            </form>
+        </section>
+    </section>
+
+<!-- Rotate Device -->
+<div id="device-orientation" class="bg-purple bg-pattern">
+    <img class="logo" src="https://ocindex.net/assets/images/logos/white/logo4.svg" alt="The Organized Crime Index | ENACT">
+    <div class="orientation-content">
+        <div class="device"></div>
+        <p class="t3 tcw tc w600">For a better experience, please rotate your device.</p>
+    </div>
+</div>
+<!-- Sponsors -->
+<article class="partners">
+    <div class="container-fluid wrap">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <div class="row middle-xs mb1">
+                    <div class="col-xs-12 col-sm-6 mb1">
+                        <div class="row middle-xs center-xs">
+                            <div class="col-xs-4">
+                                <a href="https://www.state.gov/" target="_blank">
+                                    <figure class="mr1 mr0-sm center-block mb1 mt1">
+                                        <img src="https://ocindex.net/assets/images/partner1.png">
+                                    </figure>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <p class="t2 w400 ff1 tcw mb0 lh1-25 tc tl-sm">This report was funded in part by a grant from the United States Department of State.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 mb1">
+                        <div class="row middle-xs center-xs">
+                            <div class="col-xs-4">
+                                <a href="https://enactafrica.org/" target="_blank">
+                                    <figure class="mr1 mr0-sm center-block mb1 mt1">
+                                        <img src="https://ocindex.net/assets/images/partner2.svg">
+                                    </figure>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <p class="t2 w400 ff1 tcw mb0 lh1-25 tc tl-sm">ENACT is funded by the European Union and implemented by the Institute for Security Studies and INTERPOL, in affiliation with the Global Initiative Against Transnational Organized Crime.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row center-xs">
+            <div class="col-xs-12 col-sm-10 col-md-8">
+                <p class="t2 w400 ff1 tcw mb0 lh1-25 tc">The opinions, findings and conclusions stated herein are those of the Global Initiative Against Transnational Organized Crime and do not necessarily reflect those of the United States Department of State.</p>
+            </div>
+        </div>
+    </div>
+</article>
+<!-- Footer -->
+<footer class="footer">
+    <article class="main-footer">
+        <div class="container-fluid wrap">
+            <div class="row mb2">
+                <div class="col-xs-12">
+                    <a href="./" class="inline-block">
+                        <span class="t4 mb0 block ff2 w800 tcw lh1-25 ls01 uc">Global</span>
+                        <span class="t4 mb0 block ff2 w800 tcw lh1-25 ls01 uc">Organized</span>
+                        <span class="t4 mb0 block ff2 w800 tcw lh1-25 ls01 uc">Crime Index</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-2">
+                    <ul>
+                        <li><a href="https://ocindex.net/" class="uc w900">Score heatmaps</a></li>
+                        <li><a href="https://ocindex.net/rankings" class="uc w900">Rankings</a></li>
+                        <li><a href="https://ocindex.net/explorer" class="uc w900">Data Explorer</a></li>
+                    </ul>
+                    <div class="mt2 mb2">
+                        <p class="ff1 w400 tcp60 lh1 mb05">related project:</p>
+                        <div class="ocindexafrica"></div>
+                        <a href="https://africa.ocindex.net/" target="_blank" class="btn-out">Go to Index</a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-2">
+                    <ul>
+                        <li class="uc w900 mb1">Criminal Markets</li>
+                                                    <li><a href="https://ocindex.net/crime/human_trafficking">Human trafficking</a></li>
+                                                    <li><a href="https://ocindex.net/crime/human_smuggling">Human smuggling</a></li>
+                                                    <li><a href="https://ocindex.net/crime/arms_trafficking">Arms trafficking</a></li>
+                                                    <li><a href="https://ocindex.net/crime/flora_crimes">Flora crimes</a></li>
+                                                    <li><a href="https://ocindex.net/crime/fauna_crimes">Fauna crimes</a></li>
+                                                    <li><a href="https://ocindex.net/crime/non-renewable_resource_crimes">Non-renewable resource crimes</a></li>
+                                                    <li><a href="https://ocindex.net/crime/heroin_trade">Heroin trade</a></li>
+                                                    <li><a href="https://ocindex.net/crime/cocaine_trade">Cocaine trade</a></li>
+                                                    <li><a href="https://ocindex.net/crime/cannabis_trade">Cannabis trade</a></li>
+                                                    <li><a href="https://ocindex.net/crime/synthetic_drug_trade">Synthetic drug trade</a></li>
+                                            </ul>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-2">
+                    <ul>
+                        <li><a href="https://ocindex.net/about" class="uc w900">About The Project</a></li>
+                        <li><a href="https://ocindex.net/downloads" class="uc w900">Downloads</a></li>
+                        <li class="uc w900 mb05">Search for Summaries</li>
+                                                               
+                        <div class="search-footer mr1">
+                            <input type="text" name="search-footer" id="search-footer" placeholder="Type a country or region" autocomplete="new-password">
+                            <div class="search-icon"></div>
+                            <ul id="footer-search-items"></ul>
+                        </div>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-md-4 col-md-offset-2">
+                    <form action="https://ocindex.net/?act=newsletter" id="newsletter">
+                        <h4>Subscribe to our newsletter</h4>
+                        <div class="flex flex-wrap">
+                            <input name="name" type="text" placeholder="name" required>
+                            <input name="surname" type="text" placeholder="surname" required>
+                            <input name="country" type="text" list="countries" placeholder="country" required>
+                            <input name="language" type="text" placeholder="language" required>
+                            <input name="organization" type="text" placeholder="organization" required>
+                            <input name="expertise" type="text" placeholder="expertise" required>
+                            <input name="email" type="email" placeholder="email" required>
+                        </div>
+                        <div class="terms">
+                            <label>
+                                <input name="terms" type="checkbox">
+                                <p>If you have read and agree to the <a href="https://globalinitiative.net/policies-statements/privacy-policy/" target="_blank">Privacy policy</a>, please confirm our authorization to store your e-mail to send our newsletter.</p>
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" disabled>Sign Up</button>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </article>
+    <article class="extra-footer">
+        <div class="container-fluid wrap">
+            <div class="row reverse">
+                <div class="col-xs-12 col-sm-6">
+                    <p class="tl-xs tr-sm"><a href="https://globalinitiative.net/privacy-policy/" target="_blank" class="link">Privacy policy</a></p>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <p>The design and development of this website was completed by <a href="http://cafe.art.br/" class="link w900">Café.art.br</a></p>
+                </div>
+            </div>
+        </div>
+    </article>
+</footer><script type="text/javascript">
+    var $currentCrime = "1";
+</script>
+<script type="text/javascript">
+    var $benchmarks = [];
+    var $crimes = {"1":{"name":"Criminality","id":"1","description":""},"1.1":{"name":"Criminal market","id":"1.1","description":""},"1.1.1":{"name":"Human trafficking","id":"1.1.1","description":"Drawing from a range of sources, the Index covers human trafficking within a modern slavery context and includes the trafficking of organs. In line with common interpretations of human trafficking, this criminal market does not require the movement of individuals and covers men, women and children.\nWhen movement is involved, it may include both cross-border as well as internal flows (such as from rural to urban locations). Under the Index, human trafficking includes activity, means and purpose and reflects all stages of the illicit activity, from recruitment and transfer, to harbouring and receipt of persons. To distinguish this market from that of human smuggling, trafficking in persons involves a form of coercion, deception, abduction or fraud, and is carried out for the purpose of exploitation, regardless of victims\u2019 consent. In line with the Protocol to Prevent, Suppress and Punish Trafficking in Persons, Especially Women and Children, supplementing the United Nations Convention against Transnational Organized Crime, exploitation shall include, at a minimum, the exploitation of the prostitution of others or other forms of sexual exploitation, forced labour or services, slavery or practices similar to slavery, servitude or the removal of organs."},"1.1.2":{"name":"Human smuggling","id":"1.1.2","description":"Under the Index, human smuggling requires the criminalization of the illegal entry, transit or residence of migrants (by land, sea or air) by an organised criminal group for the purposes of a financial or material benefit. Activity in this criminal economy reflects all stages of the illicit activity including the producing, procuring, providing or possessing fraudulent travel or identity documents when committed for the purpose of enabling the smuggling of migrants. Notably, while distinct crimes, human smuggling may turn into trafficking when the element of exploitation is involved."},"1.1.3":{"name":"Arms trafficking","id":"1.1.3","description":"The trafficking of arms involves the import, export, acquisition, sale, delivery, movement or transfer of arms, their parts and components and ammunition across national borders, as well intentional diversion of firearms from legal to illegal commerce, without involving the movement of items across physical borders.\n\u2018Firearms\u2019 refers to any portable barrelled weapon that expels, is designed to expel or may be readily converted to expel a shot, bullet or projectile by the action of an explosive, excluding antique firearms or their replicas as per by the Protocol against the Illicit Manufacturing of and Trafficking in Firearms, Their Parts and Components and Ammunition, supplementing the United Nations Convention against Transnational Organized Crime. \u2018Small arms\u2019 and \u2018light weapons\u2019 refers to range of specific weapons as outlined by the Small Arms Survey. Often the trafficking of arms facilitates the commission of other organised crime activities."},"1.1.4":{"name":"Flora crimes","id":"1.1.4","description":"Crimes related to flora species involves the illicit trade as well possession of species covered by CITES (the Convention on International Trade in Endangered Species of Wild Fauna and Flora), as well as any other species protected under national law. Under the Index, to account for the plethora of species across the African continent, the \u2018top three\u2019 most illicitly traded flora species in each country are considered, including high and low value timber such as rosewood, roundwood and mahogany, as well as cycads. "},"1.1.5":{"name":"Fauna crimes","id":"1.1.5","description":"Like flora crimes, crimes involving fauna species reflects the poaching, illicit trade and possession of species covered by CITES, as well as any other species protected by national law. Under the Index, to account for the plethora of species across the African continent, the \u2018top five most illicitly traded and\/or poached fauna species in each country are considered, including rhinos, elephants, great apes, lion bones, and pangolins, among others. The Index also considers protected marine species, and Illegal, unreported and unregulated (IUU) fishing falls under this category."},"1.1.6":{"name":"Non-renewable resource crimes","id":"1.1.6","description":"The Index includes the illicit extraction, smuggling, mingling, bunkering or mining of natural resources. It also covers any illicit activities related to the trade of such products, including price mis-invoicing. As with other \u2018environmental\u2019 markets, to account for the wide range of natural resources throughout the African continent, the Index covers the \u2018top three\u2019 commodities in each country, including for example oil, gold, gas, gemstones, diamonds and precious metals. "},"1.1.7":{"name":"Heroin trade","id":"1.1.7","description":"The Index covers the production, distribution and sale of heroin. Consumption of the drug, while not in and of itself a form of organised crime, was considered in determining the \u2018reach\u2019 of the illicit drug market. Synthetic opioids are considered under synthetic drugs category."},"1.1.8":{"name":"Cocaine trade","id":"1.1.8","description":"Like heroin, the production, distribution and sale of cocaine and its derivatives is covered by the Index. Consumption of the drug while not in and of itself a form of organised crime, was considered in determining the \u2018reach\u2019 of the illicit drug market. "},"1.1.9":{"name":"Cannabis trade","id":"1.1.9","description":"The illicit cultivation, distribution and sale of cannabis, oil, resin, herb and leaves are covered by the Index. Consumption of the drug while not in and of itself a form of organised crime, was considered in determining the \u2018reach\u2019 of the illicit drug market. Recognizing the growing legalization of cannabis production, sale and consumption across countries, the Index focused solely on areas where an activity was criminalised and\/or where criminal groups were involved in the supply chain. "},"1.1.10":{"name":"Synthetic drug trade","id":"1.1.10","description":"As with other drug illicit markets, the production, distribution and sale of synthetic drugs is covered by the Index. Consumption of such drugs, while not in and of itself a form of organised crime, was considered in determining the \u2018reach\u2019 of the illicit drug market. Notably, synthetic opioids, such as tramadol, as well as  amphetamine-type stimulants, methamphetamines and fentanyl are included in this criminal market, as well as any other narcotic included in the 1972 Protocol, the Convention on Psychotropic Substances of 1971 and the United Nations Convention against Illicit Traffic in Narcotic Drugs and Psychotropic Substances of 1988. Notably, \u2018substandard and falsified medical products\u2019 as outlined by the World Health Organization has been excluded. "},"1.2":{"name":"Criminal actors","id":"1.2","description":""},"1.2.1":{"name":"Mafia-style groups","id":"1.2.1","description":""},"1.2.2":{"name":"Criminal networks","id":"1.2.2","description":""},"1.2.3":{"name":"State-embedded actors","id":"1.2.3","description":""},"1.2.4":{"name":"Foreign actors","id":"1.2.4","description":""},"2":{"name":"Resilience","id":"2","description":""},"2.1":{"name":"Political leadership and governance","id":"2.1","description":""},"2.2":{"name":"Government transparency and accountability","id":"2.2","description":""},"2.3":{"name":"International cooperation","id":"2.3","description":""},"2.4":{"name":"National policies and laws","id":"2.4","description":""},"2.5":{"name":"Judicial system and detention","id":"2.5","description":""},"2.6":{"name":"Law enforcement","id":"2.6","description":""},"2.7":{"name":"Territorial integrity","id":"2.7","description":""},"2.8":{"name":"Anti-money laundering","id":"2.8","description":""},"2.9":{"name":"Economic regulatory capacity","id":"2.9","description":""},"2.10":{"name":"Victim and witness support","id":"2.10","description":""},"2.11":{"name":"Prevention","id":"2.11","description":""},"2.12":{"name":"Non-state actors","id":"2.12","description":""}};
+    var $crimesindex = {"1":{"name":"Criminality","children":{"1.1":{"name":"Criminal market","children":{"1.1.1":{"name":"Human trafficking"},"1.1.2":{"name":"Human smuggling"},"1.1.3":{"name":"Arms trafficking"},"1.1.4":{"name":"Flora crimes"},"1.1.5":{"name":"Fauna crimes"},"1.1.6":{"name":"Non-renewable resource crimes"},"1.1.7":{"name":"Heroin trade"},"1.1.8":{"name":"Cocaine trade"},"1.1.9":{"name":"Cannabis trade"},"1.1.10":{"name":"Synthetic drug trade"}}},"1.2":{"name":"Criminal actors","children":{"1.2.1":{"name":"Mafia-style groups"},"1.2.2":{"name":"Criminal networks"},"1.2.3":{"name":"State-embedded actors"},"1.2.4":{"name":"Foreign actors"}}}}},"2":{"name":"Resilience","children":{"2.1":{"name":"Political leadership and governance","children":[]},"2.2":{"name":"Government transparency and accountability","children":[]},"2.3":{"name":"International cooperation","children":[]},"2.4":{"name":"National policies and laws","children":[]},"2.5":{"name":"Judicial system and detention","children":[]},"2.6":{"name":"Law enforcement","children":[]},"2.7":{"name":"Territorial integrity","children":[]},"2.8":{"name":"Anti-money laundering","children":[]},"2.9":{"name":"Economic regulatory capacity","children":[]},"2.10":{"name":"Victim and witness support","children":[]},"2.11":{"name":"Prevention","children":[]},"2.12":{"name":"Non-state actors","children":[]}}}};
+</script>    </body>
+<script type="text/javascript">
+    var home_url = "";
+    var $countries = country_data;
+    var $regions = region_data;
+    var $continents = continent_data;
+</script>
+<script src="script.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        $(".loader").fadeOut();
+        popoverApp.popovers();
+        popoverApp.checkCookie();
+    };
+</script>
+</html>
