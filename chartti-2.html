@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Line Chart w/ Chart.js - in progress</title>
+<style>
+*{
+  box-sizing: border-box;
+}
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: tomato;
+    display: table;
+  text-align: center;
+}
+
+.chart__container {
+      border-radius: 8px;
+    padding: 30px;
+/* 
+    background-color: #F7B054;
+ 
+    background-color: #F23DE8;
+ 
+    background-color: #8544EF;
+ 
+    background-color: #F17441;
+ 
+    background-color: #EB3185;
+ 
+    background-color: #06DCD4;
+ 
+    background-color: #F72E9D;
+ 
+    background-color: #7DEBFF;
+
+    background-color: #FF7421;
+ 
+    background-color: #06DDD5;
+ 
+    background-color: #F82E9E;
+ 
+    background-color: #06E19E;
+ 
+    background-color: #02B3FC;
+
+    background-color: #F8CE27;
+    
+    background-color: #95F7D0;
+*/ 
+    background-color: #FC42E3;
+    
+    background-color: #FF1D00;
+    
+    background-color: #C4FA6F;
+    
+    background-color: #00f2de; 
+    
+    background-color: #04d9ff;
+    
+    background-color: #f1d26a;
+    
+    background-color: #ff5000;
+    
+    background-color: #fe0008;
+    
+    background-color: #aa55ff;
+    
+    background-color: #ff10f0;
+    
+    background-color: #00fe65;
+ 
+    width: 700px;
+  display: inline-block;
+  /*box-shadow: 0px 5px 12px rgba(0,0,0,0.2);*/
+}
+.row {
+    display: table-cell;
+    vertical-align: middle;
+}
+</style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="row">
+  <div class="chart__container">
+    <canvas id="chart" width="600" height="300"></canvas>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js'></script>
+  <script>
+  let ctx = document.getElementById("chart").getContext('2d');
+
+var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+gradientStroke.addColorStop(0, "#ffffff");
+gradientStroke.addColorStop(1, "#ffffff");
+
+var gradientBkgrd = ctx.createLinearGradient(0, 100, 0, 400);
+gradientBkgrd.addColorStop(0, "rgba(244,94,132,0.2)");
+gradientBkgrd.addColorStop(1, "rgba(249,135,94,0)");
+
+let draw = Chart.controllers.line.prototype.draw;
+Chart.controllers.line = Chart.controllers.line.extend({
+    draw: function() {
+        draw.apply(this, arguments);
+        let ctx = this.chart.chart.ctx;
+        let _stroke = ctx.stroke;
+        ctx.stroke = function() {
+            ctx.save();
+            //ctx.shadowColor = 'rgba(244,94,132,0.8)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 6;
+            _stroke.apply(this, arguments)
+            ctx.restore();
+        }
+    }
+});
+
+
+
+
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: gradientBkgrd,
+            borderColor: gradientStroke,
+            data: [5500, 2500, 10000, 6000, 14000, 1500, 7000,20000],
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointBackgroundColor: "rgba(255,255,255,0)",
+            pointBorderWidth: 0,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: gradientStroke,
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 4,
+            pointRadius: 1,
+            borderWidth: 5,
+            pointHitRadius: 16,
+            fill: false,
+        },
+        {
+            label: "Outcone",
+            backgroundColor: gradientBkgrd,
+            borderColor: gradientStroke,
+            data: [4500, 1500, 8000, 6000, 12000, 1500, 7000,18000],
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointBackgroundColor: "rgba(255,255,255,0)",
+            pointBorderWidth: 0,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: gradientStroke,
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 4,
+            pointRadius: 1,
+            borderWidth: 5,
+            pointHitRadius: 16,
+            fill: false,
+        }
+        
+        
+        
+        ]
+    },
+
+    // Configuration options go here
+    options: {
+      tooltips: {
+        backgroundColor:'#fff',
+        displayColors:false,
+           titleFontColor: '#000',
+        bodyFontColor: '#000'
+        
+        },      
+      legend: {
+            display: false
+      },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display:false
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return (value / 1000) + 'K';
+                    }
+                }
+            }],
+        }
+    }
+});
+  </script>
+
+</body>
+</html>
