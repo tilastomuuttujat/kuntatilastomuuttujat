@@ -21,9 +21,13 @@
           .attr('r', function(d) { return d; })
           .style('fill', function(d) { return d3.rgb(2*d, 4*d, 3*d); })
     ;
+    var svgDocType = document.implementation.createDocumentType('svg',  "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
+    var svgDoc= document.implementation.createDocument ('http://www.w3.org/2000/svg', 'svg', svgDocType);
+    svgDoc.replaceChild(svg.node().parentNode.cloneNode(true), svgDoc.documentElement);
+    svgData = (new XMLSerializer()).serializeToString(svgDoc);
     d3.select('body').append('a')
       .attr('href-lang', 'image/svg+xml')
-      .attr('href', 'data:image/svg+xml; charset=utf8, ' + unescape(svg.node().parentNode.outerHTML))
+      .attr('href', 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgData))
       .text('Download')
     ;
   </script>
