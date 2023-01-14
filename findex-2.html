@@ -142,7 +142,20 @@ d3.csv("data_IC-6.csv").then(function(data) {
         .y(function(d) { return y(d.y) })
         .curve(d3.curveBasis)
         );
-})
+        
+            svg.append("text")
+        .attr("class", "imported")
+        .attr("x", width / 2)
+        .attr("y", height / 5 * 2)
+        .text("Imported CSS, this text should be pink.");
+});
+
+    svg.append("text")
+        .attr("class", "imported")
+        .attr("x", width / 2)
+        .attr("y", height / 5 * 2)
+        .text("cxxxxxImported CSS, this text should be pink.");
+        
   /*
   
     var width = 600,
