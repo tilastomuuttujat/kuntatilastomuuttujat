@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <script>
+    var data = [22, 33, 11, 55, 44];
+    var svg = d3.select('body').append('svg')
+      .attr('id', 'chart')
+      .attr('version', '1.1')
+      .attr('xmlns', 'http://www.w3.org/2000/svg')
+      .attr('width', 600)
+      .attr('height', 400)
+      .style('background-color', 'powderblue')
+      .selectAll('circle')
+        .data(data)
+        .enter().append('circle')
+          .attr('cx', function(d) { return 8*d; })
+          .attr('cy', function(d) { return 4*d; })
+          .attr('r', function(d) { return d; })
+          .style('fill', function(d) { return d3.rgb(2*d, 4*d, 3*d); })
+    ;
+    d3.select('body').append('a')
+      .attr('href-lang', 'image/svg+xml')
+      .attr('href', 'data:image/svg+xml; charset=utf8, ' + unescape(svg.node().parentNode.outerHTML))
+      .text('Download')
+    ;
+  </script>
+</body>
+</html>
