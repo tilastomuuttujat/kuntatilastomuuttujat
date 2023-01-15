@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<head>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <meta charset='utf-8'>
+  <title>SVG Crowbar</title>
+  <link rel="stylesheet" type="text/css" href="assets/linked.css">
+  <style>
+
+    /* Testing */
+    @import url("assets/imported.css");
+
+    svg {
+      border: solid 1px #ddd;
+    }
+
+    .internal {
+      fill: #f0f;
+    }
+
+    #svgs .dependency {
+      fill: #f0f;
+    }
+
+    svg text {
+      text-anchor: middle;
+      font-size: 16px;
+      font-family: Helvetica;
+    }
+
+    /* Page Styles */
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial;
+      width: 600px;
+      margin: 40px auto;
+      font-size: 15px;
+      line-height: 1.4em;
+      background-color: tomato;
+    }
+
+    h3 {
+      font-size: 18px;
+      border-top: solid 1px #ddd;
+      padding: 20px 0 0 0;
+      margin: 20px 0 0 0;
+    }
+
+    p {
+      color: #333;
+    }
+
+    .note {
+      color: #999;
+    }
+
+    .bookmarklet {
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 1em;
+      background: #666;
+      color: white;
+    }
+
+    .bookmarklet.ver2 {
+      background: #3FAA90;
+    }
+
+    #svgs {
+      margin: 20px 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h3>The Bookmarklet</h3>
+  <p>
+    <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Crowbar</a>&nbsp;
+    <span>← Drag this to your bookmarks bar.</span>
+  </p>
+
+  <h3>A Sample SVG</h3>
+  <div id="svgs"></div>
+
+  <script>
+  
+  
+  var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = 660 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#svgs").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//Read the data
+d3.csv("data_IC-6.csv").then(function(data) {
+
+    // Add X axis --> it is a date format
+    const x = d3.scaleLinear()
+      .domain([1968,1988])
+      .range([ 0, width ]);
+      
+    svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+  // .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).ticks().tickSizeOuter(0));
+
+    // Add Y axis
+    const y = d3.scaleLinear()
+      .domain([0, 50])
+      .range([ height, 0 ]);
+      
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // Show confidence interval
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "white")
+      .attr("fill-opacity", .2)
+      .attr("stroke", "none")
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.x) })
+        .y0(function(d) { return y(d.CI_right) })
+        .y1(function(d) { return y(d.CI_left) })
+        .curve(d3.curveBasis)
+        );
+
+    // Add the line
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", 4.5)
+      .attr("d", d3.line()
+        .x(function(d) { return x(d.x) })
+        .y(function(d) { return y(d.y) })
+        .curve(d3.curveBasis)
+        );
+        
+});
+
+</script>
+</body>
