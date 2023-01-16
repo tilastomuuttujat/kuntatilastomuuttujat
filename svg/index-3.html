@@ -1,9 +1,6 @@
 <!doctype html>
-
 <head>
-
 <style>
-
 .container {
   width: 1050px;
 }
@@ -111,20 +108,16 @@ svg {
 #name {
   border-radius: 0px 5px 5px 0px;
 }
-
 </style>
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 </head>
 
 <body>
 
   <div class="container">
-    <h1>The Rise and Decline of Ask MetaFilter</h1>
-    <div id="lead">
-      <p>Metafilter's revenue has been on the decline, but has its content dried up as well?</p>
-      <p>Here we look at new posts on Ask Metafilter by category.<br/>Categories like <strong>computers &amp; internet</strong> have been dropping in use for a long time, most likely due to competition like Stack Overflow.<br/>Other smaller categories have had consistent use patterns until more recently.</p>
-      <p>Disclaimer: 2014 is included, even though the year is not over yet.</p>
-    </div>
+
     <div id="main">
       <div id="button-wrap">
         <div id="count" class="button active">COUNT</div>
@@ -136,13 +129,10 @@ svg {
   </div> <!--! end of #container -->
 
 
-  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-  <script>window.jQuery || document.write('<script src="http://code.jquery.com/jquery-1.7.2.min.js"><\/script>')</script>
 
 
   <script src="coffee-script.js"></script>
-<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
+
   <script src="queue.min.js"></script>
   <script type="text/coffeescript" src="small_multiples.coffee"></script>
 
