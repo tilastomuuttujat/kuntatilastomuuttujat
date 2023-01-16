@@ -1,0 +1,153 @@
+<!doctype html>
+
+<head>
+
+<style>
+
+.container {
+  width: 1050px;
+}
+
+h1 {
+  font-size: 26px;
+  padding: 0px 0 5px 0;
+  line-height: 1.2em;
+  color: #000;
+  margin-bottom: 0px;
+}
+
+#lead {
+  clear: both;
+  width: 600px;
+}
+
+#lead p {
+  color: #444;
+  font-family: Georgia,Palatino,serif;
+  font-size: 1.0em;
+  line-height: 1.4em;
+}
+
+.chart {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+
+svg {
+  font-size: 10px;
+}
+
+.background {
+  fill: none;
+}
+
+.area {
+  fill: #cec6b9;
+}
+
+.line {
+  fill: none;
+  stroke: #74736c;
+  stroke-width: 1.4px;
+}
+
+.title {
+  font-size: 12px;
+}
+
+.axis line, .grid line {
+  stroke-width: .5px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.axis path {
+  display: none;
+}
+
+.hidden {
+  display:none;
+  opacity: 0.0;
+}
+
+#button-wrap {
+  width: 220px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+.button {
+  cursor: pointer;
+  float: left;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  background: #fcfcfc;
+  border: 1px solid #cecece;
+  display: block;
+  padding-top: 5px;
+  margin-top: 10px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.button.active {
+  box-shadow: inset 0px 0px 7px rgba(0,0,0,0.18);
+  pointer-events: none;
+  background-color: #e6e6e6;
+}
+
+#count {
+  border-radius: 5px 0px 0px 5px;
+}
+
+#name {
+  border-radius: 0px 5px 5px 0px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>The Rise and Decline of Ask MetaFilter</h1>
+    <div id="lead">
+      <p>Metafilter's revenue has been on the decline, but has its content dried up as well?</p>
+      <p>Here we look at new posts on Ask Metafilter by category.<br/>Categories like <strong>computers &amp; internet</strong> have been dropping in use for a long time, most likely due to competition like Stack Overflow.<br/>Other smaller categories have had consistent use patterns until more recently.</p>
+      <p>Disclaimer: 2014 is included, even though the year is not over yet.</p>
+    </div>
+    <div id="main">
+      <div id="button-wrap">
+        <div id="count" class="button active">COUNT</div>
+        <div id="name" class="button">NAME</div>
+      </div>
+      
+      <div id="vis"></div>
+    </div>
+  </div> <!--! end of #container -->
+
+
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
+  <script>window.jQuery || document.write('<script src="http://code.jquery.com/jquery-1.7.2.min.js"><\/script>')</script>
+
+
+  <script src="coffee-script.js"></script>
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="queue.min.js"></script>
+  <script type="text/coffeescript" src="small_multiples.coffee"></script>
+
+
+
+  
+</body>
+</html>
