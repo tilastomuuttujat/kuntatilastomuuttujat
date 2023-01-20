@@ -76,7 +76,7 @@ d3.csv("data_IC-9.csv").then(function(data) {
     svg.append("path")
       .datum(data)
       .attr("fill", "white")
-      .attr("fill-opacity", .2)
+      .attr("fill-opacity", .4)
       .attr("stroke", "none")
       .attr("d", d3.area()
         .x(function(d) { return x(d.x) })
