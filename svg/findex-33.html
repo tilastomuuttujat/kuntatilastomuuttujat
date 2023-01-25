@@ -102,7 +102,7 @@ var svg = d3.select("#svgs").append("svg")
 
 //Read the data
 d3.csv("data_IC-33.csv").then(function(data) {
-
+console.log(data);
     // Add X axis --> it is a date format
     const x = d3.scaleLinear()
       .domain([2000,2021])
