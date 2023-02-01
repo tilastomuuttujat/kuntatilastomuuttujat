@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Principal Component Analysis (PCA)</title>
+<link rel="stylesheet" type="text/css" href="./inspector.css">
+<body>
+<script type="module">
+
+//import define from "./index.js";
+import {Runtime, Library, Inspector} from "./runtime.js";
+
+const runtime = new Runtime();
+const main = runtime.module(define, Inspector.into(document.body));
+// https://observablehq.com/@chrispahm/principal-component-analysis@355
+
+
+async function _food(FileAttachment){return(
+(await FileAttachment("species.csv").csv({ typed: true })).map(
+  (row) => {
+    // add row names column
+    row.Name = row[""];
+    // and delete empty column
+    delete row[""];
+    return row;
+  }
+)
+)}
+
+function _food_scaled(scale,food){return(
+scale(food.map(({ Name, ...columnsToKeep }) => columnsToKeep))
+)}
+
+function _pca(PCA,asMatrix,food_scaled){return(
+new PCA(asMatrix(food_scaled), { center: true, scale: true })
+)}
+
+function _loadings(Inputs,pca,food_scaled){return(
+Inputs.table(
+  pca.getEigenvectors().data.map((eigenvectorForPCs, variableIndex) => {
+    const variable = Object.keys(food_scaled[0])[variableIndex];
+    const row = {
+      Variable: variable
+    };
+    eigenvectorForPCs.forEach((value, pcIndex) => {
+      row[`PC${pcIndex + 1}`] = value;
+    });
+    return row;
+  })
+)
+)}
+
+function _16(pca){return(
+pca.getStandardDeviations()
+)}
+
+function _18(pca){return(
+pca.getExplainedVariance()
+)}
+
+function _scores(Inputs,pca,asMatrix,food_scaled,food){return(
+Inputs.table(
+  pca
+    .predict(asMatrix(food_scaled))
+    .toJSON()
+    .map((row, rowIndex) => {
+      const columns = Object.keys(food_scaled[rowIndex]);
+      const rowObj = {
+        Name: food[rowIndex].Name
+      };
+      columns.forEach((column, colIndex) => {
+        rowObj[`PC${colIndex + 1}`] = row[colIndex];
+      });
+      return rowObj;
+    })
+)
+)}
+
+function _bp(biplot,pca,food){return(
+biplot(pca, food)
+)}
+
+function _biplot(asMatrix,scale,_,d3,Plot){return(
+function biplot(pca, df, options = {}) {
+  const {
+    scalingFactor = 1.2,
+    textColor = "darkred",
+    vectorColorScale = "diverging",
+    colorSecondAxis = true,
+    pcsToDisplay = ["PC1", "PC2"],
+    labels = pcsToDisplay,
+    nameColumn = "Name",
+    width = undefined,
+    height = undefined
+  } = options;
+
+  const scores = pca
+    .predict(asMatrix(scale(df.map((row) => _.omit(row, [nameColumn])))))
+    .toJSON()
+    .map((row, rowIndex) => {
+      const columns = Object.keys(df[rowIndex]);
+      const rowObj = {
+        Name: df[rowIndex][nameColumn]
+      };
+      columns.forEach((column, colIndex) => {
+        rowObj[`PC${colIndex + 1}`] = row[colIndex];
+      });
+      return rowObj;
+    });
+
+  const loadings = pca
+    .getEigenvectors()
+    .data.map((eigenvectorForPCs, variableIndex) => {
+      const variable = Object.keys(df[0])[variableIndex];
+      const row = {
+        Variable: variable
+      };
+      eigenvectorForPCs.forEach((value, pcIndex) => {
+        row[`PC${pcIndex + 1}`] = value;
+      });
+      return row;
+    });
+
+  // get min/max values for scores/loadings
+  const domains = ["scores", "loadings"].reduce((obj, source, i) => {
+    const data = i === 0 ? scores : loadings;
+    obj[source] = {};
+    pcsToDisplay.forEach((pc) => {
+      obj[source][pc] = [
+        d3.min(data.map((row) => row[pc])) * scalingFactor,
+        d3.max(data.map((row) => row[pc])) * scalingFactor
+      ];
+    });
+    return obj;
+  }, {});
+
+  const plot = Plot.plot({
+    width,
+    height,
+    marginRight: 40,
+    x: {
+      domain: domains.scores[pcsToDisplay[0]],
+      label: labels[0]
+    },
+    y: {
+      domain: domains.scores[pcsToDisplay[1]],
+      labels: labels[1]
+    },
+    marks: [
+      Plot.text(scores, {
+        x: pcsToDisplay[0],
+        y: pcsToDisplay[1],
+        text: "Name"
+      }),
+      (_, { x }, __, { ...dimensions }) =>
+        Plot.plot({
+          ...dimensions,
+          color: {
+            type: vectorColorScale,
+            reverse: true
+          },
+          marks: [
+            Plot.link(loadings, {
+              x1: 0,
+              y1: 0,
+              x2: pcsToDisplay[0],
+              y2: pcsToDisplay[1],
+              stroke: (d) =>
+                Math.max(
+                  Math.abs(d[pcsToDisplay[0]]),
+                  Math.abs(d[pcsToDisplay[1]])
+                ),
+              markerEnd: "arrow"
+            }),
+            Plot.text(loadings, {
+              x: pcsToDisplay[0],
+              y: pcsToDisplay[1],
+              text: "Variable",
+              fill: textColor,
+              stroke: "white",
+              dy: -12
+            })
+          ],
+          x: {
+            label: "",
+            domain: domains.loadings[pcsToDisplay[0]],
+            nice: true,
+            axis: "top"
+          },
+          y: {
+            axis: "right",
+            domain: domains.loadings[pcsToDisplay[1]],
+            label: "",
+            nice: true,
+            line: false
+          }
+        })
+    ]
+  });
+
+  if (colorSecondAxis) {
+    d3.select(plot)
+      .selectAll(
+        "svg > svg > [aria-label=x-axis] > g > text, svg > svg > [aria-label=y-axis] > g > text"
+      )
+      .each(function (d) {
+        d3.select(this).attr("fill", textColor);
+      });
+
+    d3.select(plot)
+      .selectAll(
+        "svg > svg > [aria-label=x-axis] > g > line, svg > svg > [aria-label=y-axis] > g > line"
+      )
+      .each(function (d) {
+        d3.select(this).attr("stroke", textColor);
+      });
+  }
+
+  return plot;
+}
+)}
+
+async function _PCA(require){return(
+(await require("https://bundle.run/ml-pca@4.0.2")).PCA
+)}
+
+
+function _asMatrix(){return(
+function asMatrix(value) {
+  const aoo = value;
+
+  const headers = Object.keys(aoo[0]);
+  const array = [];
+  array.headers = headers;
+
+  for (let rowNo = 0; rowNo < aoo.length; ++rowNo) {
+    const row = aoo[rowNo];
+    const rowData = [];
+    for (let columnNo = 0; columnNo < headers.length; ++columnNo) {
+      const column = headers[columnNo];
+      rowData.push(row[column]);
+    }
+    array.push(rowData);
+  }
+  
+  return array;
+}
+)}
+
+function _scale(asDataFrame,d3){return(
+function scale(value) {
+  const clone = JSON.parse(JSON.stringify(value));
+  const df = asDataFrame(clone);
+  df.columns.forEach((column) => {
+    const values = df[column];
+    const mean = d3.mean(values);
+    const sd = d3.deviation(values);
+    df[column] = values.map((v) => {
+      if (v !== null && v !== undefined) {
+        return (v - mean) / sd;
+      }
+      return v;
+    });
+  });
+  return df;
+}
+)}
+
+function _asDataFrame(){return(
+function asDataFrame(value) {
+
+  if (value === undefined || value === null)
+    throw new Error("No data passed to function.");
+  if (
+    !Array.isArray(value) ||
+    typeof value[0] !== "object" ||
+    value[0] === null
+  ) {
+    throw new Error("First argument must be an array of objects");
+  }
+
+  const aoo = value;
+
+  if (!value.columns) {
+    const set = new Set();
+    for (const row of aoo) {
+      for (const key of Object.keys(row)) set.add(key);
+    }
+    aoo.columns = [...set];
+  }
+
+  aoo.columns.forEach((column) => {
+    if (!Object.getOwnPropertyDescriptor(aoo, column)) {
+      Object.defineProperty(aoo, column, {
+        get: function () {
+          return this.map((row) => row[column]);
+        },
+        set: function (array) {
+          if (!array) {
+            throw new Error(`No data passed to set ${column} column.`);
+          }
+          if (array.length !== this.length) {
+            throw new Error(
+              `Data length (${array.length}) different from column ${column} length (${this.length}).`
+            );
+          }
+          this.forEach((row, index) => (row[column] = array[index]));
+        }
+      });
+    }
+  });
+  return aoo;
+}
+)}
+
+export default function define(runtime, observer) {
+  const main = runtime.module();
+  function toString() { return this.url; }
+  const fileAttachments = new Map([
+    ["species.csv", {url: new URL("./species.csv", import.meta.url), mimeType: "text/csv", toString}]
+  ]);
+  main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
+
+  main.variable(observer("food")).define("food", ["FileAttachment"], _food);
+
+  main.variable(observer("food_scaled")).define("food_scaled", ["scale","food"], _food_scaled);
+
+  main.variable(observer("pca")).define("pca", ["PCA","asMatrix","food_scaled"], _pca);
+
+  main.variable(observer("viewof loadings")).define("viewof loadings", ["Inputs","pca","food_scaled"], _loadings);
+
+  main.variable(observer()).define(["pca"], _16);
+
+  main.variable(observer()).define(["pca"], _18);
+
+  main.variable(observer("viewof scores")).define("viewof scores", ["Inputs","pca","asMatrix","food_scaled","food"], _scores);
+  main.variable(observer("scores")).define("scores", ["Generators", "viewof scores"], (G, _) => G.input(_));
+
+  main.variable(observer("bp")).define("bp", ["biplot","pca","food"], _bp);
+
+  main.variable(observer("biplot")).define("biplot", ["asMatrix","scale","_","d3","Plot"], _biplot);
+  main.variable(observer("PCA")).define("PCA", ["require"], _PCA);
+  
+  main.variable(observer("asMatrix")).define("asMatrix", _asMatrix);
+  main.variable(observer("scale")).define("scale", ["asDataFrame","d3"], _scale);
+  main.variable(observer("asDataFrame")).define("asDataFrame", _asDataFrame);
+  
+
+  return main;
+}
+
+</script>
