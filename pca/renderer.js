@@ -1,4 +1,4 @@
-const d3 = require('d3')
+//const d3 = require('d3')
 
 const render = ({index1, index2, width, height, margin, scoreColor, loadingColor, leadColor, loadingOpacity, textSize, circleR}) => {
   return (selection) => {
