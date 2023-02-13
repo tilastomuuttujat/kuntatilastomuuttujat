@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<head>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="Blob.js"></script>
+
+  <meta charset='utf-8'>
+  <title>SVG Crowbar</title>
+  <link rel="stylesheet" type="text/css" href="assets/linked.css">
+  <style>
+
+    /* Testing */
+    @import url("assets/imported.css");
+
+    svg {
+      border: solid 1px #ddd;
+    }
+
+    .internal {
+      fill: #f0f;
+    }
+
+    #svgs .dependency {
+      fill: #f0f;
+    }
+
+    svg text {
+      text-anchor: middle;
+      font-size: 16px;
+      font-family: Helvetica;
+    }
+
+    /* Page Styles */
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial;
+      width: 600px;
+      margin: 40px auto;
+      font-size: 15px;
+      line-height: 1.4em;
+      background-color: tomato;
+    }
+
+    h3 {
+      font-size: 18px;
+      border-top: solid 1px #ddd;
+      padding: 20px 0 0 0;
+      margin: 20px 0 0 0;
+    }
+
+    p {
+      color: #333;
+    }
+
+    .note {
+      color: #999;
+    }
+
+    .bookmarklet {
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 1em;
+      background: #666;
+      color: white;
+    }
+
+    .bookmarklet.ver2 {
+      background: #3FAA90;
+    }
+
+    #svgs {
+      margin: 20px 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h3>The Bookmarklet</h3>
+  <p>
+    <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Crowbar</a>&nbsp;
+    <span>← Drag this to your bookmarks bar.</span>
+  </p>
+
+  <h3>A Sample SVG</h3>
+  <div id="svgs"></div>
+
+<button id="generate">Save as SVG</button>
+  <script>
+  
+  
+  var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = 660 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#svgs").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//Read the data
+d3.csv("data_IC-55.csv").then(function(data) {
+    // Add X axis --> it is a date format
+    const x = d3.scaleLinear()
+      .domain([1991,2021])
+      .range([ 0, width ]);
+      
+    svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+//      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).ticks().tickSizeOuter(0));
+
+    // Add Y axis
+    const y = d3.scaleLinear()
+      .domain([-40,80])
+      .range([ height, 0 ]);
+      
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // Show confidence interval
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "white")
+      .attr("fill-opacity", .2)
+      .attr("stroke", "none")
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.x) })
+        .y0(function(d) { return y(d.CI_right) })
+        .y1(function(d) { return y(d.CI_left) })
+        .curve(d3.curveBasis)
+        );
+
+    // Add the line
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", 4.5)
+      .attr("d", d3.line()
+        .x(function(d) { return x(d.x) })
+        .y(function(d) { return y(d.y) })
+        .curve(d3.curveBasis)
+        );
+        
+});
+
+
+  /*
+  
+    var width = 600,
+        height = 300;
+    var svg = d3.select("#svgs").append("svg")
+       .attr("class", "first")
+       .attr("width", width)
+       .attr("height", height);
+    svg.selectAll("circle")
+      .data(d3.range(20))
+      .enter().append("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("r", function(d) { return d * 20; })
+        .style("fill", "#0ff")
+        .style("fill-opacity", 0.01)
+        .style("stroke", "#0ff");
+    svg.selectAll(".bead")
+      .data(d3.range(600))
+      .enter().append("circle")
+        .attr("class", "bead")
+        .attr("cx", function(d) { return (d % 20) * (width / 19); })
+        .attr("cy", function(d) { return Math.floor(d / 20) * (height / 29); })
+        .attr("r", function(d) { return Math.random() * 10; })
+        .style("fill", "#0ff")
+        .style("fill-opacity", 0.4);
+    svg.append("text")
+        .attr("class", "internal")
+        .attr("x", width / 2)
+        .attr("y", height / 5)
+        .text("Internal CSS, this text should be pink.");
+    svg.append("text")
+        .attr("class", "imported")
+        .attr("x", width / 2)
+        .attr("y", height / 5 * 2)
+        .text("Imported CSS, this text should be pink.");
+    svg.append("text")
+        .attr("class", "linked")
+        .attr("x", width / 2)
+        .attr("y", height / 5 * 3)
+        .text("Linked CSS, this text should be pink.");
+    svg.append("text")
+        .attr("class", "dependency")
+        .attr("x", width / 2)
+        .attr("y", height / 5 * 4)
+        .text("An HTML dependency, this text should be pink.");
+*/ 
+(function (global, factory) {
+  if (typeof define === "function" && define.amd) {
+    define([], factory);
+  } else if (typeof exports !== "undefined") {
+    factory();
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory();
+    global.FileSaver = mod.exports;
+  }
+})(this, function () {
+  "use strict";
+
+  /*
+  * FileSaver.js
+  * A saveAs() FileSaver implementation.
+  *
+  * By Eli Grey, http://eligrey.com
+  *
+  * License : https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md (MIT)
+  * source  : http://purl.eligrey.com/github/FileSaver.js
+  */
+  // The one and only way of getting global scope in all environments
+  // https://stackoverflow.com/q/3277182/1008999
+  var _global = typeof window === 'object' && window.window === window ? window : typeof self === 'object' && self.self === self ? self : typeof global === 'object' && global.global === global ? global : void 0;
+
+  function bom(blob, opts) {
+    if (typeof opts === 'undefined') opts = {
+      autoBom: false
+    };else if (typeof opts !== 'object') {
+      console.warn('Deprecated: Expected third argument to be a object');
+      opts = {
+        autoBom: !opts
+      };
+    } // prepend BOM for UTF-8 XML and text/* types (including HTML)
+    // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
+
+    if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+      return new Blob([String.fromCharCode(0xFEFF), blob], {
+        type: blob.type
+      });
+    }
+
+    return blob;
+  }
+
+  function download(url, name, opts) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function () {
+      saveAs(xhr.response, name, opts);
+    };
+
+    xhr.onerror = function () {
+      console.error('could not download file');
+    };
+
+    xhr.send();
+  }
+
+  function corsEnabled(url) {
+    var xhr = new XMLHttpRequest(); // use sync to avoid popup blocker
+
+    xhr.open('HEAD', url, false);
+
+    try {
+      xhr.send();
+    } catch (e) {}
+
+    return xhr.status >= 200 && xhr.status <= 299;
+  } // `a.click()` doesn't work for all browsers (#465)
+
+
+  function click(node) {
+    try {
+      node.dispatchEvent(new MouseEvent('click'));
+    } catch (e) {
+      var evt = document.createEvent('MouseEvents');
+      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
+      node.dispatchEvent(evt);
+    }
+  } // Detect WebView inside a native macOS app by ruling out all browsers
+  // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
+  // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
+
+
+  var isMacOSWebView = /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
+  var saveAs = _global.saveAs || ( // probably in some web worker
+  typeof window !== 'object' || window !== _global ? function saveAs() {}
+  /* noop */
+  // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
+  : 'download' in HTMLAnchorElement.prototype && !isMacOSWebView ? function saveAs(blob, name, opts) {
+    var URL = _global.URL || _global.webkitURL;
+    var a = document.createElement('a');
+    name = name || blob.name || 'download';
+    a.download = name;
+    a.rel = 'noopener'; // tabnabbing
+    // TODO: detect chrome extensions & packaged apps
+    // a.target = '_blank'
+
+    if (typeof blob === 'string') {
+      // Support regular links
+      a.href = blob;
+
+      if (a.origin !== location.origin) {
+        corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
+      } else {
+        click(a);
+      }
+    } else {
+      // Support blobs
+      a.href = URL.createObjectURL(blob);
+      setTimeout(function () {
+        URL.revokeObjectURL(a.href);
+      }, 4E4); // 40s
+
+      setTimeout(function () {
+        click(a);
+      }, 0);
+    }
+  } // Use msSaveOrOpenBlob as a second approach
+  : 'msSaveOrOpenBlob' in navigator ? function saveAs(blob, name, opts) {
+    name = name || blob.name || 'download';
+
+    if (typeof blob === 'string') {
+      if (corsEnabled(blob)) {
+        download(blob, name, opts);
+      } else {
+        var a = document.createElement('a');
+        a.href = blob;
+        a.target = '_blank';
+        setTimeout(function () {
+          click(a);
+        });
+      }
+    } else {
+      navigator.msSaveOrOpenBlob(bom(blob, opts), name);
+    }
+  } // Fallback to using FileReader and a popup
+  : function saveAs(blob, name, opts, popup) {
+    // Open a popup immediately do go around popup blocker
+    // Mostly only available on user interaction and the fileReader is async so...
+    popup = popup || open('', '_blank');
+
+    if (popup) {
+      popup.document.title = popup.document.body.innerText = 'downloading...';
+    }
+
+    if (typeof blob === 'string') return download(blob, name, opts);
+    var force = blob.type === 'application/octet-stream';
+
+    var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari;
+
+    var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+
+    if ((isChromeIOS || force && isSafari || isMacOSWebView) && typeof FileReader !== 'undefined') {
+      // Safari doesn't allow downloading of blob URLs
+      var reader = new FileReader();
+
+      reader.onloadend = function () {
+        var url = reader.result;
+        url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;');
+        if (popup) popup.location.href = url;else location = url;
+        popup = null; // reverse-tabnabbing #460
+      };
+
+      reader.readAsDataURL(blob);
+    } else {
+      var URL = _global.URL || _global.webkitURL;
+      var url = URL.createObjectURL(blob);
+      if (popup) popup.location = url;else location.href = url;
+      popup = null; // reverse-tabnabbing #460
+
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 4E4); // 40s
+    }
+  });
+  _global.saveAs = saveAs.saveAs = saveAs;
+
+  if (typeof module !== 'undefined') {
+    module.exports = saveAs;
+  }
+});
+
+d3.select("#generate")
+    .on("click", writeDownloadLink);
+
+function writeDownloadLink(){
+    try {
+        var isFileSaverSupported = !!new Blob();
+    } catch (e) {
+        alert("blob not supported");
+    }
+
+    var html = d3.select("svg")
+        .attr("title", "test2")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+
+    var blob = new Blob([html], {type: "image/svg+xml"});
+    saveAs(blob, "myProfile.svg");
+};
+
+
+  </script>
+</body>
