@@ -122,7 +122,7 @@ d3.csv("data_IC-8.csv").then(function(data) {
     // Show confidence interval
     svg.append("path")
       .datum(data)
-      .attr("fill", "white")
+      .attr("fill", "lightgray")
       .attr("fill-opacity", .2)
       .attr("stroke", "none")
       .attr("d", d3.area()
@@ -136,7 +136,7 @@ d3.csv("data_IC-8.csv").then(function(data) {
     svg.append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", "white")
+      .attr("stroke", "lightgray")
       .attr("stroke-width", 4.5)
       .attr("d", d3.line()
         .x(function(d) { return x(d.x) })
