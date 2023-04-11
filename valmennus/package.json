@@ -1,0 +1,14 @@
+{
+  "name": "3915c29fed00300c",
+  "main": "3915c29fed00300c@5356.js",
+  "version": "5356.0.0",
+  "homepage": "https://observablehq.com/d/3915c29fed00300c",
+  "author": {
+    "name": "Cittadhammo",
+    "url": "https://observablehq.com/@7722371e7ecac8bd"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
