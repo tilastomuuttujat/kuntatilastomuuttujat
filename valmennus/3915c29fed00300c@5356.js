@@ -4679,8 +4679,14 @@ function _updateChart(Inputs){return(
 Inputs.button("Refresh Translation")
 )}
 
+/*
 function _url(){return(
 "https://docs.google.com/spreadsheets/d/14jOoMTnVV0dQc4NZ8keP3pjiLVOrS4IIDPc_xISSxlA/edit?usp=sharing"
+)}
+*/
+
+function _url(){return(
+"https://docs.google.com/spreadsheets/d/1FU5X6W1Gzk3Fv7rdbaUJ11Q2RTQRb20PVGKZI9Uul9w/edit?usp=sharing"
 )}
 
 function _getCsvUrl(URLSearchParams){return(
