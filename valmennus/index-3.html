@@ -31,13 +31,11 @@ function _check(checkbox){return(
 checkbox({
   options: [
     { value: "4NT", label: "Donjon" },
-    { value: "ring1", label: "Higher Bailey" },
-    { value: "ring2", label: "Lower Bailey" }
+    { value: "ring1", label: "Higher Bailey" }
   ],
   value: [
     "4NT",
-    "ring1",
-    "ring2"
+    "ring1"
   ],
   title: "Display"
 })
@@ -69,7 +67,7 @@ htl.html`<style>
 `
 )}
 
-function _chart(d3,zoom,x,y,GFontToDataURI,check,drawRing,Ramparts,grass1,grass2,grass3,grass4,DonjonChemise,HigherBaileyTitle,HigherBailey,LowerBaileySubTitle,LowerBaileyTitle,LowerBailey,Donjon)
+function _chart(d3,zoom,x,y,GFontToDataURI,check,drawRing,Ramparts,grass1,grass2,grass3,grass4,DonjonChemise,HigherBaileyTitle,HigherBailey,Donjon)
 {
   const w = 400;
   const svgOrigin = d3
@@ -113,11 +111,7 @@ function _chart(d3,zoom,x,y,GFontToDataURI,check,drawRing,Ramparts,grass1,grass2
     drawRing(svg, HigherBaileyTitle);
     drawRing(svg, HigherBailey);
   }
-  if (check.includes("ring2")) {
-    drawRing(svg, LowerBaileySubTitle);
-    drawRing(svg, LowerBaileyTitle);
-    drawRing(svg, LowerBailey);
-  }
+
   if (check.includes("4NT")) drawRing(svg, Donjon);
 
   
@@ -165,16 +159,7 @@ function _p()
   p.higherBaileyInner = 100;
   p.higherBaileyTitle = p.higherBailey + p.higherBaileyInner + p.gap;
   p.higherBaileyTitleInner = 20;
-
-  // Lower Bailey
-  p.lowerBailey = p.higherBaileyTitle + p.higherBaileyTitleInner + p.gap;
-  p.lowerBaileyInner = 90;
-  p.lowerBaileySubTitle = p.lowerBailey + p.lowerBaileyInner + p.gap;
-  p.lowerBaileySubTitleInner = 20;
-  p.lowerBaileyTitle =
-    p.lowerBaileySubTitle + p.lowerBaileySubTitleInner + p.gap;
-  p.lowerBaileyTitleInner = 22;
-
+  
 
 /*
 
@@ -383,6 +368,9 @@ function _grass1(p,colorCessation,colorPath,colorOrigin,colorSuffering,option){r
 )}
 
 
+
+
+
 function _Ramparts(p,colorFourNobleTruths,colorPath){return(
 {
   r: p.ramparts,
@@ -428,577 +416,6 @@ function _Ramparts(p,colorFourNobleTruths,colorPath){return(
 )}
 
 
-function _LowerBaileySubTitle(p,colorSuffering,dataOfId,colorCessation,colorOrigin){return(
-{
-  r: p.lowerBaileySubTitle,
-  innerR: p.lowerBaileySubTitleInner,
-  padAngle: 0.35,
-  fade: p.fade,
-  opacity: 1,
-  color: colorSuffering,
-  data: dataOfId("T4EL")
-    .map((d) => {
-      return {
-        text: d.text,
-        fontSize: d.fontSize,
-        letterSpacing: d.letterSpacing,
-        startAngle: 270,
-        endAngle: 270 + 90 / 5
-      };
-    })
-    .concat(
-      dataOfId("T3FE").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          startAngle: 270 + 90 / 5,
-          endAngle: 270 + (2 * 90) / 5
-        };
-      })
-    )
-    .concat({
-      r: p.lowerBailey,
-      text: dataOfId("N&F1")[0].text,
-      fontSize: dataOfId("N&F1")[0].fontSize,
-      letterSpacing: dataOfId("N&F1")[0].letterSpacing,
-      startAngle: 270 + (90 / 5) * 2,
-      endAngle: 270 + (90 / 5) * 4,
-      div: 2,
-      n: 1
-    })
-    .concat({
-      r: p.lowerBailey,
-
-      text: dataOfId("N&F4")[0].text,
-      fontSize: dataOfId("N&F4")[0].fontSize,
-      letterSpacing: dataOfId("N&F4")[0].letterSpacing,
-      startAngle: 270 + (90 / 5) * 2,
-      endAngle: 270 + (90 / 5) * 4,
-      div: 2,
-      n: 2
-    })
-    .concat({
-      text: dataOfId("N&F3")[0].text,
-      fontSize: dataOfId("N&F3")[0].fontSize,
-      letterSpacing: dataOfId("N&F3")[0].letterSpacing,
-      startAngle: 270 + (90 / 5) * 2,
-      endAngle: 270 + (90 / 5) * 4,
-      div: 2,
-      n: 1
-    })
-    .concat({
-      text: dataOfId("N&F2")[0].text,
-      fontSize: dataOfId("N&F2")[0].fontSize,
-      letterSpacing: dataOfId("N&F2")[0].letterSpacing,
-      startAngle: 270 + (90 / 5) * 2,
-      endAngle: 270 + (90 / 5) * 4,
-      div: 2,
-      n: 2
-    })
-    // 10 Fetters Abondonned
-    .concat({
-      innerR: p.lowerBaileySubTitleInner / 4,
-      r: p.lowerBaileySubTitle + (p.lowerBaileySubTitleInner / 2.7) * 2,
-      text: dataOfId("4SOE")[0].text,
-      fontSize: dataOfId("4SOE")[0].fontSize - 5,
-      letterSpacing: dataOfId("4SOE")[0].letterSpacing,
-      color: colorCessation,
-      startAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 0,
-      endAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 7
-    })
-    .concat({
-      innerR: p.lowerBaileySubTitleInner / 3.6,
-      r: p.lowerBaileySubTitle + p.lowerBaileySubTitleInner / 2.8,
-      text: dataOfId("4SOE")[1].text,
-      fontSize: dataOfId("4SOE")[1].fontSize - 5,
-      letterSpacing: dataOfId("4SOE")[1].letterSpacing,
-      color: colorCessation,
-      strokeWidth: 0,
-      opacity: 0.8,
-      startAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 0,
-      endAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 7
-    })
-    .concat({
-      innerR: p.lowerBaileySubTitleInner / 4,
-      r: p.lowerBaileySubTitle + p.lowerBaileySubTitleInner / 2.7,
-      text: dataOfId("4SOE")[1].text,
-      fontSize: dataOfId("4SOE")[1].fontSize - 5,
-      letterSpacing: dataOfId("4SOE")[1].letterSpacing,
-      color: colorCessation,
-      startAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 0,
-      endAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 5
-    })
-
-    .concat({
-      innerR: p.lowerBaileySubTitleInner / 4,
-      r: p.lowerBaileySubTitle + (p.lowerBaileySubTitleInner / 3) * 0,
-      text: dataOfId("4SOE")[2].text,
-      fontSize: dataOfId("4SOE")[2].fontSize - 5,
-      letterSpacing: dataOfId("4SOE")[2].letterSpacing,
-      color: colorCessation,
-      startAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 0,
-      endAngle: 0 + ((90 - (90 / 8) * 2 - p.padDonjon) / 10) * 5
-    })
-    // Effluants
-    .concat(
-      dataOfId("T4IGN").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorOrigin,
-          startAngle: 180 + (90 / 4) * 0,
-          endAngle: 180 + 90 / 4
-        };
-      })
-    )
-    .concat(
-      dataOfId("T3BEC").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorOrigin,
-          startAngle: 180 + (90 / 4) * 1,
-          endAngle: 180 + (90 / 4) * 2
-        };
-      })
-    )
-    .concat(
-      dataOfId("T5STR").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorOrigin,
-          startAngle: 180 + (90 / 4) * 2,
-          endAngle: 180 + (90 / 4) * 3
-        };
-      })
-    )
-}
-)}
-
-function _LowerBaileyTitle(p,colorSuffering,dataOfId,colorCessation,colorOrigin,colorPath){return(
-{
-  r: p.lowerBaileyTitle,
-  innerR: p.lowerBaileyTitleInner,
-  padAngle: 0.35,
-  color: colorSuffering,
-  data: dataOfId("TN&F")
-    .map((d) => {
-      return {
-        text: d.text,
-        fontSize: d.fontSize,
-        letterSpacing: d.letterSpacing,
-        startAngle: 270,
-        endAngle: 270 + (90 / 5) * 4
-      };
-    })
-    .concat(
-      dataOfId("T6CO").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          startAngle: 270 + (90 / 5) * 4,
-          endAngle: 360
-        };
-      })
-    )
-    .concat(
-      dataOfId("T10FET").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorCessation,
-          startAngle: 0,
-          endAngle: 90 - (90 / 8) * 2 - p.padDonjon
-        };
-      })
-    )
-    .concat(
-      dataOfId("T6HK").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorCessation,
-          startAngle: 90 - (90 / 8) * 2,
-          endAngle: 90
-        };
-      })
-    )
-    .concat(
-      dataOfId("T3EFF").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorOrigin,
-          startAngle: 180,
-          endAngle: 180 + (90 / 4) * 3
-        };
-      })
-    )
-    .concat(
-      dataOfId("T4CLIN").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorOrigin,
-          startAngle: 180 + (90 / 4) * 3,
-          endAngle: 180 + (90 / 4) * 4
-        };
-      })
-    )
-    .concat(
-      dataOfId("T8FP").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90,
-          endAngle: 180
-        };
-      })
-    )
-}
-)}
-
-function _LowerBailey(p,dataOfId,colorSuffering,colorCessation,colorOrigin,colorPath){return(
-{
-  r: p.lowerBailey,
-  innerR: p.lowerBaileyInner,
-  radial: true,
-  fade: 10,
-  opacity: 0.3,
-  padAngle: 0.3,
-  endPadAngle: 0.1,
-  data: dataOfId("4EL")
-    .map((d, i) => {
-      return {
-        text: d.text,
-        fontSize: d.fontSize,
-        letterSpacing: d.letterSpacing,
-        color: colorSuffering,
-        startAngle: 270,
-        endAngle: 270 + 90 / 5,
-        div: 4,
-        n: i + 1
-      };
-    })
-    .concat(
-      dataOfId("3FE").map((d, i) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorSuffering,
-          startAngle: 270 + 90 / 5,
-          endAngle: 270 + (2 * 90) / 5,
-          div: 3,
-          n: i + 1
-        };
-      })
-    )
-    .concat(
-      dataOfId("CON").map((d, i) => {
-        return {
-          innerR: p.lowerBaileyInner - p.lowerBaileySubTitleInner - p.gap,
-          r: p.lowerBailey + p.lowerBaileySubTitleInner + p.gap,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorSuffering,
-          startAngle: 270 + (90 / 5) * 2,
-          endAngle: 270 + (90 / 5) * 3,
-          div: 3,
-          n: i + 1
-        };
-      })
-    )
-    .concat(
-      dataOfId("3FAB").map((d, i) => {
-        return {
-          innerR: p.lowerBaileyInner - p.lowerBaileySubTitleInner - p.gap,
-          r: p.lowerBailey + p.lowerBaileySubTitleInner + p.gap,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorSuffering,
-          startAngle: 270 + (90 / 5) * 3,
-          endAngle: 270 + (90 / 5) * 4,
-          div: 3,
-          n: i + 1
-        };
-      })
-    )
-    .concat(
-      dataOfId("6CO").map((d, i) => {
-        return {
-          innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorSuffering,
-          startAngle: 270 + (90 / 5) * 4,
-          endAngle: 270 + 90,
-          div: 6,
-          n: i + 1
-        };
-      })
-    )
-    .concat(
-      dataOfId("10FET")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR:
-              i > 6
-                ? p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap
-                : i > 4
-                ? p.lowerBaileyInner + p.lowerBaileySubTitleInner / 2.8
-                : undefined,
-            text: d.text,
-            flipLines: true,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorCessation,
-            startAngle: 0,
-            endAngle: 90 - (90 / 8) * 2 - p.padDonjon,
-            div: 10,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("6HK")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorCessation,
-            startAngle: 90 - (90 / 8) * 2,
-            endAngle: 90,
-            div: 6,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4IGN")
-        // .reverse()
-        .map((d, i) => {
-          return {
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorOrigin,
-            startAngle: 180 + 90 / 4,
-            endAngle: 180,
-            div: 4,
-            n: i + 1,
-            flipLines: true
-          };
-        })
-    )
-    .concat(
-      dataOfId("3BEC")
-        .reverse()
-        .map((d, i) => {
-          return {
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorOrigin,
-            startAngle: 180 + 90 / 4,
-            endAngle: 180 + (90 / 4) * 2,
-            div: 3,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("5STR")
-        .reverse()
-        .map((d, i) => {
-          return {
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorOrigin,
-            startAngle: 180 + (90 / 4) * 2,
-            endAngle: 180 + (90 / 4) * 3,
-            div: 5,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4CLIN")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorOrigin,
-            startAngle: 180 + (90 / 4) * 3,
-            endAngle: 180 + (90 / 4) * 4,
-            div: 4,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4RC")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90,
-            endAngle: 90 + (90 / 8) * 1,
-            div: 4,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4RM")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 1,
-            endAngle: 90 + (90 / 8) * 2,
-            div: 4,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4REF")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            flipLines: true,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 2,
-            endAngle: 90 + (90 / 8) * 3,
-            div: 4,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("5RL")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 3,
-            endAngle: 90 + (90 / 8) * 4,
-            div: 5,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("3RA")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 4,
-            endAngle: 90 + (90 / 8) * 5,
-            div: 3,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("4RS")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 5,
-            endAngle: 90 + (90 / 8) * 6,
-            div: 4,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("3RI")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 6,
-            endAngle: 90 + (90 / 8) * 7,
-            div: 3,
-            n: i + 1
-          };
-        })
-    )
-    .concat(
-      dataOfId("3RV")
-        .reverse()
-        .map((d, i) => {
-          return {
-            innerR: p.lowerBaileyInner + p.lowerBaileySubTitleInner + p.gap,
-            text: d.text,
-            fontSize: d.fontSize,
-            letterSpacing: d.letterSpacing,
-            color: colorPath,
-            startAngle: 90 + (90 / 8) * 7,
-            endAngle: 90 + (90 / 8) * 8,
-            div: 3,
-            n: i + 1
-          };
-        })
-    )
-}
-)}
-
 function _HigherBaileyTitle(p,dataOfId,colorSuffering,colorOrigin,colorCessation,colorPath){return(
 {
   r: p.higherBaileyTitle,
@@ -1013,7 +430,7 @@ function _HigherBaileyTitle(p,dataOfId,colorSuffering,colorOrigin,colorCessation
         fade: 10,
         opacity: 0.7,
         startAngle: 270,
-        endAngle: 270 + 90 / 1.5,
+        endAngle: 270 + 136 / 1.5,
         r: p.higherBailey,
         innerR: p.higherBaileyInner + p.higherBaileyTitleInner + p.gap
       };
@@ -1027,7 +444,7 @@ function _HigherBaileyTitle(p,dataOfId,colorSuffering,colorOrigin,colorCessation
           color: colorSuffering,
           //opacity: 0.9,
           startAngle: 270,
-          endAngle: 270 + 90 / 1.5
+          endAngle: 270 + 136 / 1.5
         };
       })
     )
@@ -1067,136 +484,7 @@ function _HigherBaileyTitle(p,dataOfId,colorSuffering,colorOrigin,colorCessation
         };
       })
     )
-    .concat(
-      dataOfId("T4SOE").map((d) => {
-        return {
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorCessation,
-          startAngle: 0,
-          endAngle: 90 - (90 / 8) * 2 - p.padDonjon
-        };
-      })
-    )
-    // .concat(
-    //   dataOfId("T8FP").map((d) => {
-    //     return {
-    //       text: d.text,
-    //       fontSize: d.fontSize,
-    //       letterSpacing: d.letterSpacing,
-    //       color: colorPath,
-    //       startAngle: 90,
-    //       endAngle: 180
-    //     };
-    //   })
-    // )
-    // Sila Samadhi Panna
-    .concat( 
-      dataOfId("3DIV3").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 0,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 3
-        };
-      })
-    )
-    .concat(
-      dataOfId("3DIV2").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 3,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 6
-        };
-      })
-    )
-    .concat(
-      dataOfId("3DIV1").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 6,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 8
-        };
-      })
-    )
-    .concat( 
-      dataOfId("3DIV5").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 8,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 10
-        };
-      })
-    )
-    .concat( 
-      dataOfId("3DIV6").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 10,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 12
-        };
-      })
-    )
-    .concat( 
-      dataOfId("3DIV7").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorPath,
-          startAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 12,
-          endAngle: 90 + 0.8 + ((90 - 1.6) / 8) * 14
-        };
-      })
-    ) 
-    .concat(
-      dataOfId("3DIV4").map((d) => {
-        return {
-          fade: p.fade,
-          r: p.higherBaileyTitle,
-          innerR: p.higherBaileyTitleInner,
-          text: d.text,
-          fontSize: d.fontSize,
-          letterSpacing: d.letterSpacing,
-          color: colorCessation,
-          startAngle: 90 - (90 / 8) * 2,
-          endAngle: 90
-        };
-      })
-    )
+
 }
 )}
 
@@ -1217,8 +505,8 @@ function _HigherBailey(p,dataOfId,colorSuffering,colorOrigin,colorCessation,colo
         letterSpacing: d.letterSpacing,
         color: colorSuffering,
         startAngle: 270,
-        endAngle: 270 + 90 / 1.5,
-        div: 6,
+        endAngle: 270 + 507 / 1.5,
+        div: 30,
         n: i + 1
       };
     })
@@ -2169,12 +1457,7 @@ slider({
 
 function _zoomAt(Inputs){return(
 Inputs.button(
-  [
-    ["Outer Wall", (value) => 0.44],
-    ["Battlements", (value) => 0.32],
-    ["Flanking Tower", (value) => 0.24],
-    ["Overview", (value) => 0.21]
-  ],
+  
   { value: 0.21 }
 )
 )}
@@ -2206,7 +1489,7 @@ Inputs.button("Refresh Translation")
 )}
 
 function _url(){return(
-"https://docs.google.com/spreadsheets/d/1FU5X6W1Gzk3Fv7rdbaUJ11Q2RTQRb20PVGKZI9Uul9w/edit?usp=sharing"
+"https://docs.google.com/spreadsheets/d/1BUD68ynpl1HsBI3WRWM3aFb4A5VygZfVimy4ob-ra7w/edit?usp=sharing"
 )}
 
 function _getCsvUrl(URLSearchParams){return(
@@ -2403,7 +1686,7 @@ export default function define(runtime, observer) {
   main.variable(observer("viewof check")).define("viewof check", ["checkbox"], _check);
   main.variable(observer("check")).define("check", ["Generators", "viewof check"], (G, _) => G.input(_));
   main.variable(observer()).define(["viewof PNGprecision","DOM","rasterizeWhite","chart","serialize","viewof zoom","viewof zoomAt","viewof selectedLanguage","viewof updateChart","htl"], _6);
-  main.variable(observer("chart")).define("chart", ["d3","zoom","x","y","GFontToDataURI","check","drawRing","Ramparts","grass1","grass2","grass3","grass4","DonjonChemise","HigherBaileyTitle","HigherBailey","LowerBaileySubTitle","LowerBaileyTitle","LowerBailey","Donjon"], _chart);
+  main.variable(observer("chart")).define("chart", ["d3","zoom","x","y","GFontToDataURI","check","drawRing","Ramparts","grass1","grass2","grass3","grass4","DonjonChemise","HigherBaileyTitle","HigherBailey","Donjon"], _chart);
   main.variable(observer("viewof x")).define("viewof x", ["Inputs"], _x);
   main.variable(observer("x")).define("x", ["Generators", "viewof x"], (G, _) => G.input(_));
   main.variable(observer("viewof y")).define("viewof y", ["Inputs"], _y);
@@ -2417,10 +1700,6 @@ export default function define(runtime, observer) {
   main.variable(observer("Ramparts")).define("Ramparts", ["p","colorFourNobleTruths","colorPath"], _Ramparts);
 
 
-
-  main.variable(observer("LowerBaileySubTitle")).define("LowerBaileySubTitle", ["p","colorSuffering","dataOfId","colorCessation","colorOrigin"], _LowerBaileySubTitle);
-  main.variable(observer("LowerBaileyTitle")).define("LowerBaileyTitle", ["p","colorSuffering","dataOfId","colorCessation","colorOrigin","colorPath"], _LowerBaileyTitle);
-  main.variable(observer("LowerBailey")).define("LowerBailey", ["p","dataOfId","colorSuffering","colorCessation","colorOrigin","colorPath"], _LowerBailey);
   main.variable(observer("HigherBaileyTitle")).define("HigherBaileyTitle", ["p","dataOfId","colorSuffering","colorOrigin","colorCessation","colorPath"], _HigherBaileyTitle);
   main.variable(observer("HigherBailey")).define("HigherBailey", ["p","dataOfId","colorSuffering","colorOrigin","colorCessation","colorPath"], _HigherBailey);
   main.variable(observer("DonjonChemise")).define("DonjonChemise", ["p","dataOfId","colorFourNobleTruths"], _DonjonChemise);
@@ -2471,9 +1750,7 @@ export default function define(runtime, observer) {
   const child2 = runtime.module(define2);
   main.import("serialize", child2);
   main.variable(observer("rasterizeWhite")).define("rasterizeWhite", ["DOM","PNGprecision","serialize"], _rasterizeWhite);
-  //main.variable(observer()).define(["FileAttachment"], _85);
-  //main.variable(observer("screenshot20221130At154010")).define("screenshot20221130At154010", ["FileAttachment"], _screenshot20221130At154010);
-  //main.variable(observer("medievalCastleTerminology")).define("medievalCastleTerminology", ["FileAttachment"], _medievalCastleTerminology);
+
   return main;
 }
 
