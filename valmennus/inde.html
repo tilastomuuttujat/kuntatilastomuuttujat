@@ -5,7 +5,6 @@
   <title>CodePen - codepen-like-resizable-divs</title>
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="css/promap.css" rel="stylesheet">
 <style>
 html,
 body {
@@ -112,6 +111,39 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+polygon {
+  fill: transparent;
+  stroke: transparent;
+  -webkit-transition: all .1s ease-in-out;
+  -o-transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+}
+
+polygon:hover{
+  fill: white;
+  fill-opacity: 0.1;
+  stroke: white;
+  stroke-opacity: 0.5;
+}
+
+svg:hover{
+  filter: drop-shadow( 0px 2px 3px #000 );
+  -webkit-transition: all .1s ease-in-out;
+  -o-transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+}
+
+.poly-action{
+  cursor: pointer;
+}
+
+.imgmapTooltip{
+  background-color: white;
+  padding: 5px;
+  border: 1px white;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>
 </head>
@@ -314,13 +346,160 @@ body {
   
   </script>
   
+  <script>
+  $.fn.promap = function(){
+    //populate master data store after DOMs are loaded
+    $(document).ready(function(){
+        //master data store
+        mapdata = new Array();
+        
+        //get all images on page that use the 'usemap' attribute
+        $('img[usemap]').each(function(index, value){
+
+            /* PRESTORAGE ===========================
+             * get width, height and id, store them in data 
+             * (width and height are stored after they got cut off their improper px)
+             * store the mapname, an array for the areas as well as a generated svgid
+             * for future use  */
+            var preWidth = $(this).attr('width')
+              , preHeight = $(this).attr('height')
+              , preId = $(this).attr('id')
+              , data = {
+                imgid: preId,
+                mapid: $(this).attr('usemap').substring(1),
+                width: (preWidth.indexOf('px') === -1 ? preWidth : preWidth.substring(0, preWidth.indexOf('px'))),
+                height: (preHeight.indexOf('px') === -1 ? preHeight : preHeight.substring(0, preHeight.indexOf('px'))),
+                areas: new Array(),
+                svgid: 'svg_' + preId
+            };
+
+            /* MAP WALKTHRU ===========================
+             * go through each map, decide wether the map is the required map based on the image
+             * if so, get the attributes coords (v1: only polys are supported), content (text for a dynamic tooltip) and href 
+             * (a link for the onclick event) */
+            $('map').each(function(index, value){
+                if($(this).attr('name') === data.mapid){
+                    $(this).children('area').each(function(index, value){
+                        data.areas.push(
+                            $(this).attr('coords') +
+                            ($(this).attr('content') == undefined ? '' : '<|>' + $(this).attr('content')) +
+                            ($(this).attr('href') == undefined ? '' : '<|>' + $(this).attr('href'))
+                        );
+                    });
+                    $(this).replaceWith('<svg id="' + data.svgid + '" style="position:absolute;"></svg>');
+                }
+            });
+            mapdata.push(data);
+        });
+
+        //append the Tooltip-div to the body
+        $(document.body).append('<div id="imgmapTooltip" class="imgmapTooltip"></div>');
+
+        function applyEvents(id, content){
+            $(id).mouseenter(function(){
+                $('#imgmapTooltip').show().html(content);
+            }).mouseleave(function(){
+                $('#imgmapTooltip').hide();
+            }).mousemove(function(event){
+                $('#imgmapTooltip').css({
+                    left: event.pageX + 25,
+                    top: event.pageY,
+                    position: 'absolute'
+                });
+            });
+        }
+
+        //Eventhandler onWindowResize
+        $(window).resize(function(e){
+            mapdata.forEach(function(entry){
+
+                /* DATA GATHERING ===========================
+                 * Get data about 'real' width and height and store img and svg DOM.
+                 * Finally equalize svg and img visually, reset svg content and get
+                 * new Adobe SVG Snap Object on svg DOM*/
+                var img = $('#' + entry.imgid)
+                  , svg = $('#' + entry.svgid)
+                  , width = img.width()
+                  , height = img.height();
+                svg.offset(img.offset());
+                svg.height(height);
+                svg.width(width);
+                svg.css({ 'padding': img.css('padding') });
+                svg.css({ 'margin': img.css('margin') });
+                svg.html('');
+                var cvs = Snap('#' + entry.svgid);
+
+                /* DRAWING AREA =========================== 
+                 * Draw each Area 'by hand' after the coords were scaled accordingly.
+                 * Hook up the different events mathing to content and href*/
+                entry.areas.forEach(function (data, index) {
+                    var sptdt = data.split('<|>');
+                    var coords = sptdt[0].replace(' ', '').split(',');
+                    for (var i = 0; i < coords.length; i = i + 2) {
+                        coords[i] = parseInt(coords[i] * width / entry.width);
+                        coords[i + 1] = parseInt(coords[i + 1] * height / entry.height);
+                    }
+                    var polyid = entry.svgid + '_poly' + index;
+                    switch(sptdt.length){
+                        case 1:
+                            //1 nothing had been applied
+                            cvs.polygon().attr({
+                                id: polyid,
+                                class: 'poly-noaction',
+                                points: coords
+                            });
+                            break;
+                        case 2:
+                            //2 further cases: only href OR content was applied
+                            if(sptdt[1].substring(0,4) === 'http'){
+                                cvs.polygon().attr({
+                                    id: polyid,
+                                    class: 'poly-action poly-link',
+                                    points: coords
+                                }).click(function(){
+                                    window.location.href = sptdt[1];
+                                });
+                            }
+                            else{
+                                cvs.polygon().attr({
+                                    id: polyid,
+                                    class: 'poly-noaction poly-content',
+                                    points: coords
+                                });
+                                applyEvents('#' + polyid, sptdt[1]);
+                            }
+                            break;
+                        case 3:
+                            //3 everything had been applied
+                            cvs.polygon().attr({
+                                id: polyid,
+                                class: 'poly-action poly-content poly-link',
+                                points: coords
+                            }).click(function(){
+                                window.location.href = sptdt[2];
+                            });
+                            applyEvents('#' + polyid, sptdt[1]);
+                            break;
+                    }
+                });
+            });
+        }).trigger('resize');
+        setTimeout(function() {
+            $(window).trigger('resize');
+        }, 1000);
+    });   
+}
+  </script>
+  
   <script src="http://code.jquery.com/jquery-3.1.0.slim.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
-    <script src="js/jq-promap.js"></script>
-    
-    <script type="text/javascript" src="imageMapResizer.min.js"></script>
 
+    
+
+	<script>
+	!function(){"use strict";function a(){function a(){function a(a){function c(a){return a*b[1===(d=1-d)?"width":"height"]}var d=0;return a.split(",").map(Number).map(c).map(Math.floor).join(",")}for(var b={width:i.width/j.width,height:i.height/j.height},c=0;g>c;c++)f[c].coords=a(h[c])}function b(){j.onload=function(){(i.width!==j.width||i.height!==j.height)&&a()},j.src=i.src}function c(){function b(){clearTimeout(k),k=setTimeout(a,250)}window.addEventListener?window.addEventListener("resize",b,!1):window.attachEvent&&window.attachEvent("onresize",b)}function d(a){return a.coords.replace(/ *, */g,",").replace(/ +/g,",")}var e=this,f=e.getElementsByTagName("area"),g=f.length,h=Array.prototype.map.call(f,d),i=document.querySelector('img[usemap="#'+e.name+'"]'),j=new Image,k=null;b(),c()}function b(){function b(b){if(!b.tagName)throw new TypeError("Object is not a valid DOM element");if("MAP"!==b.tagName.toUpperCase())throw new TypeError("Expected <MAP> tag, found <"+b.tagName+">.");a.call(b)}return function(a){switch(typeof a){case"undefined":case"string":Array.prototype.forEach.call(document.querySelectorAll(a||"map"),b);break;case"object":b(a);break;default:throw new TypeError("Unexpected data type ("+typeof a+").")}}}"function"==typeof define&&define.amd?define([],b):"object"==typeof exports?module.exports=b():window.imageMapResize=b(),"jQuery"in window&&(jQuery.fn.imageMapResize=function(){return this.filter("map").each(a).end()})}();
+	</script>
 	
     <script>
         $(document.body).promap();
