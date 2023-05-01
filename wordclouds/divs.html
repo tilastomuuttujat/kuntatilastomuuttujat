@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - codepen-like-resizable-divs</title>
+
+<style>
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.resizable-x,
+.resizable-y {
+  display: flex;
+  overflow: hidden;
+}
+
+.resizable-x {
+  height: 100%;
+}
+
+.resizable-y {
+  flex-direction: column;
+}
+
+.resizer-x,
+.resizer-y {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  padding: 4px;
+}
+
+.resizer-x {
+  z-index: 2;
+  cursor: col-resize;
+}
+.resizer-x::before,
+.resizer-x::after {
+  content: "";
+  width: 2px;
+  height: 16px;
+  margin: 2px;
+  background: lightgray;
+}
+
+.resizer-y {
+  z-index: 1;
+  cursor: row-resize;
+  flex-direction: column;
+}
+.resizer-y::before,
+.resizer-y::after {
+  content: "";
+  width: 16px;
+  height: 2px;
+  margin: 2px;
+  background: lightgray;
+}
+
+.div0,
+.div1,
+.div2 {
+  overflow: hidden;
+}
+
+.div0 {
+  background: dodgerblue;
+}
+
+.div1 {
+  background: pink;
+}
+
+.div2 {
+  background: gold;
+}
+
+.div0 p,
+.div1 p,
+.div2 p {
+  font-size: 2rem;
+  margin-left: 1em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app">
+  <div class="resizable-x">
+    <div class="div0" style="flex: 50%;">
+ 	<img src="elonkeha_0.png" style="width:100%;" usemap="#image-map">
+<map name="image-map">
+    <area target="frame2" alt="Olosuhteet - Ikä - Elinkaari" title="Olosuhteet - Ikä - Elinkaari" href="http://vintti.yle.fi/yle.fi/opettajatv/opettajatv.yle.fi/teemat/aine/15/84/341.htm" coords="1247,337,1369,344,1470,362,1578,395,1676,443,1490,772,1437,750,1371,732,1305,717,1243,713" shape="poly">
+    <area target="frame2" alt="Olosuhteet - Terveys - Hyvinvointi" title="Olosuhteet - Terveys - Hyvinvointi" href="https://www.terveyskirjasto.fi/dlk00903" coords="1695,459,1773,505,1828,549,1883,600,1940,660,1982,717,2018,770,1687,960,1649,905,1598,854,1554,819,1506,783" shape="poly">
+    <area target="frame2" alt="Olosuhteet - Toimintakyky - Esteettömyys" title="Olosuhteet - Toimintakyky - Esteettömyys" href="https://www.duodecimlehti.fi/duo14958" coords="2029,788,2080,887,2106,951,2126,1026,2146,1110,2155,1240,1770,1247,1768,1167,1751,1094,1724,1028,1698,980" shape="poly">
+    <area target="_parent" alt="Voimavarat - Taidot - Koulutus" title="Voimavarat - Taidot - Koulutus" href="4.html" coords="1773,1267,2157,1265,2157,1331,2141,1415,2117,1521,2086,1609,2044,1693,1709,1499,1735,1433,1753,1375,1766,1318" shape="poly">
+    <area target="_parent" alt="Voimavarat -Tiedot - Verkostot" title="Voimavarat -Tiedot - Verkostot" href="5.html" coords="2031,1715,1996,1774,1954,1836,1903,1889,1857,1937,1788,1990,1713,2039,1517,1697,1565,1666,1627,1609,1667,1558,1700,1514" shape="poly">
+    <area target="_parent" alt="Voimavarat - Kyvyt - Asema" title="Voimavarat - Kyvyt - Asema" href="6.html" coords="1695,2052,1636,2083,1572,2110,1497,2138,1424,2156,1342,2165,1252,2167,1250,1772,1320,1765,1382,1754,1444,1732,1501,1706" shape="poly">
+    <area target="_parent" alt="Ympäristö - Työ - Taloudellinen" title="Ympäristö - Työ - Taloudellinen" href="7.html" coords="1236,2174,1144,2163,1042,2147,938,2118,859,2085,797,2052,991,1708,1055,1741,1119,1761,1179,1774,1230,1779" shape="poly">
+    <area target="_parent" alt="Ympäristö - Koti - Sosiaalinen" title="Ympäristö - Koti - Sosiaalinen" href="8.html" coords="779,2043,706,2002,631,1944,563,1873,506,1805,459,1728,797,1536,839,1589,883,1637,927,1675,974,1706" shape="poly">
+    <area target="_parent" alt="Ympäristö - Vapaa-aika - Yhteisöllinen" title="Ympäristö - Vapaa-aika - Yhteisöllinen" href="9.html" coords="453,1715,406,1628,364,1525,338,1412,325,1328,322,1266,706,1264,720,1335,735,1403,762,1463,790,1518" shape="poly">
+    <area target="_parent" alt="Lähtökohdat - Suku - Kulttuuri" title="Lähtökohdat - Suku - Kulttuuri" href="10.html" coords="320,1244,325,1156,338,1074,355,1002,382,922,411,851,435,803,770,997,746,1055,722,1125,711,1194,713,1249" shape="poly">
+    <area target="_parent" alt="Lähtökohdat - Perhe - Ideologia" title="Lähtökohdat - Perhe - Ideologia" href="11.html" coords="450,793,512,692,578,617,627,566,693,513,762,469,956,800,903,835,850,886,810,937,779,981" shape="poly">
+    <area target="_parent" alt="Lähtökohdat - Sukupuoli - Etnisyys" title="Lähtökohdat - Sukupuoli - Etnisyys" href="12.html" coords="781,457,859,415,929,389,1013,360,1104,344,1221,336,1225,709,1152,722,1075,735,1015,759,971,786" shape="poly">
+    <area target="frame1" alt="Olosuhteet" title="Olosuhteet" href="https://docs.google.com/spreadsheets/d/1ci6HreK4aZxNvvApifO3WReOeEbvibmH1_B9EUGvMoM/edit#gid=1688979540" coords="1247,730,1314,735,1378,748,1433,768,1481,794,1539,827,1594,874,1636,920,1680,982,1713,1035,1735,1103,1746,1161,1757,1242,1247,1242" shape="poly">
+    <area target="_parent" alt="Voimavarat" title="Voimavarat" href="b.html" coords="1764,1269,1753,1331,1737,1380,1718,1430,1695,1490,1665,1530,1634,1567,1603,1607,1565,1636,1534,1664,1492,1693,1437,1717,1380,1739,1311,1750,1252,1755,1252,1267" shape="poly">
+    <area target="_parent" alt="Ympäristö" title="Ympäristö" href="c.html" coords="1234,1756,1146,1742,1057,1725,987,1689,932,1650,876,1601,832,1550,799,1495,766,1436,744,1365,735,1312,729,1263,1227,1263" shape="poly">
+    <area target="_parent" alt="Lähtökohdat" title="Lähtökohdat" href="d.html" coords="729,1243,735,1172,753,1095,777,1024,815,963,852,907,910,854,956,821,1022,786,1073,762,1137,744,1227,735,1230,1250" shape="poly">
+</map>
+    </div>
+    <div class="resizer-x"></div>
+    <div class="resizable-y" style="flex: 50%;">
+      <div class="div1" style="flex: 33.33%;">
+        <p>div 1</p>
+      </div>
+      <div class="resizer-y"></div>
+      <div class="div2" style="flex: 66.66%;">
+        <p>div 2</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script>
+  (function () {
+  "use strict";
+
+  // horizontal direction
+  (function resizableX() {
+    const resizer = document.querySelector(".resizer-x");
+    resizer.addEventListener("mousedown", onmousedown);
+    resizer.addEventListener("touchstart", ontouchstart);
+
+    // for mobile
+    function ontouchstart(e) {
+      e.preventDefault();
+      resizer.addEventListener("touchmove", ontouchmove);
+      resizer.addEventListener("touchend", ontouchend);
+    }
+    function ontouchmove(e) {
+      e.preventDefault();
+      const clientX = e.touches[0].clientX;
+      const deltaX = clientX - (resizer._clientX || clientX);
+      resizer._clientX = clientX;
+      const l = resizer.previousElementSibling;
+      const r = resizer.nextElementSibling;
+      // LEFT
+      if (deltaX < 0) {
+        const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
+        l.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        r.style.flex = "1 0";
+      }
+      // RIGHT
+      if (deltaX > 0) {
+        const w = Math.round(parseInt(getComputedStyle(r).width) - deltaX);
+        r.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        l.style.flex = "1 0";
+      }
+    }
+    function ontouchend(e) {
+      e.preventDefault();
+      resizer.removeEventListener("touchmove", ontouchmove);
+      resizer.removeEventListener("touchend", ontouchend);
+      delete e._clientX;
+    }
+
+    // for desktop
+    function onmousedown(e) {
+      e.preventDefault();
+      document.addEventListener("mousemove", onmousemove);
+      document.addEventListener("mouseup", onmouseup);
+    }
+    function onmousemove(e) {
+      e.preventDefault();
+      const clientX = e.clientX;
+      const deltaX = clientX - (resizer._clientX || clientX);
+      resizer._clientX = clientX;
+      const l = resizer.previousElementSibling;
+      const r = resizer.nextElementSibling;
+      // LEFT
+      if (deltaX < 0) {
+        const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
+        l.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        r.style.flex = "1 0";
+      }
+      // RIGHT
+      if (deltaX > 0) {
+        const w = Math.round(parseInt(getComputedStyle(r).width) - deltaX);
+        r.style.flex = `0 ${w < 10 ? 0 : w}px`;
+        l.style.flex = "1 0";
+      }
+    }
+    function onmouseup(e) {
+      e.preventDefault();
+      document.removeEventListener("mousemove", onmousemove);
+      document.removeEventListener("mouseup", onmouseup);
+      delete e._clientX;
+    }
+  })();
+
+  // vertical direction
+  (function resizableY() {
+    const resizer = document.querySelector(".resizer-y");
+    resizer.addEventListener("mousedown", onmousedown);
+    resizer.addEventListener("touchstart", ontouchstart);
+
+    // for mobile
+    function ontouchstart(e) {
+      e.preventDefault();
+      resizer.addEventListener("touchmove", ontouchmove);
+      resizer.addEventListener("touchend", ontouchend);
+    }
+    function ontouchmove(e) {
+      e.preventDefault();
+      const clientY = e.touches[0].clientY;
+      const deltaY = clientY - (resizer._clientY || clientY);
+      resizer._clientY = clientY;
+      const t = resizer.previousElementSibling;
+      const b = resizer.nextElementSibling;
+      // UP
+      if (deltaY < 0) {
+        const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY);
+        t.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        b.style.flex = "1 0";
+      }
+      // DOWN
+      if (deltaY > 0) {
+        const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY);
+        b.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        t.style.flex = "1 0";
+      }
+    }
+    function ontouchend(e) {
+      e.preventDefault();
+      resizer.removeEventListener("touchmove", ontouchmove);
+      resizer.removeEventListener("touchend", ontouchend);
+      delete e._clientY;
+    }
+
+    // for desktop
+    function onmousedown(e) {
+      e.preventDefault();
+      document.addEventListener("mousemove", onmousemove);
+      document.addEventListener("mouseup", onmouseup);
+    }
+    function onmousemove(e) {
+      e.preventDefault();
+      const clientY = e.clientY;
+      const deltaY = clientY - (resizer._clientY || clientY);
+      resizer._clientY = clientY;
+      const t = resizer.previousElementSibling;
+      const b = resizer.nextElementSibling;
+      // UP
+      if (deltaY < 0) {
+        const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY);
+        t.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        b.style.flex = "1 0";
+      }
+      // DOWN
+      if (deltaY > 0) {
+        const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY);
+        b.style.flex = `0 ${h < 10 ? 0 : h}px`;
+        t.style.flex = "1 0";
+      }
+    }
+    function onmouseup(e) {
+      e.preventDefault();
+      document.removeEventListener("mousemove", onmousemove);
+      document.removeEventListener("mouseup", onmouseup);
+      delete e._clientY;
+    }
+  })();
+})();
+  
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<script src="xhttps://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+<script src="xhttps://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="xhttps://www.gstatic.com/charts/loader.js"></script>
+<style>
+</style>
+</head>
+<body>
+
+<script>
+var tpsum = [];
+var period_a = 2016;
+
+var diagram = {
+	render: function() {
+	    diagram.get_data0a();
+	    //diagram.get_data0b();
+	    //diagram.get_data1();
+		//diagram.get_data2();
+	}, 
+	
+	get_data0a: function() {
+
+var id = '1_Q1OdE6zVCV4t2_anGZFYlMw1JLCu8LTnGPtZbog1dc';
+var gid = '0';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2)));
+
+function myItems(jsonString){
+var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+  var counter = 0;
+  json.table.rows.forEach(ligne => {
+  r0 = json.table.rows[counter].c[0].v;
+  r1 = json.table.rows[counter].c[1].v;
+  r2 = json.table.rows[counter].c[2].v;
+  r3 = json.table.rows[counter].c[3].v;
+//console.log(r0,r1,r2,r3);
+
+ var myObj = JSON.parse('{"group":"'+r0+'","text":"'+r1+'","size":"'+r2+'","choice":"'+r3+'"}'); 
+ tpsum.push(myObj); 
+  counter += 1;
+    });
+console.log(tpsum);
+}
+},
+
+}
+diagram.render();
+</script>
+</body>
+</html>

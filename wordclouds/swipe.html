@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #007bb7;
+  background: radial-gradient(#0481bf, #024571);
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+#label {
+  background: #5da12d;
+  color: white;
+  display: none;
+}
+
+h1 {
+  color: white;
+  opacity: 0.2;
+  font-weight: 900;
+  
+ -webkit-user-select: none; /* Safari */        
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+/Edge */
+user-select: none; /* Standard */
+}
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
+
+<body id="the-body">
+  
+  <div style="min-height: 45px; padding-top: 50px;">
+    <div id="label" style="margin: 0 auto; width: 150px; 
+                       border: 1px solid #30650a; text-align: center; padding: 10px 5px; line-height: 1;">
+    </div>
+  </div>
+  
+  <h1 style="padding-top: 15px;">SWIPE / TAP</h1>
+</body>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script>
+var laskuri = 0;
+
+// Touch handling
+var pageWidth = window.innerWidth || document.body.clientWidth;
+var treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
+var touchstartX = 0;
+var touchstartY = 0;
+var touchendX = 0;
+var touchendY = 0;
+
+var limit = Math.tan(45 * 1.5 / 180 * Math.PI);
+var gestureZone = document.getElementById('the-body');
+
+
+
+gestureZone.addEventListener('touchstart', function(event) {
+  touchstartX = event.changedTouches[0].screenX;
+  touchstartY = event.changedTouches[0].screenY;
+}, false);
+
+gestureZone.addEventListener('touchend', function(event) {
+  touchendX = event.changedTouches[0].screenX;
+  touchendY = event.changedTouches[0].screenY;
+  handleGesture(event);
+}, false);
+
+
+
+function handleGesture(e) {
+
+    var x = touchendX - touchstartX;
+    var y = touchendY - touchstartY;
+    var xy = Math.abs(x / y);
+    var yx = Math.abs(y / x);
+
+    if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
+        if (yx <= limit) {
+            if (x < 0) {
+            if (laskuri === 12) laskuri = 0;
+              laskuri += 1;
+              console.log(laskuri);
+              console.log("swipe left");
+              $('#label').html("swipe left");
+              $('#label').css('display', 'inline');
+              $('#label').fadeOut(1000);
+            }
+            else {
+              if (laskuri === 1) laskuri = 13;
+              laskuri -= 1;
+              console.log(laskuri);
+                console.log("swipe right");
+                $('#label').html("swipe right");
+              $('#label').css('display', 'inline');
+              $('#label').fadeOut(1000);
+            }
+        }
+        if (xy <= limit) {
+            if (y < 0) {
+                console.log("swipe up");
+                $('#label').html("swipe up");
+                $('#label').css('display', 'inline');
+              $('#label').fadeOut(1000);
+            } 
+            else {
+                console.log("swipe down");
+                $('#label').html("swipe down");
+               $('#label').css('display', 'inline');
+              $('#label').fadeOut(1000);
+            }
+        }
+    } 
+    else {
+        console.log("tap");
+        $('#label').html("tap");
+              $('#label').css('display', 'inline');
+              $('#label').fadeOut(1000);
+    }
+}
+</script>
+</body>
+</html>

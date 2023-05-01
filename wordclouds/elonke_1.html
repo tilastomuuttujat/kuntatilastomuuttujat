@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+.heatmap {
+  font-size: 8px;
+  font-family: monospace;
+}
+
+rect.bordered {
+  stroke: #E6E6E6;
+  stroke-width:2px;   
+}
+
+text.mono {
+  font-size: 8px;
+  font-family: monospace;
+  fill: #000;
+}
+
+text.legendElement {
+  font-size: 10px;
+}
+
+text.hover {
+  font-weight: bold;
+  fill: #d62419;
+  font-background: #000;
+}
+
+
+
+.tf-tree ul.tf-search-result {
+ display:block;
+}
+
+.tf-tree ul.tf-search-result > li {
+ display:none;
+}
+
+.tf-tree ul.tf-search-result > li.tf-search-result {
+ display:block;
+}
+
+.tree ul {
+  display: none;
+  margin: 2px auto;
+  margin-left: 4px;
+  color: #000;
+}
+
+.btn--form {
+  padding: 0.5rem 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: #111;
+  border-radius: 1rem;
+}
+
+#sidebar {
+  position: fixed;
+  width: 450px;
+  height: 300%;
+  background: rgb(255,255,255);
+  right: -450px;
+  transition: all 250ms linear;
+}
+#sidebar.active {
+  right: 0px;
+}
+#sidebar ul li {
+  list-style: none;
+
+}
+#sidebar .toggle-btn {
+  position: absolute;
+  right: 470px;
+  top: 0px;
+}
+#sidebar .toggle-btn span {
+  display: block;
+  width: 30px;
+  height: 5px;
+  background: #727e87;
+  margin: 5px 0px;
+}
+.column {
+  float: left;
+}
+.form-control1 {
+  display: block;
+  width: 100%;
+  height: 26px;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="toggle-btn" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+</div>
+  <div style="overflow-y: scroll; height:500px;" id="json">
+  <input type="search" id="my-search" placeholder="hae">
+		<ul id="my-tree">
+		</ul>
+  </div>
+	
+	
+<input id="button" class="btn btn--form" type="submit" value="OK" onClick="diagram.get_data3(1,variables);"/>
+<div id="heatmap1"></div>
+<script>
+var round = 0;
+var names = [];
+var variables = [];
+var rownames = [];
+var colnames = [];
+var compname = [];
+var period_a = 2016;
+var period_b = 2020;
+var url_a = "";
+var url_b = "";
+var sql;
+var str0, str1, str2, str3, str4;
+
+
+
+function toggleSidebar() {
+document.getElementById("sidebar").classList.toggle('active');
+}
+
+var diagram = {
+	render: function() {
+	    diagram.get_data1();
+	},
+	
+
+    get_data1: function() {
+var id = '1rBp1NHLg2dAkBko3Pu6dfRoJaqWlHQTUQolxo2-dFnM';
+var gid = '320235754';
+//var gid = '270476198';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("my-tree").innerHTML=myItems(data.slice(47, -2))  
+  );
+
+function myItems(jsonString){
+  var r0,r1,r2,r3,r8,s0,s1,s2,s3,s8;
+  var json = JSON.parse(jsonString);
+  json.table.cols.forEach(colonne => table += '<label>' + colonne.label + '</label>')
+  var table = '<ul id="my-tree" class="tree">'
+  rownames = [];
+  colnames = [];
+  names = [];
+  colvariables = [];
+  colnumbers = [];
+  var start = 0;
+  json.table.rows.forEach(ligne => {
+    r0 = ligne.c[0].v; 
+    r1 = ligne.c[1].v;
+    r2 = ligne.c[2].v; 
+    r3 = ligne.c[3].v; 
+    r8 = ligne.c[8].f;
+    if (s0 != r0 && s1 != r1) {
+    if (start>0)
+    table += '</ul></li></ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[0].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[0].v + '</label><ul>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s0 = r0;
+    s1 = r1;
+    }  
+    
+    if (s1 != r1) {
+    table += '</ul></li>'
+    table += '<li><input class="domain" type="checkbox" name="domain" value="' + ligne.c[1].v + '" onClick="diagram.vargroup()"></input><label>' + ligne.c[8].f + '-' + ligne.c[1].v + '</label><ul>'
+    s1 = r1;
+    }
+    
+    table += '<li><input class="subdomain" type="checkbox" name="subdomain" value="' + r2 + '" onClick="diagram.variable()"></input>'
+    table += '<label>' + ligne.c[8].f + '-' + ligne.c[2].v + '-' + ligne.c[3].v + '</label></li>'                
+         
+    colvariables.push(ligne.c[2].v);
+    colnumbers.push(ligne.c[8].f);
+    names.push(ligne.c[3].v);
+    
+    start = 1;
+    s0 = r0;
+    s1 = r1;
+    });
+    table += '</ul>'
+    document.getElementById("my-tree").innerHTML = table;
+    document.getElementById("my-tree1").innerHTML = table;
+    //return table;
+    }
+    
+$(document).on('click', '.tree label', function(e) {
+  $(this).next('ul').fadeToggle();
+  e.stopPropagation();
+});
+
+$(document).on('change', '.tree input[type=checkbox]', function(e) {
+  $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+  $(this).parentsUntil('.tree').children("input[type='checkbox']").prop('checked', this.checked);
+  e.stopPropagation();
+});
+
+$(function() {
+	var tree = new treefilter($("#my-tree"), {
+		searcher : $("input#my-search")
+	});
+});
+
+$.extend($.expr[":"], {
+	"containsIN" : function(elem, i, match, array) {
+		return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	}
+});
+
+var treefilter = function(el, options) {
+	var defaults = {
+		offsetLeft : 20, 
+		searcher : null, 
+		expanded : false, 
+		expanded : false, 
+		multiselect : false 
+	};
+
+	var plugin = this;
+	var status = []; 
+
+	plugin.settings = {};
+
+	var init = function() {
+		plugin.settings = $.extend({}, defaults, options);
+		plugin.el = el;
+
+		el.addClass("tf-tree");
+		el.find("li").addClass("tf-child-true");
+		el.find("li").css("padding-left", plugin.settings.offsetLeft);
+		el.find("li div:only-child").parent().removeClass("tf-child-true");
+		el.find("li div:only-child").parent().addClass("tf-child-false");
+		el.find("input[type=checkbox]").click(function(e) {
+			e.stopPropagation();
+		});
+
+		el.find("li.tf-child-true").children("div").click(function(e) {
+			if (e.metaKey || e.ctrlKey) {
+				if ($(this).parent().hasClass("tf-open")) {
+					$(this).parent().find("li.tf-child-true").removeClass("tf-open");
+				} else {
+					$(this).parent().find("li.tf-child-true").addClass("tf-open");
+				}
+			}
+			$(this).parent().toggleClass("tf-open");
+		});
+
+		el.find("li.tf-child-false").click(function() {
+			if (plugin.settings.multiSelect != true) {
+				el.find("li.tf-selected").removeClass("tf-selected");
+			}
+			$(this).toggleClass("tf-selected");
+		});
+
+		if (plugin.settings.searcher) {
+			searcher();
+		}
+	};
+
+	plugin.openAll = function() {
+		plugin.el.find("li.tf-child-true").parent().addClass("tf-open");
+	};
+	plugin.closeAll = function() {
+		plugin.el.find("li.tf-child-true").parent().removeClass("tf-open");
+	};
+
+	var searcher = function() {
+		$(plugin.settings.searcher).keyup(function() {
+			if ($(this).val().length == 0) {
+				plugin.el.find(".tf-search-result").removeClass("tf-search-result");
+				memory("out", status);
+			} else {
+				plugin.closeAll();
+				plugin.el.find("li.tf-open").removeClass("tf-open");
+				plugin.el.find("li.tf-search-result").removeClass("tf-search-result");
+				plugin.el.find("li:containsIN('" + $(this).val() + "')").addClass("tf-search-result");
+				plugin.el.find("li.tf-search-result").parent().addClass("tf-search-result");
+			}
+		});
+		$(plugin.settings.searcher).keydown(function() {
+			if ($(this).val().length == 0) {
+				memory("in", status);
+			}
+		});
+	};
+
+	var memory = function(action) {
+		if (action == "in") {
+			status = [];
+			plugin.el.find("li").each(function() {
+				status.push($(this).hasClass("tf-open"));
+			});
+		} else if (action == "out") {
+			plugin.el.find("li").each(function(i) {
+				if (status[i]) { 
+					$(this).addClass("tf-open");
+				} else {
+					$(this).removeClass("tf-open");
+				}
+			});
+		}
+	}
+	
+	init();
+};
+
+	},
+	
+	vargroup: function () {
+            setTimeout(() => {
+            var checkboxes = document.querySelectorAll('input[name="domain"]:checked');
+            var values = [];
+            checkboxes.forEach((checkbox) => {
+            values.push(checkbox.value);
+            });
+            //console.log(values);
+            diagram.variable();
+            }, 200);
+    },
+	
+	variable: function () {	
+            var checkboxes = document.querySelectorAll('input[name="subdomain"]:checked');
+            var values = [];
+            var rowname = [];
+            var colname = [];
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.value);
+                if (colnumbers[colvariables.indexOf(checkbox.value)] < 2) {
+                rownames.push(checkbox.value);
+                } else {
+                colnames.push(checkbox.value);
+                }
+            });
+            variables = values;
+            //console.log(values);
+            document.getElementById("button").style.background="red";
+            document.getElementById("button").value="VALMIS";
+            values = [];
+            round = 0;
+
+    },
+
+
+
+}
+diagram.render();
+</script>
+</body>
+</html>

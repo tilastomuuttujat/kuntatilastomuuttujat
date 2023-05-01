@@ -1,0 +1,17 @@
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<img src="http://www.w3schools.com/tags/planets.gif" width="145" height="126" alt="Planets" usemap="#planetmap"/>
+
+<map name="planetmap">
+    <area class="yellow" shape="rect" coords="0,0,82,126" href="" />
+    <area shape="circle" coords="90,58,3" href="" />
+    <area shape="circle" coords="124,58,8" href="" />
+</map>
+
+
+<script>
+$(".yellow").on("click", function(e){
+    e.preventDefault();
+    console.log('test');
+});
+</script>
