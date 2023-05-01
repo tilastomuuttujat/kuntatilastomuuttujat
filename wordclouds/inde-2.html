@@ -148,6 +148,93 @@ svg:hover{
   border-radius: 2px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+* {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.slider {
+  padding: 3rem 0;
+}
+.slider > ul.slider-items {
+  --_spacer: 1rem;
+  display: grid;
+  gap: var(--_spacer);
+  grid-auto-flow: column;
+  grid-auto-columns: 80vw;
+  padding: 0 var(--_spacer) var(--_spacer);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -ms-scroll-snap-type: inline mandatory;
+      scroll-snap-type: inline mandatory;
+  scroll-padding-inline: var(--_spacer, 1rem);
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.slider > ul.slider-items::-webkit-scrollbar {
+  height: 8px;
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-track {
+  background: rgba(29, 55, 104, 0.15);
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-thumb {
+  background: rgba(29, 55, 104, 0.75);
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-thumb:hover {
+  background: #1d3768;
+}
+.slider > ul.slider-items > li {
+  display: flex;
+  scroll-snap-align: center;
+  background: #e4e4e4;
+  flex-direction: column;
+  gap: 5px;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+  color: #1D3768;
+}
+.slider > ul.slider-items > li > * {
+  margin: 0;
+}
+.slider > ul.slider-items > li h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.slider > ul.slider-dots {
+  margin: 0;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.slider > ul.slider-dots > li {
+  width: 8px;
+  height: 8px;
+  background: #1D3768;
+  border-radius: 100%;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+.slider > ul.slider-dots > li.active {
+  opacity: 1;
+}
 </style>
 
 </head>
@@ -179,18 +266,40 @@ svg:hover{
 
 </map>
 
-    
-    
-    
-
-    </div>
+</div>
     <div class="resizer-x"></div>
     <div class="resizable-y" style="flex: 50%;">
-      <div class="div1" id="dive1" style="flex: 33.33%;">
-        <svg id="wordcloud1" visibility="visible"></svg>
-        <svg id="wordcloud2" visibility="visible"></svg>    
-        <svg id="wordcloud3" visibility="hidden"></svg>  
-        <svg id="wordcloud4" visibility="hidden"></svg>
+    <div class="div1" id="dive1" style="flex: 33.33%;">
+      
+      
+  <div class="slider">
+	<ul class="slider-items">
+		<li data-id="0">
+        <svg id="wordcloud0"></svg>
+		</li>
+		<li data-id="1">
+        <svg id="wordcloud1"></svg>   
+		</li>
+		<li data-id="2">
+        <svg id="wordcloud2"></svg>
+		</li>
+		<li data-id="3">
+        <svg id="wordcloud3"></svg>
+		</li>
+		<li data-id="4">
+        <svg id="wordcloud4"></svg>
+		</li>
+	</ul>
+	<ul class="slider-dots">
+		<li class="active"></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>    
+      
+     
         <svg id="wordcloud5" visibility="hidden"></svg>
         <svg id="wordcloud6" visibility="hidden"></svg>    
         <svg id="wordcloud7" visibility="hidden"></svg>  
@@ -217,105 +326,140 @@ svg:hover{
 
 <!-- partial -->
 <script>
-const lista1 = [{"text":"people","size":3},{"text":"bank","size":1},{"text":"bankrupt","size":1},{"text":"insufficient","size":1},{"text":"vaults","size":1},{"text":"opportunity","size":1},{"text":"--","size":1},{"text":"give","size":1},{"text":"demand","size":1},{"text":"riches","size":1},{"text":"security","size":1},{"text":"also","size":1},{"text":"hallowed","size":1},{"text":"spot","size":1},{"text":"remind","size":1},{"text":"fierce","size":1},{"text":"engage","size":1},{"text":"luxury","size":1},{"text":"cooling","size":1},{"text":"take","size":1},{"text":"tranquilizing","size":1},{"text":"drug","size":1},{"text":"gradualism","size":1},{"text":"real","size":1},{"text":"promises","size":1},{"text":"democracy","size":1},{"text":"dark","size":1},{"text":"desolate","size":1},{"text":"sunlit","size":1},{"text":"path","size":1},{"text":"lift","size":1},{"text":"quick","size":1},{"text":"sands","size":1},{"text":"solid","size":1},{"text":"rock","size":41}];
+const lista1 = [{"group":"1","text":"Ahkeruus","size":"20","choice":"0"},{"group":"1","text":"Avoimmuus","size":"20","choice":"0"},{"group":"1","text":"Ekologisuus","size":"20","choice":"0"},{"group":"1","text":"Eläinoikeudet","size":"20","choice":"0"},{"group":"1","text":"Empaattisuus","size":"20","choice":"0"},{"group":"1","text":"Esteettisyys","size":"20","choice":"0"},{"group":"1","text":"Hengellisyys","size":"20","choice":"0"},{"group":"1","text":"Henkisyys","size":"10","choice":"0"},{"group":"1","text":"Hillitty","size":"10","choice":"0"},{"group":"1","text":"Huumori","size":"10","choice":"0"},{"group":"1","text":"Huumorintaju","size":"10","choice":"0"},{"group":"1","text":"Iloisuus","size":"10","choice":"0"},{"group":"1","text":"Innovatiivisuus","size":"10","choice":"0"},{"group":"1","text":"Itsehillintä","size":"10","choice":"0"},{"group":"1","text":"Itsekontrolli","size":"10","choice":"0"},{"group":"1","text":"Itsekritiikki","size":"10","choice":"0"},{"group":"1","text":"Itsereflektio","size":"10","choice":"0"},{"group":"1","text":"Itsetutkiskelu","size":"10","choice":"0"},{"group":"1","text":"Joustavuus","size":"10","choice":"0"},{"group":"1","text":"Kärsivällisyys","size":"10","choice":"0"},{"group":"1","text":"Kauneus","size":"10","choice":"0"},{"group":"1","text":"Käytännöllisyys","size":"10","choice":"0"},{"group":"1","text":"Kiireettömyys","size":"10","choice":"0"},{"group":"1","text":"Kiitollisuus","size":"10","choice":"0"},{"group":"1","text":"Kiltteys","size":"5","choice":"0"},{"group":"1","text":"Lämminhenkisyys","size":"5","choice":"0"},{"group":"1","text":"Luonnonläheisyys","size":"5","choice":"0"},{"group":"1","text":"Mielihyvä","size":"5","choice":"0"},{"group":"1","text":"Mielikuvitus","size":"5","choice":"0"},{"group":"1","text":"Minäkuva","size":"5","choice":"0"},{"group":"1","text":"Myönteisyys","size":"5","choice":"0"},{"group":"1","text":"Nauru","size":"5","choice":"0"},{"group":"1","text":"Nöyryys","size":"5","choice":"0"},{"group":"1","text":"Omistautuminen","size":"5","choice":"0"},{"group":"1","text":"Onnellisuus","size":"5","choice":"0"},{"group":"1","text":"Optimistisuus","size":"5","choice":"0"},{"group":"1","text":"Pohdiskelevuus","size":"5","choice":"0"},{"group":"1","text":"Positiivisuus","size":"5","choice":"0"},{"group":"1","text":"Puolueettomuus","size":"5","choice":"0"},{"group":"1","text":"Rakastavuus","size":"5","choice":"0"},{"group":"1","text":"Rakentavuus","size":"5","choice":"0"},{"group":"1","text":"Rakkaus","size":"5","choice":"0"},{"group":"1","text":"Rauhallisuus","size":"5","choice":"0"},{"group":"1","text":"Realistisuus","size":"5","choice":"0"},{"group":"1","text":"Rehellisyys","size":"5","choice":"0"},{"group":"1","text":"Rentoutuneisuus","size":"5","choice":"0"}];
 
-const lista2 = [{"group":"1","text":"Ahkeruus","size":"20","choice":"0"},{"group":"1","text":"Avoimmuus","size":"20","choice":"0"},{"group":"1","text":"Ekologisuus","size":"20","choice":"0"},{"group":"1","text":"Eläinoikeudet","size":"20","choice":"0"},{"group":"1","text":"Empaattisuus","size":"20","choice":"0"},{"group":"1","text":"Esteettisyys","size":"20","choice":"0"},{"group":"1","text":"Hengellisyys","size":"20","choice":"0"},{"group":"1","text":"Henkisyys","size":"10","choice":"0"},{"group":"1","text":"Hillitty","size":"10","choice":"0"},{"group":"1","text":"Huumori","size":"10","choice":"0"},{"group":"1","text":"Huumorintaju","size":"10","choice":"0"},{"group":"1","text":"Iloisuus","size":"10","choice":"0"},{"group":"1","text":"Innovatiivisuus","size":"10","choice":"0"},{"group":"1","text":"Itsehillintä","size":"10","choice":"0"},{"group":"1","text":"Itsekontrolli","size":"10","choice":"0"},{"group":"1","text":"Itsekritiikki","size":"10","choice":"0"},{"group":"1","text":"Itsereflektio","size":"10","choice":"0"},{"group":"1","text":"Itsetutkiskelu","size":"10","choice":"0"},{"group":"1","text":"Joustavuus","size":"10","choice":"0"},{"group":"1","text":"Kärsivällisyys","size":"10","choice":"0"},{"group":"1","text":"Kauneus","size":"10","choice":"0"},{"group":"1","text":"Käytännöllisyys","size":"10","choice":"0"},{"group":"1","text":"Kiireettömyys","size":"10","choice":"0"},{"group":"1","text":"Kiitollisuus","size":"10","choice":"0"},{"group":"1","text":"Kiltteys","size":"5","choice":"0"},{"group":"1","text":"Lämminhenkisyys","size":"5","choice":"0"},{"group":"1","text":"Luonnonläheisyys","size":"5","choice":"0"},{"group":"1","text":"Mielihyvä","size":"5","choice":"0"},{"group":"1","text":"Mielikuvitus","size":"5","choice":"0"},{"group":"1","text":"Minäkuva","size":"5","choice":"0"},{"group":"1","text":"Myönteisyys","size":"5","choice":"0"},{"group":"1","text":"Nauru","size":"5","choice":"0"},{"group":"1","text":"Nöyryys","size":"5","choice":"0"},{"group":"1","text":"Omistautuminen","size":"5","choice":"0"},{"group":"1","text":"Onnellisuus","size":"5","choice":"0"},{"group":"1","text":"Optimistisuus","size":"5","choice":"0"},{"group":"1","text":"Pohdiskelevuus","size":"5","choice":"0"},{"group":"1","text":"Positiivisuus","size":"5","choice":"0"},{"group":"1","text":"Puolueettomuus","size":"5","choice":"0"},{"group":"1","text":"Rakastavuus","size":"5","choice":"0"},{"group":"1","text":"Rakentavuus","size":"5","choice":"0"},{"group":"1","text":"Rakkaus","size":"5","choice":"0"},{"group":"1","text":"Rauhallisuus","size":"5","choice":"0"},{"group":"1","text":"Realistisuus","size":"5","choice":"0"},{"group":"1","text":"Rehellisyys","size":"5","choice":"0"}];
+const lista2 = [{"group":"1","text":"Säännöllisyys","size":"20","choice":"0"},{"group":"1","text":"Säästäminen","size":"2","choice":"0"},{"group":"1","text":"Sitkeys","size":"2","choice":"0"},{"group":"1","text":"Sitoutuminen","size":"20","choice":"0"},{"group":"1","text":"Tarkkuus","size":"2","choice":"0"},{"group":"1","text":"Tasapainoisuus","size":"2","choice":"0"},{"group":"10","text":"Täsmällisyys","size":"2","choice":"0"},{"group":"1","text":"Tavoitteellisuus","size":"2","choice":"0"},{"group":"1","text":"Terävyys","size":"2","choice":"0"},{"group":"1","text":"Tiedonjano","size":"2","choice":"0"},{"group":"1","text":"Toiveikkuus","size":"2","choice":"0"},{"group":"1","text":"Tunteellisuus","size":"15","choice":"0"},{"group":"1","text":"Tutkiskelu","size":"2","choice":"0"},{"group":"1","text":"Tyyneys","size":"20","choice":"0"},{"group":"1","text":"Tyytyväisyys","size":"2","choice":"0"},{"group":"1","text":"Uteliaisuus","size":"2","choice":"0"},{"group":"1","text":"Uudistuminen","size":"2","choice":"0"},{"group":"1","text":"Vaatimattomuus","size":"2","choice":"0"},{"group":"10","text":"Vakaus","size":"2","choice":"0"},{"group":"1","text":"Valppaus","size":"2","choice":"0"},{"group":"1","text":"Vapaus","size":"2","choice":"0"},{"group":"1","text":"Vapautuneisuus","size":"2","choice":"0"},{"group":"1","text":"Varovaisuus","size":"15","choice":"0"},{"group":"1","text":"Vastuullisuus","size":"10","choice":"0"},{"group":"1","text":"Voimaantuminen","size":"1","choice":"0"},{"group":"1","text":"Yhdenvertaisuus","size":"1","choice":"0"},{"group":"10","text":"Yhteenkuuluvuus","size":"1","choice":"0"},{"group":"1","text":"Yksilöllisyys","size":"10","choice":"0"},{"group":"1","text":"Ymmärtävyys","size":"1","choice":"0"},{"group":"1","text":"Ympäristöystävällisyys","size":"1","choice":"0"},{"group":"1","text":"Ystävällisyys","size":"1","choice":"0"},{"group":"1","text":"Ytimekkyys","size":"1","choice":"0"}];
 
-const lista3 = [{"group":"1","text":"Rentoutuneisuus","size":"5","choice":"0"},{"group":"1","text":"Säännöllisyys","size":"2","choice":"0"},{"group":"1","text":"Säästäminen","size":"2","choice":"0"},{"group":"1","text":"Sitkeys","size":"2","choice":"0"},{"group":"1","text":"Sitoutuminen","size":"2","choice":"0"},{"group":"1","text":"Tarkkuus","size":"2","choice":"0"},{"group":"1","text":"Tasapainoisuus","size":"2","choice":"0"},{"group":"1","text":"Täsmällisyys","size":"2","choice":"0"},{"group":"1","text":"Tavoitteellisuus","size":"2","choice":"0"},{"group":"1","text":"Terävyys","size":"2","choice":"0"},{"group":"1","text":"Tiedonjano","size":"2","choice":"0"},{"group":"1","text":"Toiveikkuus","size":"2","choice":"0"},{"group":"1","text":"Tunteellisuus","size":"2","choice":"0"},{"group":"1","text":"Tutkiskelu","size":"2","choice":"0"},{"group":"1","text":"Tyyneys","size":"2","choice":"0"},{"group":"1","text":"Tyytyväisyys","size":"2","choice":"0"},{"group":"1","text":"Uteliaisuus","size":"2","choice":"0"},{"group":"1","text":"Uudistuminen","size":"2","choice":"0"},{"group":"1","text":"Vaatimattomuus","size":"2","choice":"0"},{"group":"1","text":"Vakaus","size":"2","choice":"0"},{"group":"1","text":"Valppaus","size":"2","choice":"0"},{"group":"1","text":"Vapaus","size":"2","choice":"0"},{"group":"1","text":"Vapautuneisuus","size":"2","choice":"0"},{"group":"1","text":"Varovaisuus","size":"1","choice":"0"},{"group":"1","text":"Vastuullisuus","size":"1","choice":"0"},{"group":"1","text":"Voimaantuminen","size":"1","choice":"0"},{"group":"1","text":"Yhdenvertaisuus","size":"1","choice":"0"},{"group":"1","text":"Yhteenkuuluvuus","size":"1","choice":"0"},{"group":"1","text":"Yksilöllisyys","size":"1","choice":"0"},{"group":"1","text":"Ymmärtävyys","size":"1","choice":"0"},{"group":"1","text":"Ympäristöystävällisyys","size":"1","choice":"0"},{"group":"1","text":"Ystävällisyys","size":"1","choice":"0"},{"group":"1","text":"Ytimekkyys","size":"1","choice":"0"}];
+const lista3 = [{"group":"2","text":"Anteliaisuus","size":"15","choice":"0"},{"group":"2","text":"Arvostus","size":"15","choice":"0"},{"group":"2","text":"Auttaminen","size":"15","choice":"0"},{"group":"2","text":"Avuliaisuus","size":"15","choice":"0"},{"group":"2","text":"Huomaavaisuus","size":"15","choice":"0"},{"group":"2","text":"Hyväksyvyys","size":"15","choice":"0"},{"group":"2","text":"Ilahduttavuus","size":"15","choice":"0"},{"group":"2","text":"Kannustavuus","size":"15","choice":"0"},{"group":"2","text":"Kunnioittavuus","size":"5","choice":"0"},{"group":"2","text":"Myötätuntoisuus","size":"5","choice":"0"},{"group":"2","text":"Oikeudenmukaisuus","size":"5","choice":"0"},{"group":"2","text":"Solidaarisuus","size":"5","choice":"0"},{"group":"2","text":"Suojelevuus","size":"5","choice":"0"},{"group":"2","text":"Tasapuolisuus","size":"5","choice":"0"},{"group":"2","text":"Tunnustavuus","size":"5","choice":"0"},{"group":"3","text":"Ajanhallinta","size":"15","choice":"0"},{"group":"3","text":"Autonomia","size":"15","choice":"0"},{"group":"3","text":"Elämänmyönteisyys","size":"15","choice":"0"},{"group":"3","text":"Energisyys","size":"15","choice":"0"},{"group":"3","text":"Harkitsevuus","size":"10","choice":"0"},{"group":"3","text":"Hyvinvointi","size":"10","choice":"0"},{"group":"3","text":"Innokkuus","size":"10","choice":"0"},{"group":"3","text":"Innostus","size":"10","choice":"0"},{"group":"3","text":"Intohimoisuus","size":"10","choice":"0"},{"group":"3","text":"Intuitio","size":"10","choice":"0"},{"group":"3","text":"Itsearvostus","size":"10","choice":"0"},{"group":"3","text":"Itseluottamus","size":"10","choice":"0"},{"group":"3","text":"Itsenäisyys","size":"10","choice":"0"},{"group":"3","text":"Itsensätoteutus","size":"10","choice":"0"},{"group":"3","text":"Itsesuojelu","size":"10","choice":"0"},{"group":"3","text":"Itsetuntemus","size":"10","choice":"0"},{"group":"3","text":"Jaksaminen","size":"10","choice":"0"},{"group":"3","text":"Järjestelmällisyys","size":"10","choice":"0"}];
   
+var lista4 = [{"group":"3","text":"Kasvuhakuisuus","size":"4","choice":"0"},{"group":"3","text":"Kasvuhaluisuus","size":"4","choice":"0"},{"group":"3","text":"Kehittyvyys","size":"4","choice":"0"},{"group":"3","text":"Keskittyminen","size":"4","choice":"0"},{"group":"3","text":"Kestävyys","size":"4","choice":"0"},{"group":"3","text":"Kiinnostus","size":"4","choice":"0"},{"group":"3","text":"Kilpailuhenkisyys","size":"4","choice":"0"},{"group":"3","text":"Kokeilunhalu","size":"4","choice":"0"},{"group":"3","text":"Kriittisyys","size":"4","choice":"0"},{"group":"3","text":"Kyvykkyys","size":"4","choice":"0"},{"group":"3","text":"Luotettavuus","size":"4","choice":"0"},{"group":"3","text":"Luottamus","size":"4","choice":"0"},{"group":"3","text":"Luottamuskyky","size":"4","choice":"0"},{"group":"3","text":"Merkityksellisyys","size":"4","choice":"0"},{"group":"3","text":"Mielekkyys","size":"4","choice":"0"},{"group":"3","text":"Mielenrauha","size":"4","choice":"0"},{"group":"3","text":"Muutoskyky","size":"4","choice":"0"},{"group":"3","text":"Objektiivisuus","size":"4","choice":"0"},{"group":"3","text":"Oppimishalu","size":"4","choice":"0"},{"group":"3","text":"Osaaminen","size":"4","choice":"0"},{"group":"3","text":"Päämäärät","size":"4","choice":"0"},{"group":"4","text":"Päätöksenteko","size":"15","choice":"0"},{"group":"4","text":"Päättäväisyys","size":"15","choice":"0"},{"group":"4","text":"Pelottomuus","size":"15","choice":"0"},{"group":"4","text":"Ratkaisukeskeisyys","size":"15","choice":"0"},{"group":"4","text":"Riskinottokyky","size":"10","choice":"0"},{"group":"4","text":"Rohkeus","size":"10","choice":"0"},{"group":"4","text":"Ruokahalu","size":"10","choice":"0"},{"group":"4","text":"Saavutukset","size":"10","choice":"0"},{"group":"4","text":"Selkeys","size":"10","choice":"0"},{"group":"4","text":"Selviytymiskyky","size":"10","choice":"0"},{"group":"4","text":"Sietokyky","size":"10","choice":"0"},{"group":"4","text":"Sisukkuus","size":"10","choice":"0"},{"group":"4","text":"Sopeutuminen","size":"10","choice":"0"},{"group":"4","text":"Tarkkailevuus","size":"10","choice":"0"},{"group":"4","text":"Tarkoitus","size":"4","choice":"0"},{"group":"4","text":"Tarmokkuus","size":"4","choice":"0"},{"group":"4","text":"Terveellisyys","size":"4","choice":"0"},{"group":"4","text":"Tilannetaju","size":"4","choice":"0"},{"group":"4","text":"Tunnistaminen","size":"4","choice":"0"},{"group":"4","text":"Vahvistuminen","size":"4","choice":"0"},{"group":"4","text":"Valinnanvapaus","size":"4","choice":"0"},{"group":"4","text":"Viihtyvyys","size":"4","choice":"0"},{"group":"4","text":"Vilkkaus","size":"4","choice":"0"},{"group":"4","text":"Yhteisöllisyys","size":"4","choice":"0"},{"group":"4","text":"Yhteistyö","size":"4","choice":"0"},{"group":"4","text":"Yhteistyöhalukkuus","size":"4","choice":"0"},{"group":"4","text":"Yritteliäisyys","size":"4","choice":"0"}];
 
-
-var xlaskuri = 1;
-var laskuri = 1;
-var round = 1;
+var laskuri = 0;
 var clouds = ["#wordcloud1","#wordcloud2","#wordcloud3","#wordcloud4","#wordcloud5","#wordcloud6","#wordcloud7","#wordcloud8","#wordcloud9","#wordcloud10","#wordcloud11","#wordcloud12"];
-var cloudId = clouds[laskuri];
-var listat = [lista1,lista2];
+var listat = [lista1,lista2,lista3,lista4];
+
+
+$(".yellow").on("click", function(e){
+    e.preventDefault();
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    
+});
+
+
+function pilvessa() {
+
 var listaId = listat[laskuri]; 
+var cloudId = clouds[laskuri];
 
-// Touch handling
-var pageWidth = window.innerWidth || document.body.clientWidth;
-var treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
-var touchstartX = 0;
-var touchstartY = 0;
-var touchendX = 0;
-var touchendY = 0;
-
-var limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-var gestureZone = document.getElementById('dive1');
-
-
-
-gestureZone.addEventListener('touchstart', function(event) {
-  touchstartX = event.changedTouches[0].screenX;
-  touchstartY = event.changedTouches[0].screenY;
-}, false);
-
-gestureZone.addEventListener('touchend', function(event) {
-  touchendX = event.changedTouches[0].screenX;
-  touchendY = event.changedTouches[0].screenY;
-  handleGesture(event);
-}, false);
+const marginTop = 0, 
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
+  width = 640,
+  height = 400,
+  maxWords = 250, 
+  fontFamily = "sans-serif",
+  fontScale = 15,
+  padding = 0,
+  rotate = 0;
 
 
+    const leveys = 800;
+    const korkeus = 400;
 
-function handleGesture(e) {
+    const layout = d3.layout.cloud()
+      .size([leveys, korkeus])
+      .words(listaId)
+      .padding(padding)
+      .rotate(() => rotate)
+      .font(fontFamily)
+      .fontSize(d => Math.sqrt(d.size) * fontScale)
+      .on("end", piirra);
 
-    var x = touchendX - touchstartX;
-    var y = touchendY - touchstartY;
-    var xy = Math.abs(x / y);
-    var yx = Math.abs(y / x);
+    layout.start();
 
-    if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
-        if (yx <= limit) {
-            if (x < 0) {
-            xlaskuri = laskuri
-            if (laskuri === 12) laskuri = 0;
-              laskuri += 1;
-              //document.getElementById("word-cloud2").style.display = "none"; 
-              document.getElementById("wordcloud"+String(laskuri)).style.display = "block"; 
-              document.getElementById("wordcloud"+String(xlaskuri)).style.display = "none"; 
-              
-              console.log(laskuri);
-              console.log("swipe left");
-              $('#label').html("swipe left");
-              $('#label').css('display', 'inline');
-              $('#label').fadeOut(1000);
-            }
-            else {
-              if (laskuri === 1) laskuri = 13;
-              laskuri -= 1;
-              console.log(laskuri);
-                console.log("swipe right");
-                $('#label').html("swipe right");
-              $('#label').css('display', 'inline');
-              $('#label').fadeOut(1000);
-            }
+    function piirra(sanat) {
+      //const svg = d3.select("#word-cloud")
+      const svg = d3.select(cloudId)
+        .attr("width", leveys)
+        .attr("height", korkeus);
+
+      const g = svg.append("g")
+        .attr("transform", `translate(${leveys / 2}, ${korkeus / 2})`);
+
+      const tekstit = g.selectAll("text")
+        .data(sanat)
+        .enter()
+        .append("text")
+        .style("font-size", d => `${d.size}px`)
+        .style("font-family", "Arial")
+        .attr("text-anchor", "middle")
+        .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+        .text(d => d.text)
+        .style("cursor", "pointer")
+        .style("fill", "black")
+        .each(function (d) {
+          d.vari = 0; 
+        })
+        .on("click", function (d) {
+          d.vari = (d.vari + 1) % 3; 
+          d3.select(this).style("fill", getColor(d.vari));
+        });
+console.log(tekstit);
+      function getColor(varinumero) {
+        if (varinumero === 0) {
+          return "black";
+        } else if (varinumero === 1) {
+          return "green";
+        } else if (varinumero === 2) {
+          return "red";
         }
-        if (xy <= limit) {
-            if (y < 0) {
-                console.log("swipe up");
-                $('#label').html("swipe up");
-                $('#label').css('display', 'inline');
-              $('#label').fadeOut(1000);
-            } 
-            else {
-                console.log("swipe down");
-                $('#label').html("swipe down");
-               $('#label').css('display', 'inline');
-              $('#label').fadeOut(1000);
-            }
-        }
-    } 
-    else {
-        console.log("tap");
-        $('#label').html("tap");
-              $('#label').css('display', 'inline');
-              $('#label').fadeOut(1000);
+      }
     }
+    
+}//pilvessa 
+
+const listElement = document.querySelector('.slider ul.list');
+const intersectionObserverElements = document.querySelectorAll('.slider > ul.slider-items > li');
+const dots = document.querySelectorAll('.slider > ul.slider-dots > li');
+
+function setActiveDot(selectedIndex) {
+	dots.forEach((dot, index) => {
+		dot.classList.remove('active');
+		if (index === selectedIndex) {
+			dot.classList.add('active');
+		}
+	});
 }
-</script>
-  <script>
+
+let options = {
+	root: listElement,
+	rootMargin: '0px',
+	threshold: [1]
+}
+
+let callback = (entries, observer) => {
+	entries.forEach(entry => {
+		if (entry.intersectionRatio === 1) {
+			let dataId = `${entry.target.getAttribute('data-id')}`;
+			setActiveDot(parseInt(dataId));
+		}
+	});
+};
+
+let observer = new IntersectionObserver(callback, options);
+
+intersectionObserverElements.forEach((card) => {
+	observer.observe(card);
+});
+
+
   (function () {
   "use strict";
 
@@ -466,120 +610,6 @@ function handleGesture(e) {
   })();
 })();
   
-  
-  
-  function myFunction() {
- console.log(1); 
-  }
-  </script>
-  
-
-  <script>
-
-    $(".yellow").on("click", function(e){
-    e.preventDefault();
-    //layout.stop();
-    //console.log('test');
-//    d3.selectAll("#word-cloud1 > *").remove();
-    //layout.start();
-    pilvessa();
-});
-
-
-
-/*
-function draw() {
-d3.selectAll("#d3-kunta > *").remove();
-svg = d3.select("#d3-kunta").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
-*/
-
-function pilvessa() {
-
-const marginTop = 0, 
-  marginRight = 0,
-  marginBottom = 0,
-  marginLeft = 0,
-  width = 640,
-  height = 400,
-  maxWords = 250, 
-  fontFamily = "sans-serif",
-  fontScale = 15,
-  padding = 0,
-  rotate = 0;
-
-
-/*
-var heatmaps = ["#heatmap1","#heatmap2","#heatmap3"];
-var heatmapId = heatmaps[round];
-
-d3.selectAll(heatmaps[round] +" > *").remove(); 
-
-	
-	var svg = d3.select(heatmapId)
-*/	
-
-
-
-    const leveys = 800;
-    const korkeus = 400;
-
-    const layout = d3.layout.cloud()
-      .size([leveys, korkeus])
-      .words(listaId)
-      .padding(padding)
-      .rotate(() => rotate)
-      .font(fontFamily)
-      .fontSize(d => Math.sqrt(d.size) * fontScale)
-      .on("end", piirra);
-
-    layout.start();
-
-    function piirra(sanat) {
-      //const svg = d3.select("#word-cloud")
-      const svg = d3.select(cloudId)
-        .attr("width", leveys)
-        .attr("height", korkeus);
-
-      const g = svg.append("g")
-        .attr("transform", `translate(${leveys / 2}, ${korkeus / 2})`);
-
-      const tekstit = g.selectAll("text")
-        .data(sanat)
-        .enter()
-        .append("text")
-        .style("font-size", d => `${d.size}px`)
-        .style("font-family", "Arial")
-        .attr("text-anchor", "middle")
-        .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
-        .text(d => d.text)
-        .style("cursor", "pointer")
-        .style("fill", "black")
-        .each(function (d) {
-          d.vari = 0; 
-        })
-        .on("click", function (d) {
-          d.vari = (d.vari + 1) % 3; 
-          d3.select(this).style("fill", getColor(d.vari));
-        });
-console.log(tekstit);
-      function getColor(varinumero) {
-        if (varinumero === 0) {
-          return "black";
-        } else if (varinumero === 1) {
-          return "green";
-        } else if (varinumero === 2) {
-          return "red";
-        }
-      }
-    }
-    
-}//pilvessa 
-
-
-
   </script>
     
 
