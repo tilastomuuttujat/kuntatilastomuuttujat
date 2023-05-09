@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Set, Get and Delete Cookies</title>
+<style>
+body {
+  max-width: 1024px;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.wrapper {
+  width: 500px;
+  margin: 100px auto 0;
+  text-align: center;
+}
+
+button {
+  border: 1px solid #ccc;
+  background: #eee;
+  width: 230px;
+  height: 50px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+button.button, button.clear {
+  color: white;
+  width: 475px;
+}
+button.button {
+  background: green;
+}
+button.clear {
+  background: red;
+}
+button:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+</style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="wrapper">
+	<p>To see the pen in action you have to check the console</p>
+	<button class="foo" onclick="setCookie('Foo','Hello','20');">Set cookie Foo</button>
+	<button class="goo" onclick="setCookie('Goo','World','10');">Set cookie Goo</button>
+
+	<button class="button">Get cookie values</button>
+	<button class="clear" onclick="deleteCookie();">Delete cookies</button>
+	<p style="color:#0054b5;">NOTICE: The Codepen changed his cookie options and you have to try the set, get and delete cookie functions localy on your computer.</p>
+</div>
+<!-- partial -->
+  <script>
+  /**
+ * Set, Get and Delete Cookies script by Hakan Havutcuoglu 
+ * http://www.havutcuoglu.com/ or http://www.havutcuoglu.de/
+ * This notice MUST stay intact in JS files and SCRIPT tags for free and legal usege.
+ */
+function setCookie(cookieName,cookieValue,daysToExpire,path,domain)
+{
+	var date = new Date();
+	date.setTime(date.getTime()+(daysToExpire*24*60*60*1000));
+	document.cookie = cookieName + "=" + cookieValue + "; expires=" + date.toGMTString() + 'path=' + path + 'domain=' + domain;
+	console.log("setCookieValue: " + cookieValue);
+}
+
+
+function getCookieValue(cookieName) {
+	var cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+	return cookieValue ? cookieValue.pop() : '';
+}
+
+document.querySelector('.button').onclick=function()
+{
+	console.log("getCookieValue: " + getCookieValue('Foo'));
+	console.log("getCookieValue: " + getCookieValue('Goo'));
+}
+
+function deleteCookie()
+{
+	document.cookie = "Foo=''; max-age=0; expires=0";
+	document.cookie = "Goo=''; max-age=0; expires=0";
+	console.log("Cookies deleted");
+}
+  </script>
+
+</body>
+</html>
