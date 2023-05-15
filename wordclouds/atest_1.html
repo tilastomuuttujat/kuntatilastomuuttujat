@@ -63,7 +63,7 @@
 	/* clear the tab labels */
 		top: 40px; 
 	
-	padding: 20px;
+	padding: 0px;
 	border-radius: 0 0 8px 8px;
 
 	
@@ -474,6 +474,26 @@ body {
 </td>
 <td>
 ITSEARVIOINTI
+<br><br>
+<b>Itsearvioinnin avulla voit tarkastella kuinka elämäsi aikana sinulle tärkeät muistot, kokemukset, tavoitteet ja taitekohdat sijoittuvat kehälle.</b>
+<br><br>
+Näin käytät itsearviointia
+<br><br>
+1. Valitse sinulle merkitykselliset sanat neljästä sanapilvestä, klikkaamalla sanaa kerran (jolloin sanan väri muuttuu vihreäksi) jos sanalla on myönteinen merkitys tai olet samaa mieltä (sana tuottaa mielihyvää), klikkaamalla kaksi kertaa (jolloin sanan väri muuttuu punaiseksi) jos sanalla on kielteinen merkitys tai olet eri mieltä (sanaa tuottaa mielipahaa).
+<br><br>
+2. Käy kaikki neljä aluetta läpi 
+<br>
+a) menneisyys (lähtökohdat)
+<br>
+b) nykyisyys (olosuhteet)
+<br>
+c) tulevaisuus (voimavarat)
+<br>
+d) ajanhallinta (ympäristö)
+<br><br>
+3. Voit katsoa kuinka sinulle merkitykselliset sanat sijoittuvat kehälle, klikkaamalla sanapilvien alapuolella olevaa välilehteä Itsetuntemus
+<br><br>
+4. Saat lisätietoja maalaamalla joitakin valitsemistasi sanoista. Voit maalaamisen jälkeen myös siirellä aluetta.
 </td>
 </table>
 		</li>		
@@ -511,8 +531,8 @@ ITSEARVIOINTI
 
 	<div class="tabs">
 		<div onClick="vihreat()" class="tabby-tab">
-			<input type="radio" id="tab-1" name="tabby-tabs" checked>
-			<label for="tab-1">Järjestä</label>
+			<input type="radio" id="tab-1" name="tabby-tabs">
+			<label for="tab-1">Järjestely</label>
 			<div class="tabby-content">
 <table>
 <td>Lähtökohdat
@@ -532,7 +552,7 @@ ITSEARVIOINTI
 		</div>
 
 		<div onClick="valitut()" class="tabby-tab">
-			<input type="radio" id="tab-2" name="tabby-tabs">
+			<input type="radio" id="tab-2" name="tabby-tabs" checked>
 			<label for="tab-2">Itsetuntemus</label>
 			<div class="tabby-content">
 			<table>
@@ -617,7 +637,7 @@ var r0,r1,r2,r3,r4,r5;
 //console.log(lista4);
 }
 
-    setTimeout(doSomething, 1000);
+    setTimeout(doSomething, 2000);
 
 function doSomething() {
    //do whatever you want here
@@ -662,21 +682,22 @@ data.push([((valitut1[j][1]-90)*6.2831853/-359),valitut1[j][2],valitut1[j][4],va
 }
 
 for (var j = 0; j < valitut2.length; j++) {
-(valitut2[j][5] > 0)
+
+if (valitut2[j][5] > 0)
 data.push([((valitut2[j][1]-90)*6.2831853/-359),valitut2[j][2],valitut2[j][4],valitut2[j][3]]);
 
 }
 
 
 for (var j = 0; j < valitut3.length; j++) {
-(valitut3[j][5] > 0)
+if (valitut3[j][5] > 0)
 data.push([((valitut3[j][1]-90)*6.2831853/-359),valitut3[j][2],valitut3[j][4],valitut3[j][3]]);
 
 }
 
 
 for (var j = 0; j < valitut4.length; j++) {
-(valitut4[j][5] > 0)
+if (valitut4[j][5] > 0)
 data.push([((valitut4[j][1]-90)*6.2831853/-359),valitut4[j][2],valitut4[j][4],valitut4[j][3]]);
 
 }
@@ -743,7 +764,7 @@ const marginTop = 0,
           d.vari = (d.vari + 1) % 3; 
           d3.select(this).style("fill", getColor(d.vari));
 
-
+//console.log(cloudId);
 if(cloudId === clouds[0]) {
 round = 0;
 let riviIndeksi = valitut1.findIndex(rivi => rivi.includes(d.text));
@@ -1704,9 +1725,9 @@ svg.selectAll('point')
   .append('circle')
   .attr('class', 'point')
   .attr('transform', function(d) {
-  console.log(d);
+  //console.log(d);
     var coors = line([d]).slice(1).slice(0, -1); 
-    console.log(coors);
+    //console.log(coors);
     return 'translate(' + coors + ')'
   })
   .attr('r', function(d) {
@@ -1716,7 +1737,7 @@ svg.selectAll('point')
     return color(i);
   })
   .on("click", function(d){
-    console.log(d);
+    //console.log(d);
     //return tooltip.style("visibility", "visible");
   });
 
@@ -1778,7 +1799,7 @@ function updateLinkedCharts(selectedPoints) {
 //console.log(selectedPoints);
 //console.log(data);
 
-
+/*
 var tablet = '<div class="table"><div class="row header"><div class="cell">'
 tablet += 'Paikka</div><div class="cell">Taso</div><div class="cell">Koko</div></div>'
     
@@ -1792,7 +1813,7 @@ tablet += '</div>'
 tablet += '</div>'
 document.getElementById('stable').innerHTML=tablet;                                
 //console.log(tablet);                                
-
+*/
 }
 
 function isBrushed(brush_coords, cx, cy) {
