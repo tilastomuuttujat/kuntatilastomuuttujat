@@ -11,8 +11,8 @@
 .hero-image {
   background-image: url("taustakuva.svg");
   background-color: #ffffff;
-  height: 600px;
-  width: 600px;
+  height: 800px;
+  width: 800px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -656,23 +656,27 @@ var valitut = [];
 
 data = [];
 for (var j = 0; j < valitut1.length; j++) {
+if(valitut1[j][5] > 0)
 data.push([((valitut1[j][1]-90)*6.2831853/-359),valitut1[j][2],valitut1[j][4],valitut1[j][3]]);
 
 }
 
 for (var j = 0; j < valitut2.length; j++) {
+(valitut2[j][5] > 0)
 data.push([((valitut2[j][1]-90)*6.2831853/-359),valitut2[j][2],valitut2[j][4],valitut2[j][3]]);
 
 }
 
 
 for (var j = 0; j < valitut3.length; j++) {
+(valitut3[j][5] > 0)
 data.push([((valitut3[j][1]-90)*6.2831853/-359),valitut3[j][2],valitut3[j][4],valitut3[j][3]]);
 
 }
 
 
 for (var j = 0; j < valitut4.length; j++) {
+(valitut4[j][5] > 0)
 data.push([((valitut4[j][1]-90)*6.2831853/-359),valitut4[j][2],valitut4[j][4],valitut4[j][3]]);
 
 }
@@ -743,6 +747,8 @@ const marginTop = 0,
 if(cloudId === clouds[0]) {
 round = 0;
 let riviIndeksi = valitut1.findIndex(rivi => rivi.includes(d.text));
+//console.log(d.vari);
+//console.log(valitut1);
 if (riviIndeksi !== -1) {
   valitut1[riviIndeksi][5] = d.vari;
   }else{
@@ -1636,9 +1642,9 @@ d3.selectAll("#chart > *").remove();
             formatHsGradAxis = d3.format("");
             
 
-var width = 600,
-    height = 600,
-    jako = 300,
+var width = 800,
+    height = 800,
+    jako = 400,
     radius = Math.min(width, height) / 2 - 30; // radius of the whole chart
 
     var r = d3.scaleLinear()
