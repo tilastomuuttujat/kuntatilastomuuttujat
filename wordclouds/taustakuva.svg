@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 767.26 766.79">
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 767.26 766.79">
   <defs>
     <style>
       .cls-1 {
@@ -35,20 +35,6 @@
         font-size: 20px;
       }
 
-      .cls-26 {
-        stroke: url(#Unnamed_Pattern);
-      }
-
-      .cls-26, .cls-27, .cls-28, .cls-29 {
-        stroke-miterlimit: 10;
-      }
-
-      .cls-26, .cls-30 {
-        fill: #fde7aa;
-        isolation: isolate;
-        opacity: .4;
-      }
-
       .cls-5 {
         fill: #439888;
       }
@@ -69,17 +55,18 @@
         fill: #3a84c3;
       }
 
-      .cls-27 {
+      .cls-26 {
         opacity: .9;
         stroke-width: 20px;
       }
 
-      .cls-27, .cls-31, .cls-32, .cls-28, .cls-29 {
+      .cls-26, .cls-27, .cls-28, .cls-29 {
         fill: none;
       }
 
-      .cls-27, .cls-28, .cls-29 {
+      .cls-26, .cls-28, .cls-29 {
         stroke: #fff;
+        stroke-miterlimit: 10;
       }
 
       .cls-22 {
@@ -98,7 +85,7 @@
         fill: #8f4d8e;
       }
 
-      .cls-31 {
+      .cls-27 {
         opacity: .6;
       }
 
@@ -151,14 +138,8 @@
         fill: #e1a428;
       }
     </style>
-    <pattern id="Unnamed_Pattern" data-name="Unnamed Pattern" x="0" y="0" width="1192" height="650" patternTransform="translate(83.46 83.88)" patternUnits="userSpaceOnUse" viewBox="0 0 1192 650">
-      <g>
-        <rect class="cls-32" width="1192" height="650"/>
-        <rect class="cls-30" width="1192" height="650"/>
-      </g>
-    </pattern>
   </defs>
-  <rect class="cls-31" x="165.89" y="161.99" width="442" height="441.91" transform="translate(-89.15 118.9) rotate(-15.69)"/>
+  <rect class="cls-27" x="165.89" y="161.99" width="442" height="441.91" transform="translate(-89.15 118.9) rotate(-15.69)"/>
   <g id="id3">
     <path class="cls-2" d="m579.28,490.92c-19.88,35.41-44.82,60.99-79.74,81.71-34.92,20.72-69.35,30.39-109.94,30.88-40.6.49-75.21-8.36-110.62-28.24-35.41-19.88-60.99-44.82-81.71-79.74-20.72-34.92-30.39-69.35-30.88-109.94-.49-40.6,8.36-75.21,28.24-110.62,19.88-35.41,44.82-60.99,79.74-81.71,34.92-20.72,69.35-30.39,109.94-30.88,40.6-.49,75.21,8.36,110.62,28.24,35.41,19.88,60.99,44.82,81.71,79.74,20.72,34.92,30.39,69.35,30.88,109.94.49,40.6-8.36,75.21-28.24,110.62h0Z"/>
   </g>
@@ -480,7 +461,7 @@
   <text class="cls-21" transform="translate(537.97 113.44) rotate(120)"><tspan x="0" y="0">. . . . . . . . . . . . . . . . . . . .</tspan></text>
   <text class="cls-21" transform="translate(279.84 572.54) rotate(120)"><tspan x="0" y="0">. . . . . . . . . . . . . . . . . . . .</tspan></text>
   <circle class="cls-29" cx="387.42" cy="382.37" r="209.59"/>
-  <circle class="cls-27" cx="386.39" cy="383.33" r="115"/>
+  <circle class="cls-26" cx="386.39" cy="383.33" r="115"/>
   <text class="cls-24" transform="translate(414.17 275.35) rotate(14.92)"><tspan x="0" y="0"> </tspan></text>
   <text class="cls-24" transform="translate(417.49 276.23) rotate(16.72)"><tspan x="0" y="0"> </tspan></text>
   <text class="cls-24" transform="translate(420.75 277.21) rotate(18.51)"><tspan x="0" y="0"> </tspan></text>
@@ -955,5 +936,4 @@
   <text class="cls-25" transform="translate(342.65 323.06) rotate(-34.67)"><tspan x="0" y="0">Y</tspan></text>
   <text class="cls-25" transform="translate(347.57 319.65) rotate(-30.09)"><tspan x="0" y="0">Y</tspan></text>
   <text class="cls-25" transform="translate(352.59 316.74) rotate(-25.86)"><tspan x="0" y="0">S</tspan></text>
-  <rect class="cls-26" x="83.35" y="83.88" width="600.11" height="600"/>
 </svg>

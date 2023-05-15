@@ -8,6 +8,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
 
 <style>
+.hero-image {
+  background-image: url("taustakuva.svg");
+  background-color: #cccccc;
+  height: 600px;
+  width: 600px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  opacity: 50%;
+}
 .tcontainer { 
 	max-width: 960px; 
 	height: 100%;
@@ -526,8 +537,8 @@ ITSEARVIOINTI
 			<div class="tabby-content">
 			<table>
 			<tr>
-			<td><img src="taustakuva.svg" width="600px" height="600px">
-			<div id="chart"></div>
+			<td>
+			<div id="chart" class="hero-image"></div>
 			</td>
 			<td>
 			<div id="stable"></div>
