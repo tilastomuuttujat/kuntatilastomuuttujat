@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tallenna DIV SVG-muodossa</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <div id="my-div">
+    <!-- Lisää sisältöä tähän -->
+    <svg width="400" height="300">
+      <circle cx="200" cy="150" r="50" fill="red" />
+    </svg>
+  </div>
+
+  <button onclick="tallennaSVG()">Tallenna SVG</button>
+
+  <script>
+    function tallennaSVG() {
+      // Hae div-elementti
+      const div = d3.select("#my-div");
+
+      // Hae SVG-elementti divin sisältä
+      const svgNode = div.node().querySelector("svg");
+
+      // Hae SVG-elementin koodi
+      const svgCode = new XMLSerializer().serializeToString(svgNode);
+
+      // Luo linkki SVG-tiedostolle
+      const svgBlob = new Blob([svgCode], { type: "image/svg+xml" });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      // Luo ankkuri-elementti ja aseta latausattribuutit
+      const downloadLink = document.createElement("a");
+      downloadLink.href = svgUrl;
+      downloadLink.download = "tallennettu_kuva.svg";
+
+      // Simuloi ankkurin klikkaus
+      downloadLink.click();
+
+      // Vapauta URL-resurssi
+      URL.revokeObjectURL(svgUrl);
+    }
+  </script>
+</body>
+</html>
