@@ -577,6 +577,8 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			<label for="tab-3">Työvalmennus</label>	
 			<div class="tabby-content">
   <button onclick="saveSVG()">Tallenna SVG</button>
+  <button onclick="savePNG()">Tallenna PNG</button>
+  <button onclick="savePDF()">Tallenna PDF</button>
 
     
 			<div id="svgs1" class="hero-image1"></div>	
@@ -1906,6 +1908,71 @@ function isBrushed(brush_coords, cx, cy) {
       var svgElement = document.getElementById("chart").innerHTML;
       var blob = new Blob([svgElement], { type: "image/svg+xml;charset=utf-8" });
       saveAs(blob, "chart.svg");
+    }
+
+    function savePNG() {
+      var svgElement = document.getElementById("chart").querySelector("svg");
+      var svgString = new XMLSerializer().serializeToString(svgElement);
+
+      var canvas = document.createElement("canvas");
+      var context = canvas.getContext("2d");
+      var DOMURL = window.URL || window.webkitURL;
+      var img = new Image();
+      var svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      var url = DOMURL.createObjectURL(svgBlob);
+
+      img.onload = function() {
+        context.canvas.width = svgElement.getAttribute("width");
+        context.canvas.height = svgElement.getAttribute("height");
+        context.drawImage(img, 0, 0);
+
+        DOMURL.revokeObjectURL(url);
+
+        var imgURI = canvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream");
+
+        saveDataURI("chart.png", imgURI);
+      };
+
+      img.src = url;
+    }
+
+    function savePDF() {
+      var svgElement = document.getElementById("chart").querySelector("svg");
+      var svgString = new XMLSerializer().serializeToString(svgElement);
+
+      var canvas = document.createElement("canvas");
+      var context = canvas.getContext("2d");
+      var DOMURL = window.URL || window.webkitURL;
+      var img = new Image();
+      var svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      var url = DOMURL.createObjectURL(svgBlob);
+
+      img.onload = function() {
+        context.canvas.width = svgElement.getAttribute("width");
+        context.canvas.height = svgElement.getAttribute("height");
+        context.drawImage(img, 0, 0);
+
+        DOMURL.revokeObjectURL(url);
+
+        var imgURI = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream");
+
+        var pdf = new jsPDF();
+        pdf.addImage(imgURI, "JPEG", 0, 0, parseInt(svgElement.getAttribute("width")), parseInt(svgElement.getAttribute("height")));
+        pdf.save("chart.pdf");
+      };
+
+      img.src = url;
+    }
+
+    function saveDataURI(filename, dataURI) {
+      var link = document.createElement("a");
+      link.href = dataURI;
+      link.download = filename;
+      link.click();
     }
     
 /*
