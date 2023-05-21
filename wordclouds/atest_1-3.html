@@ -642,6 +642,9 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			<div class="tabby-content">
 
   <button id="generate" onClick="(function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">Tallenna SVG</button>
+  
+    <button id="generate1" onClick="tallennaSVG()">Tallenna kaikki</button>
+    
 			<div id="svgs1" class="hero-image1"></div>	
 			<table>
 			<tr>
@@ -1906,7 +1909,50 @@ function isBrushed(brush_coords, cx, cy) {
         }
 }
 
+function tallennaSVG() {
+      // Hae haluttu <div>-elementti
+      const divElement = document.getElementById('svgs');
 
+      // Luo uusi <canvas>-elementti
+      const canvas = document.createElement('canvas');
+      canvas.width = divElement.offsetWidth;
+      canvas.height = divElement.offsetHeight;
+
+      // Hae piirtokonteksti
+      const context = canvas.getContext('2d');
+
+      // Luo uusi <foreignObject>-elementti
+      const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+      foreignObject.setAttribute('width', canvas.width);
+      foreignObject.setAttribute('height', canvas.height);
+      divElement.appendChild(foreignObject);
+
+      // Lisää <div>:n sisältö <foreignObject>-elementtiin D3:lla
+      d3.select(foreignObject)
+        .append('xhtml:div')
+        .html(divElement.innerHTML);
+
+      // Luo lopullinen tallennettava kuva
+      const svgData = new XMLSerializer().serializeToString(divElement);
+      const svg = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svg);
+
+      const img = new Image();
+      img.onload = function() {
+        // Piirrä taustakuva canvasille
+        context.drawImage(img, 0, 0);
+
+        // Luo latauslinkki
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'tallennettu_kuva.png';
+        link.click();
+
+        // Vapauta muisti
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    }
 </script>
 </body>
 </html>
