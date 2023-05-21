@@ -630,13 +630,7 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			<input type="radio" id="tab-3" name="tabby-tabs" checked>
 			<label for="tab-3">Työvalmennus</label>	
 			<div class="tabby-content">
-  <h3>The Bookmarklet</h3>
-  <p>
-    <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Crowbar</a>&nbsp;
-    <span>← Drag this to your bookmarks bar.</span>
-  </p>
 
-  <h3>A Sample SVG</h3>
     
 			<div id="svgs1" class="hero-image1"></div>	
 			<table>
@@ -660,7 +654,10 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			</div>
 		</div>
 	</div>
-
+  <h3>Tallenna</h3>
+  <p>
+    <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Tallennus</a>&nbsp;
+  </p>
 
  
 <script>
@@ -753,8 +750,21 @@ var valitut = [];
 
 data = [];
 for (var j = 0; j < valitut1.length; j++) {
-if(valitut1[j][5] > 0)
+
+
+if(valitut1[j][5] > 0) {
+
+
+if(valitut1[j][5] > 1) {
+data.push([((valitut1[j][1]-90)*6.2831853/-359),1,valitut1[j][4],valitut1[j][3]]);
+} else {
 data.push([((valitut1[j][1]-90)*6.2831853/-359),valitut1[j][2],valitut1[j][4],valitut1[j][3]]);
+}
+
+
+}
+
+
 
 }
 
