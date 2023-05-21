@@ -461,6 +461,72 @@ body {
   padding: 6px 12px;
   display: table-cell;
 }
+
+ /* Testing */
+    @import url("assets/imported.css");
+
+    svg {
+      border: solid 1px #ddd;
+    }
+
+    .internal {
+      fill: #f0f;
+    }
+
+    #svgs .dependency {
+      fill: #f0f;
+    }
+
+    svg text {
+      text-anchor: middle;
+      font-size: 16px;
+      font-family: Helvetica;
+    }
+
+    /* Page Styles */
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial;
+      width: 600px;
+      margin: 40px auto;
+      font-size: 15px;
+      line-height: 1.4em;
+      background-color: tomato;
+    }
+
+    h3 {
+      font-size: 18px;
+      border-top: solid 1px #ddd;
+      padding: 20px 0 0 0;
+      margin: 20px 0 0 0;
+    }
+
+    p {
+      color: #333;
+    }
+
+    .note {
+      color: #999;
+    }
+
+    .bookmarklet {
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 1em;
+      background: #666;
+      color: white;
+    }
+
+    .bookmarklet.ver2 {
+      background: #3FAA90;
+    }
+
+    #svgs {
+      margin: 20px 0;
+    }
+    
+    
 </style>
 
 </head>
@@ -596,7 +662,7 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
   <h3>A Sample SVG</h3>
   <div id="svgs"></div>
 
-<button id="generate">Save as SVG</button>
+<button id="generate">Save as SVG</button> 
 
 <script>
 var tpsum = [];
