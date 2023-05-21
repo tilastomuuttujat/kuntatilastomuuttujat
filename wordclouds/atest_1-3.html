@@ -640,7 +640,7 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			<input type="radio" id="tab-3" name="tabby-tabs" checked>
 			<label for="tab-3">Työvalmennus</label>	
 			<div class="tabby-content">
-
+  <button onclick="tallennaSVG()">Tallenna SVG</button> 
 
     
 			<div id="svgs1" class="hero-image1"></div>	
@@ -1758,46 +1758,30 @@ var width = 800,
       //.call(zoom)
       .attr('width', width)
       .attr('height', height)
+
+/*
+.append('svg:image')
+    .attr('xlink:href', 'taustakuva.svg')
+    .attr("width", 800)
+    .attr("height", 800)
+    .attr("x", 0)
+    .attr("y", 0)
+*/    
+    
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
 
-const imageUrl = "taustakuva.svg";
+/*
+const imageUrl = "tvtaustakuva.svg";
     d3.xml(imageUrl)
       .then(response => {
         // Lisää taustakuva SVG:hen
         const image = d3.select(response.documentElement);
         svg.node().appendChild(image.node());
-
-        // Luo tallennuspainike
-        const saveButton = d3.select("body")
-          .append("button")
-          .text("Tallenna SVG")
-          .on("click", () => {
-            // Hae SVG-elementin koodi
-            const svgCode = new XMLSerializer().serializeToString(svg.node());
-
-            // Luo linkki SVG-tiedostolle
-            const svgBlob = new Blob([svgCode], { type: "image/svg+xml" });
-            const svgUrl = URL.createObjectURL(svgBlob);
-
-            // Luo ankkuri-elementti ja aseta latausattribuutit
-            const downloadLink = document.createElement("a");
-            downloadLink.href = svgUrl;
-            downloadLink.download = "tallennettu_kuva.svg";
-
-            // Simuloi ankkurin klikkaus
-            downloadLink.click();
-
-            // Vapauta URL-resurssi
-            URL.revokeObjectURL(svgUrl);
-          });
-      })
-      .catch(error => {
-        console.error("Virhe taustakuvan lataamisessa:", error);
       });
 
-
+*/
 
 
 
@@ -1953,7 +1937,31 @@ function isBrushed(brush_coords, cx, cy) {
         }
 }
 
+    function tallennaSVG() {
+      // Hae div-elementti
+      const div = d3.select("#svgs");
 
+      // Hae SVG-elementti divin sisältä
+      const svgNode = div.node();
+
+      // Hae SVG-elementin koodi
+      const svgCode = new XMLSerializer().serializeToString(svgNode);
+
+      // Luo linkki SVG-tiedostolle
+      const svgBlob = new Blob([svgCode], { type: "image/svg+xml" });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      // Luo ankkuri-elementti ja aseta latausattribuutit
+      const downloadLink = document.createElement("a");
+      downloadLink.href = svgUrl;
+      downloadLink.download = "tallennettu_kuva.svg";
+
+      // Simuloi ankkurin klikkaus
+      downloadLink.click();
+
+      // Vapauta URL-resurssi
+      URL.revokeObjectURL(svgUrl);
+    }
 </script>
 </body>
 </html>
