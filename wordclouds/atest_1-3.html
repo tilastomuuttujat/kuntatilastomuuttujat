@@ -1743,8 +1743,8 @@ const imageUrl = "tvtaustakuva.svg";
       });
 
     ga.append('line')
-      .attr('x2', radius)
-            .attr("fill","none");
+      .attr('x2', radius);
+            
 
 
     //var color = d3.scale.category20();
@@ -1764,6 +1764,7 @@ const imageUrl = "tvtaustakuva.svg";
   
 //circles
 var tooltip = d3.select("body")
+.attr("fill","none")
 	.append("div")
 	.style("position", "absolute")
 	.style("z-index", "10")
