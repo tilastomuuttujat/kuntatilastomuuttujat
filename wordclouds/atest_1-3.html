@@ -476,7 +476,7 @@ body {
       fill: #f0f;
     }
 
-    #chart .dependency {
+    #svgs .dependency {
       fill: #f0f;
     }
 
@@ -525,7 +525,7 @@ body {
       background: #3FAA90;
     }
 
-    #chart {
+    #svgs {
       margin: 20px 0;
     }
 
@@ -637,7 +637,7 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			<table>
 			<tr>
 			<td>
-			<div id="chart1" class="hero-image"></div>
+			<div id="svgs" class="hero-image"></div>
 			</td>
 			<td>
 			<div id="stable"></div>
@@ -661,7 +661,7 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
     <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Crowbar</a>&nbsp;
     <span>← Drag this to your bookmarks bar.</span>
   </p>
-			<div id="chart" class="hero-image"></div>
+			<div id="chart" class="hero-image1"></div>
  
 <script>
 var tpsum = [];
@@ -1734,7 +1734,7 @@ window['Slip'] = (function(){
     
 function polar(data) {
 //console.log(data);
-d3.selectAll("#chart > *").remove(); 
+d3.selectAll("#svgs > *").remove(); 
         var formatIncome = d3.format(""),
             formatHsGrad = d3.format(""),
             formatHsGradAxis = d3.format("");
@@ -1749,7 +1749,7 @@ var width = 800,
       .domain([0, 1])
       .range([0, radius]);
 
-    var svg = d3.select("#chart").append('svg')
+    var svg = d3.select("#svgs").append('svg')
       //.call(zoom)
       .attr('width', width)
       .attr('height', height)
