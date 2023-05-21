@@ -4,6 +4,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> 
     <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
 
@@ -462,71 +463,7 @@ body {
   display: table-cell;
 }
 
- /* Testing */
-    @import url("assets/imported.css");
-
-    svg {
-      border: solid 1px #ddd;
-    }
-
-    .internal {
-      fill: #f0f;
-    }
-
-    #svgs .dependency {
-      fill: #f0f;
-    }
-
-    svg text {
-      text-anchor: middle;
-      font-size: 16px;
-      font-family: Helvetica;
-    }
-
-    /* Page Styles */
-    body {
-      font-family: "Helvetica Neue", Helvetica, Arial;
-      width: 600px;
-      margin: 40px auto;
-      font-size: 15px;
-      line-height: 1.4em;
-      background-color: tomato;
-    }
-
-    h3 {
-      font-size: 18px;
-      border-top: solid 1px #ddd;
-      padding: 20px 0 0 0;
-      margin: 20px 0 0 0;
-    }
-
-    p {
-      color: #333;
-    }
-
-    .note {
-      color: #999;
-    }
-
-    .bookmarklet {
-      padding: 3px 8px;
-      font-size: 12px;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 1em;
-      background: #666;
-      color: white;
-    }
-
-    .bookmarklet.ver2 {
-      background: #3FAA90;
-    }
-
-    #svgs {
-      margin: 20px 0;
-    }
-    
-    
+ 
 </style>
 
 </head>
@@ -653,17 +590,8 @@ d) Työpaikka kuvaa rekrytointi- ja työelämämätaitojasi
 			</div>
 		</div>
 	</div>
-  <h3>The Bookmarklet</h3>
-  <p>
-    <a class="bookmarklet" href="javascript:javascript: (function () { var e = document.createElement('script'); e.setAttribute('src', 'svg-crowbar.js'); e.setAttribute('class', 'svg-crowbar'); document.body.appendChild(e); })();">SVG Crowbar</a>&nbsp;
-    <span>← Drag this to your bookmarks bar.</span>
-  </p>
 
-  <h3>A Sample SVG</h3>
-  <div id="svgs"></div>
-
-<button id="generate">Save as SVG</button> 
-
+<button onclick="SaveSVG.save('mySVG', 'styles.css', 'monos.svg')">Save SVG</button>
 <script>
 var tpsum = [];
 var period_a = 2016;
@@ -1903,216 +1831,162 @@ function isBrushed(brush_coords, cx, cy) {
         }
 }
 
+//  v1.0.0 Copyright 2020 Akul Mehta
 (function (global, factory) {
-  if (typeof define === "function" && define.amd) {
-    define([], factory);
-  } else if (typeof exports !== "undefined") {
-    factory();
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory();
-    global.FileSaver = mod.exports;
-  }
-})(this, function () {
-  "use strict";
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.SaveSVG = {}));
+}(this, (function (exports) { 'use strict';
 
-  /*
-  * FileSaver.js
-  * A saveAs() FileSaver implementation.
-  *
-  * By Eli Grey, http://eligrey.com
-  *
-  * License : https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md (MIT)
-  * source  : http://purl.eligrey.com/github/FileSaver.js
-  */
-  // The one and only way of getting global scope in all environments
-  // https://stackoverflow.com/q/3277182/1008999
-  var _global = typeof window === 'object' && window.window === window ? window : typeof self === 'object' && self.self === self ? self : typeof global === 'object' && global.global === global ? global : void 0;
+  var svgStyle = {
+    data : "",
+  };
 
-  function bom(blob, opts) {
-    if (typeof opts === 'undefined') opts = {
-      autoBom: false
-    };else if (typeof opts !== 'object') {
-      console.warn('Deprecated: Expected third argument to be a object');
-      opts = {
-        autoBom: !opts
-      };
-    } // prepend BOM for UTF-8 XML and text/* types (including HTML)
-    // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
+  var useArr = {
+    data : [],
+  };
 
-    if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
-      return new Blob([String.fromCharCode(0xFEFF), blob], {
-        type: blob.type
+  function readFile(file) {
+      return new Promise(function (resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4) {
+                  if (xhr.status == 200) {
+                      resolve(xhr.responseText);
+                  } else {
+                      reject(xhr);
+                  }
+              }
+          };
+          xhr.open("GET", file);
+          xhr.overrideMimeType("text/plain; charset=x-user-defined");
+          xhr.send();
       });
-    }
-
-    return blob;
   }
 
-  function download(url, name, opts) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-
-    xhr.onload = function () {
-      saveAs(xhr.response, name, opts);
-    };
-
-    xhr.onerror = function () {
-      console.error('could not download file');
-    };
-
-    xhr.send();
+  async function readCSSFile(file) {
+      var getUrl = window.location.href;
+      getUrl = getUrl.split('/');
+      getUrl.pop();
+      getUrl = getUrl.join('/');
+      getUrl += '/';
+      let fileread = await readFile(getUrl + file).then(function (d) {
+          svgStyle.data += d;
+      })
+          .catch(function (xhr) {
+          });
   }
 
-  function corsEnabled(url) {
-    var xhr = new XMLHttpRequest(); // use sync to avoid popup blocker
-
-    xhr.open('HEAD', url, false);
-
-    try {
-      xhr.send();
-    } catch (e) {}
-
-    return xhr.status >= 200 && xhr.status <= 299;
-  } // `a.click()` doesn't work for all browsers (#465)
-
-
-  function click(node) {
-    try {
-      node.dispatchEvent(new MouseEvent('click'));
-    } catch (e) {
-      var evt = document.createEvent('MouseEvents');
-      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
-      node.dispatchEvent(evt);
-    }
-  } // Detect WebView inside a native macOS app by ruling out all browsers
-  // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
-  // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
-
-
-  var isMacOSWebView = /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
-  var saveAs = _global.saveAs || ( // probably in some web worker
-  typeof window !== 'object' || window !== _global ? function saveAs() {}
-  /* noop */
-  // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
-  : 'download' in HTMLAnchorElement.prototype && !isMacOSWebView ? function saveAs(blob, name, opts) {
-    var URL = _global.URL || _global.webkitURL;
-    var a = document.createElement('a');
-    name = name || blob.name || 'download';
-    a.download = name;
-    a.rel = 'noopener'; // tabnabbing
-    // TODO: detect chrome extensions & packaged apps
-    // a.target = '_blank'
-
-    if (typeof blob === 'string') {
-      // Support regular links
-      a.href = blob;
-
-      if (a.origin !== location.origin) {
-        corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
-      } else {
-        click(a);
-      }
-    } else {
-      // Support blobs
-      a.href = URL.createObjectURL(blob);
-      setTimeout(function () {
-        URL.revokeObjectURL(a.href);
-      }, 4E4); // 40s
-
-      setTimeout(function () {
-        click(a);
-      }, 0);
-    }
-  } // Use msSaveOrOpenBlob as a second approach
-  : 'msSaveOrOpenBlob' in navigator ? function saveAs(blob, name, opts) {
-    name = name || blob.name || 'download';
-
-    if (typeof blob === 'string') {
-      if (corsEnabled(blob)) {
-        download(blob, name, opts);
-      } else {
-        var a = document.createElement('a');
-        a.href = blob;
-        a.target = '_blank';
-        setTimeout(function () {
-          click(a);
+  function replacecss(svgid) {
+    var allStyle = svgStyle.data.replace(/\/\*.*\*\//g, '').replace(/\r?\n|\r/g, '').split('}');
+    allStyle.forEach(function (el) {
+      if (el.trim() != '') {
+        var full_rule_string = el.split('{');
+        var selector = full_rule_string[0].trim();
+        var all_rule = full_rule_string[1].split(';');
+        all_rule.forEach(function (elem) {
+          if (elem.trim() != '') {
+            var attr_value = elem.split(':');
+            var prop = attr_value[0].trim();
+            var value = attr_value[1].trim();
+            if (prop == 'font-weight') {
+              d3.select('#' + svgid).selectAll(selector).each(function (d, i) {
+                if (!this.getAttribute(prop) && this.style[prop] !== value) {
+                  d3.select(this).style(prop + '', value + '');
+                }
+              });
+            } else {
+              d3.select('#' + svgid).selectAll(selector).each(function (d, i) {
+                if (!this.getAttribute(prop) && !this.style[prop]) {
+                  d3.select(this).style(prop + '', value + '');
+                }
+              });
+            }
+          }
         });
       }
-    } else {
-      navigator.msSaveOrOpenBlob(bom(blob, opts), name);
-    }
-  } // Fallback to using FileReader and a popup
-  : function saveAs(blob, name, opts, popup) {
-    // Open a popup immediately do go around popup blocker
-    // Mostly only available on user interaction and the fileReader is async so...
-    popup = popup || open('', '_blank');
+    });
 
-    if (popup) {
-      popup.document.title = popup.document.body.innerText = 'downloading...';
-    }
+  }
 
-    if (typeof blob === 'string') return download(blob, name, opts);
-    var force = blob.type === 'application/octet-stream';
+  async function readUSE(usefile) {
+    let fetchSVG = await d3.xml(usefile).then(function (data) {
+      useArr.data = [].map.call(data.querySelectorAll("symbol"), function (symbol) {
+          return {
+              id: symbol.getAttribute("id"),
+              viewBox: symbol.getAttribute('viewBox'),
+              innerhtml: symbol.innerHTML.replace(/\n|\t/g, '').trim(),
+          };
+      });
+      return useArr.data;
+  });
+  }
 
-    var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari;
+  async function replaceuse(svgid) {
 
-    var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
-
-    if ((isChromeIOS || force && isSafari || isMacOSWebView) && typeof FileReader !== 'undefined') {
-      // Safari doesn't allow downloading of blob URLs
-      var reader = new FileReader();
-
-      reader.onloadend = function () {
-        var url = reader.result;
-        url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;');
-        if (popup) popup.location.href = url;else location = url;
-        popup = null; // reverse-tabnabbing #460
+    var use = d3.selectAll(`#${svgid} use`).each(function (i) {
+      var href = this.getAttribute('href');
+      if (href === null) { href = this.getAttribute('xlink:href'); }
+      if (href === null) {return}    var obj = {
+        id: href.split('#')[1],
+        x: this.getAttribute('x'),
+        y: this.getAttribute('y'),
+        height: this.getAttribute('height'),
+        width: this.getAttribute('width')
       };
 
-      reader.readAsDataURL(blob);
-    } else {
-      var URL = _global.URL || _global.webkitURL;
-      var url = URL.createObjectURL(blob);
-      if (popup) popup.location = url;else location.href = url;
-      popup = null; // reverse-tabnabbing #460
+      var eachUse = useArr.data.find(e => {
+        return e.id == obj.id;
+      });
 
-      setTimeout(function () {
-        URL.revokeObjectURL(url);
-      }, 4E4); // 40s
-    }
-  });
-  _global.saveAs = saveAs.saveAs = saveAs;
-
-  if (typeof module !== 'undefined') {
-    module.exports = saveAs;
+      d3.select(this.parentNode).append('svg')
+                                .attr('id', obj.id)
+                                .attr('x', obj.x)
+                                .attr('y', obj.y)
+                                .attr('height', obj.height)
+                                .attr('width', obj.width)
+                                .attr('viewBox', eachUse.viewBox)
+                                .html(eachUse.innerhtml)
+                                .lower();
+    })
+    .remove();
   }
-});
 
-d3.select("#generate")
-    .on("click", writeDownloadLink);
-
-function writeDownloadLink(){
-    try {
-        var isFileSaverSupported = !!new Blob();
-    } catch (e) {
-        alert("blob not supported");
+  async function save(svgID, cssFile, useFile) {
+    if (cssFile !== null) {
+      await readCSSFile(cssFile);
+      replacecss(svgID);
     }
+    if (useFile !== null) {
+      await readUSE(useFile);
+      replaceuse(svgID);
+    }
+    var svgData = document.getElementById(svgID);
 
-    var html = d3.select("svg")
-        .attr("title", "test2")
-        .attr("version", 1.1)
-        .attr("xmlns", "http://www.w3.org/2000/svg")
-        .node().parentNode.innerHTML;
+    svgData.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svgData.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    svgData = document.getElementById(svgID).outerHTML;
+    var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "Figure.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 
-    var blob = new Blob([html], {type: "image/svg+xml"});
-    saveAs(blob, "myProfile.svg");
-};
+  exports.readCSSFile = readCSSFile;
+  exports.readUSE = readUSE;
+  exports.replacecss = replacecss;
+  exports.replaceuse = replaceuse;
+  exports.save = save;
+  exports.svgStyle = svgStyle;
+  exports.useArr = useArr;
 
+  Object.defineProperty(exports, '__esModule', { value: true });
 
+})));
 </script>
 </body>
 </html>
