@@ -5,7 +5,7 @@
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css"> 
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
 
 <style>
@@ -1763,6 +1763,15 @@ var width = 800,
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
+
+
+
+
+
+
+
+
+
     var gr = svg.append('g')
       .attr('class', 'r axis')
       .selectAll('g')
@@ -1783,9 +1792,13 @@ var width = 800,
 
     ga.append('line')
       .attr('x2', radius);
-      
+
     //var color = d3.scale.category20();
-    var color = d3.scaleOrdinal( d3.schemeCategory20 )
+    //var color = d3.scaleOrdinal( d3.schemeCategory20 )
+    var color = d3.scaleOrdinal(d3.schemeAccent);
+    //var color = d3.scaleSequential(d3.interpolatePiYG);
+    //var color = d3.scaleSequential(d3.interpolateYlOrRd);
+    
 
     var line = d3.lineRadial()
       .radius(function(d) {
