@@ -1694,7 +1694,7 @@ var width = 800,
       //.call(zoom)
       .attr('width', width)
       .attr('height', height)
-      .attr("fill","none")
+      
 
 /*
 .append('svg:image')
@@ -1743,7 +1743,9 @@ const imageUrl = "tvtaustakuva.svg";
       });
 
     ga.append('line')
-      .attr('x2', radius);
+      .attr('x2', radius)
+            .attr("fill","none");
+
 
     //var color = d3.scale.category20();
     //var color = d3.scaleOrdinal( d3.schemeCategory20 )
