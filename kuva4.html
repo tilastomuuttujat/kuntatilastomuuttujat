@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tallenna SVG-kuvana</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <div id="svg-container"></div>
+
+  <script>
+    // Luo SVG-elementti
+    const svg = d3.select("#svg-container")
+      .append("svg")
+      .attr("width", 800)
+      .attr("height", 800);
+
+    // Lisää SVG-sisältö
+    svg.append("circle")
+      .attr("cx", 250)
+      .attr("cy", 150)
+      .attr("r", 50)
+      .style("fill", "red");
+
+    // Lataa taustakuva
+    const imageUrl = "taustakuva.svg";
+    d3.xml(imageUrl)
+      .then(response => {
+        // Lisää taustakuva SVG:hen
+        const image = d3.select(response.documentElement);
+        svg.node().appendChild(image.node());
+
+        // Luo tallennuspainike
+        const saveButton = d3.select("body")
+          .append("button")
+          .text("Tallenna SVG")
+          .on("click", () => {
+            // Hae SVG-elementin koodi
+            const svgCode = new XMLSerializer().serializeToString(svg.node());
+
+            // Luo linkki SVG-tiedostolle
+            const svgBlob = new Blob([svgCode], { type: "image/svg+xml" });
+            const svgUrl = URL.createObjectURL(svgBlob);
+
+            // Luo ankkuri-elementti ja aseta latausattribuutit
+            const downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = "tallennettu_kuva.svg";
+
+            // Simuloi ankkurin klikkaus
+            downloadLink.click();
+
+            // Vapauta URL-resurssi
+            URL.revokeObjectURL(svgUrl);
+          });
+      })
+      .catch(error => {
+        console.error("Virhe taustakuvan lataamisessa:", error);
+      });
+  </script>
+</body>
+</html>
