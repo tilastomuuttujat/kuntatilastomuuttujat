@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 SVG Tallennus</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <div id="svg-container"></div>
+
+  <script>
+    const xmlns = "http://www.w3.org/2000/xmlns/";
+    const xlinkns = "http://www.w3.org/1999/xlink";
+    const svgns = "http://www.w3.org/2000/svg";
+
+    const serialize = function(svg) {
+      svg = svg.cloneNode(true);
+      const fragment = window.location.href + "#";
+      const walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT);
+      while (walker.nextNode()) {
+        for (const attr of walker.currentNode.attributes) {
+          if (attr.value.includes(fragment)) {
+            attr.value = attr.value.replace(fragment, "#");
+          }
+        }
+      }
+      svg.setAttributeNS(xmlns, "xmlns", svgns);
+      svg.setAttributeNS(xmlns, "xmlns:xlink", xlinkns);
+      const serializer = new window.XMLSerializer();
+      const string = serializer.serializeToString(svg);
+      return new Blob([string], {type: "image/svg+xml"});
+    };
+
+    // Luo SVG-elementti ja lisää siihen yksinkertaisen ympyrän
+    const svgContainer = d3.select("#svg-container")
+      .append("svg")
+      .attr("width", 200)
+      .attr("height", 200);
+
+    svgContainer.append("circle")
+      .attr("cx", 100)
+      .attr("cy", 100)
+      .attr("r", 50)
+      .attr("fill", "red");
+
+    // Tallenna SVG
+    const svgElement = document.querySelector("#svg-container svg");
+    const svgBlob = serialize(svgElement);
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "tallennettu_svg.svg";
+    downloadLink.innerHTML = "Lataa SVG";
+    document.body.appendChild(downloadLink);
+  </script>
+</body>
+</html>
