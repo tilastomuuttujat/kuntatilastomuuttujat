@@ -561,7 +561,7 @@ d) Työpaikka kuvaa etenemistä rekrytointiprosessista eteenpäin
 			</div>
 		</div>
 	</div>
-
+  <button onclick="downloadSvg()">Tallenna SVG</button>
  
 <script>
 var tpsum = [];
@@ -1680,41 +1680,6 @@ var width = 800,
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
 
-    const xmlns = "http://www.w3.org/2000/xmlns/";
-    const xlinkns = "http://www.w3.org/1999/xlink";
-    const svgns = "http://www.w3.org/2000/svg";
-
-    const serialize = function(svg) {
-      svg = svg.cloneNode(true);
-      const fragment = window.location.href + "#";
-      const walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT);
-      while (walker.nextNode()) {
-        for (const attr of walker.currentNode.attributes) {
-          if (attr.value.includes(fragment)) {
-            attr.value = attr.value.replace(fragment, "#");
-          }
-        }
-      }
-      svg.setAttributeNS(xmlns, "xmlns", svgns);
-      svg.setAttributeNS(xmlns, "xmlns:xlink", xlinkns);
-      const serializer = new window.XMLSerializer();
-      const string = serializer.serializeToString(svg);
-      return new Blob([string], {type: "image/svg+xml"});
-    };
-
-    // Tallenna SVG
-    const svgElement = document.querySelector("#chart svg");
-    const svgBlob = serialize(svgElement);
-    const svgUrl = URL.createObjectURL(svgBlob);
-
-    const downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = "tallennettu_svg.svg";
-    downloadLink.innerHTML = "Lataa SVG";
-    document.body.appendChild(downloadLink);
-
-
-
 
 
 /*
@@ -1888,8 +1853,35 @@ function isBrushed(brush_coords, cx, cy) {
         }
 }
 
+function downloadSvg() {
+
+var svg = document.getElementById("chart");
+var serializer = new XMLSerializer();
+var source = serializer.serializeToString(svg);
+source = source.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); // Fix root xlink without namespace
+
+source = source.replace(/ns\d+:href/g, 'xlink:href'); // Safari NS namespace fix.
 
 
+if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+}
+if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+    source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+}
+
+
+var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+var svgBlob = new Blob([preface, source], { type: "image/svg+xml;charset=utf-8" });
+var svgUrl = URL.createObjectURL(svgBlob);
+var downloadLink = document.createElement("a");
+downloadLink.href = svgUrl;
+downloadLink.download = name;
+document.body.appendChild(downloadLink);
+downloadLink.click();
+document.body.removeChild(downloadLink);
+
+}
 
  
 </script>
