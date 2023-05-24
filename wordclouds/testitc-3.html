@@ -1,0 +1,131 @@
+<style>
+  body {
+    background-color: #fff;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  div {
+    margin: 20px auto 0;
+    color: #aaa;
+    font-weight: 100;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .xaxis path,
+  .xaxis line,
+  .yaxis path,
+  .yaxis line {
+    stroke: #aaa;
+    fill: none;
+    shape-rendering: crispEdges;
+  }
+
+  .xaxis text,
+  .yaxis text {
+    font-family: sans-serif;
+    font-size: 11px;
+    fill: #aaa;
+  }
+
+  .datapoint {
+    cursor: pointer;
+    stroke: #111;
+    fill: rgba(0, 150, 255, 0.75);
+    stroke-width: 7;
+  }
+
+  .label {
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: #000;
+    text-anchor: middle;
+  }
+</style>
+
+<body translate="no">
+  <div></div>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+    var radius = 32;
+    let w = 800;
+    let h = 800;
+    let padding = 50;
+    let dataset = [
+      [10, 200, "yksi"],
+      [20, 50, "kaksi"],
+      [30, 40, "kolme"],
+      [40, 80, "neljä"],
+      [50, 90, "viisi"],
+      [60, 50, "kuusi"],
+      [70, 70, "seitsemän"],
+      [80, 60, "kahdeksan"],
+      [90, 10, "yhdeksän"]
+    ];
+
+    let svg = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h)
+      .attr("id", "chart");
+
+    let drag = d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended);
+
+    let xScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, d => d[0])])
+      .range([padding, w - padding]);
+
+    let yScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, d => d[1])])
+      .range([h - padding, padding]);
+
+    let xAxis = d3.axisBottom()
+      .scale(xScale);
+
+    let yAxis = d3.axisLeft()
+      .scale(yScale);
+
+    let dataGroups = svg.selectAll(".dataGroup")
+      .data(dataset)
+      .enter()
+      .append("g")
+      .attr("class", "dataGroup")
+      .attr("transform", (d) => `translate(${xScale(d[0])},${yScale(d[1])})`)
+      .call(drag);
+
+    dataGroups.append("circle")
+      .attr("r", radius)
+      .attr("class", "datapoint");
+
+    dataGroups.append("text")
+      .attr("class", "label")
+      .attr("dy", ".35em")
+      .text(d => d[2]);
+
+    function dragstarted() {
+      d3.select(this).classed("dragging", true);
+    }
+
+    function dragged(d) {
+      d3.select(this)
+        .attr("transform", `translate(${d3.event.x},${d3.event.y})`);
+    }
+
+    function dragended() {
+      d3.select(this).classed("dragging", false);
+    }
+  </script>
+</body>
