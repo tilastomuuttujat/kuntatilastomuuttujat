@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="fi" >
+<head>
+  <script src="jquery.min.js"></script>
+    <link href="jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> 
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="xd3.v5.min.js"></script>
+  <script src="d3.layout.cloud.js"></script>
+
+<style>
+/*
+  body {
+    background-color: #fff;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  div {
+    margin: 20px auto 0;
+    color: #aaa;
+    font-weight: 100;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+*/
+  .xaxis path,
+  .xaxis line,
+  .yaxis path,
+  .yaxis line {
+    stroke: #aaa;
+    fill: none;
+    shape-rendering: crispEdges;
+  }
+
+  .xaxis text,
+  .yaxis text {
+    font-family: sans-serif;
+    font-size: 11px;
+    fill: #aaa;
+  }
+
+  .datapoint {
+    cursor: pointer;
+    stroke: #111;
+    fill: rgba(0, 150, 255, 0.75);
+    stroke-width: 2;
+  }
+
+  .label {
+    font-family: sans-serif;
+    font-size: 14px;
+    fill: #000;
+    text-anchor: middle;
+  }
+  
+.hero-image {
+  background-image: url("elonkeha_tausta.svg");
+  background-color: #ffffff;
+  height: 900px;
+  width: 900px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  opacity: 50%;
+}
+.tcontainer { 
+	max-width: 960px; 
+	height: 100%;
+	margin: 0 auto; 
+	padding: 20px;
+}
+
+.tabs {
+	position: relative;
+	display: flex;
+	min-height: 950px;
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+}
+
+.tabby-tab {
+	flex: 1;
+}
+
+.tabby-tab label {
+	display: block;
+	box-sizing: border-box;
+	/* tab content must clear this */
+		height: 40px;
+	
+	padding: 10px;
+	text-align: center;
+	background: #97ded1;
+	cursor: pointer;
+	transition: background 0.5s ease;
+	
+}
+
+.tabby-tab label:hover {
+	background: #7bacab;
+}
+
+.tabby-content {
+	position: absolute;
+	
+	left: 0; bottom: 0; right: 0;
+	/* clear the tab labels */
+		top: 40px; 
+	
+	padding: 0px;
+	border-radius: 0 0 8px 8px;
+
+	
+	transition: 
+		opacity 0.8s ease,
+		transform 0.8s ease		;
+	
+	/* show/hide */
+		opacity: 0;
+		transform: scale(0.1);
+		transform-origin: top left;
+	
+}
+
+.tabby-content img {
+	float: left;
+	margin-right: 20px;
+	border-radius: 8px;
+}
+
+
+/* MAKE IT WORK ----- */
+
+.tabby-tab [type=radio] { display: none; }
+[type=radio]:checked ~ label {
+	background: #7bacab;
+	z-index: 2;
+}
+
+[type=radio]:checked ~ label ~ .tabby-content {
+	z-index: 1;
+	
+	/* show/hide */
+		opacity: 1;
+		transform: scale(1);
+}
+
+/* BREAKPOINTS ----- */
+@media screen and (max-width: 767px) {
+	.tabs { min-height: 400px;}
+}
+
+@media screen and (max-width: 480px) {
+	.tabs { min-height: 580px; }
+	.tabby-tab label { 
+		height: 60px;
+	}
+	.tabby-content { top: 60px; }
+	.tabby-content img {
+		float: none;
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+}
+.slip-reordering {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+}
+
+.slip-swiping-container {
+    overflow-x: hidden;
+}
+
+.slippylist li {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+/* the rest is junk for the demo page */
+.slippylist li.demo-allow-select {
+    padding: 1em;
+    line-height: 1.3;
+    user-select: text;
+    -moz-user-select: text;
+    -webkit-user-select: text;
+}
+.slippylist li.demo-allow-select span {
+    cursor: text;
+}
+
+.slippylist {
+    max-width: 15em;
+    clear:left;
+    margin: 1em;
+    padding: 0 0 1px;
+}
+
+.slippylist li {
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    background: white;
+    margin: 0; padding: 0 1em;
+    border-radius: 3px;
+    margin-bottom: -1px;
+    max-width: 100%;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.slippylist input {
+    vertical-align: middle;
+}
+
+.slippylist .instant::before {
+    /*content: " ↑ ↓ ";*/
+    content: "[";
+    color: white;
+}
+.slippylist .instant {
+    float: left;
+}
+.slippylist li::after {
+    content: "[";
+    color: white;
+}
+
+.skewed {
+    transform: rotate(2deg) scale(0.99);
+    -webkit-transform: rotate(2deg) scale(0.99);
+}
+
+.demo-no-swipe.demo-no-reorder {
+    opacity: 0.5;
+
+}
+
+#scroll {
+    overflow-y: scroll;
+    max-height: 300px;
+}
+
+h1, h2, h3 {
+    color: #666;
+}
+h1 {
+    float:left;
+    margin-top: 0;
+    margin-right: 1ex;
+}
+h3 {
+    margin-bottom: 0.2em;
+    margin-top: 2em;
+}
+h1+p {
+    overflow:auto;
+    margin-top: 0.2em;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 400px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%); 
+}
+
+.list-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 100%;
+}
+
+.item-content {
+  height: 100%;
+  border: 0px solid rgba(123, 123, 123, 0.498039);
+  border-radius: 4px;
+  color: #999999;
+  line-height: 30px;
+  padding-left: 32px;
+  font-size: 24px;
+  font-weight: 400;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px 0px;
+}
+
+
+
+h2.box-headline.letters.rotate-2 {
+opacity : 0.6;
+text-align: center;
+}
+
+.box-headline {
+  font-size: 30px;
+  line-height: 0.6;
+  font-family: 'Sofia Pro', sans-serif;
+  color: #7bacab;
+}
+
+
+
+html,
+body {
+/*background-color: #FC5A5D;*/
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  box-sizing: border-box; 
+}
+
+.slider {
+  padding: 3rem 0;
+}
+.slider > ul.slider-items {
+  --_spacer: 1rem;
+  display: grid;
+  gap: var(--_spacer);
+  grid-auto-flow: column;
+  grid-auto-columns: 80vw;
+  padding: 0 var(--_spacer) var(--_spacer);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -ms-scroll-snap-type: inline mandatory;
+      scroll-snap-type: inline mandatory;
+  scroll-padding-inline: var(--_spacer, 1rem);
+
+}
+.slider > ul.slider-items::-webkit-scrollbar {
+  height: 8px;
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-track {
+  background: rgba(29, 55, 104, 0.15);
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-thumb {
+  background: rgba(29, 55, 104, 0.75);
+  border-radius: 8px;
+}
+.slider > ul.slider-items::-webkit-scrollbar-thumb:hover {
+  background: #1d3768;
+}
+.slider > ul.slider-items > li {
+  display: flex;
+  scroll-snap-align: center;
+  background: #e4e4e4;
+  flex-direction: column;
+  gap: 5px;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+  color: #1D3768;
+}
+.slider > ul.slider-items > li > * {
+  margin: 0;
+}
+.slider > ul.slider-items > li h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.slider > ul.slider-dots {
+  margin: 0;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.slider > ul.slider-dots > li {
+  width: 8px;
+  height: 8px;
+  background: #1D3768;
+  border-radius: 100%;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+.slider > ul.slider-dots > li.active {
+  opacity: 1;
+}
+
+
+.point {
+  mix-blend-mode: multiply;
+}
+
+.frame {
+  fill: none;
+  stroke: #000;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis line {
+  fill: none;
+  stroke: #ebebeb;
+}
+
+.axis circle {
+  fill: none;
+  stroke: #aaa;
+}
+
+.axis:last-of-type circle {
+  stroke: #333;
+}
+
+.line {
+  fill: none;
+  stroke: orange;
+  stroke-width: 3px;
+}
+        .brushed {
+            fill: #ffea55;
+            stroke: #e1ea10;
+            opacity: 1.0;
+        }
+
+        .non_brushed {
+            fill: #e8c840;
+            opacity: 0.5;
+        }
+
+
+.selection {
+  /* add a solid border to the brush */
+  stroke: rgba(0, 0, 0, 0.3);
+}
+
+#main {
+  display: flex;
+}
+
+
+
+
+	
+</style>
+
+</head>
+<body>
+<div class="slider">
+	<ul class="slider-items">
+		<li data-id="0">
+<table>	
+<td>		
+
+</td>
+<td>
+TYÖVALMENNUKSEN PALVELUTARPEEN ITSEARVIOINTI
+<br><br>
+<b>Itsearvioinnin avulla voit määrittää mitkä työllistymisen kannalta keskeiset asiat ovat mielestäsi kunnossa ja missä asioissa kaipaisit eniten apua.</b>
+<br><br>
+Näin käytät itsearviointia
+<br><br>
+1. Valitse sinulle merkitykselliset sanat neljästä sanapilvestä, klikkaamalla  kerran jos sana kuvaa jo hyvin halussa olevaa asiaa, tai klikkaamalla sanaa kaksi kertaa jos sana kuvaa mielestäsi kehittämistarvetta. Jo hoidossa olevat asiat merkitään vihreällä, kehitystarpeet punaisella. 
+<br><br>
+2. Käy kaikki neljä aluetta läpi 
+<br>
+a) Resurssit kuvaavat saatavilla olevia työnhaun materiaaleja, palveluja ja verkostoja.
+<br>
+b) Valmiudet kuvaavat työelämävaatimuksia
+<br>
+c) Työnhaku kuvaa käytettävissäsi olevia keinoja löytää työpaikka 
+<br>
+d) Työpaikka kuvaa etenemistä rekrytointiprosessista eteenpäin
+<br><br>
+3. Voit katsoa kuinka mielestäsi tärkeät asiat sijoittuvat kehälle, klikkaamalla sanapilvien alapuolella olevaa välilehteä <b>Työvalmemmus</b>
+<br><br>
+<STRIKE>4. Saat lisätietoja maalaamalla joitakin valitsemistasi sanoista. Voit maalaamisen jälkeen myös siirellä aluetta.</STRIKE>
+<br><br>
+
+<STRIKE>5. Valittujen sanojen yläkäsitteiden avulla voit tarkastella esimerkiksi sosiaalisia sidoksia kohdasta <b> Itsetuntemus </b>ja <b>Osallisuusvalmennus</b></STRIKE>
+</td>
+</table>
+		</li>		
+		<li data-id="1">	
+        <h2 class="box-headline letters rotate-2"><b>Resurssit</b></h2>
+        <svg id="wordcloud1"></svg>   
+        <h2 class="box-headline letters rotate-2"><b>Materiaalit - Palvelut - Verkostot</b></h2>
+		</li>
+		<li data-id="2">
+        <h2 class="box-headline letters rotate-2"><b>Valmiudet</b>	</h2>
+        <svg id="wordcloud2"></svg>
+        <h2 class="box-headline letters rotate-2"><b>Asenteet - Kyvyt - Taidot</b></h2> 
+		</li>
+		<li data-id="3">
+        <h2 class="box-headline letters rotate-2"><b>Työnhaku</b></h2>
+        <svg id="wordcloud3"></svg>
+        <h2 class="box-headline letters rotate-2"><b>Valmennukset - Strategiat - Suunnitelmat</b></h2>  
+		</li>
+		<li data-id="4">
+        <h2 class="box-headline letters rotate-2"><b>Työpaikka</b></h2>
+        <svg id="wordcloud4"></svg>
+        <h2 class="box-headline letters rotate-2"><b>Rekrytointi - Sopimukset - Työympäristö</b></h2>  
+		</li>
+	</ul>
+	<ul class="slider-dots">
+		<li class="active"></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>	
+	</ul>
+</div>
+
+
+<div class="tcontainer">
+	
+
+	<div class="tabs">
+		<div onClick="vihreat()" class="tabby-tab">
+			<input type="radio" id="tab-1" name="tabby-tabs">
+			<label for="tab-1">Järjestely</label>
+			<div class="tabby-content">
+<table>
+<td>Resurssit
+<ol id="demo1" class="slippylist"></ol>
+</td>
+<td>	Valmiudet
+<ol id="demo2" class="slippylist"></ol>
+</td>
+<td>Työnhaku
+<ol id="demo3" class="slippylist"></ol>
+</td>
+<td>	Työpaikka
+<ol id="demo4" class="slippylist"></ol>
+</td>
+</table>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-2" name="tabby-tabs">
+			<label for="tab-2">Itsetuntemus</label>
+			<div class="tabby-content">
+
+			</div>
+		</div>
+
+		<div onClick="valitut()" class="tabby-tab">	
+			<input type="radio" id="tab-3" name="tabby-tabs" checked>
+			<label for="tab-3">Työvalmennus</label>	
+			<div class="tabby-content">
+
+    
+			<div id="svgs1" class="hero-image1"></div>	
+			<table>
+			<tr>
+			<td>
+			<div id="chart" class="hero-image"></div>
+			</td>
+			<td>
+			<div id="stable"></div>
+			</td>
+			</tr>
+			</table>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-4" name="tabby-tabs">
+			<label for="tab-4">Osallisuusvalmennus</label>
+			<div class="tabby-content">
+
+			</div>
+		</div>
+	</div>
+   
+<script>
+var tpsum = [];
+var period_a = 2016;
+var data = [];
+
+/*
+var lista1 = [];
+var lista2 = [];
+var lista3 = [];
+var lista4 = [];
+var lista5 = [];
+var lista6 = [];
+var lista7 = [];
+var lista8 = [];
+
+//	https://docs.google.com/spreadsheets/d/1_Q1OdE6zVCV4t2_anGZFYlMw1JLCu8LTnGPtZbog1dc/gviz/tq?tqx=out:json&tq&gid=0;
+
+var id = '1_Q1OdE6zVCV4t2_anGZFYlMw1JLCu8LTnGPtZbog1dc';
+var gid = '2129349976';
+var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+fetch(url)
+  .then(response => response.text())
+  .then(data => document.getElementById("json").innerHTML=myItems(data.slice(47, -2)));
+
+function myItems(jsonString){
+var r0,r1,r2,r3,r4,r5;
+  var json = JSON.parse(jsonString);
+  var counter = 0;
+
+  json.table.rows.forEach(ligne => {
+  r0 = json.table.rows[counter].c[0].v;
+  r1 = json.table.rows[counter].c[1].v;
+  r2 = json.table.rows[counter].c[2].v;
+  r3 = json.table.rows[counter].c[3].v;
+  r4 = json.table.rows[counter].c[4].v;
+  r5 = json.table.rows[counter].c[5].v;
+//console.log(r0,r1,r2,r3);
+
+ var myObj = JSON.parse('{"groupa":"'+r0+'","groupb":"'+r1+'","groupc":"'+r2+'","text":"'+r3+'","size":"'+r4+'","choice":"'+r5+'"}'); 
+ if(r0 === 1) lista1.push(myObj)
+ if(r0 === 2) lista2.push(myObj)
+ if(r0 === 3) lista3.push(myObj)
+ if(r0 === 4) lista4.push(myObj)
+ if(r0 === 5) lista5.push(myObj)
+ if(r0 === 6) lista6.push(myObj)
+ if(r0 === 7) lista7.push(myObj)
+ if(r0 === 8) lista8.push(myObj)
+ 
+  counter += 1;
+    });
+/console.log(lista4);
+}
+*/
+    setTimeout(doSomething, 100);
+
+function doSomething() {
+   //do whatever you want here
+listaus();
+    
+    //setupSlip(document.getElementById('demo1'));
+    //setupSlip(document.getElementById('demo2'));
+    //setupSlip(document.getElementById('demo3'));
+    //setupSlip(document.getElementById('demo4'));
+
+}
+
+var lista1 = [{"groupa":"1","groupb":"271","groupc":"0.1","text":"Työnhakuoppaat","size":"2","choice":"0"},{"groupa":"1","groupb":"272","groupc":"0.8000000000000002","text":"Työelämätietoisuus","size":"4","choice":"0"},{"groupa":"1","groupb":"274","groupc":"0.7","text":"Ammatinvalintatestit","size":"5","choice":"0"},{"groupa":"1","groupb":"278","groupc":"0.6","text":"Itsetuntemustestit","size":"4","choice":"0"},{"groupa":"1","groupb":"281","groupc":"0.5","text":"Soveltuvuustestit","size":"3","choice":"0"},{"groupa":"1","groupb":"275","groupc":"0.8","text":"Työnhakumateriaalit","size":"7","choice":"0"},{"groupa":"1","groupb":"280","groupc":"0.4","text":"Työmarkkinatietous","size":"6","choice":"0"},{"groupa":"1","groupb":"280","groupc":"0.8","text":"Työpaikkailmoitukset","size":"7","choice":"0"},{"groupa":"1","groupb":"302","groupc":"0.3","text":"Työnhakumessut","size":"2","choice":"0"},{"groupa":"1","groupb":"305","groupc":"0.1","text":"Työnhakupalvelut","size":"5","choice":"0"},{"groupa":"1","groupb":"310","groupc":"0.3","text":"Työnhakuprosessituki","size":"3","choice":"0"},{"groupa":"1","groupb":"310","groupc":"0.3","text":"Työnhakuneuvonta","size":"2","choice":"0"},{"groupa":"1","groupb":"326","groupc":"0.2","text":"Työnhakukoulutuspalvelut","size":"4","choice":"0"},{"groupa":"1","groupb":"335","groupc":"0.6","text":"Työnhakukurssit","size":"1","choice":"0"},{"groupa":"1","groupb":"336","groupc":"0.5","text":"Työpaikkailmoitusseuranta","size":"4","choice":"0"},{"groupa":"1","groupb":"338","groupc":"0.4","text":"Toimialatuntemus","size":"5","choice":"0"},{"groupa":"1","groupb":"340","groupc":"0.5","text":"Työhakuseuranta","size":"4","choice":"0"},{"groupa":"1","groupb":"344","groupc":"0.4","text":"Ammattiverkostot","size":"7","choice":"0"},{"groupa":"1","groupb":"350","groupc":"0.7","text":"Työnhakijaverkostot","size":"4","choice":"0"},{"groupa":"1","groupb":"358","groupc":"0.4","text":"Ammattialatuntemus","size":"3","choice":"0"},{"groupa":"1","groupb":"359","groupc":"0.4","text":"Työnantajakontaktit","size":"8","choice":"0"}];
+
+var lista2 = [{"groupa":"2","groupb":"15","groupc":"0.1","text":"Työmoraali","size":"2","choice":"0"},{"groupa":"2","groupb":"34","groupc":"0.1","text":"Innovaatiokyky","size":"2","choice":"0"},{"groupa":"2","groupb":"61","groupc":"0.1","text":"Markkinointitaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"64","groupc":"0.1","text":"Tauottaminen","size":"1","choice":"0"},{"groupa":"2","groupb":"73","groupc":"0.1","text":"Ongelmanratkaisutaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"79","groupc":"0.1","text":"Analyysitaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"3","groupc":"0.1","text":"Oma-aloitteisuus","size":"4","choice":"0"},{"groupa":"2","groupb":"18","groupc":"0.1","text":"Ammattimaisuus","size":"5","choice":"0"},{"groupa":"2","groupb":"43","groupc":"0.1","text":"Empatiakyky","size":"4","choice":"0"},{"groupa":"2","groupb":"53","groupc":"0.1","text":"Sopeutumiskyky","size":"5","choice":"0"},{"groupa":"2","groupb":"24","groupc":"0.2","text":"Huolellisuus","size":"5","choice":"0"},{"groupa":"2","groupb":"56","groupc":"0.2","text":"Tunneäly","size":"4","choice":"0"},{"groupa":"2","groupb":"63","groupc":"0.2","text":"Myyntitaidot","size":"5","choice":"0"},{"groupa":"2","groupb":"6","groupc":"0.2","text":"Tarkkuus","size":"3","choice":"0"},{"groupa":"2","groupb":"12","groupc":"0.2","text":"Asiakaslähtöisyys","size":"4","choice":"0"},{"groupa":"2","groupb":"31","groupc":"0.2","text":"Oppimiskyky","size":"4","choice":"0"},{"groupa":"2","groupb":"46","groupc":"0.2","text":"Itsetuntemus","size":"4","choice":"0"},{"groupa":"2","groupb":"59","groupc":"0.2","text":"Yhteistyökyky","size":"4","choice":"0"},{"groupa":"2","groupb":"65","groupc":"0.2","text":"Aikataulutustaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"89","groupc":"0.2","text":"Esimiestaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"17","groupc":"0.3","text":"Palvelualttius","size":"3","choice":"0"},{"groupa":"2","groupb":"27","groupc":"0.3","text":"Itsekuri","size":"4","choice":"0"},{"groupa":"2","groupb":"37","groupc":"0.3","text":"Analyyttisyys","size":"4","choice":"0"},{"groupa":"2","groupb":"66","groupc":"0.3","text":"Asiakaspalvelutaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"74","groupc":"0.3","text":"Suunnittelutaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"78","groupc":"0.3","text":"Ammattitaito","size":"2","choice":"0"},{"groupa":"2","groupb":"86","groupc":"0.3","text":"Työnhakutaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"5","groupc":"0.3","text":"Kriittisyys","size":"4","choice":"0"},{"groupa":"2","groupb":"76","groupc":"0.3","text":"Teknologiataidot","size":"4","choice":"0"},{"groupa":"2","groupb":"76","groupc":"0.3","text":"Ammattipätevyys","size":"4","choice":"0"},{"groupa":"2","groupb":"82","groupc":"0.3","text":"Tunnehallintataidot","size":"5","choice":"0"},{"groupa":"2","groupb":"75","groupc":"0.4","text":"Itsearviointitaidot","size":"6","choice":"0"},{"groupa":"2","groupb":"77","groupc":"0.4","text":"Projektinhallinta","size":"2","choice":"0"},{"groupa":"2","groupb":"78","groupc":"0.4","text":"Viestintätaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"8","groupc":"0.4","text":"Positiivisuus","size":"5","choice":"0"},{"groupa":"2","groupb":"9","groupc":"0.4","text":"Asiakaskeskeisyys","size":"3","choice":"0"},{"groupa":"2","groupb":"35","groupc":"0.4","text":"Työkyky","size":"2","choice":"0"},{"groupa":"2","groupb":"75","groupc":"0.4","text":"Resurssihallintataidot","size":"2","choice":"0"},{"groupa":"2","groupb":"81","groupc":"0.4","text":"Verkostoitumistaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"84","groupc":"0.4","text":"Tavoitteenasettamistaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"21","groupc":"0.4","text":"Työetiikka","size":"6","choice":"0"},{"groupa":"2","groupb":"52","groupc":"0.4","text":"Joustavuus","size":"5","choice":"0"},{"groupa":"2","groupb":"67","groupc":"0.5","text":"Delegointitaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"85","groupc":"0.5","text":"Ajanhallintataidot","size":"4","choice":"0"},{"groupa":"2","groupb":"68","groupc":"0.5","text":"Etätyötaidot","size":"5","choice":"0"},{"groupa":"2","groupb":"79","groupc":"0.5","text":"Vuorovaikutustaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"80","groupc":"0.5","text":"Tietotekniikkataidot","size":"5","choice":"0"},{"groupa":"2","groupb":"81","groupc":"0.5","text":"Työkokemus","size":"2","choice":"0"},{"groupa":"2","groupb":"86","groupc":"0.5","text":"Yrittäjyystaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"58","groupc":"0.5","text":"Terveys","size":"5","choice":"0"},{"groupa":"2","groupb":"11","groupc":"0.6","text":"Suunnitelmallisuus","size":"3","choice":"0"},{"groupa":"2","groupb":"49","groupc":"0.6","text":"Paineensietokyky","size":"4","choice":"0"},{"groupa":"2","groupb":"69","groupc":"0.6","text":"Johtajuustaidot","size":"5","choice":"0"},{"groupa":"2","groupb":"74","groupc":"0.6","text":"Ryhmätyötaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"32","groupc":"0.6","text":"Kärsivällisyys","size":"5","choice":"0"},{"groupa":"2","groupb":"35","groupc":"0.6","text":"Itseluottamus","size":"4","choice":"0"},{"groupa":"2","groupb":"38","groupc":"0.6","text":"Stressinhallinta","size":"1","choice":"0"},{"groupa":"2","groupb":"70","groupc":"0.6","text":"Johtamistaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"77","groupc":"0.6","text":"Päätöksentekotaidot","size":"3","choice":"0"},{"groupa":"2","groupb":"83","groupc":"0.6","text":"Tiimityötaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"38","groupc":"0.7","text":"Itsenäisyys","size":"6","choice":"0"},{"groupa":"2","groupb":"71","groupc":"0.7","text":"Kommunikointitaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"85","groupc":"0.7","text":"Työhaastattelutaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"55","groupc":"0.7","text":"Motivaatio","size":"5","choice":"0"},{"groupa":"2","groupb":"83","groupc":"0.7","text":"Digitaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"82","groupc":"0.7","text":"Työyhteisötaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"41","groupc":"0.7","text":"Luovuus","size":"2","choice":"0"},{"groupa":"2","groupb":"40","groupc":"0.8000000000000002","text":"Tyytyväisyys","size":"4","choice":"0"},{"groupa":"2","groupb":"44","groupc":"0.8000000000000002","text":"Mukautuvuus","size":"4","choice":"0"},{"groupa":"2","groupb":"87","groupc":"0.8000000000000002","text":"Konfliktiratkaisutaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"87","groupc":"0.8000000000000002","text":"Kuuntelutaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"62","groupc":"0.8000000000000002","text":"Priorisointitaidot","size":"4","choice":"0"},{"groupa":"2","groupb":"72","groupc":"0.8000000000000002","text":"Konfliktihallintataidot","size":"4","choice":"0"},{"groupa":"2","groupb":"47","groupc":"0.8000000000000002","text":"Itseohjautuvuus","size":"5","choice":"0"},{"groupa":"2","groupb":"88","groupc":"0.8000000000000002","text":"Motivointitaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"50","groupc":"0.8000000000000002","text":"Itsevarmuus","size":"5","choice":"0"},{"groupa":"2","groupb":"80","groupc":"0.8000000000000002","text":"Neuvottelutaidot","size":"2","choice":"0"},{"groupa":"2","groupb":"84","groupc":"0.8000000000000002","text":"Esiintymistaidot","size":"1","choice":"0"},{"groupa":"2","groupb":"88","groupc":"0.8000000000000002","text":"Organisointitaidot","size":"4","choice":"0"}];
+
+var lista3 = [{"groupa":"3","groupb":"91","groupc":"0.6","text":"Rekrytointiprosessi","size":"6","choice":"0"},{"groupa":"3","groupb":"93","groupc":"0.5","text":"Koulutusohjaus","size":"4","choice":"0"},{"groupa":"3","groupb":"94","groupc":"0.7","text":"Kykytestit","size":"3","choice":"0"},{"groupa":"3","groupb":"96","groupc":"0.4","text":"Ammattikoulutus","size":"5","choice":"0"},{"groupa":"3","groupb":"97","groupc":"0.1","text":"Työvalmennusohjelma","size":"3","choice":"0"},{"groupa":"3","groupb":"100","groupc":"0.2","text":"Ansioluettelo","size":"3","choice":"0"},{"groupa":"3","groupb":"103","groupc":"0.3","text":"Portfolio","size":"4","choice":"0"},{"groupa":"3","groupb":"104","groupc":"0.4","text":"Koulutushakusuunnitelma","size":"4","choice":"0"},{"groupa":"3","groupb":"105","groupc":"0.3","text":"Työnhakijaprofiili","size":"2","choice":"0"},{"groupa":"3","groupb":"105","groupc":"0.5","text":"Työhakemus","size":"4","choice":"0"},{"groupa":"3","groupb":"106","groupc":"0.5","text":"Työllistämissuunnitelma","size":"4","choice":"0"},{"groupa":"3","groupb":"112","groupc":"0.5","text":"Työtoiminta ","size":"5","choice":"0"},{"groupa":"3","groupb":"115","groupc":"0.4","text":"Vapaaehtoistoiminta","size":"6","choice":"0"},{"groupa":"3","groupb":"108","groupc":"0.5","text":"Ammattitaitoprofiili","size":"3","choice":"0"},{"groupa":"3","groupb":"109","groupc":"0.7","text":"Työnhakusuunnitelma","size":"4","choice":"0"},{"groupa":"3","groupb":"111","groupc":"0.6","text":"Uraohjaus","size":"3","choice":"0"},{"groupa":"3","groupb":"112","groupc":"0.6","text":"Työllistymissuunnitelma","size":"4","choice":"0"},{"groupa":"3","groupb":"112","groupc":"0.8000000000000002","text":"Työvalmennusuunnitelma","size":"4","choice":"0"},{"groupa":"3","groupb":"114","groupc":"0.6","text":"Työnhakuportfolio","size":"4","choice":"0"},{"groupa":"3","groupb":"114","groupc":"0.8000000000000002","text":"Uravaihtomahdollisuudet","size":"3","choice":"0"},{"groupa":"3","groupb":"116","groupc":"0.7","text":"Työnhakuprofiili","size":"4","choice":"0"},{"groupa":"3","groupb":"117","groupc":"0.6","text":"Uudelleenkoulutus","size":"2","choice":"0"},{"groupa":"3","groupb":"118","groupc":"0.7","text":"Työnhakusivustot","size":"4","choice":"0"},{"groupa":"3","groupb":"119","groupc":"0.5","text":"Työvoimakoulutus","size":"4","choice":"0"},{"groupa":"3","groupb":"121","groupc":"0.3","text":"Haastattelutekniikat","size":"5","choice":"0"},{"groupa":"3","groupb":"124","groupc":"0.8000000000000002","text":"Koulutusmahdollisuudet","size":"4","choice":"0"},{"groupa":"3","groupb":"127","groupc":"0.8000000000000002","text":"Työllistämisstrategiat","size":"4","choice":"0"},{"groupa":"3","groupb":"131","groupc":"0.1","text":"Työllistymisstrategiat","size":"4","choice":"0"},{"groupa":"3","groupb":"134","groupc":"0.2","text":"Työllistymisvalmennus","size":"4","choice":"0"},{"groupa":"3","groupb":"137","groupc":"0.3","text":"Työurasuunnittelu","size":"4","choice":"0"},{"groupa":"3","groupb":"151","groupc":"0.1","text":"Työhaastatteluharjoitukset","size":"4","choice":"0"},{"groupa":"3","groupb":"154","groupc":"0.3","text":"Ammattiohjaus","size":"4","choice":"0"},{"groupa":"3","groupb":"157","groupc":"0.4","text":"Tavoiteasettelu","size":"4","choice":"0"},{"groupa":"3","groupb":"160","groupc":"0.4","text":"Työnhakuvalmennus","size":"4","choice":"0"},{"groupa":"3","groupb":"163","groupc":"0.2","text":"Työnhakuwebinaari","size":"4","choice":"0"},{"groupa":"3","groupb":"166","groupc":"0.2","text":"Työnhakustrategiat","size":"3","choice":"0"}];
+
+var lista4 = [{"groupa":"4","groupb":"180","groupc":"0.7","text":"Työkokeilu","size":"4","choice":"0"},{"groupa":"4","groupb":"181","groupc":"0.6","text":"Työharjoittelu","size":"4","choice":"0"},{"groupa":"4","groupb":"182","groupc":"0.1","text":"Työnantajatuntemus","size":"4","choice":"0"},{"groupa":"4","groupb":"188","groupc":"0.5","text":"Työhönvalmennus","size":"4","choice":"0"},{"groupa":"4","groupb":"184","groupc":"0.1","text":"Työhaastattelu","size":"4","choice":"0"},{"groupa":"4","groupb":"185","groupc":"0.2","text":"Rekrytointiprosessi","size":"4","choice":"0"},{"groupa":"4","groupb":"185","groupc":"0.8000000000000002","text":"Suositukset","size":"3","choice":"0"},{"groupa":"4","groupb":"186","groupc":"0.5","text":"Työpaikkakäynnit","size":"4","choice":"0"},{"groupa":"4","groupb":"186","groupc":"0.7","text":"Soveltuvuusarviointi","size":"4","choice":"0"},{"groupa":"4","groupb":"187","groupc":"0.7","text":"Työhaastattelukysymykset","size":"4","choice":"0"},{"groupa":"4","groupb":"190","groupc":"0.2","text":"Valintakriteerit","size":"4","choice":"0"},{"groupa":"4","groupb":"190","groupc":"0.5","text":"Työpaikkatutustumisjaksot","size":"4","choice":"0"},{"groupa":"4","groupb":"190","groupc":"0.8","text":"Työtodistukset","size":"5","choice":"0"},{"groupa":"4","groupb":"195","groupc":"0.2","text":"Koeaika","size":"4","choice":"0"},{"groupa":"4","groupb":"196","groupc":"0.8000000000000002","text":"Työtarjous","size":"4","choice":"0"},{"groupa":"4","groupb":"200","groupc":"0.6","text":"Henkilöstövuokraus","size":"4","choice":"0"},{"groupa":"4","groupb":"205","groupc":"0.8000000000000002","text":"Työtehtävät","size":"4","choice":"0"},{"groupa":"4","groupb":"216","groupc":"0.2","text":"Oppisopimus","size":"2","choice":"0"},{"groupa":"4","groupb":"217","groupc":"0.1","text":"Palkkaneuvottelut","size":"5","choice":"0"},{"groupa":"4","groupb":"218","groupc":"0.1","text":"Työsopimus","size":"5","choice":"0"},{"groupa":"4","groupb":"218","groupc":"0.2","text":"Työehdot","size":"5","choice":"0"},{"groupa":"4","groupb":"219","groupc":"0.8000000000000002","text":"Työpaikkavaihto","size":"5","choice":"0"},{"groupa":"4","groupb":"220","groupc":"0.8000000000000002","text":"Palkkaus","size":"5","choice":"0"},{"groupa":"4","groupb":"220","groupc":"0.8000000000000002","text":"Työelämäpelisäännöt","size":"5","choice":"0"},{"groupa":"4","groupb":"222","groupc":"0.8000000000000002","text":"Palkkatuki","size":"5","choice":"0"},{"groupa":"4","groupb":"226","groupc":"0.7","text":"Irtisanoutuminen","size":"4","choice":"0"},{"groupa":"4","groupb":"242","groupc":"0.8000000000000002","text":"Työmatkat","size":"3","choice":"0"},{"groupa":"4","groupb":"246","groupc":"0.6","text":"Työyhteisötuki","size":"4","choice":"0"},{"groupa":"4","groupb":"246","groupc":"0.8000000000000002","text":"Työntekijäedut","size":"4","choice":"0"},{"groupa":"4","groupb":"248","groupc":"0.7","text":"Työelämälainsäädäntö","size":"5","choice":"0"},{"groupa":"4","groupb":"252","groupc":"0.4","text":"Työkaverit","size":"5","choice":"0"},{"groupa":"4","groupb":"252","groupc":"0.7","text":"Työhyvinvointi","size":"4","choice":"0"},{"groupa":"4","groupb":"253","groupc":"0.3","text":"Työilmapiiri","size":"5","choice":"0"},{"groupa":"4","groupb":"256","groupc":"0.2","text":"Työssäoppiminen","size":"5","choice":"0"},{"groupa":"4","groupb":"256","groupc":"0.2","text":"Työsuojeluasiat","size":"4","choice":"0"},{"groupa":"4","groupb":"257","groupc":"0.1","text":"Työssäjaksaminen","size":"5","choice":"0"},{"groupa":"4","groupb":"258","groupc":"0.1","text":"Työpaikkakulttuuri","size":"4","choice":"0"}];
+
+var varinumero = 0;
+var round = 0;
+var laskuri = 0;
+var clouds = ["#wordcloud1","#wordcloud2","#wordcloud3","#wordcloud4","#wordcloud5","#wordcloud6","#wordcloud7","#wordcloud8"];
+var order = ["demo1","demo2","demo3","demo4"];
+var listat = [lista1,lista2,lista3,lista4];
+var valitut1 = [];
+var valitut2 = [];
+var valitut3 = [];
+var valitut4 = [];
+
+function valitut() {
+var valitut = [];
+
+data = [];
+for (var j = 0; j < valitut1.length; j++) {
+if(valitut1[j][5] > 0) {
+if(valitut1[j][5] > 1) {
+data.push([((valitut1[j][1]-90)*6.2831853/-359),0.9,valitut1[j][4],valitut1[j][3]]);
+} else {
+data.push([((valitut1[j][1]-90)*6.2831853/-359),valitut1[j][2],valitut1[j][4],valitut1[j][3]]);
+}
+}
+}
+
+for (var j = 0; j < valitut2.length; j++) {
+if (valitut2[j][5] > 0) {
+if (valitut2[j][5] > 1) {
+data.push([((valitut2[j][1]-90)*6.2831853/-359),0.9,valitut2[j][4],valitut2[j][3]]);
+} else {
+data.push([((valitut2[j][1]-90)*6.2831853/-359),valitut2[j][2],valitut2[j][4],valitut2[j][3]]);
+}
+}
+}
+
+for (var j = 0; j < valitut3.length; j++) {
+if (valitut3[j][5] > 0) {
+if (valitut3[j][5] > 1) {
+data.push([((valitut3[j][1]-90)*6.2831853/-359),0.9,valitut3[j][4],valitut3[j][3]]);
+} else {
+data.push([((valitut3[j][1]-90)*6.2831853/-359),valitut3[j][2],valitut3[j][4],valitut3[j][3]]);
+}
+}
+}
+
+for (var j = 0; j < valitut4.length; j++) {
+if (valitut4[j][5] > 0) {
+if (valitut4[j][5] > 1) {
+data.push([((valitut4[j][1]-90)*6.2831853/-359),0.9,valitut4[j][4],valitut4[j][3]]);
+} else {
+data.push([((valitut4[j][1]-90)*6.2831853/-359),valitut4[j][2],valitut4[j][4],valitut4[j][3]]);
+}
+}
+}
+polar(data);
+}
+
+function pilvessa() {
+
+var listaId = listat[laskuri]; 
+var cloudId = clouds[laskuri];
+
+const marginTop = 0, 
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
+  width = 640,
+  height = 400,
+  maxWords = 250, 
+  fontFamily = "sans-serif",
+  fontScale = 15,
+  padding = 0,
+  rotate = 0;
+
+    const leveys = 800;
+    const korkeus = 400;
+
+    const layout = d3.layout.cloud()
+      .size([leveys, korkeus])
+      .words(listaId)
+      .padding(padding)
+      .rotate(() => rotate)
+      .font(fontFamily)
+      .fontSize(d => Math.sqrt(d.size) * fontScale)
+      .on("end", piirra);
+
+    layout.start();
+
+    function piirra(sanat) {
+      //const svg = d3.select("#word-cloud")
+      const svg = d3.select(cloudId)
+        .attr("width", leveys)
+        .attr("height", korkeus);
+
+      const g = svg.append("g")
+        .attr("transform", `translate(${leveys / 2}, ${korkeus / 2})`);
+
+      const tekstit = g.selectAll("text")
+        .data(sanat)
+        .enter()
+        .append("text")
+        .style("font-size", d => `${d.size}px`)
+        .style("font-family", "Arial")
+        .attr("text-anchor", "middle")
+        .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+        .text(d => d.text)
+        .style("cursor", "pointer")
+        .style("fill", "black")
+        .each(function (d) {
+          d.vari = 0; 
+        })
+        .on("click", function (d) {
+          d.vari = (d.vari + 1) % 3; 
+          d3.select(this).style("fill", getColor(d.vari));
+
+//console.log(cloudId);
+if(cloudId === clouds[0]) {
+round = 0;
+let riviIndeksi = valitut1.findIndex(rivi => rivi.includes(d.text));
+//console.log(d.vari);
+//console.log(valitut1);
+if (riviIndeksi !== -1) {
+  valitut1[riviIndeksi][5] = d.vari;
+  }else{
+  valitut1.push([d.groupa,d.groupb,d.groupc,d.text,d.size,d.vari]);  
+}
+}
+
+if(cloudId === clouds[1]) {
+round = 1;
+let riviIndeksi = valitut2.findIndex(rivi => rivi.includes(d.text));
+if (riviIndeksi !== -1) {
+  valitut2[riviIndeksi][5] = d.vari;
+  }else{
+  valitut2.push([d.groupa,d.groupb,d.groupc,d.text,d.size,d.vari]);  
+}
+}
+
+if(cloudId === clouds[2]) {
+round = 2;
+let riviIndeksi = valitut3.findIndex(rivi => rivi.includes(d.text));
+if (riviIndeksi !== -1) {
+  valitut3[riviIndeksi][5] = d.vari;
+  }else{
+  valitut3.push([d.groupa,d.groupb,d.groupc,d.text,d.size,d.vari]);  
+}
+}
+
+if(cloudId === clouds[3]) {
+round = 3;
+let riviIndeksi = valitut4.findIndex(rivi => rivi.includes(d.text));
+if (riviIndeksi !== -1) {
+  valitut4[riviIndeksi][5] = d.vari;
+  }else{
+  valitut4.push([d.groupa,d.groupb,d.groupc,d.text,d.size,d.vari]);  
+}
+}
+
+vihreat();
+          
+});
+
+function getColor(varinumero) {
+        if (varinumero === 0) {
+          return "black";
+        } else if (varinumero === 1) {
+          return "green";
+        } else if (varinumero === 2) {
+          return "red";
+        }
+      }
+    }
+    
+}//pilvessa 
+
+
+function vihreat(){
+
+if(round===0) {
+var table = '';
+var montako = valitut1.length;
+for (var r = 0; r < montako; r++) {
+if(valitut1[r][5] === 1) table += '<li class="demo-no-swipe"><span class="instant" style="color:green;">' + valitut1[r][3] + ' ' + valitut1[r][5] + '</span></li>'
+if(valitut1[r][5] === 2) table += '<li class="demo-no-swipe"><span class="instant" style="color:red;">' + valitut1[r][3] + ' ' + valitut1[r][5] + '</span></li>'
+//setupSlip(document.getElementById('demo1'));
+}
+}
+
+if(round===1) {
+var table = '';
+var montako = valitut2.length;
+for (var r = 0; r < montako; r++) {
+if(valitut2[r][5] === 1) table += '<li class="demo-no-swipe"><span class="instant" style="color:green;">' + valitut2[r][3] + ' ' + valitut2[r][5] + '</span></li>'
+if(valitut2[r][5] === 2) table += '<li class="demo-no-swipe"><span class="instant" style="color:red;">' + valitut2[r][3] + ' ' + valitut2[r][5] + '</span></li>'
+//setupSlip(document.getElementById('demo2'));
+}
+}
+
+if(round===2) {
+var table = '';
+var montako = valitut3.length;
+for (var r = 0; r < montako; r++) {
+if(valitut3[r][5] === 1) table += '<li class="demo-no-swipe"><span class="instant" style="color:green;">' + valitut3[r][3] + ' ' + valitut3[r][5] + '</span></li>'
+if(valitut3[r][5] === 2) table += '<li class="demo-no-swipe"><span class="instant" style="color:red;">' + valitut3[r][3] + ' ' + valitut3[r][5] + '</span></li>'
+//setupSlip(document.getElementById('demo3'));
+}
+}
+
+if(round===3) {
+var table = '';
+var montako = valitut4.length;
+for (var r = 0; r < montako; r++) {
+if(valitut4[r][5] === 1) table += '<li class="demo-no-swipe"><span class="instant" style="color:green;">' + valitut4[r][3] + ' ' + valitut4[r][5] + '</span></li>'
+if(valitut4[r][5] === 2) table += '<li class="demo-no-swipe"><span class="instant" style="color:red;">' + valitut4[r][3] + ' ' + valitut4[r][5] + '</span></li>'
+//setupSlip(document.getElementById('demo4'));
+}
+}
+
+document.getElementById(order[round]).innerHTML = table;
+}
+
+function listaus() {
+const listElement = document.querySelector('.slider ul.list');
+const intersectionObserverElements = document.querySelectorAll('.slider > ul.slider-items > li');
+const dots = document.querySelectorAll('.slider > ul.slider-dots > li');
+
+function setActiveDot(selectedIndex) {
+	dots.forEach((dot, index) => {
+		dot.classList.remove('active');
+		if (index === selectedIndex) {
+			dot.classList.add('active');
+		}
+	});
+}
+
+let options = {
+	root: listElement,
+	rootMargin: '0px',
+	threshold: [1]
+}
+
+let callback = (entries, observer) => {
+	entries.forEach(entry => {
+		if (entry.intersectionRatio === 1) {
+			let dataId = `${entry.target.getAttribute('data-id')}`;
+			setActiveDot(parseInt(dataId));
+		}
+	});
+};
+
+let observer = new IntersectionObserver(callback, options);
+
+intersectionObserverElements.forEach((card) => {
+	observer.observe(card);
+});
+
+  pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+  
+}
+   
+function polar(data) {
+//let dataset = data;
+
+d3.selectAll("#chart > *").remove(); 
+        var formatIncome = d3.format(""),
+            formatHsGrad = d3.format(""),
+            formatHsGradAxis = d3.format("");
+
+    var radius = 50;
+    let w = 950;
+    let h = 950;
+    let padding = 50;
+
+    let dataset = [
+      [10, 200, "yksi"],
+      [20, 50, "kaksi"],
+      [30, 40, "kolme"],
+      [40, 80, "neljä"],
+      [50, 90, "viisi"],
+      [60, 50, "kuusi"],
+      [70, 70, "seitsemän"],
+      [80, 60, "kahdeksan"],
+      [90, 10, "yhdeksän"]
+    ];
+
+
+var svg = d3.select("#chart").append('svg')
+    //let svg = d3.select("body").append("svg")
+      .attr("width", w)
+      .attr("height", h)
+      .attr("id", "chart");
+
+    let drag = d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended);
+
+    let xScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, d => d[0])])
+      .range([padding, w - padding]);
+
+    let yScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, d => d[1])])
+      .range([h - padding, padding]);
+
+    let xAxis = d3.axisBottom()
+      .scale(xScale);
+
+    let yAxis = d3.axisLeft()
+      .scale(yScale);
+
+    let dataGroups = svg.selectAll(".dataGroup")
+      .data(dataset)
+      .enter()
+      .append("g")
+      .attr("class", "dataGroup")
+      .attr("transform", (d) => `translate(${xScale(d[0])},${yScale(d[1])})`)
+      .call(drag);
+
+    dataGroups.append("circle")
+      .attr("r", radius)
+      .attr("class", "datapoint");
+
+    dataGroups.append("text")
+      .attr("class", "label")
+      .attr("dy", ".35em")
+      .text(d => d[2]);
+
+    function dragstarted() {
+      d3.select(this).classed("dragging", true);
+    }
+
+    function dragged(d) {
+      d3.select(this)
+        .attr("transform", `translate(${d3.event.x},${d3.event.y})`);
+    }
+
+    function dragended() {
+      d3.select(this).classed("dragging", false);
+    }
+
+}
+</script>
+</body>
+</html>
