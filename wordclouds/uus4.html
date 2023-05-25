@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ympyröiden siirtely</title>
+  <style>
+    #canvas {
+      position: relative;
+      width: 900px;
+      height: 900px;
+      border: 1px solid #ccc;
+    }
+
+    .circle {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: blue;
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+      // Alusta D3.js
+      var svg = d3.select("#canvas");
+
+      // Lataa taustakuva
+      svg.style("background-image", "url('elonkeha_tausta.svg')");
+
+      // Alusta ympyrät
+      var circlesData = [{ x: 100, y: 100 }, { x: 200, y: 200 }];
+      var circles = svg.selectAll(".circle")
+        .data(circlesData)
+        .enter()
+        .append("div")
+        .attr("class", "circle")
+        .style("left", function(d) { return d.x + "px"; })
+        .style("top", function(d) { return d.y + "px"; });
+
+      // Lisää siirto-ominaisuus ympyröille
+      circles.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+      // Funktiot ympyröiden siirtämiseen
+      function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+      }
+
+      function dragged(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d3.select(this)
+          .style("left", d.x + "px")
+          .style("top", d.y + "px");
+      }
+
+      function dragended(d) {
+        d3.select(this).classed("active", false);
+      }
+
+      // Tallenna taustakuva ja ympyröiden tiedot SVG-muodossa
+      function saveSVG() {
+        // Tallenna taustakuva SVG-muodossa
+        var canvas = document.getElementById("canvas");
+        var canvasData = new XMLSerializer().serializeToString(canvas);
+        var canvasBlob = new Blob([canvasData], { type: "image/svg+xml" });
+        var canvasURL = URL.createObjectURL(canvasBlob);
+        var canvasLink = document.createElement("a");
+        canvasLink.href = canvasURL;
+        canvasLink.download = "elonkeha_tausta.svg";
+        canvasLink.click();
+
+        // Luo SVG-elementti ja lisää ympyrät siihen
+        var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        for (var i = 0; i < circlesData.length; i++) {
+          var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("cx", circlesData[i].x);
+          circle.setAttribute("cy", circlesData[i].y);
+          circle.setAttribute("r", 25);
+          circle.setAttribute("fill", "blue");
+          svgElement.appendChild(circle);
+        }
+
+        // Tallenna ympyröiden tiedot SVG-muodossa
+        var svgData = new XMLSerializer().serializeToString(svgElement);
+        var svgBlob = new Blob([svgData], { type: "image/svg+xml" });
+        var svgURL = URL.createObjectURL(svgBlob);
+        var svgLink = document.createElement("a");
+        svgLink.href = svgURL;
+        svgLink.download = "ympyrat.svg";
+        svgLink.click();
+      }
+    </script>
+  </div>
+  <button onclick="saveSVG()">Tallenna</button>
+</body>
+</html>
