@@ -654,7 +654,7 @@ function updateCircles() {
 /*
 <circle cx="420" cy="420" r="30" fill="red"/>
 <rect class="cls-38" x="450" y="400" width="150" height="30" rx="12" ry="12"/><text class"cls-16" transform="translate(460 423)"><tspan x="0" y="0">Minä</tspan></text><circle cx="575" cy="546" r="30" fill="red"/><rect class="cls-38" x="605" y="526" width="150" height="30" rx="12" ry="12"/><text class"cls-16" transform="translate(615 546)"><tspan x="0" y="0">uusi</tspan></text>
-*/     
+     
 
       
         // Tallenna taustakuva SVG-muodossa
@@ -671,7 +671,7 @@ function updateCircles() {
         var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         
         
-        /*
+        
         for (var i = 0; i < circlesData.length; i++) {
           var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
           circle.setAttribute("cx", circlesData[i].x);
@@ -740,34 +740,24 @@ stable += '</svg>'
 });
 //console.log(stable);
 
-        // Tallenna ympyröiden tiedot SVG-muodossa
-        //var svgData = new XMLSerializer().serializeToString(svgElement);
-        var svgData = stable;
-        var svgBlob = new Blob([svgData], { type: "image/svg+xml" });
-        var svgURL = URL.createObjectURL(svgBlob);
-        var svgLink = document.createElement("a");
-        
-    //console.log(svgLink);
-        
-        svgLink.href = svgURL;
-        svgLink.download = "ympyrat.svg";
-        svgLink.click();
-      }
+ var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svgElement.innerHTML = stable;
 
+    // Tallennetaan SVG-koodi
+    var serializer = new XMLSerializer();
+    var svgData = serializer.serializeToString(svgElement);
+    var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    var svgUrl = URL.createObjectURL(svgBlob);
 
-/*
-        console.log(d.x, d.y, d.text, d.color);
-          addCircle(d.x, d.y, d.text, d.color);
-        });
-<circle cx="100" cy="100" r="25" fill="blue"/>
-<circle cx="200" cy="200" r="25" fill="blue"/>
+    // Luo linkki tallennettuun SVG-tiedostoon
+    var link = document.createElement("a");
+    link.href = svgUrl;
+    link.download = "tallennettu.svg";
+    link.innerHTML = "Lataa SVG";
 
-
-
-var canvas = document.getElementById("canvas");
-var svg = canvas.querySelector("svg");
-var gElement = svg.querySelector("g");
-*/
+    // Lisää linkki sivulle
+    document.body.appendChild(link);
+} 
     </script>
 
 </body>
