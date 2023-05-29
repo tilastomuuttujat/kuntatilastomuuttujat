@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+<style>
+
+.sana {
+  writing-mode: vertical-lr; /* Kääntää tekstin 90 astetta */
+  transform: rotate(180deg); /* Kääntää tekstin toisinpäin */
+  font-size: 50px; 
+  color: gray;
+}
+.slide,
+#slide-1,
+#slide-2,
+#slide-3,
+#slide-4 {
+  display: flex;
+  align-items: center;
+}
+
+
+.slider {
+  width: 530px;
+  text-align: center;
+  overflow: hidden;
+  display: flex; /*lisatty*/
+}
+.slides {
+  display: flex;
+  align-items: center; /*lisatty*/
+  overflow-x: auto;
+  -ms-scroll-snap-type: x mandatory;
+      scroll-snap-type: x mandatory;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.slides::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
+}
+.slides::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slides > div {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 530px;
+  height: 290px;
+  
+}
+
+    #canvas {
+      position: relative;
+      background-image: url('tvtaustakuva.svg');
+      background-size: cover;
+      width: 900px;
+      height: 900px;
+      border: 1px solid #ccc;
+    }
+
+    .circle-group {
+      position: absolute;
+      cursor: move;
+    }
+
+    .circle {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .text-field {
+      position: absolute;
+      top: 0px;
+      left: 10px;
+      width: 150px;
+      height: 16px;
+      text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id="canvas"></div>
+<table>
+<tr>
+<td> 
+<textarea id="data-textbox" rows="20" cols="50" style="overflow-y: scroll;"></textarea><br>
+<button onclick="saveCircles()">Taltioi</button>
+<button onclick="updateCircles()">Päivitä</button>
+</td>
+<td>
+<div class="slider">
+  <div class="slides">
+    <div class="slide">
+    <div class="sana">Resurssit</div>
+    <svg id="wordcloud1"></svg>
+    </div>
+    <div class="slide">
+    <div class="sana">Asenteet</div>
+    <svg id="wordcloud2"></svg>
+    </div>
+    <div class="slide">
+    <div class="sana">Kyvyt</div>
+    <svg id="wordcloud3"></svg>
+    </div>
+    <div class="slide">
+    <div class="sana">Taidot</div>
+    <svg id="wordcloud4"></svg>
+    </div>
+    <div class="slide">
+    <div class="sana">Työnhaku</div>
+    <svg id="wordcloud5"></svg>
+    </div>
+    <div class="slide">
+    <div class="sana">Työpaikka</div>
+    <svg id="wordcloud6"></svg>
+    </div>  
+  </div>
+</div>
+</td>
+</tr>
+</table> 
+<script>
+const marginTop = 0, 
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
+
+  maxWords = 100, 
+  fontFamily = "sans-serif",
+  fontScale = 15,
+  padding = 0,
+  rotate = 0;
+
+const sanalista1 = [
+{"text":"Ammatinvalintatestit","size":5},
+{"text":"Ammattialatuntemus","size":3},
+{"text":"Ammattiverkostot","size":7},
+{"text":"Itsetuntemustestit","size":4},
+{"text":"Rekrytapahtumat","size":2},
+{"text":"Soveltuvuustestit","size":3},
+{"text":"Toimialatuntemus","size":5},
+{"text":"Työelämätietoisuus","size":4},
+{"text":"Työhakuseuranta","size":4},
+{"text":"Työmarkkinatietous","size":6},
+{"text":"Työnantajakontaktit","size":8},
+{"text":"Työnhakijaverkostot","size":4},
+{"text":"Työnhakukoulutuspalvelut","size":4},
+{"text":"Työnhakukurssit","size":1},
+{"text":"Työnhakumateriaalit","size":7},
+{"text":"Työnhakumessut","size":2},
+{"text":"Työnhakuneuvonta","size":2},
+{"text":"Työnhakuoppaat","size":2},
+{"text":"Työnhakupalvelut","size":5},
+{"text":"Työnhakuprosessituki","size":3},
+{"text":"Työpaikkailmoitukset","size":7},
+{"text":"Työpaikkailmoitusseuranta","size":4},
+{"text":"Velkaneuvonta","size":2}];
+
+const sanalista2 = [  
+{"text":"Oma-aloitteisuus","size":4},
+{"text":"Kriittisyys","size":4},
+{"text":"Tarkkuus","size":3},
+{"text":"Positiivisuus","size":5},
+{"text":"Asiakaskeskeisyys","size":3},
+{"text":"Suunnitelmallisuus","size":3},
+{"text":"Asiakaslähtöisyys","size":4},
+{"text":"Työmoraali","size":2},
+{"text":"Palvelualttius","size":3},
+{"text":"Ammattimaisuus","size":5},
+{"text":"Työetiikka","size":6},
+{"text":"Huolellisuus","size":5},
+{"text":"Itsekuri","size":4},
+{"text":"Kärsivällisyys","size":5},
+{"text":"Itsenäisyys","size":6},
+{"text":"Tyytyväisyys","size":4},
+{"text":"Empatiakyky","size":4},
+{"text":"Mukautuvuus","size":4},
+{"text":"Itsevarmuus","size":5},
+{"text":"Joustavuus","size":5},
+{"text":"Kuuntelutaidot","size":4},
+{"text":"Motivointitaidot","size":2}];
+
+const sanalista3 = [  
+{"text":"Oppimiskyky","size":4},
+{"text":"Innovaatiokyky","size":2},
+{"text":"Itseluottamus","size":4},
+{"text":"Toimintakyky","size":2},
+{"text":"Analyyttisyys","size":4},
+{"text":"Stressinhallinta","size":1},
+{"text":"Luovuus","size":2},
+{"text":"Itsetuntemus","size":4},
+{"text":"Itseohjautuvuus","size":5},
+{"text":"Paineensietokyky","size":4},
+{"text":"Sopeutumiskyky","size":5},
+{"text":"Motivaatio","size":5},
+{"text":"Tunneäly","size":4},
+{"text":"Terveys","size":5},
+{"text":"Yhteistyökyky","size":4},
+{"text":"Organisointitaidot","size":4}];
+
+var sanalista4 = [
+{"text":"Priorisointitaidot","size":4},
+{"text":"Myyntitaidot","size":5},
+{"text":"Tauottaminen","size":1},
+{"text":"Aikataulutustaidot","size":4},
+{"text":"Asiakaspalvelutaidot","size":4},
+{"text":"Kielitaito","size":4},
+{"text":"Etätyötaidot","size":5},
+{"text":"Ongelmanratkaisutaidot","size":2},
+{"text":"Suunnittelutaidot","size":4},
+{"text":"Teknologiataidot","size":4},
+{"text":"Päätöksentekotaidot","size":3},
+{"text":"Ammattitaito","size":2},
+{"text":"Viestintätaidot","size":4},
+{"text":"Analyysitaidot","size":3},
+{"text":"Vuorovaikutustaidot","size":3},
+{"text":"Neuvottelutaidot","size":2},
+{"text":"Verkostoitumistaidot","size":3},
+{"text":"Tunnehallintataidot","size":5},
+{"text":"Digitaidot","size":4},
+{"text":"Tiimityötaidot","size":4},
+{"text":"Esiintymistaidot","size":1},
+{"text":"Tavoitteenasettamistaidot","size":4},
+{"text":"Ajanhallintataidot","size":4},
+{"text":"Yrittäjyystaidot","size":4},
+{"text":"Esimiestaidot","size":3}];
+
+var sanalista5 = [
+{"text":"Haastattelutekniikat","size":5},
+{"text":"Koulutusmahdollisuudet","size":4},
+{"text":"Työllistämisstrategiat","size":4},
+{"text":"Piilotyöpaikat","size":4},
+{"text":"Työllistymisstrategiat","size":4},
+{"text":"Työurasuunnittelu","size":4},
+{"text":"Uravaihtomahdollisuudet","size":3},
+{"text":"Ammatinvalintaohjaus","size":4},
+{"text":"Vapaaehtoistoiminta","size":6},
+{"text":"Työkanava","size":4},
+{"text":"Työnhakustrategiat","size":3},
+{"text":"Uraohjaus","size":3},
+{"text":"Koulutushakusuunnitelma","size":4},
+{"text":"Työllistämissuunnitelma","size":4},
+{"text":"Työnhakusuunnitelma","size":4},
+{"text":"Työllistymissuunnitelma","size":4},
+{"text":"Uudelleenkoulutus","size":2},
+{"text":"Työvoimakoulutus","size":4},
+{"text":"Työhaastatteluharjoitukset","size":4},
+{"text":"Työnhakutaidot","size":3},
+{"text":"Koulutusohjaus","size":4},
+{"text":"Ansioluettelomalli","size":3},
+{"text":"Portfolio","size":4},
+{"text":"Työhakemus","size":4},
+{"text":"Työnhakijaprofiili","size":2},
+{"text":"Videohakemus","size":3},
+{"text":"Työhaastattelutaidot","size":4}];
+
+var sanalista6 = [
+{"text":"Koulutustodistukset","size":5},
+{"text":"Työkokemus","size":2},
+{"text":"Työkokeilu","size":4},
+{"text":"Työharjoittelu","size":4},
+{"text":"Työnantajatuntemus","size":4},
+{"text":"Työhaastattelu","size":4},
+{"text":"Rekrytointiprosessi","size":4},
+{"text":"Suositukset","size":3},
+{"text":"Soveltuvuusarviointi","size":4},
+{"text":"Työpaikkakäynnit","size":4},
+{"text":"Työhaastattelukysymykset","size":4},
+{"text":"Ensivaikutelma","size":4},
+{"text":"Työhönvalmennus","size":4},
+{"text":"Työpaikkatutustumisjaksot","size":4},
+{"text":"Työtodistukset","size":5},
+{"text":"Valintakriteerit","size":4},
+{"text":"Puhelinhaastattelu","size":4},
+{"text":"Työtarjous","size":4},
+{"text":"Henkilöstövuokraus","size":4},
+{"text":"Koeaika","size":4},
+{"text":"Työtehtävät","size":4},
+{"text":"Oppisopimus","size":2},
+{"text":"Palkkaneuvottelut","size":5},
+{"text":"Työehdot","size":5},
+{"text":"Työsopimus","size":5},
+{"text":"Työpaikkavaihto","size":5},
+{"text":"Palkkaus","size":5},
+{"text":"Työelämäpelisäännöt","size":5},
+{"text":"Irtisanoutuminen","size":4},
+{"text":"Palkkatuki","size":2},
+{"text":"Työyhteisötaidot","size":4},
+{"text":"Työmatkat","size":3},
+{"text":"Työntekijäedut","size":4},
+{"text":"Työyhteisötuki","size":4},
+{"text":"Työelämälainsäädäntö","size":5},
+{"text":"Työhyvinvointi","size":4},
+{"text":"Työkaverit","size":5},
+{"text":"Työilmapiiri","size":5},
+{"text":"Työssäoppiminen","size":5},
+{"text":"Työsuojeluasiat","size":4},
+{"text":"Työssäjaksaminen","size":5},
+{"text":"Työpaikkakulttuuri","size":4}];
+
+
+var laskuri = 0;
+var clouds = ["#wordcloud1","#wordcloud2","#wordcloud3","#wordcloud4","#wordcloud5","#wordcloud6"];
+var listat = [sanalista1,sanalista2,sanalista3,sanalista4,sanalista5,sanalista6];
+
+var leveys = 470;
+var korkeus = 270;
+
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+    laskuri +=1;
+    pilvessa();
+
+
+function pilvessa() {
+
+var listaId = listat[laskuri]; 
+var cloudId = clouds[laskuri];
+
+const marginTop = 0, 
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
+  width = 640,
+  height = 200,
+  maxWords = 250, 
+  fontFamily = "sans-serif",
+  fontScale = 12,
+  padding = 0,
+  rotate = 0;
+
+    const leveys = 500;
+    const korkeus = 280;
+
+    const layout = d3.layout.cloud()
+      .size([leveys, korkeus])
+      .words(listaId)
+      .padding(padding)
+      .rotate(() => rotate)
+      .font(fontFamily)
+      .fontSize(d => Math.sqrt(d.size) * fontScale)
+      .on("end", piirra);
+
+    layout.start();
+
+    function piirra(sanat) {
+      const svg = d3.select(cloudId)
+        .attr("width", leveys)
+        .attr("height", korkeus);
+
+      const g = svg.append("g")
+        .attr("transform", `translate(${leveys / 2}, ${korkeus / 2})`);
+
+      const tekstit = g.selectAll("text")
+        .data(sanat)
+        .enter()
+        .append("text")
+        .style("font-size", d => `${d.size}px`)
+        .style("font-family", "Arial")
+        .attr("text-anchor", "middle")
+        .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+        .text(d => d.text)
+        .style("cursor", "pointer")
+        .style("fill", "black")
+        .each(function (d) {
+          d.vari = 0; 
+        })
+        .on("click", function (d) {
+        addCircle(450, 450, d.text, "red");
+          d.vari = (d.vari + 1) % 3; 
+          d3.select(this).style("fill", getColor(d.vari));
+          
+});
+
+function getColor(varinumero) {
+        if (varinumero === 0) {
+          return "black";
+        } else if (varinumero === 1) {
+          return "green"; 
+        } else if (varinumero === 2) {
+          return "red";
+        }
+      }
+    }
+    
+}//pilvessa 
+var lson = JSON.stringify([]);
+document.getElementById("data-textbox").value = lson;
+      var color = d3.scaleOrdinal(d3.schemeAccent);
+      var svg = d3.select("#canvas");
+      svg.style("background-image", "url('tvtaustakuva.svg')");
+      var dataset = [];
+
+      function addCircle(x, y, text,color) {
+        var newCircle = { x: x, y: y, text: text, color: color };
+        dataset.push(newCircle);
+
+        var circleGroup = svg.append("div")
+          .datum(newCircle)
+          .attr("class", "circle-group")
+          .style("left", function(d) { return d.x + "px"; })
+          .style("top", function(d) { return d.y + "px"; });
+
+        circleGroup.append("div")
+          .attr("class", "circle")
+          .style("background-color", function(d) { return d.color; })
+          .on("click", function(d) { changeColor(d, this); })
+          .on("dblclick", function(d) { removeCircle(circleGroup); });
+
+        circleGroup.append("textarea")
+          .attr("class", "text-field")
+          .style("font", "14px Gill Sans") 
+          .text(function(d) { return d.text; })
+          .on("input", function(d) {
+            d.text = this.value;
+            updateCircleText(circleGroup, d.text);
+          });
+          
+        circleGroup.call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+      }
+
+      function removeCircle(circleGroup) {
+        var circleData = circleGroup.datum();
+        var index = dataset.indexOf(circleData);
+        if (index > -1) {
+          dataset.splice(index, 1);
+        }
+        circleGroup.remove();
+      }
+
+      function changeColor(circleData, circleElement) {
+        var newColor = color(circleData.color);
+        circleData.color = newColor;
+        d3.select(circleElement).style("background-color", newColor);
+      }
+
+      function updateCircleText(circleGroup, newText) {
+        circleGroup.select(".text-field").property("value", newText);
+      }
+
+      function saveCircles() {
+        var json = JSON.stringify(dataset);
+        document.getElementById("data-textbox").value = json;
+      }
+      
+function updateCircles() {
+        var json = document.getElementById("data-textbox").value;
+        var updateset = JSON.parse(json);
+        dataset = [];
+        
+        d3.selectAll(".circle-group").remove();
+        updateset.forEach(function(d) {
+        console.log(d.x, d.y, d.text, d.color);
+          addCircle(d.x, d.y, d.text, d.color);
+        });
+      }
+
+      function handleDoubleClick() {
+        var mousePos = d3.mouse(this);
+        var x = mousePos[0];
+        var y = mousePos[1];
+
+        var isCircle = d3.select(d3.event.target).classed("circle");
+        if (!isCircle) {
+          addCircle(x, y, "uusi", "red");
+        }
+      }
+
+      function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+      }
+
+      function dragged(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d3.select(this)
+          .style("left", d.x + "px")
+          .style("top", d.y + "px");
+      }
+
+      function dragended(d) {
+        d3.select(this).classed("active", false);
+      }
+
+      svg.on("dblclick", handleDoubleClick);
+      
+    </script>
+
+</body>
+</html>
