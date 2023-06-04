@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<style>
+.barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
+}
+
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
+}
+
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
+}
+
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
+}
+
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
+}
+
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+}
+
+.barAxis path,
+.barAxis line {
+	stroke: #999;
+}
+
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+</style>
+</head>
+<body>
+<table id="tblFruits">
+  <tr>
+    <th>Arjenhallinta</th>
+    <th>Kasvu</th>
+    <th>Myönteisyys</th>
+    <th>Hyvinvointi</th>
+    <th>Kurinalaisuus</th>
+    <th>Suvaitsevuus</th>
+    <th>Sosiaalisuus</th>
+    <th>Työelämä</th>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="14"/><label>Ajanhallinta</label></td>
+    <td><input type="checkbox" value="39"/><label>Hengellisyys</label></td>
+    <td><input type="checkbox" value="11"/><label>Hyväntahtoisuus</label></td>
+    <td><input type="checkbox" value="29"/><label>Hyvinvointi</label></td>
+    <td><input type="checkbox" value="44"/><label>Ahkeruus</label></td>
+    <td><input type="checkbox" value="10"/><label>Armollisuus</label></td>
+    <td><input type="checkbox" value="20"/><label>Osallistuminen</label></td>
+    <td><input type="checkbox" value="15"/><label>Ammatinvalinta</label></td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="16"/><label>Arjenhallinta</label></td>
+    <td><input type="checkbox" value="40"/><label>Henkisyys</label></td>
+    <td><input type="checkbox" value="12"/><label>Kiitollisuus</label></td>
+    <td><input type="checkbox" value="17"/><label>Koulutus</label></td>
+    <td><input type="checkbox" value="9"/><label>Itsekuri</label></td>
+    <td><input type="checkbox" value="35"/><label>Hyväksyntä</label></td>
+    <td><input type="checkbox" value="21"/><label>Osallisuus</label></td>
+    <td><input type="checkbox" value="18"/><label>Koulutushaku</label></td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="37"/><label>Harrastukset</label></td>
+    <td><input type="checkbox" value="6"/><label>Itsenäisyys</label></td>
+    <td><input type="checkbox" value="3"/><label>Onnellisuus</label></td>
+    <td><input type="checkbox" value="33"/><label>Mielenterveys</label></td>
+    <td><input type="checkbox" value="7"/><label>Kärsivällisyys</label></td>
+    <td><input type="checkbox" value="5"/><label>Joustavuus</label></td>
+    <td><input type="checkbox" value="22"/><label>Sosiaalisuus</label></td>
+    <td><input type="checkbox" value="19"/><label>Koulutustarpeet</label></td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="41"/><label>Materiaalisuus</label></td>
+    <td><input type="checkbox" value="45"/><label>Luovuus</label></td>
+    <td><input type="checkbox" value="2"/><label>Optimistisuus</label></td>
+    <td><input type="checkbox" value="31"/><label>Terveys</label></td>
+    <td><input type="checkbox" value="4"/><label>Motivaatio</label></td>
+    <td><input type="checkbox" value="28"/><label>Paineensietokyky</label>
+    <td><input type="checkbox" value="23"/><label>Toimijuus</label></td>
+    <td><input type="checkbox" value="8"/><label>Oppimiskyky</label></td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="43"/><label>Selviytyminen</label></td>
+    <td><input type="checkbox" value="38"/><label>Mietiskely</label></td>
+    <td><input type="checkbox" value="1"/><label>Positiivisuus</label></td>
+    <td><input type="checkbox" value="32"/><label>Toimintakyky</label></td>
+    <td><input type="checkbox" value="46"/><label>Mukautuvuus</label></td>
+    <td><input type="checkbox" value="30"/><label>Resilienssi</label></td>
+    <td><input type="checkbox" value="34"/><label>Vuorovaikutus</label></td>
+    <td><input type="checkbox" value="24"/><label>Työnhaku</label></td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" value="42"/><label>Toimeentulo</label></td>
+    <td><input type="checkbox" value="36"/><label>Universaalisuus</label></td>
+    <td><input type="checkbox" value="13"/><label>Ystävällisyys</label></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><input type="checkbox" value="27"/><label>Yhteisöllisyys</label></td>
+    <td><input type="checkbox" value="25"/><label>Työnsaanti</label></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><input type="checkbox" value="26"/><label>Työvalmennus</label></td>
+  </tr>
+</table>
+<br />
+<input type = "button" value = "Get" onclick = "GetSelected()" />
+
+
+
+<div id="svganchor" style="width: 100%;height: 100%;margin-left: auto;margin-right: auto;background-color: white;"></div>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+
+
+var muuttujat = [];
+var tiedot = [
+"Positiivisuus",
+"Optimistisuus",
+"Onnellisuus",
+"Motivaatio",
+"Joustavuus",
+"Itsenäisyys",
+"Kärsivällisyys",
+"Oppimiskyky",
+"Itsekuri",
+"Armollisuus",
+"Hyväntahtoisuus",
+"Kiitollisuus",
+"Ystävällisyys",
+"Ajanhallinta",
+"Ammatinvalinta",
+"Arjenhallinta",
+"Koulutus",
+"Koulutushaku",
+"Koulutustarpeet",
+"Osallistuminen",
+"Osallisuus",
+"Sosiaalisuus",
+"Toimijuus",
+"Työnhaku",
+"Työnsaanti",
+"Työvalmennus",
+"Yhteisöllisyys",
+"Paineensietokyky",
+"Hyvinvointi",
+"Resilienssi",
+"Terveys",
+"Toimintakyky",
+"Mielenterveys",
+"Vuorovaikutus",
+"Hyväksyntä",
+"Universaalisuus",
+"Harrastukset",
+"Mietiskely",
+"Hengellisyys",
+"Henkisyys",
+"Materiaalisuus",
+"Toimeentulo",
+"Selviytyminen",
+"Ahkeruus",
+"Luovuus",
+"Mukautuvuus"
+];
+//namespacing with an IIFE
+function GetSelected() {
+        //Create an Array.
+        var selected = new Array();
+ 
+        //Reference the Table.
+        var tblFruits = document.getElementById("tblFruits");
+ 
+        //Reference all the CheckBoxes in Table.
+        var chks = tblFruits.getElementsByTagName("INPUT");
+ 
+        // Loop and push the checked CheckBox value in Array.
+        for (var i = 0; i < chks.length; i++) {
+            if (chks[i].checked) {
+                selected.push(chks[i].value);
+                muuttujat.push(tiedot[chks[i].value-1]); 
+            }
+        }
+ 
+        //Display the selected CheckBox values.
+        if (selected.length > 0) {
+            //alert("Selected values: " + selected.join(","));
+            console.log(muuttujat);
+            kartta();
+        }
+    };
+function kartta() {
+(function newsQuestConnectivityRisks() {
+	var w = 1200;
+	var h = 900;
+
+	var padding = [10, 10, 10, 10];
+
+	var colors = d3.scaleOrdinal()
+		.domain([])
+		.range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
+
+	var svg = d3.select("#svganchor")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
+
+var nodesTotal = [];
+var linksTotal = [];
+
+const things = new Object();
+things.thing = new Array();
+
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVW3lFxFzmsO61waUKVTSQU9R1RhYjinnTLFcia2MQ2mLw0Wu0tG0HLFvpXLmJAJjG1wjq6Q6ObgWI/pub?gid=1193425325&single=true&output=csv").then(function(apiData) {
+					try {
+						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+							data: d3.csvFormat(apiData),
+							timestamp: currentDate.getTime()
+						}));
+					} catch (error) {
+					};
+
+//console.log(apiData);
+var mapiData = [];
+for (var i = 0; i < apiData.length; i++) {
+//console.log(muuttujat.indexOf(apiData[i].source));
+if(muuttujat.indexOf(apiData[i].source) > -1)
+mapiData.push(apiData[i]);
+}
+//console.log(mapiData);
+apiData=mapiData;
+
+for (var i = 0; i < apiData.length; i++) {
+things.thing.push({id:apiData[i].source,labelText:apiData[i].source});
+things.thing.push({id:apiData[i].target,labelText:apiData[i].target});
+}
+//console.log(things.thing);
+const uniqueArray = things.thing.filter((thing, index) => {  
+const _thing = JSON.stringify(thing);
+  return index === things.thing.findIndex(obj => {    
+  return JSON.stringify(obj) === _thing;  });
+  });
+nodesTotal = uniqueArray;
+linksTotal = apiData;
+});
+				
+function checkFlag() {
+    if(things.thing.length == 0) {
+       window.setTimeout(checkFlag, 3000); 
+    } else {
+      finit();
+    }
+}
+checkFlag();
+
+function finit(){
+
+	var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) {
+			return d.id;
+		}))
+		.force("collide", d3.forceCollide(function(d) {
+			return Math.sqrt(d.radius) * 11
+		}))
+		.force("charge", d3.forceManyBody())
+		.force("center", d3.forceCenter(w / 3, h / 2));
+
+	draw(nodesTotal, linksTotal);
+
+	function draw(nodes, links) {
+
+		var nodesConnectionsList = nodes.map(function(d) {
+			return d.id
+		});
+
+		var nodesConnections = [];
+
+		nodesConnectionsList.forEach(function(d, j) {
+			nodesConnections[j] = {
+				risk: d,
+				connections: []
+			};
+			for (var i = 0; i < links.length; i++) {
+				if (links[i].source == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].target,
+						connectionsNumber: links[i].value
+					})
+				} else if (links[i].target == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].source,
+						connectionsNumber: links[i].value
+					})
+				}
+			}
+		});
+
+		nodes.forEach(function(d) {
+			var thisData = nodesConnections.filter(function(e) {
+				return e.risk == d.id
+			});
+			var sum = d3.sum(thisData[0].connections, function(f) {
+				return f.connectionsNumber
+			});
+			d["radius"] = sum;
+		});
+
+		var nodeById = d3.map(nodes, function(d) {
+			return d.id;
+		})
+		var bilinks = [];
+
+		links.forEach(function(link) {
+			var s = link.source = nodeById.get(link.source),
+				t = link.target = nodeById.get(link.target),
+				i = {},
+				val = {
+					lvalue: link.value
+				};
+
+			nodes.push(i);
+			links.push({
+				source: s,
+				target: i
+			}, {
+				source: i,
+				target: t
+			});
+if(t.radius > 2) {
+			bilinks.push([s, i, t, val]);
+}	
+		});
+console.log(bilinks);
+		var link = svg.selectAll(".link")
+			.data(bilinks)
+			.enter()
+			.append("path")
+			.attr("stroke-width", function(d) {
+				return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+			})
+			.attr("class", "link");
+
+		var node = svg.selectAll(".node")
+			.data(nodes.filter(function(d) {
+				if(d.radius > 2) return d.id;
+			}))
+			.enter()
+			.append("g")
+			.attr("class", "node")
+			.call(d3.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended));
+console.log(node);
+		var circles = node.append("circle")
+			.attr("r", function(d) {
+				return Math.sqrt(d.radius) * 4
+			})
+			.attr("fill", function(d) {
+				return colors(d.group);
+			});
+
+		var backText = node.append("text")
+			.attr("class", "nodesLabelBack")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		var nodesText = node.append("text")
+			.attr("class", "nodesLabel")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		circles.on("mouseover", function(d) {
+			hovered(d);
+		}).on("mouseout", function(d) {
+			hoverOut(d);
+		});
+
+		link.on("mouseover", function(d) {
+			hoveredLink(d);
+		}).on("mouseout", function(d) {
+			hoverLinkOut(d);
+		});
+
+		simulation.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+		//drawLegend();
+
+		function ticked() {
+			link.attr("d", positionLink);
+			node.attr("transform", positionNode);
+		}
+
+		function positionLink(d) {
+			return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+		}
+
+		function positionNode(d) {
+			if (d.x < 20) {
+				d.x = 20
+			};
+			if (d.y < 20) {
+				d.y = 20
+			};
+			if (d.x > 1200) {
+				d.x = 1200
+			};
+			if (d.y > 900) {
+				d.y = 900
+			};
+			return "translate(" + d.x + "," + d.y + ")";
+		}
+
+		function hovered(thisData) {
+
+			//drawRisk(thisData);
+
+			var thisNodeConnections = nodesConnections.filter(function(d) {
+				return d.risk == thisData.id;
+			});
+
+			var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+				return d.connection;
+			});
+
+			thisNodeConnectionsList.push(thisData.id);
+			node.attr("opacity", function(d) {
+				return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+			});
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+			});
+
+		}
+
+		function hoverOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+
+		function hoveredLink(thisData) {
+
+			//drawLink(thisData);
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[1].index == thisData[1].index) ? 1 : 0.1;
+			});
+			node.attr("opacity", function(d) {
+				return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+			});
+		}
+
+		function hoverLinkOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+			//end of draw
+	}
+
+	function dragstarted(d) {
+		if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(d) {
+		d.fx = (d3.event.x > 1200) ? 1200 : (d3.event.x < 30) ? 30 : d3.event.x;
+		d.fy = (d3.event.y > 900) ? 900 : (d3.event.y < 30) ? 30 : d3.event.y;
+	}
+
+	function dragended(d) {
+		if (!d3.event.active) simulation.alphaTarget(0);
+		d.fx = null;
+		d.fy = null;
+	}
+
+//end of finit
+} 
+
+//end of newsQuestConnectivityRisks	
+}());
+
+} //end of kartta
+		</script>
+	</body>
+</html>
