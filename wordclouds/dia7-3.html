@@ -129,6 +129,10 @@
   
 }
 
+#svganchor {
+
+}
+
     #canvas {
       position: relative;
       background-image: url('tvtaustakuva.svg');
@@ -163,8 +167,14 @@
 </style>
 </head>
 <body>
-<div id="svganchor" style="width: 100%;height: 100%;margin-left: auto;margin-right: auto;background-color: white;"></div>
+<table>
+<td>
 <div id="canvas"></div>
+</td>
+<td>
+<div id="svganchor" style="width: 100%;height: 100%;background-color: white;"></div>
+</td>
+</table>
 <table>
 <tr>
 <td> 
@@ -255,7 +265,18 @@ const sanalista2 = [
 {"text":"Työetiikka","size":6},
 {"text":"Työmoraali","size":2},
 {"text":"Tyytyväisyys","size":4},
-{"text":"Vastuullisuus","size":5}];
+{"text":"Tavoitteellisuus","size":3},
+{"text":"Rohkeus","size":5},
+{"text":"Avoimuus","size":5},
+{"text":"Uteliaisuus","size":3},
+{"text":"Johdonmukaisuus","size":3},
+{"text":"Rauhallisuus","size":6},
+{"text":"Yhteistyöhalukkuus","size":2},
+{"text":"Sosiaalisuus","size":4},
+{"text":"Innostuvuus","size":5}];
+
+
+
 
 const sanalista3 = [  
 {"text":"Analyyttisyys","size":4},
@@ -272,8 +293,11 @@ const sanalista3 = [
 {"text":"Stressinhallinta","size":1},
 {"text":"Terveys","size":5},
 {"text":"Toimintakyky","size":2},
-{"text":"Tunneäly","size":4},
-{"text":"Yhteistyökyky","size":4}];
+{"text":"Älykkyys","size":3},
+{"text":"Havainnointikyky","size":6},
+{"text":"Valppaus","size":2},
+{"text":"Keskittyvyys","size":4},
+{"text":"Tunneäly","size":4},];
 
 var sanalista4 = [
 {"text":"Aikataulutustaidot","size":4},
@@ -287,6 +311,7 @@ var sanalista4 = [
 {"text":"Etätyötaidot","size":5},
 {"text":"Kielitaito","size":4},
 {"text":"Kuuntelutaidot","size":4},
+{"text":"Käytännöllisyys","size":4},
 {"text":"Motivointitaidot","size":2},
 {"text":"Myyntitaidot","size":5},
 {"text":"Neuvottelutaidot","size":2},
@@ -545,13 +570,13 @@ document.getElementById("data-textbox").value = lson;
 
       function AnalyzeReds() {
       
-      console.log(dataset);
+      //console.log(dataset);
 
         muuttujat = [];
         for (var i = 0; i < dataset.length; i++) {
                 muuttujat.push(dataset[i].text); 
         }
-            console.log(muuttujat);
+            //console.log(muuttujat);
             d3.selectAll("#svganchor > *").remove(); 
             kartta();
       }
