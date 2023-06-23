@@ -1,0 +1,846 @@
+<div class="wrapper">
+  <div id="wheel"></div>
+  <button id="clear-button">Clear</button>
+  <ul id="feelings"></ul>
+</div>
+
+<style>
+  #wheel {
+    width: 900px;
+    height: 900px;
+  }
+  path {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  path:hover {
+    opacity: 1;
+  }
+  .wrapper {
+    display: flex;
+  }
+  #clear-button {
+    height: 30px;
+  }
+</style>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+const data = {
+  children: [
+
+    {
+      name: "Nykyisyys",
+      children: [
+        {
+          name: "Itsetuntemus",
+          children: [ 
+            {
+              name: "Tunnetaidot",
+              children: [
+                 {
+                   name: "Empaattisuus", 
+                 },
+                 {
+                   name: "Positiivisuus",
+                 },
+               ],
+             },
+            {
+              name: "Vahvuudet",
+              children: [
+                 {
+                   name: "Luovuus", 
+                 },
+                 {
+                   name: "Resilienssi",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Sosiaalisuus",
+          children: [ 
+            { 
+              name: "Vuorovaikutus",
+              children: [
+                 {
+                   name: "Läsnäolo", 
+                 },
+                 {
+                   name: "Kuuntelevuus",
+                 },
+               ],
+             },
+            {
+              name: "Ilmaisevuus",
+              children: [
+                 {
+                   name: "Avoimuus", 
+                 },
+                 {
+                   name: "Vastavuoroisuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Yhteisöllisyys",
+          children: [ 
+            {
+              name: "Vastuullisuus",
+              children: [
+                 {
+                   name: "Rohkeus", 
+                 },
+                 {
+                   name: "Rehellisyys",
+                 },
+               ],
+             },
+            {
+              name: "Verkostoituvuus",
+              children: [
+                 {
+                   name: "Yhteenkuuluvuus", 
+                 },
+                 {
+                   name: "Tukiverkostot",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Hyvinvointi",
+          children: [ 
+            {
+              name: "Luontosuhde",
+              children: [
+                 {
+                   name: "Vakaus", 
+                 },
+                 {
+                   name: "Vapaus",
+                 },
+               ],
+             },
+            {
+              name: "Henkisyys",
+              children: [
+                 {
+                   name: "Hengellisyys", 
+                 },
+                 {
+                   name: "Merkityksellisyys",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Terveys",
+          children: [ 
+            {
+              name: "Terveellisyys",
+              children: [
+                 {
+                   name: "Levollisuus", 
+                 },
+                 {
+                   name: "Raittius",
+                 },
+               ],
+             },
+            {
+              name: "Mielenrauha",
+              children: [
+                 {
+                   name: "Itsemyötätunto", 
+                 },
+                 {
+                   name: "Hiljentyminen",
+                 },
+               ],
+             }, 
+          ],
+        }, 
+        {
+          name: "Toimintakyky",
+          children: [ 
+            {
+              name: "Itsenäisyys",
+              children: [
+                 {
+                   name: "Omatoimisuus", 
+                 },
+                 {
+                   name: "Arjenhallinta",
+                 },
+               ],
+             },
+            {
+              name: "Energisyys",
+              children: [
+                 {
+                   name: "Liikkuvuus", 
+                 },
+                 {
+                   name: "Kestävyys",
+                 },
+               ],
+             }, 
+          ],
+        },
+      ],
+    },
+    {
+      name: "Tulevaisuus",
+      children: [
+        {
+          name: "Tavoitteet",
+          children: [ 
+            {
+              name: "Realistisuus",
+              children: [
+                 {
+                   name: "Sopivuus", 
+                 },
+                 {
+                   name: "Voimavarat",
+                 },
+               ],
+             },
+            {
+              name: "Mahdollisuudet",
+              children: [
+                 {
+                   name: "Osaavuus", 
+                 },
+                 {
+                   name: "Esteettömyys",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Haaveet",
+          children: [ 
+            {
+              name: "Visio",
+              children: [
+                 {
+                   name: "Usko", 
+                 },
+                 {
+                   name: "Intohimo",
+                 },
+               ],
+             },
+            {
+              name: "Inspiraatio",
+              children: [
+                 {
+                   name: "Oivallus", 
+                 },
+                 {
+                   name: "Tarkoitus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Mahdollisuudet",
+          children: [ 
+            {
+              name: "Riskinotto",
+              children: [
+                 {
+                   name: "Rohkeus", 
+                 },
+                 {
+                   name: "Itsevarmuus",
+                 },
+               ],
+             },
+            {
+              name: "Luovuus",
+              children: [
+                 {
+                   name: "Intiuitio", 
+                 },
+                 {
+                   name: "Innovaatio",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Tiedot",
+          children: [ 
+            {
+              name: "Viisaus",
+              children: [
+                 {
+                   name: "Rationaalisuus", 
+                 },
+                 {
+                   name: "Harkitsevuus",
+                 },
+               ],
+             },
+            {
+              name: "Kriittisyys",
+              children: [
+                 {
+                   name: "Analyyttisuus", 
+                 },
+                 {
+                   name: "Ennakoivuus  ",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Taidot",
+          children: [ 
+            {
+              name: "Ongelmanratkaisu",
+              children: [
+                 {
+                   name: "Successful", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             },
+            {
+              name: "Sopeutuvuus",
+              children: [
+                 {
+                   name: "Successful", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Kyvyt",
+          children: [ 
+            {
+              name: "Johtavuus",
+              children: [
+                 {
+                   name: "Päätöksenteko", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             },
+            {
+              name: "Itseohjautuvuus",
+              children: [
+                 {
+                   name: "Successful", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             }, 
+          ],
+        },
+      ],
+    },
+    {
+      name: "Ajanhallinta",
+      children: [
+        {
+          name: "Tärkeys",
+          children: [ 
+            {
+              name: "Priorisointi",
+              children: [
+                 {
+                   name: "Eettisyys", 
+                 },
+                 {
+                   name: "Strategisuus",
+                 },
+               ],
+             },
+            {
+              name: "Arvostus",
+              children: [
+                 {
+                   name: "Merkitys", 
+                 },
+                 {
+                   name: "Vaikuttavuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Järjestys",
+          children: [ 
+            {
+              name: "Priorisointi",
+              children: [
+                 {
+                   name: "Successful", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             },
+            {
+              name: "Proud",
+              children: [
+                 {
+                   name: "Successful", 
+                 },
+                 {
+                   name: "Confident",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Selkeys",
+          children: [ 
+            {
+              name: "Ajoitus",
+              children: [
+                 {
+                   name: "Tarkkuus", 
+                 },
+                 {
+                   name: "Täsmällisyus",
+                 },
+               ],
+             },
+            {
+              name: "Soveltuvuus",
+              children: [
+                 {
+                   name: "Käytännönläheisyys", 
+                 },
+                 {
+                   name: "Ajankohtaisuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Työ",
+          children: [ 
+            {
+              name: "Deadline",
+              children: [
+                 {
+                   name: "Itsekuri", 
+                 },
+                 {
+                   name: "Sitoutuvuus",
+                 },
+               ],
+             },
+            {
+              name: "Delegointi",
+              children: [
+                 {
+                   name: "Kehittäminen", 
+                 },
+                 {
+                   name: "Kontrolli",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Koti",
+          children: [ 
+            {
+              name: "Siisteys",
+              children: [
+                 {
+                   name: "Puhtaus", 
+                 },
+                 {
+                   name: "Hygienisyys",
+                 },
+               ],
+             },
+            {
+              name: "  Rutiinit",
+              children: [
+                 {
+                   name: "Kätevyys", 
+                 },
+                 {
+                   name: "Vaivattomuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Vapaa-aika",
+          children: [ 
+            {
+              name: "Ulkoilu",
+              children: [
+                 {
+                   name: "Virkistäytyvyys", 
+                 },
+                 {
+                   name: "Liikunnallisuus ",
+                 },
+               ],
+             },
+            {
+              name: "Tasapainoisuus",
+              children: [
+                 {
+                   name: "Emotionaalisuus", 
+                 },
+                 {
+                   name: "Ekologisuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+      ],
+    }, 
+    {
+      name: "Menneisyys",
+      children: [
+        {
+          name: "Arvostukset",
+          children: [ 
+            {
+              name: "Turvallisuus",
+              children: [
+                 {
+                   name: "Itseluottamus", 
+                 },
+                 {
+                   name: "Itsevarmuus",
+                 },
+               ],
+             },
+            {
+              name: "Moraalisuus",
+              children: [
+                 {
+                   name: "Suvaitsevaisuus", 
+                 },
+                 {
+                   name: "Omatunto",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Uskomukset",
+          children: [ 
+            {
+              name: "Maailmankatsomus",
+              children: [
+                 {
+                   name: "Perinteellisyys", 
+                 },
+                 {
+                   name: "Uskonnollisuus",
+                 },
+               ],
+             },
+            {
+              name: "Aatteellisuus",
+              children: [
+                 {
+                   name: "Poliittisuus", 
+                 },
+                 {
+                   name: "Ideologisuus",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Kokemukset",
+          children: [ 
+            {
+              name: "Elämykset",
+              children: [
+                 {
+                   name: "Esteettisyys", 
+                 },
+                 {
+                   name: "Seikkailu",
+                 },
+               ],
+             },
+            {
+              name: "Opit",
+              children: [
+                 {
+                   name: "Opettajat", 
+                 },
+                 {
+                   name: "Koulukaverit",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Suku",
+          children: [ 
+            {
+              name: "Sukuyhteisö",
+              children: [
+                 {
+                   name: "Sukulaisuus", 
+                 },
+                 {
+                   name: "Sukuperinteet",
+                 },
+               ],
+             },
+            {
+              name: "Kulttuuri",
+              children: [
+                 {
+                   name: "Normit", 
+                 },
+                 {
+                   name: "Arvot ",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Perhe",
+          children: [ 
+            {
+              name: "Perhesuhteet",
+              children: [
+                 {
+                   name: "Luottamus", 
+                 },
+                 {
+                   name: "Tukiverkostot",
+                 },
+               ],
+             },
+            {
+              name: "Turvallisuus",
+              children: [
+                 {
+                   name: "Läheisyys", 
+                 },
+                 {
+                   name: "Tyytyväisyys",
+                 },
+               ],
+             }, 
+          ],
+        },
+        {
+          name: "Yksilö",
+          children: [ 
+            {
+              name: "Muistot",
+              children: [
+                 {
+                   name: "Perhemuistot", 
+                 },
+                 {
+                   name: "Rakkausmuistot ",
+                 },
+               ],
+             },
+            {
+              name: "Elämänvaiheet",
+              children: [
+                 {
+                   name: "Lapsuus", 
+                 },
+                 {
+                   name: "Nuoruus",
+                 },
+               ],
+             }, 
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+  const partition = (data) =>
+    d3.partition().size([2 * Math.PI, radius])(d3.hierarchy(data).count());
+
+  const color = d3
+    .scaleOrdinal()
+    .range([
+      "#FFE08E",
+      "#FF8E8E",
+      "#8F8F8F",
+      "#8FBCE2",
+      "#FFFF8E",
+      "#BBA2D0",
+      "#8ED9AE",
+    ]);
+
+  const element = d3.select("#wheel").node();
+  const width = element.getBoundingClientRect().width; // get width of article so graphic is responsive
+  const radius = width / 2;
+
+  const arc = d3
+    .arc()
+    .startAngle((d) => d.x0)
+    .endAngle((d) => d.x1)
+    .padAngle((d) => Math.min((d.x1 - d.x0) / 2, 0.005))
+    .padRadius(radius / 2)
+    .innerRadius((d) => d.y0)
+    .outerRadius((d) => d.y1 - 1);
+
+  chart = new (function () {
+    const root = partition(data);
+
+    let svg = d3
+      .select("#wheel")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", width)
+      .style("width", "100%")
+      .style("height", "auto")
+      .style("font", "0.7rem sans-serif");
+
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${width / 2}, ${width / 2})`);
+
+    const paths = g
+      .append("g")
+      .attr("fill-opacity", 0.6)
+      .selectAll("path")
+      .data(root.descendants().slice(1))
+      .enter()
+      .append("path")
+      .attr("fill", (d) => {
+        while (d.depth > 1) d = d.parent;
+        return color(d.data.name);
+      })
+      .attr("d", arc);
+
+    const text = g
+      .append("g")
+      .attr("pointer-events", "none")
+      .attr("text-anchor", "middle")
+      .selectAll("text")
+      .data(root.descendants().slice(1))
+      .enter()
+      .append("text")
+      .attr("transform", function (d) {
+        const x = (((d.x0 + d.x1) / 2) * 180) / Math.PI;
+        const y = (d.y0 + d.y1) / 2;
+        return `rotate(${x - 90}) translate(${y},0) rotate(${
+          x < 180 ? 0 : 180
+        })`;
+      })
+      .attr("dy", "0.35em")
+      .text((d) => d.data.name);
+
+    paths.each(function (d, i) {
+      d3.select(this).attr("data-index", i);
+    });
+
+    text.each(function (d, i) {
+      d3.select(this).attr("data-index", i);
+    });
+
+    return svg.node();
+  })();
+
+  (function initialize() {
+    const feelings = new Set();
+    const colors = {};
+
+    function render() {
+      const c = document.querySelector("#feelings");
+      c.innerHTML = "";
+      for (const feeling of feelings) {
+        if (colors[feeling] !== "black") {
+          const item = document.createElement("li");
+          item.innerText = feeling;
+          item.style.color = colors[feeling];
+          c.appendChild(item);
+        }
+      }
+    }
+    
+    function clear() {
+      feelings.clear();
+      colors = {};
+      render();
+    }
+
+    function clickHandler(e) {
+      const index = e.target.getAttribute("data-index");
+      const path = document.querySelector(`path[data-index="${index}"]`);
+      const text = document.querySelector(`text[data-index="${index}"]`);
+
+      if (path && text) {
+        const currentColor = colors[text.textContent] || "black";
+        let newColor;
+
+        if (currentColor === "black") {
+          newColor = "green";
+        } else if (currentColor === "green") {
+          newColor = "red";
+        } else {
+          newColor = "black";
+        }
+
+        //path.style.fill = newColor;
+        text.style.fill = newColor;
+
+        colors[text.textContent] = newColor;
+        feelings.add(text.textContent);
+        render();
+      }
+    }
+
+    const paths = Array.from(document.querySelectorAll("path"));
+    paths.forEach((path) => {
+      path.addEventListener("click", clickHandler);
+    });
+
+    document.querySelector("#clear-button").addEventListener("click", clear);
+  })();
+</script>
