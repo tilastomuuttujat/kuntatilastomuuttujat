@@ -1,0 +1,290 @@
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "Nykyisyys",
+   "children": [
+    {
+     "name": "Itsetuntemus",
+     "children": [
+      {"name": "Tunnetaidot", "size": 1},
+      {"name": "Vahvuudet", "size": 1},
+      {"name": "Empaattisuus", "size": 1},
+      {"name": "Positiivisuus", "size": 1},
+      {"name": "Itsetutkiskelu", "size": 1}, 
+      {"name": "Resilienssi", "size": 1}
+     ]
+    },
+    {
+     "name": "Sosiaalisuus",
+     "children": [
+      {"name": "Vuorovaikutus", "size": 1},
+      {"name": "Ilmaisevuus", "size": 1},
+      {"name": "Läsnäolo", "size": 1},
+      {"name": "Kuuntelevuus", "size": 1},
+      {"name": "Avoimuus", "size": 1},
+      {"name": "Vastavuoroisuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Yhteisöllisyys",
+     "children": [
+      {"name": "Vastuullisuus", "size": 1},
+      {"name": "Verkostoituvuus", "size": 1},
+      {"name": "Rohkeus", "size": 1},
+      {"name": "Rehellisyys", "size": 1},
+      {"name": "Yhteenkuuluvuus", "size": 1},
+      {"name": "Tukiverkostot", "size": 1}
+     ]
+    },
+    {
+     "name": "Hyvinvointi",
+     "children": [
+      {"name": "Luontosuhde", "size": 1},
+      {"name": "Henkisyys", "size": 1},
+      {"name": "Vakaus", "size": 1},
+      {"name": "Vapaus", "size": 1},  
+      {"name": "Hengellisyys", "size": 1},
+      {"name": "Merkityksellisyys", "size": 1}
+     ]
+    },
+    {
+     "name": "Terveys",
+     "children": [
+      {"name": "Terveellisyys", "size": 1},
+      {"name": "Mielenrauha", "size": 1},
+      {"name": "Levollisuus", "size": 1},
+      {"name": "Raittius", "size": 1},
+      {"name": "Itsemyötätunto", "size": 1},   
+      {"name": "Kiitollisuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Toimintakyky",
+     "children": [
+      
+      {"name": "Itsenäisyys", "size": 1},
+      {"name": "Energisyys", "size": 1},
+      {"name": "Omatoimisuus", "size": 1}, 
+      {"name": "Arjenhallinta", "size": 1},
+      {"name": "Liikkuvuus", "size": 1},
+      {"name": "Kestävyys", "size": 1}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tulevaisuus",
+   "children": [
+    {
+     "name": "Tavoitteet",
+     "children": [
+      {"name": "Realistisuus", "size": 1},
+      {"name": "Saavutettavuus", "size": 1},
+      {"name": "Sopivuus", "size": 1},
+      {"name": "Hyödyllisyys", "size": 1},
+      {"name": "Havaittavuus", "size": 1},
+      {"name": "Esteettömyys", "size": 1}
+     ]
+    },
+     {
+     "name": "Haaveet",
+     "children": [
+      {"name": "Visio", "size": 1},
+      {"name": "Inspiraatio", "size": 1},
+      {"name": "Usko", "size": 1},
+      {"name": "Intohimo", "size": 1}, 
+      {"name": "Oivallus", "size": 1},
+      {"name": "Tarkoitus", "size": 1}
+     ]
+    },
+    {
+     "name": "Mahdollisuudet",
+     "children": [
+      {"name": "Riskinotto", "size": 1},
+      {"name": "Luovuus", "size": 1},
+      {"name": "Rohkeus", "size": 1},
+      {"name": "Itsevarmuus", "size": 1},
+      {"name": "Intuitio", "size": 1},
+      {"name": "Innovaatio", "size": 1}
+     ]
+    },
+     {
+     "name": "Tiedot",
+     "children": [
+      {"name": "Viisaus", "size": 1},
+      {"name": "Analyyttisyys", "size": 1},
+      {"name": "Rationaalisuus", "size": 1},
+      {"name": "Harkitsevuus", "size": 1}, 
+      {"name": "Kriittisyys", "size": 1},
+      {"name": "Ennakoivuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Taidot",
+     "children": [
+      {"name": "Ongelmaratkaisu", "size": 1},
+      {"name": "Sopeutuvuus", "size": 1},
+      {"name": "Uteliaisuus", "size": 1},
+      {"name": "Oivaltavuus", "size": 1},
+      {"name": "Joustavuus", "size": 1},
+      {"name": "Itsehillintä", "size": 1}
+     ]
+    }, 
+    {
+     "name": "Kyvyt",
+     "children": [
+      {"name": "Johtajuus", "size": 1},
+      {"name": "Itseohjautuvuus", "size": 1},
+      {"name": "Päätöksenteko", "size": 1},
+      {"name": "Aloitteellisuus", "size": 1},
+      {"name": "Sinnikkyys", "size": 1},
+      {"name": "Omaksuvuus", "size": 1}
+     ]
+    }
+   ]
+  }, 
+  {
+   "name": "Ajanhallinta",
+   "children": [
+    {
+     "name": "Työ",
+     "children": [
+      {"name": "Määräaika", "size": 1},
+      {"name": "Tehtävänjako", "size": 1},
+      {"name": "Itsekuri", "size": 1},
+      {"name": "Sitoutuvuus", "size": 1},
+      {"name": "Kehittäminen", "size": 1},    
+      {"name": "Kontrolli", "size": 1}
+     ]
+    },
+    {
+     "name": "Koti",
+     "children": [
+      {"name": "Rutiinit", "size": 1},
+      {"name": "Siisteys", "size": 1},
+      {"name": "Vaivattomuus", "size": 1},
+      {"name": "Kätevyys", "size": 1},
+      {"name": "Hygienisyys", "size": 1},    
+      {"name": "Puhtaus", "size": 1}
+     ]
+    }, 
+    {
+     "name": "Vapaa-aika",
+     "children": [
+      {"name": "Tasapainoisuus", "size": 1},
+      {"name": "Ulkoilu", "size": 1},
+      {"name": "Monipuolisuus", "size": 1},
+      {"name": "Rentoutuvuus", "size": 1},   
+      {"name": "Liikunnallisuus", "size": 1},
+      {"name": "Virkistäytyvyys", "size": 1}
+     ]
+    },
+    {
+     "name": "Tärkeys",
+     "children": [
+      {"name": "Vaikutus", "size": 1},
+      {"name": "Hyöty", "size": 1},
+      {"name": "Suorituskyky", "size": 1},
+      {"name": "Tehokkuus", "size": 1},   
+      {"name": "Tarpeellisuus", "size": 1},
+      {"name": "Tuottavuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Järjestys",
+     "children": [
+      {"name": "Arvostus", "size": 1},
+      {"name": "Priorisointi", "size": 1},
+      {"name": "Strategisuus", "size": 1},
+      {"name": "Merkitys", "size": 1},
+      {"name": "Riskinotto", "size": 1},    
+      {"name": "Valikoivuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Ajoitus",
+     "children": [
+      {"name": "Selkeys", "size": 1},
+      {"name": "Soveltuvuus", "size": 1},
+      {"name": "Tarkkuus", "size": 1},
+      {"name": "Täsmällisyys", "size": 1},  
+      {"name": "Käytännöllisyys", "size": 1},
+      {"name": "Ajankohtaisuus", "size": 1}
+     ]
+    }
+   ]
+  },  
+  {
+   "name": "Menneisyys",
+   "children": [
+    {
+     "name": "Perhesiteet",
+     "children": [
+      {"name": "Turvallisuus", "size": 1},
+      {"name": "Luottamus", "size": 1}, 
+      {"name": "Läheisyys", "size": 1},
+      {"name": "Eheys", "size": 1},
+      {"name": "Vanhemmat", "size": 1},
+      {"name": "Sisarukset", "size": 1}
+     ]
+    },
+    {
+     "name": "Suku",
+     "children": [
+      {"name": "Sovinnaisuus", "size": 1},
+      {"name": "Kunnioitus", "size": 1},
+      {"name": "Perinteet", "size": 1}, 
+      {"name": "Sukulaiset", "size": 1},
+      {"name": "Isovanhemmat", "size": 1},
+      {"name": "Serkut", "size": 1}
+     ]
+    },
+    {
+     "name": "Kultturi",
+     "children": [
+      {"name": "Moraalisuus", "size": 1},
+      {"name": "Aatteellisuus", "size": 1},
+      {"name": "Omatunto", "size": 1}, 
+      {"name": "Sallivuus", "size": 1},
+      {"name": "Ideologisuus", "size": 1},
+      {"name": "Poliittisuus", "size": 1}
+     ]
+    },
+    {
+     "name": "Kokemukset",
+     "children": [
+      {"name": "Muistot", "size": 1},
+      {"name": "Elämykset", "size": 1},
+      {"name": "Koulukaverit", "size": 1},
+      {"name": "Opettajat", "size": 1},
+      {"name": "Rakkaus", "size": 1}, 
+      {"name": "Saavutukset", "size": 1}
+     ]
+    },
+    {
+     "name": "Uskomukset",
+     "children": [
+      {"name": "Yliluonnollisuus", "size": 1},
+      {"name": "Maailmankatsomus", "size": 1},
+      {"name": "Kohtalonomaisuus", "size": 1},
+      {"name": "Uskonnollisuus", "size": 1},
+      {"name": "Tieteellisyys", "size": 1}, 
+      {"name": "Filosofisuus", "size": 1}
+     ]
+    },    
+    {
+     "name": "Arvostukset",
+     "children": [
+      {"name": "Oikeudenmukaisuus", "size": 1},
+      {"name": "Rauha", "size": 1},
+      {"name": "Esteettisyys", "size": 1},
+      {"name": "Eettisyys", "size": 1},
+      {"name": "Tasavertaisuus", "size": 1}, 
+      {"name": "Tasa-arvoisuus", "size": 1}
+     ]
+    }
+   ]
+  }
+ ]
+}
