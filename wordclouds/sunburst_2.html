@@ -6,15 +6,41 @@
     <title>Partition Chart</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <style>
-        svg {
-            font: 10px sans-serif;
-        }
-    </style>
+
+
+
+<style>
+  #wheel {
+    width: 900px;
+    height: 900px;
+  }
+  path {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  path:hover {
+    opacity: 1;
+  }
+  .wrapper {
+    display: flex;
+  }
+  #clear-button {
+    height: 30px;
+  }
+  svg {
+    font: 10px sans-serif;
+  }
+</style>
+
 </head>
 <body>
+<div class="wrapper">
+  <div id="wheel"></div>
+  <button id="clear-button">Tyhjennä</button>
+  <ul id="feelings"></ul>
+</div>
     <script>
-        $.getJSON("flare.json", function(data) {
+        $.getJSON("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare.json", function(data) {
 
             console.log(data);
 
@@ -45,7 +71,7 @@
 
             root.each(d => d.current = d);
 
-            const svg = d3.select("body").append("svg")
+            const svg = d3.select("#wheel").append("svg")
                 .attr("width", width)
                 .attr("height", width);
 
