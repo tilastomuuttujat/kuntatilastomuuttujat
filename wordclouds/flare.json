@@ -7,18 +7,14 @@
     {
      "name": "Yksilöllisyys",
      "children": [
-      {"name": "Itseluottamus", "size": 1, "info": "Itseluottamus tarkoittaa henkilön kykyä luottaa omaan itseensä ja omiin kykyihinsä. Itseluottamus on tärkeä tekijä monissa elämänalueilla, kuten työssä, koulussa, urheilussa, sosiaalisessa elämässä ja henkilökohtaisessa kehityksessä. Itseluottamus voi auttaa yksilöä selviytymään haastavista ja stressaavista tilanteista, yrittämään uusia asioita ja saavuttamaan tavoitteitaan. Itseluottamus voi kehittyä esimerkiksi onnistumisten, positiivisten kokemusten ja kannustavan ympäristön myötä. Toisaalta, menetykset ja epäonnistumiset voivat heikentää itseluottamusta."},
-      {"name": "Itsehyväksyntä", "size": 1},
-      {"name": "Itsearvostus", "size": 1},  
-      {"name": "Itsevarmuus", "size": 1}, 
+      {"name": "Itseluottamus", "size": 1, "info": "Itseluottamus tarkoittaa henkilön kykyä luottaa omaan itseensä ja omiin kykyihinsä. Itseluottamus on tärkeä tekijä monissa elämänalueilla, kuten työssä, koulussa, urheilussa, sosiaalisessa elämässä ja henkilökohtaisessa kehityksessä. Itseluottamus voi auttaa yksilöä selviytymään haastavista ja stressaavista tilanteista, yrittämään uusia asioita ja saavuttamaan tavoitteitaan. Itseluottamus voi kehittyä esimerkiksi onnistumisten, positiivisten kokemusten ja kannustavan ympäristön myötä."},
+      {"name": "Itsehyväksyntä", "size": 1, "info": "Itsehyväksyntä on prosessi, jossa yksilö hyväksyy itsensä sellaisena kuin on, virheineen ja puutteineen, ilman tarvetta olla täydellinen tai muuttaa itseään muiden odotusten mukaisesti. Se on kykyä hyväksyä oma ainutlaatuisuus ja olla armollinen itselleen. Itsehyväksyntä on tärkeä osa terveitä itsetunnon ja itsetuntemuksen rakentamista. Se auttaa ihmistä kehittymään ja kasvamaan, sillä hyväksyntä luo pohjan itseluottamukselle ja rohkeudelle kohdata uusia haasteita ja oppia virheistään."},
+      {"name": "Itsearvostus", "size": 1, "info": "Itsearvostus on yksilön käsitys ja tunne omasta arvostaan, itsetunnostaan ja kyvystään. Se liittyy siihen, miten arvostamme ja hyväksymme itsemme, miten koemme omat kykymme ja ansaitsemme hyvää kohtelua sekä miten suhtaudumme omiin vahvuuksiimme ja heikkouksiimme. Itsearvostus vaikuttaa moniin elämänalueisiin, kuten itsetuntoon, itsevarmuuteen, päätöksentekoon, ihmissuhteisiin ja yleiseen hyvinvointiin."},  
+      {"name": "Itsevarmuus", "size": 1, "info": "Itsevarmuus tarkoittaa henkilön kykyä luottaa omaan itseensä ja omiin kykyihinsä. Itsevarmuus voi ilmentyä esimerkiksi rohkeutena ottaa riskejä, luottamuksena omiin päätöksiin ja kykyyn selviytyä haasteista. Itsevarmuus on tärkeä osa positiivista ajattelutapaa, sillä se auttaa henkilöä kehittämään itsensä ja saavuttamaan tavoitteitaan. Itsevarmuus voi kasvaa kokemuksen ja oppimisen myötä, mutta sitä voi myös harjoitella tietoisesti esimerkiksi asettamalla realistisia tavoitteita ja haastamalla itseään pienin askelin kohti niitä."}, 
       {"name": "Itsenäisyys", "size": 1},
-      {"name": "Identiteetti", "size": 1},
       {"name": "Itsetunto", "size": 1},  
-      {"name": "Omaehtoisuus", "size": 1},
       {"name": "Positiivisuus", "size": 1},
-      {"name": "Itsetutkiskelu", "size": 1}, 
-      {"name": "Vapaus", "size": 1},  
-      {"name": "Resilienssi", "size": 1}
+      {"name": "Vapaus", "size": 1}
      ]
     },
     {
