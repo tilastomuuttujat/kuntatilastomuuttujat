@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>    
+    <style>
+        #wheel {
+            width: 900px;
+            height: 900px;
+        }
+        path {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        path:hover {
+            opacity: 1;
+        }
+        .wrapper {
+            display: flex;
+        }
+        #clear-button {
+            height: 30px;
+        }
+        svg {
+            font: 10px sans-serif;
+        }
+        
+        
+        .barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
+}
+
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
+}
+
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
+}
+
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
+}
+
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
+}
+
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+}
+
+.barAxis path,
+.barAxis line {
+	stroke: #999;
+}
+
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+    </style>
+    
+</head>
+<body>
+<table>
+<td>
+<svg></svg>
+</td>
+<td>
+<div id="svganchor" style="width: 100%;height: 100%;background-color: white;"></div>
+</td>
+</table>
+<button id="clear-button" onClick="naytavarit();">Näytä</button>
+
+<script>
+var taulukko = [];
+var varitys = "none";
+var info = "";
+d3.json("flare.json").then(data => {
+  const partition = data => {
+    const root = d3.hierarchy(data)
+      .sum(d => d.size)
+      .sort((a, b) => b.value - a.value);
+
+    return d3.partition()
+      .size([2 * Math.PI, root.height + 1])
+      (root);
+  }
+
+  const color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+  const format = d3.format(",d");
+  const width = 800;
+  const radius = width / 6;
+  const arc =
+    d3.arc()
+    .startAngle(d => d.x0)
+    .endAngle(d => d.x1)
+    .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+    .padRadius(radius * 1.5)
+    .innerRadius(d => d.y0 * radius)
+    .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
+
+  const root = partition(data);
+  root.each(d => d.current = d);
+  const svg = d3.select('svg')
+    .attr("width", width)
+    .attr("height", width)
+    .style("font", "10px sans-serif");
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${width / 2},${width / 2})`)
+    .on("mouseleave", mouseleave);
+
+  const path = g.append("g")
+    .selectAll("path")
+    .data(root.descendants().slice(1))
+    .enter().append("path")
+    .attr("fill", d => {
+      while (d.depth > 1) d = d.parent;
+      return color(d.data.name);
+    })
+    .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+    .attr("d", d => arc(d.current))
+    .on("mouseover", mouseover)
+    .on("click", clicked); // Lisätty click-tapahtumankäsittelijä tähän
+
+  path.filter(d => d.children)
+    .style("cursor", "pointer");
+
+  path.append("title")
+    .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+
+  const label = g.append("g")
+    .attr("pointer-events", "none")
+    .attr("text-anchor", "middle")
+    .style("user-select", "none")
+    .selectAll("text")
+    .data(root.descendants().slice(1))
+    .enter().append("text")
+    .attr("dy", "0.35em")
+    .attr("fill-opacity", d => +labelVisible(d.current))
+    .attr("transform", d => labelTransform(d.current))
+    .text(d => d.data.name);
+/*
+  const percentage_text = svg.append("text")
+    .attr("id", "title")
+    .attr("width", 50)
+    .attr("height", 50) 
+    .attr("x", (310))
+    .attr("y", (330))
+    .attr("text-anchor", "left")
+    .style("font-size", "1.0em");
+*/
+
+const text = info;
+
+const textContainer = svg.append("foreignObject")
+  .attr("x", 310)
+  .attr("y", 320)
+  .attr("width", 200)
+  .attr("height", 170);
+
+const div = textContainer
+  .append("xhtml:div")
+  .style("width", "100%")
+  .style("height", "100%")
+  .style("font-size", "1.0em")
+  .style("overflow", "auto") // Mahdollistaa selailun
+  .style("word-wrap", "break-word")
+  .style("white-space", "normal") // Korvaa "pre-wrap" -tilan
+  .html(text); // Käytä .html() sijaan .text()
+
+div.selectAll("p") // Lisää <p> elementit
+  .data([text])
+  .enter()
+  .append("p")
+  .text(function(d) { return d; });
+
+
+
+
+
+
+
+  const parent = g.append("circle")
+    .datum(root)
+    .attr("r", radius)
+    .attr("fill", "none")
+    .attr("pointer-events", "all")
+    .on("click", clicked);
+
+  function clicked(p) {
+    if (p.depth < 3) {
+      parent.datum(p.parent || root);
+
+      root.each(d => d.target = {
+        x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+        x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+        y0: Math.max(0, d.y0 - p.depth),
+        y1: Math.max(0, d.y1 - p.depth)
+      });
+      const t = g.transition().duration(750);
+
+      path.transition(t)
+        .tween("data", d => {
+          const i = d3.interpolate(d.current, d.target);
+          return t => d.current = i(t);
+        })
+        .filter(function(d) {
+          return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+        })
+        .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+        .attrTween("d", d => () => arc(d.current));
+
+      label.filter(function(d) {
+          return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+        }).transition(t)
+        .attr("fill-opacity", d => +labelVisible(d.target))
+        .attrTween("transform", d => () => labelTransform(d.current));
+      
+    } else {
+      poimiTieto("none", p.data.name);
+      //console.log(varitys);
+      
+      if (varitys === "none") {
+        d3.select(this).attr("fill", "green");
+        lisaaTieto("green", p.data.name);
+      } else if (varitys === "green") {
+        d3.select(this).attr("fill", "red");
+        lisaaTieto("red", p.data.name);
+      } else {
+        varitys = "none";
+        lisaaTieto("none", p.data.name);
+        d3.select(this).attr("fill", d => {
+          while (d.depth > 1) d = d.parent;
+          return color(d.data.name);
+        });
+      }  
+    }
+  }
+
+  // Mouse over
+  const totalSize = root.descendants()[0].value;
+
+  function mouseover(d) {
+  textContainer.text(d.data.info);
+    //console.log(d.data.info);
+    //info = d.data.info;
+    var percentage = (100 * d.value / totalSize).toPrecision(3);
+    var percentageString = percentage + "%";
+    if (percentage < 0.1) {
+      percentageString = "< 0.1%";
+    }
+    //percentage_text.text(d.data.info);
+    textContainer.text(d.data.info);
+    //console.log(d.data.info);
+    //info = d.data.info;
+    var sequenceArray = d.ancestors().slice().reverse();
+    sequenceArray.shift(); 
+    g.selectAll("path")
+      .transition()
+      .duration(200)
+      .style("opacity", d => sequenceArray.indexOf(d) >= 0 ? 1 : 0.3);
+  }
+
+  function mouseleave(d) {
+    g.selectAll("path")
+      .transition()
+      .duration(200)
+      .style("opacity", 1);
+
+    percentage_text.text("");
+  }
+
+  function arcVisible(d) {
+    return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
+  }
+
+  function labelVisible(d) {
+    return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+  }
+
+  function labelTransform(d) {
+    const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+    const y = (d.y0 + d.y1) / 2 * radius;
+    return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+  }
+  
+function poimiTieto(vari, nimi) {
+  var loytyi = false;
+  for (var i = 0; i < taulukko.length; i++) {
+    if (taulukko[i].nimi === nimi) {
+      varitys = taulukko[i].vari;
+      loytyi = true;
+      break;
+    }
+  }
+
+  if (!loytyi) {
+    varitys = "none";
+  } 
+}  
+  
+function lisaaTieto(vari, nimi) {
+  var loytyi = false;
+  for (var i = 0; i < taulukko.length; i++) {
+    if (taulukko[i].nimi === nimi) {
+      taulukko[i].vari = vari;
+      loytyi = true;
+      break;
+    }
+  }
+
+  if (!loytyi) {
+    taulukko.push({ vari: vari, nimi: nimi });
+  }
+} 
+  
+});
+function naytavarit() {
+
+/*
+var punaiset = taulukko.filter(function(obj) {
+  return obj.vari === "red";
+});
+
+console.log(punaiset);
+
+var vihreat = taulukko.filter(function(obj) {
+  return obj.vari === "green";
+});
+
+console.log(vihreat);
+
+*/
+
+//console.log(taulukko);
+muuttujat = [];
+        for (var i = 0; i < taulukko.length; i++) {
+        if(taulukko[i].vari === "green" || taulukko[i].vari === "red")
+                muuttujat.push(taulukko[i].nimi); 
+        }
+            console.log(muuttujat);
+            d3.selectAll("#svganchor > *").remove(); 
+            kartta();
+      }
+
+
+
+
+
+function kartta() {
+(function newsQuestConnectivityRisks() {
+	var w = 1200;
+	var h = 900;
+
+	var padding = [10, 10, 10, 10];
+
+	var colors = d3.scaleOrdinal()
+		.domain([])
+		.range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
+
+	var svg = d3.select("#svganchor")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
+
+var nodesTotal = [];
+var linksTotal = [];
+
+const things = new Object();
+things.thing = new Array();
+
+/*
+https://docs.google.com/spreadsheets/d/e/2PACX-1vTN5OymBdzgdyrFnlp9ZRUUV3UiBF23oFHVH3DiEw1mqwiYr5fYydVIGPkQXig1BHrums5-nuzvPiON/pubhtml?gid=1193425325&single=true
+*/
+
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTN5OymBdzgdyrFnlp9ZRUUV3UiBF23oFHVH3DiEw1mqwiYr5fYydVIGPkQXig1BHrums5-nuzvPiON/pub?gid=1193425325&single=true&output=csv").then(function(apiData) {
+					try {
+						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+							data: d3.csvFormat(apiData),
+							timestamp: currentDate.getTime()
+						}));
+					} catch (error) {
+					};
+
+var mapiData = [];
+for (var i = 0; i < apiData.length; i++) {
+
+if(muuttujat.indexOf(apiData[i].source) > -1)
+mapiData.push(apiData[i]);
+}
+
+apiData=mapiData;
+
+for (var i = 0; i < apiData.length; i++) {
+things.thing.push({id:apiData[i].source,labelText:apiData[i].source});
+things.thing.push({id:apiData[i].target,labelText:apiData[i].target});
+}
+
+const uniqueArray = things.thing.filter((thing, index) => {  
+const _thing = JSON.stringify(thing);
+  return index === things.thing.findIndex(obj => {    
+  return JSON.stringify(obj) === _thing;  });
+  });
+nodesTotal = uniqueArray;
+linksTotal = apiData;
+});
+				
+function checkFlag() {
+    if(things.thing.length == 0) {
+       window.setTimeout(checkFlag, 3000); 
+    } else {
+      finit();
+    }
+}
+checkFlag();
+
+function finit(){
+
+	var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) {
+			return d.id;
+		}))
+		.force("collide", d3.forceCollide(function(d) {
+			return Math.sqrt(d.radius) * 11
+		}))
+		.force("charge", d3.forceManyBody())
+		.force("center", d3.forceCenter(w / 3, h / 2));
+
+	draw(nodesTotal, linksTotal);
+
+	function draw(nodes, links) {
+
+		var nodesConnectionsList = nodes.map(function(d) {
+			return d.id
+		});
+
+		var nodesConnections = [];
+
+		nodesConnectionsList.forEach(function(d, j) {
+			nodesConnections[j] = {
+				risk: d,
+				connections: []
+			};
+			for (var i = 0; i < links.length; i++) {
+				if (links[i].source == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].target,
+						connectionsNumber: links[i].value
+					})
+				} else if (links[i].target == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].source,
+						connectionsNumber: links[i].value
+					})
+				}
+			}
+		});
+
+		nodes.forEach(function(d) {
+			var thisData = nodesConnections.filter(function(e) {
+				return e.risk == d.id
+			});
+			var sum = d3.sum(thisData[0].connections, function(f) {
+				return f.connectionsNumber
+			});
+			d["radius"] = sum;
+		});
+
+		var nodeById = d3.map(nodes, function(d) {
+			return d.id;
+		})
+		var bilinks = [];
+
+		links.forEach(function(link) {
+			var s = link.source = nodeById.get(link.source),
+				t = link.target = nodeById.get(link.target),
+				i = {},
+				val = {
+					lvalue: link.value
+				};
+
+			nodes.push(i);
+			links.push({
+				source: s,
+				target: i
+			}, {
+				source: i,
+				target: t
+			});
+if(t.radius > 2) {
+			bilinks.push([s, i, t, val]);
+//console.log(	s, i, t, val);
+}	
+		});
+
+		var link = svg.selectAll(".link")
+			.data(bilinks)
+			.enter()
+			.append("path")
+			.attr("stroke-width", function(d) {
+				return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+			})
+			.attr("class", "link");
+
+		var node = svg.selectAll(".node")
+			.data(nodes.filter(function(d) {
+				if(d.radius > 2) return d.id;
+			}))
+			.enter()
+			.append("g")
+			.attr("class", "node")
+			.call(d3.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended));
+
+		var circles = node.append("circle")
+			.attr("r", function(d) {
+				return Math.sqrt(d.radius) * 4
+			})
+			.attr("fill", function(d) {
+			if(d.radius>= 40) return "#ee1a16";
+			if(d.radius>= 20 && d.radius < 40) return "#f3d776";
+		    if(d.radius>= 10 && d.radius < 20) return "#f32876";
+			if(d.radius < 10)	return colors(d.group);
+				
+			});
+		
+		var backText = node.append("text")
+			.attr("class", "nodesLabelBack")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		var nodesText = node.append("text")
+			.attr("class", "nodesLabel")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		circles.on("mouseover", function(d) {
+			hovered(d);
+		}).on("mouseout", function(d) {
+			hoverOut(d);
+		});
+
+		link.on("mouseover", function(d) {
+			hoveredLink(d);
+		}).on("mouseout", function(d) {
+			hoverLinkOut(d);
+		});
+
+		simulation.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+		//drawLegend();
+
+		function ticked() {
+			link.attr("d", positionLink);
+			node.attr("transform", positionNode);
+		}
+
+		function positionLink(d) {
+			return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+		}
+
+		function positionNode(d) {
+			if (d.x < 20) {
+				d.x = 20
+			};
+			if (d.y < 20) {
+				d.y = 20
+			};
+			if (d.x > 1200) {
+				d.x = 1200
+			};
+			if (d.y > 900) {
+				d.y = 900
+			};
+			return "translate(" + d.x + "," + d.y + ")";
+		}
+
+		function hovered(thisData) {
+
+			//drawRisk(thisData);
+
+			var thisNodeConnections = nodesConnections.filter(function(d) {
+				return d.risk == thisData.id;
+			});
+
+			var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+				return d.connection;
+			});
+
+			thisNodeConnectionsList.push(thisData.id);
+			node.attr("opacity", function(d) {
+				return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+			});
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+			});
+
+		}
+
+		function hoverOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+
+		function hoveredLink(thisData) {
+
+			//drawLink(thisData);
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[1].index == thisData[1].index) ? 1 : 0.1;
+			});
+			node.attr("opacity", function(d) {
+				return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+			});
+		}
+
+		function hoverLinkOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+			//end of draw
+	}
+
+	function dragstarted(d) {
+		if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(d) {
+		d.fx = (d3.event.x > 1200) ? 1200 : (d3.event.x < 30) ? 30 : d3.event.x;
+		d.fy = (d3.event.y > 900) ? 900 : (d3.event.y < 30) ? 30 : d3.event.y;
+	}
+
+	function dragended(d) {
+		if (!d3.event.active) simulation.alphaTarget(0);
+		d.fx = null;
+		d.fy = null;
+	}
+
+//end of finit
+} 
+
+//end of newsQuestConnectivityRisks	
+}());
+
+} //end of kartta
+
+</script>
+</body>
+</html>
