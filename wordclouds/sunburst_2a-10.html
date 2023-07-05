@@ -140,7 +140,7 @@ d3.json("flare.json").then(data => {
 
   const color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
   const format = d3.format(",d");
-  const width = 632;
+  const width = 900;
   const radius = width / 6;
   const arc = d3.arc()
     .startAngle(d => d.x0)
@@ -172,11 +172,13 @@ d3.json("flare.json").then(data => {
     .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
     .attr("d", d => arc(d.current))
     .on("mouseover", mouseover)
-    .on("click", clicked); // Lisätty click-tapahtumankäsittelijä tähän
+    .on("click", clicked); 
+    
 
+/*
   path.filter(d => d.children)
     .style("cursor", "pointer");
-
+*/
   path.append("title")
     .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
 
