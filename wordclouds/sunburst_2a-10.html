@@ -255,6 +255,13 @@ d3.json("flare.json").then(data => {
         .attrTween("transform", d => () => labelTransform(d.current));
 
     } else {
+    
+            // Muuta tekstin väriä klikkauksen mukaan
+            const text = d3.select(this);
+            const textColor = text.style("fill");
+textContainer.text(p.data.info);
+info = p.data.info;
+    
       poimiTieto("none", p.data.name);
 
       if (varitys === "none") {
@@ -278,13 +285,15 @@ d3.json("flare.json").then(data => {
 
   function mouseover(d) {
     textContainer.text(d.data.info);
-    textContainer.text(d.data.info);
+    //textContainer.text(d.data.info);
+/*    
     var sequenceArray = d.ancestors().slice().reverse();
     sequenceArray.shift();
     g.selectAll("path")
       .transition()
       .duration(200)
       .style("opacity", d => sequenceArray.indexOf(d) >= 0 ? 1 : 0.3);
+*/ 
   }
 
   function mouseleave(d) {
