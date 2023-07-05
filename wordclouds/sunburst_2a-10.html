@@ -124,7 +124,8 @@
 var taulukko = [];
 var varitys = "none";
 var info = "";
-d3.json("flare.json").then(data => {
+$.getJSON("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare.json", function(data) {
+//d3.json("flare.json").then(data => {
   const partition = data => {
     const root = d3.hierarchy(data)
       .sum(d => d.size)
