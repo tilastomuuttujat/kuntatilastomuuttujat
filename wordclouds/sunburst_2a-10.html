@@ -140,7 +140,7 @@ d3.json("flare.json").then(data => {
 
   const color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
   const format = d3.format(",d");
-  const width = 800;
+  const width = 632;
   const radius = width / 6;
   const arc = d3.arc()
     .startAngle(d => d.x0)
