@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
         #wheel {
             width: 900px;
@@ -112,7 +111,11 @@
 <body>
 <table>
 <td>
-<svg></svg>
+<div class="wrapper">
+    <div id="wheel"></div>
+
+
+</div>
 </td>
 <td>
 <div id="svganchor" style="width: 100%;height: 100%;background-color: white;"></div>
@@ -124,8 +127,7 @@
 var taulukko = [];
 var varitys = "none";
 var info = "";
-$.getJSON("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare.json", function(data) {
-//d3.json("flare.json").then(data => {
+d3.json("flare.json").then(data => {
   const partition = data => {
     const root = d3.hierarchy(data)
       .sum(d => d.size)
@@ -150,11 +152,11 @@ $.getJSON("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/f
 
   const root = partition(data);
   root.each(d => d.current = d);
-  const svg = d3.select('svg')
-    .attr("width", width)
-    .attr("height", width)
-    .style("font", "10px sans-serif");
-
+  
+    const svg = d3.select("#wheel").append("svg")
+        .attr("width", width)
+        .attr("height", width);
+        
   const g = svg.append("g")
     .attr("transform", `translate(${width / 2},${width / 2})`)
     .on("mouseleave", mouseleave);
