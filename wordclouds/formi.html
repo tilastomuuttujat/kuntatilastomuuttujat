@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Itsearviointi - Demografiatiedot</title>
+</head>
+<body>
+  <h1>Itsearvioinnin demografiatiedot</h1>
+  <form id="myForm">
+    <label for="gender">Sukupuoli:</label>
+    <input type="radio" id="male" name="gender" value="mies" checked>
+    <label for="male">Mies</label>
+    <input type="radio" id="female" name="gender" value="nainen">
+    <label for="female">Nainen</label>
+    <input type="radio" id="other" name="gender" value="muu">
+    <label for="other">Muu</label><br><br>
+    
+    <label for="age">Ikäryhmä:</label>
+    <input type="radio" id="male" name="age" value="18-24" checked>
+    <label for="18-24">18-24</label>
+    <input type="radio" id="female" name="age" value="25-34">
+    <label for="25-34">25-34</label>
+    <input type="radio" id="other" name="age" value="35-44">
+    <label for="35-44">35-44</label>
+    <input type="radio" id="male" name="age" value="45-54">
+    <label for="45-54">45-54</label>
+    <input type="radio" id="female" name="age" value="55-64">
+    <label for="55-64">55-64</label>
+    <input type="radio" id="other" name="age" value="65+"> 
+    <label for="other">65+</label><br><br>
+    
+    <label for="education">Koulutustaso:</label>
+    <input type="radio" id="basic" name="education" value="perusaste" checked>
+    <label for="basic">Perusaste</label>
+    <input type="radio" id="secondary" name="education" value="keskiaste">
+    <label for="secondary">Keskiaste</label>
+    <input type="radio" id="higher" name="education" value="korkea-aste">
+    <label for="higher">Korkea-aste</label><br><br>
+        
+    <label for="activity">Sosioekonominen asema:</label>
+    <select id="activity" name="activity" required>
+      <option value="">Valitse ryhmä</option>
+      <option value="1">Johtaja</option>
+      <option value="2">Esihenkilö</option>
+      <option value="3">Työntekijä</option>
+      <option value="4">Yrittäjä</option>   
+      <option value="5">Opiskelija</option>
+      <option value="6">Eläkeläinen</option>
+      <option value="7">Työtön</option>
+      <option value="9">Muu</option>
+    </select><br><br>
+    
+    <label for="family">Perhetyyppi:</label>
+    <select id="family" name="family" required>
+      <option value="">Valitse perhetyyppi</option>
+      <option value="1">Lapsiperhe</option>
+      <option value="2">Yksinhuoltaja</option>
+      <option value="3">Pariskunta</option>
+      <option value="4">Naimaton</option>   
+      <option value="9">Muu</option>
+    </select><br><br> 
+
+    <label for="income">Kuukausitulot:</label>
+    <select id="income" name="income" required>
+      <option value="">Valitse tuloryhmä</option>
+      <option value="1">&lt;1500€</option>
+      <option value="2">1500-1999€</option>
+      <option value="3">2000-2999€</option>
+      <option value="4">3000-4999€</option>
+      <option value="5">5000-6999€</option>
+      <option value="6">&gt;7000€</option>
+    </select><br><br>
+
+    <label for="location">Hyvinvointialue:</label>
+    <select id="location" name="location" required>
+      <option value="">Valitse hyvinvointialue</option>
+      <option value="01">Itä-Uudenmaan hyvinvointialue</option>
+      <option value="02">Keski-Uudenmaan hyvinvointialue</option>
+      <option value="03">Länsi-Uudenmaan hyvinvointialue</option>
+      <option value="04">Vantaan ja Keravan hyvinvointialue</option>
+      <option value="05">Varsinais-Suomen hyvinvointialue</option>
+      <option value="06">Satakunnan hyvinvointialue</option>
+      <option value="07">Kanta-Hämeen hyvinvointialue</option>
+      <option value="08">Pirkanmaan hyvinvointialue</option>
+      <option value="09">Päijät-Hämeen hyvinvointialue</option>
+      <option value="10">Kymenlaakson hyvinvointialue</option>
+      <option value="11">Etelä-Karjalan hyvinvointialue</option>
+      <option value="12">Etelä-Savon hyvinvointialue</option>
+      <option value="13">Pohjois-Savon hyvinvointialue</option>
+      <option value="14">Pohjois-Karjalan hyvinvointialue</option>
+      <option value="15">Keski-Suomen hyvinvointialue</option>
+      <option value="16">Etelä-Pohjanmaan hyvinvointialue</option>
+      <option value="17">Pohjanmaan hyvinvointialue</option>
+      <option value="18">Keski-Pohjanmaan hyvinvointialue</option>
+      <option value="19">Pohjois-Pohjanmaan hyvinvointialue</option>
+      <option value="20">Kainuun hyvinvointialue</option>
+      <option value="21">Lapin hyvinvointialue</option>
+      <option value="90">Helsingin kaupunki</option>
+      <option value="91">Ahvenanmaa</option>
+    </select><br><br>
+    
+    <label for="name">Lempinimi:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    
+    <label for="pin">Varmenne:</label>
+    <input type="text" id="pin" name="pin" required><br><br>
+
+    <button type="submit">Lähetä</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var gender = document.querySelector('input[name="gender"]:checked').value;
+      var age = document.querySelector('input[name="age"]:checked').value;
+      var education = document.querySelector('input[name="education"]:checked').value;
+      var activity = document.getElementById("activity").value;
+      var family = document.getElementById("family").value;
+      var income = document.getElementById("income").value;
+      var location = document.getElementById("location").value;
+      var name = document.getElementById("name").value;
+      var pin = document.getElementById("pin").value;
+      
+      var data = {
+        gender: gender,
+        age: age,
+        education: education,
+        activity: activity,
+        family: family,
+        income: income,
+        location: location,
+        name: name,
+        pin: pin
+      };
+
+      console.log(data);
+    });
+  </script>
+</Koodissa sukupuolen ja koulutuksen valinta on muutettu radiopainikkeiksi. On myös lisätty tarvittavat muutokset JavaScript-koodiin ottaen huomioon radiopainikkeiden käyttö.
