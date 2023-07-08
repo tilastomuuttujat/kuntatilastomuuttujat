@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Sheets Form</title>
+</head>
+<body>
+  <form id="myForm">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required><br><br>
+    
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="5" cols="30" required></textarea><br><br>
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      var id = document.getElementById("id").value;
+      var message = document.getElementById("message").value;
+
+      var data = {
+        id: id,
+        message: message
+      };
+
+      var url = "https://script.google.com/macros/s/AKfycbw8Fu7DO186Qx0HuTDKPK5NW38gn1w6PTLSA1V2ee2x-2wdIurGlydoQxuv4wT_4YFe/exec";
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        // Käsittele vastaus tässä
+      })
+      .catch(error => {
+        console.error('Virhe:', error);
+        // Käsittele virhe tässä
+      });
+    });
+  </script>
+</body>
+</html>
