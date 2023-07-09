@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Sheets Form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+  <form id="myForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" value="1"><br>
+     
+    <label for="pin">pin:</label>
+    <input type="text" id="pin" name="pin" value="1"><br><br>
+    
+    <label for="gender">gender:</label>
+    <input type="text" id="gender" name="gender"  value="1"><br><br>
+    
+    <label for="age">age:</label>
+    <input type="text" id="age" name="age"  value="1"><br><br>  
+    
+    <label for="education">education:</label>
+    <input type="text" id="education" name="education"  value="1"><br><br>
+    
+    <label for="activity">activity:</label>
+    <input type="text" id="activity" name="activity"  value="1"><br><br>  
+
+    <label for="family">family:</label>
+    <input type="text" id="family" name="family"  value="1"><br><br>
+    
+    <label for="income">income:</label>
+    <input type="text" id="income" name="income"  value="1"><br><br>  
+        
+    <label for="location">location:</label>
+    <input type="text" id="location" name="location"  value="1"><br><br>  
+    
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="5" cols="30" required></textarea><br><br>
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      var name = document.getElementById("name").value;
+      var pin = document.getElementById("pin").value;
+      var gender = document.getElementById("gender").value;
+      var age = document.getElementById("age").value;
+      var education = document.getElementById("education").value;
+      var activity = document.getElementById("activity").value;
+      var family = document.getElementById("family").value;
+      var income = document.getElementById("income").value;
+      var location = document.getElementById("location").value;      
+      var message = document.getElementById("message").value;
+      
+      var url = "https://script.google.com/macros/s/AKfycbztjcRJ-M-5d6F_MP6FvqXnSbRgvr4g_37EcKT3Y9A0hL0SN03CKPvsr2UzIApgdyCvVA/exec?callback=loadData";
+      var data = {
+        name: name,
+        pin: pin,
+        gender: gender,
+        age: age,
+        education: education,
+        activity: activity,
+        family: family,
+        income: income,
+        location: location,
+        message: message
+      };
+      // Make an AJAX call to Google Script
+      $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "jsonp",
+        data: data,
+        //success: function(response) {console.log(response);},
+        //error: function(error) {console.error(error);}
+      });
+    });
+
+    // Log the returned data
+    function loadData(response) {
+      console.log(response);
+    }
+  </script>
+</body>
+</html>
