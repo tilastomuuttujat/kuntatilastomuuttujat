@@ -1,671 +1,1043 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
-  <meta charset="UTF-8">
-
+<script src="https://d3js.org/d3.v5.min.js"></script>
 <style>
-body {
-    background-color: #FC5A5D;
+.barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
 }
 
-a {
-  color: #ffd82a;
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
 }
 
-h1.box-headline.letters.rotate-2 {
-    margin-block-start: 0px;
-    margin-block-end: 0px;
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
 }
 
-h4.cd-headline.clip.is-full-width {
-    margin-block-start: 0px;
-    margin-block-end: 0px; 
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
 }
 
-h4 {
-    margin-block-start: 0px;
-    margin-block-end: 0px; 
-    font-family: sofia-pro, sans-serif;
-    font-weight: 100!important;
-    font-style: normal;
-    color: #fff;
-}
-p {
-    margin-block-start: 0px;
-    margin-block-end: 0px; 
-    font-size: 28px;
-    font-family: sofia-pro, sans-serif;
-    font-weight: 100!important;
-    font-style: normal;
-    color: #fff;
-}
-.cd-headline.clip b.is-visible {
-  font-weight: 100!important;
-  letter-spacing: -5px;
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
 }
 
-.box-headline {
-  font-size: 130px;
-  line-height: 1.0;
-  font-family: 'Sofia Pro', sans-serif;
-  font-weight: 700;
-  letter-spacing: -5px;
-  color: #fff;
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
 }
 
-.box-words-wrapper {
-  display: inline-block;
-  position: relative;
-  color: #FAC2C2;
-  font-style: normal;  
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
 }
 
-.box-words-wrapper b {
-    display: inline-block;
-    position: absolute;
-    white-space: nowrap;
-    left: 0;
-    top: 0;
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
 }
 
-.box-words-wrapper b.is-visible {
-    position: relative;
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
 }
 
-.no-js .box-words-wrapper b {
-    opacity: 0;
+.link {
+	fill: none;
+	stroke: #ccc;
 }
 
-.no-js .box-words-wrapper b.is-visible {
-    opacity: 1;
+.barAxis path,
+.barAxis line {
+	stroke: #999;
 }
 
-.box-headline.rotate-2 .box-words-wrapper {
-    -webkit-perspective: 300px;
-    perspective: 300px;
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+.sana {
+  writing-mode: vertical-lr; /* Kääntää tekstin 90 astetta */
+  transform: rotate(180deg); /* Kääntää tekstin toisinpäin */
+  font-size: 50px; 
+  color: gray;
+}
+.slide {
+  display: flex;
+  align-items: center;
 }
 
-.box-headline.rotate-2 i,
-.box-headline.rotate-2 em {
-    display: inline-block;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    font-style: normal;
-}
 
-.box-headline.rotate-2 b {
-    opacity: 0;
-}
-
-.box-headline.rotate-2 i {
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transform: translateZ(-20px) rotateX(90deg);
-    transform: translateZ(-20px) rotateX(90deg);
-    opacity: 0;
-}
-
-.is-visible .box-headline.rotate-2 i {
-    opacity: 1;
-}
-
-.box-headline.rotate-2 i.in {
-    -webkit-animation: box-rotate-2-in 0.4s forwards;
-    animation: box-rotate-2-in 0.4s forwards;
-}
-
-.box-headline.rotate-2 i.out {
-    -webkit-animation: box-rotate-2-out 0.4s forwards;
-    animation: box-rotate-2-out 0.4s forwards;
-}
-
-.box-headline.rotate-2 em {
-    -webkit-transform: translateZ(20px);
-    transform: translateZ(20px);
-}
-
-.no-csstransitions .box-headline.rotate-2 i {
-    -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-    opacity: 0;
-}
-
-.no-csstransitions .box-headline.rotate-2 i em {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-}
-
-.no-csstransitions .box-headline.rotate-2 .is-visible i {
-    opacity: 1;
-}
-
-@-webkit-keyframes box-rotate-2-in {
-    0% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(90deg);
-    }
-    60% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(-10deg);
-    }
-    100% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(0deg);
-    }
-}
-
-@keyframes box-rotate-2-in {
-    0% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(90deg);
-        transform: translateZ(-20px) rotateX(90deg);
-    }
-    60% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(-10deg);
-        transform: translateZ(-20px) rotateX(-10deg);
-    }
-    100% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(0deg);
-        transform: translateZ(-20px) rotateX(0deg);
-    }
-}
-
-@-webkit-keyframes box-rotate-2-out {
-    0% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(0);
-    }
-    60% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(-100deg);
-    }
-    100% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(-90deg);
-    }
-}
-
-@keyframes box-rotate-2-out {
-    0% {
-        opacity: 1;
-        -webkit-transform: translateZ(-20px) rotateX(0);
-        transform: translateZ(-20px) rotateX(0);
-    }
-    60% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(-100deg);
-        transform: translateZ(-20px) rotateX(-100deg);
-    }
-    100% {
-        opacity: 0;
-        -webkit-transform: translateZ(-20px) rotateX(-90deg);
-        transform: translateZ(-20px) rotateX(-90deg);
-    }
-}
-
-.cd-title {
-  position: relative;
-  height: 160px;
-  line-height: 230px;
+.slider {
+  width: 530px;
   text-align: center;
-}
-.cd-title h1 {
-  font-size: 2.4rem;
-  font-weight: 700;
-}
-@media only screen and (min-width: 768px) {
-  .cd-title {
-    line-height: 250px;
-  }
-}
-@media only screen and (min-width: 1170px) {
-  .cd-title {
-    height: 200px;
-    line-height: 300px;
-  }
-  .cd-title h1 {
-    font-size: 3rem;
-  }
-}
-
-.cd-intro {
-  width: 90%;
-  max-width: 768px;
-}
-
-.cd-intro {
-  margin: 4em auto;
-}
-@media only screen and (min-width: 768px) {
-  .cd-intro {
-    margin: 5em auto;
-  }
-}
-@media only screen and (min-width: 1170px) {
-  .cd-intro {
-    margin: 6em auto;
-  }
-}
-
-.cd-headline {
-  font-size: 3rem;
-  line-height: 1.2;
-}
-@media only screen and (min-width: 768px) {
-  .cd-headline {
-    font-size: 4.4rem;
-    font-weight: 300;
-  }
-}
-@media only screen and (min-width: 1170px) {
-  .cd-headline {
-    font-size: 6rem;
-  }
-}
-
-.cd-words-wrapper {
-  display: inline-block;
-  position: relative;
-  text-align: left;
-}
-.cd-words-wrapper b {
-  display: inline-block;
-  position: absolute;
-  white-space: nowrap;
-  left: 0;
-  top: 0;
-}
-.cd-words-wrapper b.is-visible {
-  position: relative;
-}
-.no-js .cd-words-wrapper b {
-  opacity: 0;
-}
-.no-js .cd-words-wrapper b.is-visible {
-  opacity: 1;
-}
-
-/* --------------------------------
-xclip
--------------------------------- */
-.cd-headline.clip span {
-  display: inline-block;
-  padding: .2em 0;
-}
-.cd-headline.clip .cd-words-wrapper {
   overflow: hidden;
-  vertical-align: top;
+  display: flex; /*lisatty*/
 }
-.cd-headline.clip .cd-words-wrapper::after {
-  /* line */
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background-color: #aebcb9;
+.slides {
+  display: flex;
+  align-items: center; /*lisatty*/
+  overflow-x: auto;
+  -ms-scroll-snap-type: x mandatory;
+      scroll-snap-type: x mandatory;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
-.cd-headline.clip b {
-  opacity: 0;
+
+
+.slides::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
 }
-.cd-headline.clip b.is-visible {
-  opacity: 1;
+.slides::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slides > div {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 530px;
+  height: 290px;
+  
+}
+
+#svganchor {
+
+}
+
+    #canvas {
+      position: relative;
+      background-image: url('elonkeha_tausta.svg');
+      background-size: cover;
+      width: 900px;
+      height: 900px;
+      border: 0px solid #ccc;
+    }
+
+    .circle-group {
+      position: absolute;
+      cursor: move;
+    }
+
+    .circle {
+      position: relative;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+    }
+
+    .text-field {
+      position: absolute;
+      top: 0px;
+      left: 9px;
+      width: 160px;
+      height: 16px;
+      text-align: center;
+      /*border: solid gray;*/
+    }
+
+/* ------------------- */
+/* TEMPLATE        -- */
+/* ----------------- */
+
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,300);
+
+body { 
+	height: 100%;
+	background-color: #ebebeb; 
+	color: whitesmoke; 
+	font-size: 16px; 
+	font-family: 'Lato';
+} 
+h1 { font-size: 32px; }
+h2 { font-size: 26px; }
+h3 { font-size: 18px; }
+p { margin: 0 0 15px; line-height: 24px; color: gainsboro; }
+a { color: dodgerblue; text-decoration: none; border-bottom: 1px dotted; }
+a:hover { color: tomato; }
+
+.container { 
+	max-width: 960px; 
+	/*height: 100%;*/
+	height: 960px;
+	margin: 0 auto; 
+	padding: 20px;
+}
+
+/* ------------------- */
+/* PEN STYLES      -- */
+/* ----------------- */
+
+/* MAKE IT CUTE ----- */
+.tabs {
+	position: relative;
+	display: flex;
+	min-height: 960px;
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+}
+
+.tabby-tab {
+	flex: 1;
+}
+
+.tabby-tab label {
+	display: block;
+	box-sizing: border-box;
+	/* tab content must clear this */
+		height: 40px;
+	
+	padding: 10px;
+	text-align: center;
+	background: #8d8d8d;
+	cursor: pointer;
+	transition: background 0.5s ease;
+	
+}
+
+.tabby-tab label:hover {
+	background: #ffffff;
+}
+
+.tabby-content {
+	position: absolute;
+	
+	left: 0; bottom: 0; right: 0;
+	/* clear the tab labels */
+		top: 40px; 
+	
+	padding: 20px;
+	border-radius: 0 0 8px 8px;
+	background: #ebebeb;
+	
+	transition: 
+		opacity 0.8s ease,
+		transform 0.8s ease		;
+	
+	/* show/hide */
+		opacity: 0;
+		transform: scale(0.1);
+		transform-origin: top left;
+	
+}
+
+.tabby-content img {
+	float: left;
+	margin-right: 20px;
+	border-radius: 8px;
+}
+
+
+/* MAKE IT WORK ----- */
+
+.tabby-tab [type=radio] { display: none; }
+[type=radio]:checked ~ label {
+	background: #5d5d5d;
+	z-index: 2;
+}
+
+[type=radio]:checked ~ label ~ .tabby-content {
+	z-index: 1;
+	
+	/* show/hide */
+		opacity: 1;
+		transform: scale(1);
+}
+
+/* BREAKPOINTS ----- */
+@media screen and (max-width: 767px) {
+	.tabs { min-height: 400px;}
+}
+
+@media screen and (max-width: 480px) {
+	.tabs { min-height: 580px; }
+	.tabby-tab label { 
+		height: 60px;
+	}
+	.tabby-content { top: 60px; }
+	.tabby-content img {
+		float: none;
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+}
+
+h1 {
+  text-align: center;
+  font-weight: 100;
+  font-size: 60px;
+  color: #e74c3c;
 }
 </style>
 
 </head>
 <body>
-<img src="tvtaustakuva.svg">
-
-<html>
-  <body>
-<section class="cd-intro">
-  <div class="table-cell">
-    <h1 class="box-headline letters rotate-2">
-    <span>Me </span> <span class="box-words-wrapper">
-    <b class="is-visible">luomme</b>
-    <b>uusiudumme</b>
-    <b>kehitymme</b>
-    <b>muutumme</b>
-    </span>
-    </h1>
-    
-    <h4 class="cd-headline clip is-full-width">
-      <span class="cd-words-wrapper">
-      <b class="is-visible">tarpeesta</b>
-      <b>taitekohdissa</b>
-      <b>paineessa</b>
-      <b>yhdessä</b>
-    </span>
-    </h4><br>  
-<p> 
-<a href="dia7-3.html">Siirry itsearviointiin</a>
-</p>
-  </div>
-</section>
-  
-  </body>
-</html>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
- <script>
- jQuery(document).ready(function($){
-	//set animation timing
-	var animationDelay = 5000,
-		//loading bar effect
-		barAnimationDelay = 3800,
-		barWaiting = barAnimationDelay - 3000, //3000 is the duration of the transition on the loading bar - set in the scss/css file
-		//letters effect
-		lettersDelay = 50,
-		//type effect
-		typeLettersDelay = 150,
-		selectionDuration = 500,
-		typeAnimationDelay = selectionDuration + 800,
-		//clip effect 
-		revealDuration = 600,
-		revealAnimationDelay = 1500;
+<div class="container">
 	
-	initHeadline();
-	
+	<h1>Itsearviointi</h1>
 
-	function initHeadline() {
-		//insert <i> element for each letter of a changing word
-		singleLetters($('.box-headline.letters').find('b'));
-		//initialise headline animation
-		animateHeadline($('.box-headline'));
-	}
+	<div class="tabs">
+		<div class="tabby-tab">
+			<input type="radio" id="tab-1" name="tabby-tabs" checked>
+			<label for="tab-1">Valitse käsitteet</label>
+			<div class="tabby-content">
 
-	function singleLetters($words) {
-		$words.each(function(){
-			var word = $(this),
-				letters = word.text().split(''),
-				selected = word.hasClass('is-visible');
-			for (i in letters) {
-				if(word.parents('.rotate-2').length > 0) letters[i] = '<em>' + letters[i] + '</em>';
-				letters[i] = (selected) ? '<i class="in">' + letters[i] + '</i>': '<i>' + letters[i] + '</i>';
-			}
-		    var newLetters = letters.join('');
-		    word.html(newLetters).css('opacity', 1);
-		});
-	}
+	<div id="wheel" style="color: black;"></div>
+			</div>
+		</div>
 
-	function animateHeadline($headlines) {
-		var duration = animationDelay;
-		$headlines.each(function(){
-			var headline = $(this);
-			
-			if(headline.hasClass('loading-bar')) {
-				duration = barAnimationDelay;
-				setTimeout(function(){ headline.find('.box-words-wrapper').addClass('is-loading') }, barWaiting);
-			} else if (headline.hasClass('clip')){
-				var spanWrapper = headline.find('.box-words-wrapper'),
-					newWidth = spanWrapper.width() + 10
-				spanWrapper.css('width', newWidth);
-			} else if (!headline.hasClass('type') ) {
-				//assign to .box-words-wrapper the width of its longest word
-				var words = headline.find('.box-words-wrapper b'),
-					width = 0;
-				words.each(function(){
-					var wordWidth = $(this).width();
-				    if (wordWidth > width) width = wordWidth;
-				});
-				headline.find('.box-words-wrapper').css('width', width);
-			};
+		<div class="tabby-tab">
+			<input type="radio" id="tab-2" onclick="saveCircles()" name="tabby-tabs">
+			<label for="tab-2">Valitut käsitteet</label>
+			<div class="tabby-content">
 
-			//trigger animation
-			setTimeout(function(){ hideWord( headline.find('.is-visible').eq(0) ) }, duration);
-		});
-	}
+	<div id="canvas"></div>
+			</div>
+		</div>
 
-	function hideWord($word) {
-		var nextWord = takeNext($word);
+		<div class="tabby-tab">
+			<input type="radio" id="tab-3" onclick="AnalyzeReds()" name="tabby-tabs">
+			<label for="tab-3">Sidokset</label>
+			<div class="tabby-content">
+
+<div id="svganchor" style="width: 100%;height: 100%;background-color: white;"></div>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-4" name="tabby-tabs">
+			<label for="tab-4">Yhteenveto</label>
+			<div class="tabby-content">
+
+				
+				
+			</div>
+		</div>
 		
-		if($word.parents('.box-headline').hasClass('type')) {
-			var parentSpan = $word.parent('.box-words-wrapper');
-			parentSpan.addClass('selected').removeClass('waiting');	
-			setTimeout(function(){ 
-				parentSpan.removeClass('selected'); 
-				$word.removeClass('is-visible').addClass('is-hidden').children('i').removeClass('in').addClass('out');
-			}, selectionDuration);
-			setTimeout(function(){ showWord(nextWord, typeLettersDelay) }, typeAnimationDelay);
-		
-		} else if($word.parents('.box-headline').hasClass('letters')) {
-			var bool = ($word.children('i').length >= nextWord.children('i').length) ? true : false;
-			hideLetter($word.find('i').eq(0), $word, bool, lettersDelay);
-			showLetter(nextWord.find('i').eq(0), nextWord, bool, lettersDelay);
+	</div>
 
-		}  else if($word.parents('.box-headline').hasClass('clip')) {
-			$word.parents('.box-words-wrapper').animate({ width : '2px' }, revealDuration, function(){
-				switchWord($word, nextWord);
-				showWord(nextWord);
-			});
 
-		} else if ($word.parents('.box-headline').hasClass('loading-bar')){
-			$word.parents('.box-words-wrapper').removeClass('is-loading');
-			switchWord($word, nextWord);
-			setTimeout(function(){ hideWord(nextWord) }, barAnimationDelay);
-			setTimeout(function(){ $word.parents('.box-words-wrapper').addClass('is-loading') }, barWaiting);
+<table>
+<tr>
+<td> 
+<textarea id="data-textbox" rows="20" cols="50" style="overflow-y: scroll;"></textarea><br>
+<button onclick="saveCircles()">Taltioi</button>
+<button onclick="updateCircles()">Päivitä</button>
+<button onclick="AnalyzeReds()">Analysoi</button>
 
-		} else {
-			switchWord($word, nextWord);
-			setTimeout(function(){ hideWord(nextWord) }, animationDelay);
-		}
-	}
+</td>
+<td>
 
-	function showWord($word, $duration) {
-		if($word.parents('.box-headline').hasClass('type')) {
-			showLetter($word.find('i').eq(0), $word, false, $duration);
-			$word.addClass('is-visible').removeClass('is-hidden');
+</tr>
+</table> 
+<script>
+const marginTop = 0, 
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
 
-		}  else if($word.parents('.box-headline').hasClass('clip')) {
-			$word.parents('.box-words-wrapper').animate({ 'width' : $word.width() + 10 }, revealDuration, function(){ 
-				setTimeout(function(){ hideWord($word) }, revealAnimationDelay); 
-			});
-		}
-	}
+  maxWords = 100, 
+  fontFamily = "sans-serif",
+  fontScale = 15,
+  padding = 0,
+  rotate = 0;
 
-	function hideLetter($letter, $word, $bool, $duration) {
-		$letter.removeClass('in').addClass('out');
-		
-		if(!$letter.is(':last-child')) {
-		 	setTimeout(function(){ hideLetter($letter.next(), $word, $bool, $duration); }, $duration);  
-		} else if($bool) { 
-		 	setTimeout(function(){ hideWord(takeNext($word)) }, animationDelay);
-		}
 
-		if($letter.is(':last-child') && $('html').hasClass('no-csstransitions')) {
-			var nextWord = takeNext($word);
-			switchWord($word, nextWord);
-		} 
-	}
+var dataset = [];
+var taulukko = [];
+var info = "";
+d3.json("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare-2.json").then(data => {
+    partition = data => {
+        const root = d3.hierarchy(data)
+            .sum(d => d.size)
+            .sort((a, b) => b.value - a.value);
+        return d3.partition()
+            .size([2 * Math.PI, root.height + 1])
+            (root);
+    }
 
-	function showLetter($letter, $word, $bool, $duration) {
-		$letter.addClass('in').removeClass('out');
-		
-		if(!$letter.is(':last-child')) { 
-			setTimeout(function(){ showLetter($letter.next(), $word, $bool, $duration); }, $duration); 
-		} else { 
-			if($word.parents('.box-headline').hasClass('type')) { setTimeout(function(){ $word.parents('.box-words-wrapper').addClass('waiting'); }, 200);}
-			if(!$bool) { setTimeout(function(){ hideWord($word) }, animationDelay) }
-		}
-	}
+    var color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+    var format = d3.format(",d");
 
-	function takeNext($word) {
-		return (!$word.is(':last-child')) ? $word.next() : $word.parent().children().eq(0);
-	}
+    var width = 800;
+    var radius = width / 6;
 
-	function takePrev($word) {
-		return (!$word.is(':first-child')) ? $word.prev() : $word.parent().children().last();
-	}
+    var arc = d3.arc()
+        .startAngle(d => d.x0)
+        .endAngle(d => d.x1)
+        .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+        .padRadius(radius * 1.5)
+        .innerRadius(d => d.y0 * radius)
+        .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
 
-	function switchWord($oldWord, $newWord) {
-		$oldWord.removeClass('is-visible').addClass('is-hidden');
-		$newWord.removeClass('is-hidden').addClass('is-visible');
-	}
+    const root = partition(data);
+
+    root.each(d => d.current = d);
+
+    const svg = d3.select("#wheel").append("svg")
+        .attr("width", width)
+        .attr("height", width);
+
+    const g = svg.append("g")
+        .attr("transform", `translate(${width / 2},${width / 2})`);
+
+    const path = g.append("g")
+        .selectAll("path")
+        .data(root.descendants().slice(1))
+        .enter().append("path")
+        .attr("fill", d => {
+            while (d.depth > 1) d = d.parent;
+            return color(d.data.name);
+        })
+        .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+        .attr("d", d => arc(d.current))
+        .on("mouseover", mouseover)
+        .on("click", clicked);
+
+    path.append("title")
+        .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+
+    const label = g.append("g")
+        .attr("pointer-events", "none")
+        .attr("text-anchor", "middle")
+        .style("user-select", "none")
+        .selectAll("text")
+        .data(root.descendants().slice(1))
+        .enter().append("text")
+        .attr("dy", "0.35em")
+        .attr("fill-opacity", d => +labelVisible(d.current))
+        .attr("transform", d => labelTransform(d.current))
+        .text(d => d.data.name);
+
+
+const text = info;
+
+const textContainer = svg.append("foreignObject")
+  .attr("x", 310)
+  .attr("y", 310)
+  .attr("width", 200)
+  .attr("height", 180);
+
+const div = textContainer
+  .append("xhtml:div")
+  .style("width", "100%")
+  .style("height", "100%")
+  .style("font-size", "1.0em")
+  .style("overflow", "auto")
+  .style("word-wrap", "break-word")
+  .style("white-space", "normal") 
+  .html(text); 
+
+div.selectAll("p") 
+  .data([text])
+  .enter()
+  .append("p")
+  .text(function(d) { return d; });
+
+    const parent = g.append("circle")
+        .datum(root)
+        .attr("r", radius)
+        .attr("fill", "none")
+        .attr("pointer-events", "all")
+        .on("click", clicked);
+
+    function clicked(p) {
+        if (p.depth < 3) {
+            parent.datum(p.parent || root);
+            root.each(d => d.target = {
+                x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+                x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+                y0: Math.max(0, d.y0 - p.depth),
+                y1: Math.max(0, d.y1 - p.depth)  
+            });
+
+            const t = g.transition().duration(750);
+
+            path.transition(t)
+                .tween("data", d => {
+                    const i = d3.interpolate(d.current, d.target);
+                    return t => d.current = i(t);
+                })
+                .filter(function(d) {
+                    return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+                })
+                .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+                .attrTween("d", d => () => arc(d.current));
+
+            label.filter(function(d) {
+                return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+            }).transition(t)
+                .attr("fill-opacity", d => +labelVisible(d.target))
+                .attrTween("transform", d => () => labelTransform(d.current));
+        } else {
+            const text = d3.select(this);
+            const textColor = text.style("fill");
+textContainer.text(p.data.info);
+info = p.data.info;
+            if (textColor === "rgb(26, 199, 194)" || textColor === "rgb(110, 64, 170)" || textColor === "rgb(175, 240, 91)" || textColor === "rgb(255, 94, 99)" || textColor === "black") {
+                text.style("fill", "green");
+                const feeling = text.text();
+                
+console.log("Klikkaus:", "green", p.data.name);
+lisaaTieto(p.data.x, p.data.y, p.data.name, "green");
+
+            } else if (textColor === "green") {
+                text.style("fill", "red");
+                const feeling = text.text();
+console.log("Klikkaus:", "red", p.data.name);
+lisaaTieto(p.data.x, p.data.y, p.data.name, "red");
+
+            } else {
+                text.style("fill", "black");
+                const feeling = text.text();
+console.log("Klikkaus:", "black", p.data.name);
+lisaaTieto(p.data.x, p.data.y, p.data.name, "black");
+            }
+        }
+    }
+
+function mouseover(d) {
+  textContainer.text(d.data.info);
+}
+
+
+
+function lisaaTieto(x,y,text,color) {
+
+
+  var loytyi = false;
+  for (var i = 0; i < dataset.length; i++) {
+    if (dataset[i].text === text) {
+      dataset[i].color = color;
+      loytyi = true;
+      break;
+    }
+  }
+
+  if (!loytyi) {
+    dataset.push({ x: x, y: y, text: text, color: color });
+  }
+}
+
+    function arcVisible(d) {
+        return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
+    }
+
+    function labelVisible(d) {
+        return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+    }
+
+    function labelTransform(d) {
+        const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+        const y = (d.y0 + d.y1) / 2 * radius;
+        return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+    }
 });
 
 
 
 
 
-jQuery(document).ready(function($){
-  //set animation timing
-  var animationDelay = 5000,
-      //loading bar effect
-      barAnimationDelay = 3800,
-      barWaiting = barAnimationDelay - 3000, //3000 is the duration of the transition on the loading bar - set in the scss/css file
-      //letters effect
-      lettersDelay = 50,
-      //type effect
-      typeLettersDelay = 150,
-      selectionDuration = 500,
-      typeAnimationDelay = selectionDuration + 800,
-      //clip effect
-      revealDuration = 600,
-      revealAnimationDelay = 1500;
 
-  initHeadline();
+var lson = JSON.stringify([]);
+document.getElementById("data-textbox").value = lson;
+      var color = d3.scaleOrdinal(d3.schemeAccent);
+      var svg = d3.select("#canvas");
+      svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/elonkeha_tausta.svg')");
+      //var dataset = [];
 
+      function addCircle(x, y, text,color) {
+        var newCircle = { x: x, y: y, text: text, color: color };
+        dataset.push(newCircle);
 
-  function initHeadline() {
-    //insert <i> element for each letter of a changing word
-    singleLetters($('.cd-headline.letters').find('b'));
-    //initialise headline animation
-    animateHeadline($('.cd-headline'));
-  }
+        var circleGroup = svg.append("div")
+          .datum(newCircle)
+          .attr("class", "circle-group")
+          .style("left", function(d) { return d.x + "px"; })
+          .style("top", function(d) { return d.y + "px"; });
 
-  function singleLetters($words) {
-    $words.each(function(){
-      var word = $(this),
-          letters = word.text().split(''),
-          selected = word.hasClass('is-visible');
-      for (i in letters) {
-        if(word.parents('.rotate-2').length > 0) letters[i] = '<em>' + letters[i] + '</em>';
-        letters[i] = (selected) ? '<i class="in">' + letters[i] + '</i>': '<i>' + letters[i] + '</i>';
+        circleGroup.append("div")
+          .attr("class", "circle")
+          .style("background-color", function(d) { return d.color; })
+          .on("click", function(d) { changeColor(d, this); })
+          .on("dblclick", function(d) { removeCircle(circleGroup); });
+
+        circleGroup.append("textarea")
+          .attr("class", "text-field")
+          .style("font", "14px Gill Sans") 
+          //.style("border", function(d) { return " solid " + d.color; })
+          .text(function(d) { return d.text; })
+          .on("input", function(d) {
+            d.text = this.value;
+            updateCircleText(circleGroup, d.text);
+          });
+          
+        circleGroup.call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
       }
-      var newLetters = letters.join('');
-      word.html(newLetters).css('opacity', 1);
-    });
-  }
 
-  function animateHeadline($headlines) {
-    var duration = animationDelay;
-    $headlines.each(function(){
-      var headline = $(this);
+      function removeCircle(circleGroup) {
+        var circleData = circleGroup.datum();
+        var index = dataset.indexOf(circleData);
+        if (index > -1) {
+          dataset.splice(index, 1);
+        }
+        circleGroup.remove();
+      }
 
-      if(headline.hasClass('loading-bar')) {
-        duration = barAnimationDelay;
-        setTimeout(function(){ headline.find('.cd-words-wrapper').addClass('is-loading') }, barWaiting);
-      } else if (headline.hasClass('clip')){
-        var spanWrapper = headline.find('.cd-words-wrapper'),
-            newWidth = spanWrapper.width() + 10
-        spanWrapper.css('width', newWidth);
-      } else if (!headline.hasClass('type') ) {
-        //assign to .cd-words-wrapper the width of its longest word
-        var words = headline.find('.cd-words-wrapper b'),
-            width = 0;
-        words.each(function(){
-          var wordWidth = $(this).width();
-          if (wordWidth > width) width = wordWidth;
+      function changeColor(circleData, circleElement) {
+        var newColor = color(circleData.color);
+        circleData.color = newColor;
+        d3.select(circleElement).style("background-color", newColor);
+      }
+
+      function updateCircleText(circleGroup, newText) {
+        circleGroup.select(".text-field").property("value", newText);
+      }
+
+      function saveCircles() {
+        var json = JSON.stringify(dataset);
+        document.getElementById("data-textbox").value = json;
+        updateCircles();
+      }
+      
+      function updateCircles() {
+        var json = document.getElementById("data-textbox").value;
+        var updateset = JSON.parse(json);
+        dataset = [];
+        
+        d3.selectAll(".circle-group").remove();
+        updateset.forEach(function(d) {
+        console.log(d.x, d.y, d.text, d.color);
+          addCircle(d.x, d.y, d.text, d.color);
         });
-        headline.find('.cd-words-wrapper').css('width', width);
-      };
+      }
 
-      //trigger animation
-      setTimeout(function(){ hideWord( headline.find('.is-visible').eq(0) ) }, duration);
-    });
-  }
+      function AnalyzeReds() {
+      
+      //console.log(dataset);
 
-  function hideWord($word) {
-    var nextWord = takeNext($word);
+        muuttujat = [];
+        for (var i = 0; i < dataset.length; i++) {
+                muuttujat.push(dataset[i].text); 
+        }
+            //console.log(muuttujat);
+            d3.selectAll("#svganchor > *").remove(); 
+            kartta();
+      }
 
-    if($word.parents('.cd-headline').hasClass('type')) {
-      var parentSpan = $word.parent('.cd-words-wrapper');
-      parentSpan.addClass('selected').removeClass('waiting');
-      setTimeout(function(){
-        parentSpan.removeClass('selected');
-        $word.removeClass('is-visible').addClass('is-hidden').children('i').removeClass('in').addClass('out');
-      }, selectionDuration);
-      setTimeout(function(){ showWord(nextWord, typeLettersDelay) }, typeAnimationDelay);
 
-    } else if($word.parents('.cd-headline').hasClass('letters')) {
-      var bool = ($word.children('i').length >= nextWord.children('i').length) ? true : false;
-      hideLetter($word.find('i').eq(0), $word, bool, lettersDelay);
-      showLetter(nextWord.find('i').eq(0), nextWord, bool, lettersDelay);
+function kartta() {
+(function newsQuestConnectivityRisks() {
+	var w = 1200;
+	var h = 900;
 
-    }  else if($word.parents('.cd-headline').hasClass('clip')) {
-      $word.parents('.cd-words-wrapper').animate({ width : '2px' }, revealDuration, function(){
-        switchWord($word, nextWord);
-        showWord(nextWord);
-      });
+	var padding = [10, 10, 10, 10];
 
-    } else if ($word.parents('.cd-headline').hasClass('loading-bar')){
-      $word.parents('.cd-words-wrapper').removeClass('is-loading');
-      switchWord($word, nextWord);
-      setTimeout(function(){ hideWord(nextWord) }, barAnimationDelay);
-      setTimeout(function(){ $word.parents('.cd-words-wrapper').addClass('is-loading') }, barWaiting);
+	var colors = d3.scaleOrdinal()
+		.domain([])
+		.range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
 
-    } else {
-      switchWord($word, nextWord);
-      setTimeout(function(){ hideWord(nextWord) }, animationDelay);
-    }
-  }
+	var svg = d3.select("#svganchor")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
 
-  function showWord($word, $duration) {
-    if($word.parents('.cd-headline').hasClass('type')) {
-      showLetter($word.find('i').eq(0), $word, false, $duration);
-      $word.addClass('is-visible').removeClass('is-hidden');
+var nodesTotal = [];
+var linksTotal = [];
 
-    }  else if($word.parents('.cd-headline').hasClass('clip')) {
-      $word.parents('.cd-words-wrapper').animate({ 'width' : $word.width() + 10 }, revealDuration, function(){
-        setTimeout(function(){ hideWord($word) }, revealAnimationDelay);
-      });
-    }
-  }
+const things = new Object();
+things.thing = new Array();
 
-  function hideLetter($letter, $word, $bool, $duration) {
-    $letter.removeClass('in').addClass('out');
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVW3lFxFzmsO61waUKVTSQU9R1RhYjinnTLFcia2MQ2mLw0Wu0tG0HLFvpXLmJAJjG1wjq6Q6ObgWI/pub?gid=1193425325&single=true&output=csv").then(function(apiData) {
+					try {
+						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+							data: d3.csvFormat(apiData),
+							timestamp: currentDate.getTime()
+						}));
+					} catch (error) {
+					};
 
-    if(!$letter.is(':last-child')) {
-      setTimeout(function(){ hideLetter($letter.next(), $word, $bool, $duration); }, $duration);
-    } else if($bool) {
-      setTimeout(function(){ hideWord(takeNext($word)) }, animationDelay);
-    }
+var mapiData = [];
+for (var i = 0; i < apiData.length; i++) {
 
-    if($letter.is(':last-child') && $('html').hasClass('no-csstransitions')) {
-      var nextWord = takeNext($word);
-      switchWord($word, nextWord);
-    }
-  }
+if(muuttujat.indexOf(apiData[i].source) > -1)
+mapiData.push(apiData[i]);
+}
 
-  function showLetter($letter, $word, $bool, $duration) {
-    $letter.addClass('in').removeClass('out');
+apiData=mapiData;
 
-    if(!$letter.is(':last-child')) {
-      setTimeout(function(){ showLetter($letter.next(), $word, $bool, $duration); }, $duration);
-    } else {
-      if($word.parents('.cd-headline').hasClass('type')) { setTimeout(function(){ $word.parents('.cd-words-wrapper').addClass('waiting'); }, 200);}
-      if(!$bool) { setTimeout(function(){ hideWord($word) }, animationDelay) }
-    }
-  }
+for (var i = 0; i < apiData.length; i++) {
+things.thing.push({id:apiData[i].source,labelText:apiData[i].source});
+things.thing.push({id:apiData[i].target,labelText:apiData[i].target});
+}
 
-  function takeNext($word) {
-    return (!$word.is(':last-child')) ? $word.next() : $word.parent().children().eq(0);
-  }
-
-  function takePrev($word) {
-    return (!$word.is(':first-child')) ? $word.prev() : $word.parent().children().last();
-  }
-
-  function switchWord($oldWord, $newWord) {
-    $oldWord.removeClass('is-visible').addClass('is-hidden');
-    $newWord.removeClass('is-hidden').addClass('is-visible');
-  }
+const uniqueArray = things.thing.filter((thing, index) => {  
+const _thing = JSON.stringify(thing);
+  return index === things.thing.findIndex(obj => {    
+  return JSON.stringify(obj) === _thing;  });
+  });
+nodesTotal = uniqueArray;
+linksTotal = apiData;
 });
- </script>
+				
+function checkFlag() {
+    if(things.thing.length == 0) {
+       window.setTimeout(checkFlag, 3000); 
+    } else {
+      finit();
+    }
+}
+checkFlag();
 
+function finit(){
+
+	var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) {
+			return d.id;
+		}))
+		.force("collide", d3.forceCollide(function(d) {
+			return Math.sqrt(d.radius) * 11
+		}))
+		.force("charge", d3.forceManyBody())
+		.force("center", d3.forceCenter(w / 3, h / 2));
+
+	draw(nodesTotal, linksTotal);
+
+	function draw(nodes, links) {
+
+		var nodesConnectionsList = nodes.map(function(d) {
+			return d.id
+		});
+
+		var nodesConnections = [];
+
+		nodesConnectionsList.forEach(function(d, j) {
+			nodesConnections[j] = {
+				risk: d,
+				connections: []
+			};
+			for (var i = 0; i < links.length; i++) {
+				if (links[i].source == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].target,
+						connectionsNumber: links[i].value
+					})
+				} else if (links[i].target == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].source,
+						connectionsNumber: links[i].value
+					})
+				}
+			}
+		});
+
+		nodes.forEach(function(d) {
+			var thisData = nodesConnections.filter(function(e) {
+				return e.risk == d.id
+			});
+			var sum = d3.sum(thisData[0].connections, function(f) {
+				return f.connectionsNumber
+			});
+			d["radius"] = sum;
+		});
+
+		var nodeById = d3.map(nodes, function(d) {
+			return d.id;
+		})
+		var bilinks = [];
+
+		links.forEach(function(link) {
+			var s = link.source = nodeById.get(link.source),
+				t = link.target = nodeById.get(link.target),
+				i = {},
+				val = {
+					lvalue: link.value
+				};
+
+			nodes.push(i);
+			links.push({
+				source: s,
+				target: i
+			}, {
+				source: i,
+				target: t
+			});
+if(t.radius > 2) {
+			bilinks.push([s, i, t, val]);
+//console.log(	s, i, t, val);
+}	
+		});
+
+		var link = svg.selectAll(".link")
+			.data(bilinks)
+			.enter()
+			.append("path")
+			.attr("stroke-width", function(d) {
+				return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+			})
+			.attr("class", "link");
+
+		var node = svg.selectAll(".node")
+			.data(nodes.filter(function(d) {
+				if(d.radius > 2) return d.id;
+			}))
+			.enter()
+			.append("g")
+			.attr("class", "node")
+			.call(d3.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended));
+
+		var circles = node.append("circle")
+			.attr("r", function(d) {
+				return Math.sqrt(d.radius) * 4
+			})
+			.attr("fill", function(d) {
+			if(d.radius>40) return "#ee1a16";
+			if(d.radius> 9 && d.radius < 40) return "#f3d776";
+		    if(d.radius> 5 && d.radius < 9) return "#f32876";
+			if(d.radius < 5)	return colors(d.group);
+				
+			});
+		
+		var backText = node.append("text")
+			.attr("class", "nodesLabelBack")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		var nodesText = node.append("text")
+			.attr("class", "nodesLabel")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		circles.on("mouseover", function(d) {
+			hovered(d);
+		}).on("mouseout", function(d) {
+			hoverOut(d);
+		});
+
+		link.on("mouseover", function(d) {
+			hoveredLink(d);
+		}).on("mouseout", function(d) {
+			hoverLinkOut(d);
+		});
+
+		simulation.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+		//drawLegend();
+
+		function ticked() {
+			link.attr("d", positionLink);
+			node.attr("transform", positionNode);
+		}
+
+		function positionLink(d) {
+			return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+		}
+
+		function positionNode(d) {
+			if (d.x < 20) {
+				d.x = 20
+			};
+			if (d.y < 20) {
+				d.y = 20
+			};
+			if (d.x > 1200) {
+				d.x = 1200
+			};
+			if (d.y > 900) {
+				d.y = 900
+			};
+			return "translate(" + d.x + "," + d.y + ")";
+		}
+
+		function hovered(thisData) {
+
+			//drawRisk(thisData);
+
+			var thisNodeConnections = nodesConnections.filter(function(d) {
+				return d.risk == thisData.id;
+			});
+
+			var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+				return d.connection;
+			});
+
+			thisNodeConnectionsList.push(thisData.id);
+			node.attr("opacity", function(d) {
+				return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+			});
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+			});
+
+		}
+
+		function hoverOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+
+		function hoveredLink(thisData) {
+
+			//drawLink(thisData);
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[1].index == thisData[1].index) ? 1 : 0.1;
+			});
+			node.attr("opacity", function(d) {
+				return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+			});
+		}
+
+		function hoverLinkOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+			//end of draw
+	}
+
+	function dragstarted(d) {
+		if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(d) {
+		d.fx = (d3.event.x > 1200) ? 1200 : (d3.event.x < 30) ? 30 : d3.event.x;
+		d.fy = (d3.event.y > 900) ? 900 : (d3.event.y < 30) ? 30 : d3.event.y;
+	}
+
+	function dragended(d) {
+		if (!d3.event.active) simulation.alphaTarget(0);
+		d.fx = null;
+		d.fy = null;
+	}
+
+//end of finit
+} 
+
+//end of newsQuestConnectivityRisks	
+}());
+
+} //end of kartta
+
+
+      function handleDoubleClick() {
+        var mousePos = d3.mouse(this);
+        var x = mousePos[0];
+        var y = mousePos[1];
+
+        var isCircle = d3.select(d3.event.target).classed("circle");
+        if (!isCircle) {
+          addCircle(x, y, "uusi", "red");
+        }
+      }
+
+      function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+      }
+
+      function dragged(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d3.select(this)
+          .style("left", d.x + "px")
+          .style("top", d.y + "px");
+      }
+      
+      
+
+
+      function dragended(d) {
+        d3.select(this).classed("active", false);
+      }
+
+      svg.on("dblclick", handleDoubleClick);
+      
+    </script>
+
+
+ 
 </body>
 </html>
