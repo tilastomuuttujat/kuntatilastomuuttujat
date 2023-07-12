@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('form').submit(function(e) {
+        e.preventDefault(); // Estä lomakkeen oletustoiminta
+
+        // Kerää lomakkeen tiedot
+        var data = {
+          name: $('#name').val(),
+          pin: $('#pin').val()
+        };
+
+        // Lähetä tiedot Apps Scriptin verkkopalveluun
+        $.ajax({
+          url: 'https://script.google.com/macros/s/AKfycbwwaUlMcy6tr6DFsNwScKAkkfqL-i9PSGurZ5KnsI3J8rKp0SjkftxiSEL-I5lo3QyL/exec',
+          type: 'GET',
+          dataType: 'json',
+          data: data,
+          success: function(response) {
+            // Aseta tiedot lomakkeelle
+            $('#gender').val(response.gender);
+            $('#age').val(response.age);
+            $('#activity').val(response.activity);
+            $('#education').val(response.education);
+            $('#family').val(response.family);
+            $('#location').val(response.location);
+            $('#message').val(response.message);
+          },
+          error: function(error) {
+            // Käsittele virheet
+            console.log(error);
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <form>
+    <label for="name">Nimi:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="pin">PIN-koodi:</label>
+    <input type="text" id="pin" required><br>
+
+    <label for="gender">Sukupuoli:</label>
+    <input type="text" id="gender" readonly><br>
+
+    <label for="age">Ikä:</label>
+    <input type="text" id="age" readonly><br>
+
+    <label for="activity">Aktiviteetti:</label>
+    <input type="text" id="activity" readonly><br>
+
+    <label for="education">Koulutus:</label>
+    <input type="text" id="education" readonly><br>
+
+    <label for="family">Perhetilanne:</label>
+    <input type="text" id="family" readonly><br>
+
+    <label for="location">Sijainti:</label>
+    <input type="text" id="location" readonly><br>
+
+    <label for="message">Viesti:</label>
+    <textarea id="message" readonly></textarea><br>
+
+    <button type="submit">Hae tiedot</button>
+  </form>
+</body>
+</html>
