@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="fi" >
+<meta charset="UTF-8">
+<head>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<style>
+
+.form-dropdown {
+  border-color: #575757;
+  color: #202020;
+  background-color: rgba(248, 248, 248, 0);
+  align:right;
+}
+table label {
+font-size: 8px;
+color: darkgrey;
+}
+td {
+height: 10px;
+}
+tr {
+line-height: 12px;
+}
+
+
+.barsNumbers {
+	font-family: "PT Sans", sans-serif;
+	font-size: 12px;
+	fill: #777;
+}
+
+.textDescription {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #444;
+	cursor: default;
+}
+
+.textDescriptionRisk {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription3 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 14px;
+	fill: #666;
+	cursor: default;
+}
+
+.textDescription2 {
+	font-family: "PT Sans", sans-serif;
+	font-size: 11px;
+	fill: #999;
+	cursor: default;
+}
+
+.legendTitle {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	fill: #444;
+	cursor: default;
+}
+
+.nodesLabelBack {
+	font-family: "PT Sans", sans-serif;
+	fill: white;
+	font-size: 10px;
+	pointer-events: none;
+	stroke: white;
+	stroke-width: 3px;
+	cursor: default;
+}
+
+.nodesLabel {
+	font-family: "PT Sans", sans-serif;
+	fill: #444;
+	font-size: 10px;
+	pointer-events: none;
+	cursor: default;
+}
+
+.noCategory {
+	fill: darkslategray;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+}
+
+.barAxis path,
+.barAxis line {
+	stroke: #999;
+}
+
+.barAxis text {
+	font: 10px sans-serif;
+	fill: #999;
+}
+.sana {
+  writing-mode: vertical-lr; /* Kääntää tekstin 90 astetta */
+  transform: rotate(180deg); /* Kääntää tekstin toisinpäin */
+  font-size: 50px; 
+  color: gray;
+}
+.slide {
+  display: flex;
+  align-items: center;
+}
+
+
+.slider {
+  width: 530px;
+  text-align: center;
+  overflow: hidden;
+  display: flex; /*lisatty*/
+}
+.slides {
+  display: flex;
+  align-items: center; /*lisatty*/
+  overflow-x: auto;
+  -ms-scroll-snap-type: x mandatory;
+      scroll-snap-type: x mandatory;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.slides::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
+}
+.slides::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slides > div {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 530px;
+  height: 290px;
+  
+}
+
+#svganchor {
+
+}
+
+    #canvas {
+      position: relative;
+      background-image: url('elonkeha_tausta.svg');
+      background-size: cover;
+      width: 900px;
+      height: 900px;
+      border: 0px solid #ccc;
+    }
+
+    .circle-group {
+      position: absolute;
+      cursor: move;
+    }
+
+    .circle {
+      position: relative;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+    }
+
+    .text-field {
+      position: absolute;
+      top: 0px;
+      left: 9px;
+      width: 160px;
+      height: 16px;
+      text-align: center;
+      /*border: solid gray;*/
+    }
+
+
+/* ------------------- */
+/* TEMPLATE        -- */
+/* ----------------- */
+
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,300);
+
+body { 
+	height: 100%;
+	background-color: #ebebeb; 
+	color: whitesmoke; 
+	font-size: 16px; 
+	font-family: 'Lato';
+} 
+h1 { font-size: 32px; }
+h2 { font-size: 26px; }
+h3 { font-size: 18px; }
+p { margin: 0 0 15px; line-height: 24px; color: gainsboro; }
+a { color: dodgerblue; text-decoration: none; border-bottom: 1px dotted; }
+a:hover { color: tomato; }
+
+.container { 
+	max-width: 960px; 
+	/*height: 100%;*/
+	height: 960px;
+	margin: 0 auto; 
+	padding: 20px;
+}
+
+/* ------------------- */
+/* PEN STYLES      -- */
+/* ----------------- */
+
+/* MAKE IT CUTE ----- */
+.tabs {
+	position: relative;
+	display: flex;
+	min-height: 960px;
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+}
+
+.tabby-tab {
+	flex: 1;
+}
+
+.tabby-tab label {
+	display: block;
+	box-sizing: border-box;
+	/* tab content must clear this */
+		height: 40px;
+	
+	padding: 10px;
+	text-align: center;
+	background: #8d8d8d;
+	cursor: pointer;
+	transition: background 0.5s ease;
+	
+}
+
+.tabby-tab label:hover {
+	background: #7d7d7d;
+}
+
+.tabby-content {
+	position: absolute;
+	
+	left: 0; bottom: 0; right: 0;
+	/* clear the tab labels */
+		top: 40px; 
+	
+	padding: 20px;
+	border-radius: 0 0 8px 8px;
+	background: #ebebeb;
+	
+	transition: 
+		opacity 0.8s ease,
+		transform 0.8s ease		;
+	
+	/* show/hide */
+		opacity: 0;
+		transform: scale(0.1);
+		transform-origin: top left;
+	
+}
+
+.tabby-content img {
+	float: left;
+	margin-right: 20px;
+	border-radius: 8px;
+}
+
+
+/* MAKE IT WORK ----- */
+
+.tabby-tab [type=radio] { display: none; }
+[type=radio]:checked ~ label {
+	background: #5d5d5d;
+	z-index: 2;
+}
+
+[type=radio]:checked ~ label ~ .tabby-content {
+	z-index: 1;
+	
+	/* show/hide */
+		opacity: 1;
+		transform: scale(1);
+}
+
+/* BREAKPOINTS ----- */
+@media screen and (max-width: 767px) {
+	.tabs { min-height: 400px;}
+}
+
+@media screen and (max-width: 480px) {
+	.tabs { min-height: 580px; }
+	.tabby-tab label { 
+		height: 60px;
+	}
+	.tabby-content { top: 60px; }
+	.tabby-content img {
+		float: none;
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+}
+
+h1 {
+  text-align: left;
+  font-weight: 100;
+  font-size: 40px;
+  color: #e74c3c;
+}
+
+</style>
+
+</head>
+<body>
+<div class="container">
+	
+	<h1>Itsearviointi</h1>
+
+	<div class="tabs">
+		<div class="tabby-tab">
+			<input type="radio" id="tab-1" name="tabby-tabs" checked>
+			<label for="tab-1">Valitse käsitteet</label>
+			<div class="tabby-content">
+
+	<div id="wheel" style="color: black;"></div>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-2" onclick="saveCircles()" name="tabby-tabs">
+			<label for="tab-2">Valitut käsitteet</label>
+			<div class="tabby-content">
+
+	<div id="canvas"></div>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-3" onclick="AnalyzeReds()" name="tabby-tabs">
+			<label for="tab-3">Sidokset</label>
+			<div class="tabby-content">
+
+<div id="svganchor" style="width: 100%;height: 100%;"></div>
+			</div>
+		</div>
+
+		<div class="tabby-tab">
+			<input type="radio" id="tab-4" name="tabby-tabs">
+			<label for="tab-4">Yhteenveto</label>
+			<div class="tabby-content">
+
+				
+				
+			</div>
+		</div>
+		
+	</div>
+
+
+<table>
+<tr>
+<td> 
+<textarea id="message" rows="20" cols="50" style="overflow-y: scroll;"></textarea><br>
+<button onclick="saveCircles()">Taltioi</button>
+<button onclick="updateCircles()">Päivitä</button>
+<button onclick="AnalyzeReds()">Analysoi</button>
+
+
+</td>
+<td>
+<form id="hae">
+
+<h1>Demografiatiedot</h1>
+
+<table>
+<tr>
+<td>
+    <label for="name">Tunnus:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+</td>
+<td>
+    <label for="pin">Varmenne:</label><br>
+    <input type="text" id="pin" name="pin" required><br><br>
+</td>
+<td>
+    <button type="submit">Hae</button>
+</td> 
+</tr> 
+</table> 
+</form>
+<form id="dataForm">
+<table>
+<tr>
+<td>
+    <label for="gender">Sukupuoli:</label><br>
+    <select class="form-dropdown" id="gender" name="gender" required>
+      <option value="">Valitse sukupuoli</option>
+      <option selected="selected" value="mies">Mies</option>
+      <option value="nainen">Nainen</option>
+      <option value="muu">Muu</option>
+    </select><br>
+</td>
+<td>
+    <label for="age">Ikäryhmä:</label><br>
+    <select class="form-dropdown" id="age" name="age" required>
+      <option value="">Valitse ikäryhmä</option>
+      <option value="18-24">18-24</option>
+      <option value="25-34">25-34</option>
+      <option value="35-44">35-44</option>
+      <option value="45-54">45-54</option>
+      <option selected="selected" value="55-64">55-64</option>
+      <option value="65+">65+</option>   
+    </select><br>
+</td>
+<td>        
+    <label for="activity">Sosioekonominen asema:</label><br>
+    <select class="form-dropdown" id="activity" name="activity" required>
+      <option value="">Valitse ryhmä</option>
+      <option value="johtaja">Johtaja</option>
+      <option value="esihenkilo">Esihenkilö</option>
+      <option value="tyontekija">Työntekijä</option>
+      <option value="yrittaja">Yrittäjä</option>   
+      <option value="opiskelija">Opiskelija</option>
+      <option value="elakelainen">Eläkeläinen</option>
+      <option selected="selected" value="tyoton">Työtön</option>
+      <option value="muu">Muu</option>
+    </select><br>
+</td>    
+</tr>
+<tr>
+
+<td>
+      <label for="education">Koulutusaste:</label><br>
+    <select class="form-dropdown" id="education" name="education" required>
+      <option value="">Valitse koulutusaste</option>
+      <option selected="selected" value="perus">Perusaste</option>
+      <option value="keski">Keskiaste</option>
+      <option value="korkea">Korkea-aste</option>
+    </select><br>
+</td> 
+
+<td>    
+    <label for="family">Perhetyyppi:</label><br>
+    <select class="form-dropdown" id="family" name="family" required>
+      <option value="">Valitse perhetyyppi</option>
+      <option value="lapsiperhe">Lapsiperhe</option>
+      <option value="parisuhde">Parisuhde</option>
+      <option value="yksinhuoltaja">Yksinhuoltaja</option>
+      <option selected="selected" value="naimaton">Yksinasuva</option>   
+      <option value="muu">Muu</option>
+    </select><br>
+</td>
+<td>
+    <label for="income">Kuukausitulot:</label><br>
+    <select class="form-dropdown" id="income" name="income" required>
+      <option value="">Valitse tuloryhmä</option>
+      <option selected="selected" value="alle 1500">alle 1500€</option>
+      <option value="1500-1999">1500-1999€</option>
+      <option value="2000-3499">2000-2999€</option>
+      <option value="3500-4999">3000-4999€</option>
+      <option value="5000-6999">5000-6999€</option>
+      <option value="yli 7000">&gt;7000€</option>
+    </select><br>
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+    <label for="location">Hyvinvointialue:</label><br>
+    <select class="form-dropdown" id="location" name="location" value="99" required>
+      <option value="">Valitse hyvinvointialue</option>
+      <option value="01">Itä-Uudenmaan hyvinvointialue</option>
+      <option value="02">Keski-Uudenmaan hyvinvointialue</option>
+      <option value="03">Länsi-Uudenmaan hyvinvointialue</option>
+      <option value="04">Vantaan ja Keravan hyvinvointialue</option>
+      <option value="05">Varsinais-Suomen hyvinvointialue</option>
+      <option value="06">Satakunnan hyvinvointialue</option>
+      <option value="07">Kanta-Hämeen hyvinvointialue</option>
+      <option value="08">Pirkanmaan hyvinvointialue</option>
+      <option value="09">Päijät-Hämeen hyvinvointialue</option>
+      <option value="10">Kymenlaakson hyvinvointialue</option>
+      <option value="11">Etelä-Karjalan hyvinvointialue</option>
+      <option value="12">Etelä-Savon hyvinvointialue</option>
+      <option value="13">Pohjois-Savon hyvinvointialue</option>
+      <option value="14">Pohjois-Karjalan hyvinvointialue</option>
+      <option value="15">Keski-Suomen hyvinvointialue</option>
+      <option value="16">Etelä-Pohjanmaan hyvinvointialue</option>
+      <option value="17">Pohjanmaan hyvinvointialue</option>
+      <option value="18">Keski-Pohjanmaan hyvinvointialue</option>
+      <option value="19">Pohjois-Pohjanmaan hyvinvointialue</option>
+      <option value="20">Kainuun hyvinvointialue</option>
+      <option value="21">Lapin hyvinvointialue</option>
+      <option selected="selected" value="90">Helsingin kaupunki</option>
+      <option value="91">Ahvenanmaa</option>
+    </select><br><br>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<button type="submit">Lähetä</button>
+</form>
+</td> 
+</tr>
+</table> 
+<script>
+
+document.getElementById("dataForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        var name = document.getElementById("name").value;
+        var pin = document.getElementById("pin").value;
+        var gender = document.getElementById("gender").value;
+        var age = document.getElementById("age").value;
+        var education = document.getElementById("education").value;
+        var activity = document.getElementById("activity").value;
+        var family = document.getElementById("family").value;
+        var income = document.getElementById("income").value;
+        var location = document.getElementById("location").value;      
+        var message = document.getElementById("message").value;
+  
+        var url = "https://script.google.com/macros/s/AKfycbx0sq4kfUKCH2EXF0gRe1iLKG9-n56aB0EKzEdJG37vio85puv6enGwaEXJ6Vyz9VkI/exec?callback=loadData";
+        var data = {
+          name: name,
+          pin: pin,
+          gender: gender,
+          age: age,
+          education: education,
+          activity: activity,
+          family: family,
+          income: income,
+          location: location,
+          message: message
+        };
+        // Make an AJAX call to Google Script
+        $.ajax({
+          url: url,
+          method: "GET",
+          dataType: "jsonp",
+          data: data,
+          //success: function(response) {console.log(response);},
+          //error: function(error) {console.error(error);}
+        });
+      });
+
+      // Log the returned data
+      function loadData(response) {
+        console.log(response);
+      }
+    
+
+    function init() {
+      var form = document.getElementById('hae');
+      form.addEventListener('submit', fetchData);
+    }   
+    
+  
+    function fetchData(event) {
+      event.preventDefault();
+
+      var name = document.getElementById('name').value;
+      var pin = document.getElementById('pin').value;
+
+      var url = 'https://docs.google.com/spreadsheets/d/1rS5f0lQMK3OqIGZlyq9WipkuX6XD5txhFboqCq7dQvM/gviz/tq?sheet=Sheet1&headers=1';
+      var query = new google.visualization.Query(url);
+      query.setQuery("select A,B,C,D,E,F,G,H,I,J where A='" + name + "' and B='" + pin + "'");
+      query.send(processSheetsData);
+    }
+
+    function processSheetsData(response) {
+      var array = [];
+      var data = response.getDataTable();
+      var columns = data.getNumberOfColumns();
+      var rows = data.getNumberOfRows();
+      for (var r = 0; r < rows; r++) {
+        var row = {};
+        for (var c = 0; c < columns; c++) {
+          var columnName = data.getColumnLabel(c);
+          row[columnName] = data.getFormattedValue(r, c);
+        }
+        array.push(row);
+      }
+      
+      document.getElementById("name").value=array[0].name;
+      document.getElementById("pin").value=array[0].pin;
+      document.getElementById("gender").value=array[0].gender;
+      document.getElementById("age").value=array[0].age;
+      document.getElementById("activity").value=array[0].activity;
+      document.getElementById("education").value=array[0].education;
+      document.getElementById("family").value=array[0].family;
+      document.getElementById("income").value=array[0].income;
+      document.getElementById("location").value=array[0].location;
+      document.getElementById("message").value=array[0].message;
+      //renderData(array);
+    }
+google.charts.load('current');
+google.charts.setOnLoadCallback(init);
+
+
+
+
+
+
+
+
+
+
+const marginTop = 0,
+  marginRight = 0,
+  marginBottom = 0,
+  marginLeft = 0,
+klikkaus = "";
+  maxWords = 100,
+  fontFamily = "sans-serif",
+  fontScale = 15,
+  padding = 0,
+  rotate = 0;
+
+
+var dataset = [];
+var taulukko = [];
+var info = "";
+d3.json("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare-2.json").then(data => {
+  partition = data => {
+    const root = d3.hierarchy(data)
+      .sum(d => d.size)
+      .sort((a, b) => b.value - a.value);
+    return d3.partition()
+      .size([2 * Math.PI, root.height + 1])
+      (root);
+  }
+
+  var color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+  var format = d3.format(",d");
+
+  var width = 800;
+  var radius = width / 6;
+
+  var arc = d3.arc()
+    .startAngle(d => d.x0)
+    .endAngle(d => d.x1)
+    .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+    .padRadius(radius * 1.5)
+    .innerRadius(d => d.y0 * radius)
+    .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
+
+  const root = partition(data);
+
+  root.each(d => d.current = d);
+
+  const svg = d3.select("#wheel").append("svg")
+    .attr("width", width)
+    .attr("height", width);
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${width / 2},${width / 2})`);
+
+  const path = g.append("g")
+    .selectAll("path")
+    .data(root.descendants().slice(1))
+    .enter().append("path")
+    .attr("fill", d => {
+      while (d.depth > 1) d = d.parent;
+      return color(d.data.name);
+    })
+    .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+    .attr("d", d => arc(d.current))
+    .on("mouseover", mouseover)
+    .on("mouseout", function() {
+  infoText.text(""); // Tyhjennä infoteksti, kun kursori poistuu sunburst-kuvion alueelta
+})
+    .on("click", clicked);
+
+  path.append("title")
+    //.text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+
+  const label = g.append("g")
+    .attr("pointer-events", "none")
+    .attr("text-anchor", "middle")
+    .style("user-select", "none")
+    .selectAll("text")
+    .data(root.descendants().slice(1))
+    .enter().append("text")
+    .attr("dy", "0.35em")
+    .attr("fill-opacity", d => +labelVisible(d.current))
+    .attr("transform", d => labelTransform(d.current))
+    .text(d => d.data.name);
+
+
+  const textContainer = svg.append("foreignObject")
+    .attr("class", "text-container")
+    .attr("x", 310)
+    .attr("y", 310)
+    .attr("width", 200)
+    .attr("height", 180);
+
+  const div = textContainer
+    .append("xhtml:div")
+    .style("width", "100%")
+    .style("height", "100%")
+    .style("font-size", "0.7em")
+    .style("overflow", "auto")
+    .style("word-wrap", "break-word")
+    .style("white-space", "normal");
+
+  const infoText = div.append("p");
+
+  const parent = g.append("circle")
+    .datum(root)
+    .attr("r", radius)
+    .attr("fill", "none")
+    .attr("pointer-events", "all")
+    .on("click", clicked);
+
+  function clicked(p) {
+    if (p.depth < 3) {
+      parent.datum(p.parent || root);
+      root.each(d => d.target = {
+        x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+        x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+        y0: Math.max(0, d.y0 - p.depth),
+        y1: Math.max(0, d.y1 - p.depth)
+      });
+
+      const t = g.transition().duration(750);
+
+      path.transition(t)
+        .tween("data", d => {
+          const i = d3.interpolate(d.current, d.target);
+          return t => d.current = i(t);
+        })
+        .filter(function (d) {
+          return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+        })
+        .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+        .attrTween("d", d => () => arc(d.current));
+
+      label.filter(function (d) {
+        return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+      }).transition(t)
+        .attr("fill-opacity", d => +labelVisible(d.target))
+        .attrTween("transform", d => () => labelTransform(d.current));
+    } else {
+      const text = d3.select(this);
+      const textColor = text.style("fill");
+      //klikkaus = p.parent.data.name;
+	  infoText.text(p.data.info);
+      info = p.data.info;
+      if (textColor === "rgb(26, 199, 194)" || textColor === "rgb(110, 64, 170)" || textColor === "rgb(175, 240, 91)" || textColor === "rgb(255, 94, 99)" || textColor === "black") {
+        text.style("fill", "green");
+        const feeling = text.text();
+        console.log("Klikkaus:", "green", p.data.name);
+        lisaaTieto(p.data.x, p.data.y, p.data.name, "green");
+      } else if (textColor === "green") {
+        text.style("fill", "red");
+        const feeling = text.text();
+        console.log("Klikkaus:", "red", p.data.name);
+        lisaaTieto(p.data.x, p.data.y, p.data.name, "red");
+      } else {
+        text.style("fill", "black");
+        const feeling = text.text();
+        console.log("Klikkaus:", "black", p.data.name);
+        lisaaTieto(p.data.x, p.data.y, p.data.name, "black");
+      }
+    }
+  }
+
+  function mouseover(d) {
+	  //if (klikkaus == d.parent.parent.data.name) {
+if (d && d.data && d.data.info) {
+	  infoText.style("color", "red");
+    infoText.text(d.data.info);
+	console.log(d.parent.parent.data.name + " > " + d.parent.data.name);
+	console.log(klikkaus);
+	infoText.style("line-height", "0.7");
+  }
+}
+
+/*
+.text-container {
+  max-height: 180px; 
+  overflow-y: auto; 
+  line-height: 0.5; 
+}
+*/
+	
+	
+	
+	
+  function lisaaTieto(x, y, text, color) {
+    var loytyi = false;
+    for (var i = 0; i < dataset.length; i++) {
+      if (dataset[i].text === text) {
+        dataset[i].color = color;
+        loytyi = true;
+        break;
+      }
+    }
+
+    if (!loytyi) {
+      dataset.push({ x: x, y: y, text: text, color: color });
+    }
+  }
+
+  function arcVisible(d) {
+    return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
+  }
+
+  function labelVisible(d) {
+    return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+  }
+
+  function labelTransform(d) {
+    const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+    const y = (d.y0 + d.y1) / 2 * radius;
+    return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+  }
+});
+
+
+
+
+
+var lson = JSON.stringify([]);
+document.getElementById("message").value = lson;
+      var color = d3.scaleOrdinal(d3.schemeAccent);
+      var svg = d3.select("#canvas");
+      svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/elonkeha_tausta.svg')");
+      //var dataset = [];
+
+      function addCircle(x, y, text,color) {
+        var newCircle = { x: x, y: y, text: text, color: color };
+        dataset.push(newCircle);
+
+        var circleGroup = svg.append("div")
+          .datum(newCircle)
+          .attr("class", "circle-group")
+          .style("left", function(d) { return d.x + "px"; })
+          .style("top", function(d) { return d.y + "px"; });
+
+        circleGroup.append("div")
+          .attr("class", "circle")
+          .style("background-color", function(d) { return d.color; })
+          .on("click", function(d) { changeColor(d, this); })
+          .on("dblclick", function(d) { removeCircle(circleGroup); });
+
+        circleGroup.append("textarea")
+          .attr("class", "text-field")
+          .style("font", "14px Gill Sans") 
+          //.style("border", function(d) { return " solid " + d.color; })
+          .text(function(d) { return d.text; })
+          .on("input", function(d) {
+            d.text = this.value;
+            updateCircleText(circleGroup, d.text);
+          });
+          
+        circleGroup.call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+      }
+
+      function removeCircle(circleGroup) {
+        var circleData = circleGroup.datum();
+        var index = dataset.indexOf(circleData);
+        if (index > -1) {
+          dataset.splice(index, 1);
+        }
+        circleGroup.remove();
+      }
+
+      function changeColor(circleData, circleElement) {
+        var newColor = color(circleData.color);
+        circleData.color = newColor;
+        d3.select(circleElement).style("background-color", newColor);
+      }
+
+      function updateCircleText(circleGroup, newText) {
+        circleGroup.select(".text-field").property("value", newText);
+      }
+
+      function saveCircles() {
+        var json = JSON.stringify(dataset);
+        document.getElementById("message").value = json;
+        updateCircles();
+      }
+      
+      function updateCircles() {
+        var json = document.getElementById("message").value;
+        var updateset = JSON.parse(json);
+        dataset = [];
+        
+
+        d3.selectAll(".circle-group").remove();
+        updateset.forEach(function(d) {
+        console.log(d.x, d.y, d.text, d.color);
+          addCircle(d.x, d.y, d.text, d.color);
+        });
+      }
+
+      function AnalyzeReds() {
+      
+      //console.log(dataset);
+
+        muuttujat = [];
+        for (var i = 0; i < dataset.length; i++) {
+                muuttujat.push(dataset[i].text); 
+        }
+            //console.log(muuttujat);
+            d3.selectAll("#svganchor > *").remove(); 
+            kartta();
+      }
+
+
+function kartta() {
+(function newsQuestConnectivityRisks() {
+	var w = 1200;
+	var h = 900;
+
+	var padding = [10, 10, 10, 10];
+
+	var colors = d3.scaleOrdinal()
+		.domain([])
+		.range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
+
+	var svg = d3.select("#svganchor")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
+
+var nodesTotal = [];
+var linksTotal = [];
+
+const things = new Object();
+things.thing = new Array();
+
+d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVW3lFxFzmsO61waUKVTSQU9R1RhYjinnTLFcia2MQ2mLw0Wu0tG0HLFvpXLmJAJjG1wjq6Q6ObgWI/pub?gid=1193425325&single=true&output=csv").then(function(apiData) {
+					try {
+						localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+							data: d3.csvFormat(apiData),
+							timestamp: currentDate.getTime()
+						}));
+					} catch (error) {
+					};
+
+var mapiData = [];
+for (var i = 0; i < apiData.length; i++) {
+
+if(muuttujat.indexOf(apiData[i].source) > -1)
+mapiData.push(apiData[i]);
+}
+
+apiData=mapiData;
+
+for (var i = 0; i < apiData.length; i++) {
+things.thing.push({id:apiData[i].source,labelText:apiData[i].source});
+things.thing.push({id:apiData[i].target,labelText:apiData[i].target});
+}
+
+const uniqueArray = things.thing.filter((thing, index) => {  
+const _thing = JSON.stringify(thing);
+  return index === things.thing.findIndex(obj => {    
+  return JSON.stringify(obj) === _thing;  });
+  });
+nodesTotal = uniqueArray;
+linksTotal = apiData;
+});
+				
+function checkFlag() {
+    if(things.thing.length == 0) {
+       window.setTimeout(checkFlag, 3000); 
+    } else {
+      finit();
+    }
+}
+checkFlag();
+
+function finit(){
+
+	var simulation = d3.forceSimulation()
+		.force("link", d3.forceLink().id(function(d) {
+			return d.id;
+		}))
+		.force("collide", d3.forceCollide(function(d) {
+			return Math.sqrt(d.radius) * 11
+		}))
+		.force("charge", d3.forceManyBody())
+		.force("center", d3.forceCenter(w / 3, h / 2));
+
+	draw(nodesTotal, linksTotal);
+
+	function draw(nodes, links) {
+
+		var nodesConnectionsList = nodes.map(function(d) {
+			return d.id
+		});
+
+		var nodesConnections = [];
+
+		nodesConnectionsList.forEach(function(d, j) {
+			nodesConnections[j] = {
+				risk: d,
+				connections: []
+			};
+			for (var i = 0; i < links.length; i++) {
+				if (links[i].source == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].target,
+						connectionsNumber: links[i].value
+					})
+				} else if (links[i].target == d) {
+					nodesConnections[j].connections.push({
+						connection: links[i].source,
+						connectionsNumber: links[i].value
+					})
+				}
+			}
+		});
+
+		nodes.forEach(function(d) {
+			var thisData = nodesConnections.filter(function(e) {
+				return e.risk == d.id
+			});
+			var sum = d3.sum(thisData[0].connections, function(f) {
+				return f.connectionsNumber
+			});
+			d["radius"] = sum;
+		});
+
+		var nodeById = d3.map(nodes, function(d) {
+			return d.id;
+		})
+		var bilinks = [];
+
+		links.forEach(function(link) {
+			var s = link.source = nodeById.get(link.source),
+				t = link.target = nodeById.get(link.target),
+				i = {},
+				val = {
+					lvalue: link.value
+				};
+
+			nodes.push(i);
+			links.push({
+				source: s,
+				target: i
+			}, {
+				source: i,
+				target: t
+			});
+if(t.radius > 2) {
+			bilinks.push([s, i, t, val]);
+//console.log(	s, i, t, val);
+}	
+		});
+
+		var link = svg.selectAll(".link")
+			.data(bilinks)
+			.enter()
+			.append("path")
+			.attr("stroke-width", function(d) {
+				return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+			})
+			.attr("class", "link");
+
+		var node = svg.selectAll(".node")
+			.data(nodes.filter(function(d) {
+				if(d.radius > 2) return d.id;
+			}))
+			.enter()
+			.append("g")
+			.attr("class", "node")
+			.call(d3.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended));
+
+		var circles = node.append("circle")
+			.attr("r", function(d) {
+				return Math.sqrt(d.radius) * 4
+			})
+			.attr("fill", function(d) {
+			if(d.radius>40) return "#ee1a16";
+			if(d.radius> 9 && d.radius < 40) return "#f3d776";
+		    if(d.radius> 5 && d.radius < 9) return "#f32876";
+			if(d.radius < 5)	return colors(d.group);
+				
+			});
+		
+		var backText = node.append("text")
+			.attr("class", "nodesLabelBack")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		var nodesText = node.append("text")
+			.attr("class", "nodesLabel")
+			.attr("opacity", function(d) {
+				return d.radius == 0 ? 0 : 1
+			})
+			.attr("dx", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dominant-baseline", function(d) {
+				if (!(d.labelText.split(" ")[1])) {
+					return "central"
+				}
+			})
+			.text(function(d) {
+				return d.labelText.split(" ")[0]
+			})
+			.append("tspan")
+			.attr("x", function(d) {
+				return Math.sqrt(d.radius) * 4 + 2
+			})
+			.attr("dy", 10)
+			.text(function(d) {
+				return d.labelText.split(" ")[1]
+			});
+
+		circles.on("mouseover", function(d) {
+			hovered(d);
+		}).on("mouseout", function(d) {
+			hoverOut(d);
+		});
+
+		link.on("mouseover", function(d) {
+			hoveredLink(d);
+		}).on("mouseout", function(d) {
+			hoverLinkOut(d);
+		});
+
+		simulation.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+		//drawLegend();
+
+		function ticked() {
+			link.attr("d", positionLink);
+			node.attr("transform", positionNode);
+		}
+
+		function positionLink(d) {
+			return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+		}
+
+		function positionNode(d) {
+			if (d.x < 20) {
+				d.x = 20
+			};
+			if (d.y < 20) {
+				d.y = 20
+			};
+			if (d.x > 1200) {
+				d.x = 1200
+			};
+			if (d.y > 900) {
+				d.y = 900
+			};
+			return "translate(" + d.x + "," + d.y + ")";
+		}
+
+		function hovered(thisData) {
+
+			//drawRisk(thisData);
+
+			var thisNodeConnections = nodesConnections.filter(function(d) {
+				return d.risk == thisData.id;
+			});
+
+			var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+				return d.connection;
+			});
+
+			thisNodeConnectionsList.push(thisData.id);
+			node.attr("opacity", function(d) {
+				return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+			});
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+			});
+
+		}
+
+		function hoverOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+
+		function hoveredLink(thisData) {
+
+			//drawLink(thisData);
+
+			link.attr("stroke-opacity", function(d) {
+				return (d[1].index == thisData[1].index) ? 1 : 0.1;
+			});
+			node.attr("opacity", function(d) {
+				return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+			});
+		}
+
+		function hoverLinkOut(thisData) {
+			node.attr("opacity", 1);
+			link.attr("stroke-opacity", 1);
+
+			//drawLegend();
+		}
+			//end of draw
+	}
+
+	function dragstarted(d) {
+		if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(d) {
+		d.fx = (d3.event.x > 1200) ? 1200 : (d3.event.x < 30) ? 30 : d3.event.x;
+		d.fy = (d3.event.y > 900) ? 900 : (d3.event.y < 30) ? 30 : d3.event.y;
+	}
+
+	function dragended(d) {
+		if (!d3.event.active) simulation.alphaTarget(0);
+		d.fx = null;
+		d.fy = null;
+	}
+
+//end of finit
+} 
+
+//end of newsQuestConnectivityRisks	
+}());
+
+} //end of kartta
+
+
+      function handleDoubleClick() {
+        var mousePos = d3.mouse(this);
+        var x = mousePos[0];
+        var y = mousePos[1];
+
+        var isCircle = d3.select(d3.event.target).classed("circle");
+        if (!isCircle) {
+          addCircle(x, y, "uusi", "red");
+        }
+      }
+
+      function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+      }
+
+      function dragged(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d3.select(this)
+          .style("left", d.x + "px")
+          .style("top", d.y + "px");
+      }
+      
+      
+
+
+      function dragended(d) {
+        d3.select(this).classed("active", false);
+      }
+
+      svg.on("dblclick", handleDoubleClick);
+      
+    </script>
+
+
+ 
+</body>
+</html>
