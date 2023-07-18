@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+	<script>
+	var data = {
+  "name": "flare",
+  "children": [
+    {
+      "name": "Nykyisyys",
+      "children": [
+        {
+          "name": "Yksilöllisyys",
+          "children": [
+            {"name": "Eheys"}
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+function findParent(data, parentName, childName) {
+  if (data.name === parentName) {
+    return data;
+  }
+
+  if (data.children) {
+    for (var i = 0; i < data.children.length; i++) {
+      var parent = findParent(data.children[i], parentName, childName);
+      if (parent) {
+        return parent;
+      }
+    }
+  }
+
+  return null;
+}
+
+var parent = findParent(data, "Nykyisyys", "Eheys");
+if (parent) {
+  console.log("Parent found:", parent);
+} else {
+  console.log("Parent not found");
+}
+	</script>
+</body>
+</html>
