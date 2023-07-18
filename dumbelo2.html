@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      color: hsl(0, 0%, 7%);
+      background-color: hsl(0, 0%, 97%);
+      font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+        helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+    }
+
+    ::selection {
+      background-color: hsl(0, 0%, 89%);
+    }
+
+    #root {
+      max-width: 48rem;
+      margin: 1rem auto;
+      padding: 1rem 1.5rem;
+      color: hsl(0, 0%, 14%);
+      background-color: hsl(0, 0%, 100%);
+      box-shadow: 0 0.1rem 0.2rem hsl(0, 0%, 14%, 0.1);
+    }
+
+    #root > * + * {
+      margin-top: 1em;
+    }
+
+    h1 {
+      font-size: 1.48rem;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    svg {
+      max-width: 48rem;
+      margin: 1rem auto;
+      color: hsl(0, 0%, 27%);
+      --color-line: hsl(0, 0%, 89%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 0.1rem dotted currentColor;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1em;
+      font-size: 0.9rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .legend-item input {
+      margin-right: 0.5rem;
+    }
+
+    .legend-item span {
+      border-bottom: 0.2rem solid;
+      padding-bottom: 0.1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+var veku = "Male";
+
+const data = [
+  { country: "Yksilöllisyys", values: [{ key: "Male", value: 78.5 }, { key: "Female", value: 83 }] },
+  { country: "Sosiaalisuus", values: [{ key: "Male", value: 70 }, { key: "Female", value: 77.5 }] },
+  { country: "Yhteisöllisyys", values: [{ key: "Male", value: 75.3 }, { key: "Female", value: 81.3 }] },
+  { country: "Terveys", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.6 }] },
+  { country: "Hyvinvointi", values: [{ key: "Male", value: 78.7 }, { key: "Female", value: 83.5 }] },
+  { country: "Toimintakyky", values: [{ key: "Male", value: 74.4 }, { key: "Female", value: 83 }] },
+  { country: "Tavoitteet", values: [{ key: "Male", value: 80.8 }, { key: "Female", value: 84.4 }] },
+  { country: "Mahdollisuudet", values: [{ key: "Male", value: 78.8 }, { key: "Female", value: 83.9 }] },
+  { country: "Haaveet", values: [{ key: "Male", value: 79.6 }, { key: "Female", value: 85.2 }] },
+  { country: "Tiedot", values: [{ key: "Male", value: 79.2 }, { key: "Female", value: 85.3 }] },
+  { country: "Taidot", values: [{ key: "Male", value: 74.7 }, { key: "Female", value: 80.9 }] },
+  { country: "Kyvyt", values: [{ key: "Male", value: 80 }, { key: "Female", value: 84.5 }] },
+  { country: "Tärkeys", values: [{ key: "Male", value: 80.4 }, { key: "Female", value: 84.4 }] },
+  { country: "Järjestys", values: [{ key: "Male", value: 70.6 }, { key: "Female", value: 80 }] },
+  { country: "Ajoitus", values: [{ key: "Male", value: 70.1 }, { key: "Female", value: 80.1 }] },
+  { country: "Työ", values: [{ key: "Male", value: 79.9 }, { key: "Female", value: 84.5 }] },
+  { country: "Koti", values: [{ key: "Male", value: 72.3 }, { key: "Female", value: 79 }] },
+  { country: "Vapaa-aika", values: [{ key: "Male", value: 80.3 }, { key: "Female", value: 84.5 }] },
+  { country: "Arvostukset", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.1 }] },
+  { country: "Uskomukset", values: [{ key: "Male", value: 78.9 }, { key: "Female", value: 83.6 }] },
+  { country: "Kokemukset", values: [{ key: "Male", value: 72.5 }, { key: "Female", value: 80.7 }] },
+  { country: "Kulttuuri", values: [{ key: "Male", value: 78 }, { key: "Female", value: 84.1 }] },
+  { country: "Suku", values: [{ key: "Male", value: 70.4 }, { key: "Female", value: 78.3 }] },
+  { country: "Perhe", values: [{ key: "Male", value: 77.8 }, { key: "Female", value: 83.4 }] },
+];
+
+let sortOrder = {
+  Male: true,
+  Female: true,
+};
+
+const keys = ["Male", "Female"];
+
+const dataValues = keys.reduce((acc, key) => {
+  acc[key] = data.map((d) => d.values.find((v) => v.key === key).value);
+  return acc;
+}, {});
+
+const sortData = () => {
+  data.sort((b, a) => {
+    const aValues = a.values.slice();
+    const bValues = b.values.slice();
+    if (!sortOrder.Male) {
+      aValues.reverse();
+      bValues.reverse();
+    }
+    const aMaleValue = aValues.find((d) => d.key === veku).value;
+    const bMaleValue = bValues.find((d) => d.key === veku).value;
+    return aMaleValue - bMaleValue;
+  });
+};
+
+const dataStats = Object.entries(dataValues).map(([key, values]) => ({
+  key,
+  mean: d3.mean(values),
+  deviation: d3.deviation(values),
+}));
+
+const updateChart = () => {
+  if (veku === "Male") {
+    veku = "Female";
+  } else {
+    veku = "Male";
+  }
+  sortData();
+
+  const t = d3.transition().duration(750);
+
+  yScale.domain(data.map((d) => d.country));
+
+  groupAxisY.transition(t).call(yAxis);
+
+  const groupsData = groupData.selectAll("g").data(data, (d) => d.country);
+
+  groupsData.exit().transition(t).style("opacity", 0).remove();
+
+  const newGroups = groupsData
+    .enter()
+    .append("g")
+    .attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`)
+    .style("opacity", 0);
+
+  newGroups.append("path");
+  newGroups.append("text");
+  newGroups.selectAll("circle").data((d) => d.values).enter().append("circle");
+
+  groupsData.merge(newGroups).transition(t).attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
+
+  groupsData.selectAll("path").transition(t);
+
+  groupsData
+    .selectAll("circle")
+    .data((d) => d.values)
+    .transition(t)
+    .attr("cx", (d) => xScale(d.value))
+    .attr("r", radius);
+
+  groupsStats
+    .selectAll("rect")
+    .transition(t)
+    .attr("x", (d) => xScale(d.mean - d.deviation / 2))
+    .attr(
+      "width",
+      (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)
+    );
+
+  groupsStats
+    .selectAll("path")
+    .transition(t)
+    .attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
+
+};
+
+const handleLegendClick = (key) => {
+  sortOrder[key] = !sortOrder[key];
+  updateChart();
+};
+
+const handleCheckboxChange = function () {
+  const key = d3.select(this).attr("id");
+  const isActive = d3.select(this).property("checked");
+  d3.selectAll(`circle[data-key="${key}"]`).style("opacity", isActive ? 1 : 0);
+};
+
+const width = 400;
+const height = 800;
+const inset = 60;
+const strokeDasharray = 3;
+const radius = 5;
+const strokeWidth = 12;
+const fontSizes = {
+  x: 8,
+  y: 8.5,
+};
+
+const margin = {
+  top: 25,
+  bottom: 5,
+  left: 80,
+  right: 10,
+};
+
+const format = d3.format(".2r");
+
+const extent = d3.extent(
+  data.reduce((acc, curr) => [...acc, ...curr.values.reduce((a, c) => [...a, c.value], [])], [])
+);
+
+const colorScale = d3.scaleOrdinal(d3.schemeSet2).domain(["Male", "Female"]);
+
+const xScale = d3.scaleLinear().domain(extent).range([inset, width - inset]).nice();
+
+const yScale = d3.scaleBand().domain(data.map((d) => d.country)).range([0, height]);
+
+const xAxis = d3.axisTop(xScale).tickSize(0).tickPadding(10);
+const yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(10);
+
+const root = d3.select("#root");
+root.append("h1").text("Yhteenveto");
+root.append("p").html(
+  `<strong style="border-bottom: 0.2rem solid ${colorScale(
+    "Male"
+  )}">Vahvuudet</strong> ja <strong style="border-bottom: 0.2rem solid ${colorScale(
+    "Female"
+  )}">Ihanteet</strong> <button onClick="updateChart();">Päivitä</button>`
+);
+
+const svg = root
+  .append("svg")
+  .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+
+const group = svg.append("g").attr("transform", `translate(${margin.left} ${margin.top})`);
+
+const groupAxis = group.append("g");
+const groupStats = group.append("g");
+const groupData = group.append("g");
+
+const textAxis = groupAxis.append("text").text("0");
+
+groupAxis
+  .append("line")
+  .attr("stroke", "currentColor")
+  .attr("stroke-dasharray", strokeDasharray)
+  .attr("stroke-linecap", "square")
+  .attr("x2", inset)
+  .attr("transform", "translate(0.5 0.5)");
+
+const groupAxisX = groupAxis.append("g").call(xAxis);
+const groupAxisY = groupAxis.append("g").call(yAxis);
+
+groupAxisY.select("path").remove();
+
+groupAxisY.attr("font-size", fontSizes.y);
+groupAxisX.attr("font-size", fontSizes.x);
+
+const groupGroupAxisX = groupAxis.select("g");
+const textAxisX = groupAxisX.select("text");
+
+textAxis
+  .attr("font-size", groupGroupAxisX.attr("font-size"))
+  .attr("font-family", groupGroupAxisX.attr("font-family"))
+  .attr("text-anchor", groupGroupAxisX.attr("text-anchor"))
+  .attr("y", textAxisX.attr("y"))
+  .attr("dy", textAxisX.attr("dy"))
+  .attr("fill", textAxisX.attr("fill"));
+
+groupAxis.select("line").attr("stroke-width", "0.5");
+groupAxis.select("path").attr("stroke-width", "0.5");
+
+const groupsData = groupData.selectAll("g").data(data).enter().append("g").attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
+
+groupsData.append("path").datum((d) => d.values).attr("fill", "none").attr("stroke", "var(--color-line, currentColor)").attr("stroke-width", strokeWidth).attr("stroke-linecap", "round").attr("d", (d) => `M ${d.map(({ value }) => xScale(value)).join(" 0 ")} 0`);
+
+groupsData.append("text").datum((d) => {
+  const [min, max] = d3.extent(d.values.map((d) => d.value));
+  const gap = max - min;
+  const mid = (min + max) / 2;
+  return { gap, mid };
+}).attr("fill", "currentColor").attr("text-anchor", "middle").attr("font-weight", "700").attr("font-size", strokeWidth - 3).attr("dominant-baseline", "middle").attr("x", (d) => xScale(d.mid)).attr("y", 1).text((d) => format(d.gap));
+
+groupsData.selectAll("circle").data((d) => d.values).enter().append("circle").attr("fill", (d) => colorScale(d.key)).attr("cx", (d) => xScale(d.value)).attr("r", radius);
+
+const groupsStats = groupStats.selectAll("g").data(dataStats).enter().append("g").style("color", (d) => colorScale(d.key));
+
+groupsStats.append("rect").attr("x", (d) => xScale(d.mean - d.deviation / 2)).attr("width", (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)).attr("height", height).attr("fill", "currentColor").attr("fill-opacity", "0.1");
+
+groupsStats.append("path").attr("fill", "none").attr("stroke", "currentColor").attr("stroke-width", "0.75").attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
+
+</script>
+</body>
+</html>
