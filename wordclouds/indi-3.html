@@ -767,6 +767,7 @@ function toggleOpen() {
    var element = document.getElementById("sideForm");
    element.classList.toggle("open");
 }
+ var taso = "";
  var snartti=0; 
     function toggleOverlay() {
     if (snartti < 1) {
@@ -995,6 +996,9 @@ div.selectAll("p")
         .on("click", clicked);
 
     function clicked(p) {
+    if (p.depth < 2) {
+    taso = p.data.name;
+    }
         if (p.depth < 3) {
             parent.datum(p.parent || root);
             root.each(d => d.target = {
@@ -1025,8 +1029,19 @@ div.selectAll("p")
         } else {
             const text = d3.select(this);
             const textColor = text.style("fill");
+
+
+
+var otherChildName = p.data.name;
+var otherParentParentName = findParentParentName(data, otherChildName);
+if (otherParentParentName === taso) {
+  console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);  
+
 textContainer.text(p.data.info);
 info = p.data.info;
+
+
+
             if (textColor === "rgb(26, 199, 194)" || textColor === "rgb(110, 64, 170)" || textColor === "rgb(175, 240, 91)" || textColor === "rgb(255, 94, 99)" || textColor === "black") {
                 text.style("fill", "green");
                 const feeling = text.text();
@@ -1046,13 +1061,54 @@ lisaaTieto(p.data.x, p.data.y, p.data.name, "red");
 console.log("Klikkaus:", "black", p.data.name);
 lisaaTieto(p.data.x, p.data.y, p.data.name, "black");
             }
+            
+            
+}            
+            
+            
         }
     }
 
 function mouseover(d) {
+
+var otherChildName = d.data.name;
+var otherParentParentName = findParentParentName(data, otherChildName);
+if (otherParentParentName === taso) {
+  console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);  
+
+
+
+
   textContainer.text(d.data.info);
-  
+  }
 }
+
+
+function findParentParentName(data, childName, parentParentName = null) {
+//console.log(data);
+  if (data.children) {
+    for (var i = 0; i < data.children.length; i++) {
+      var parent = data.children[i];
+      if (parent.children) {
+        for (var j = 0; j < parent.children.length; j++) {
+          var child = parent.children[j];
+          if (child.name === childName) {
+            return parentParentName;
+          }
+        }
+      }
+      
+      var parentParent = findParentParentName(parent, childName, parent.name);
+      if (parentParent) {
+        return parentParent;
+      }
+    }
+  }
+
+  return null;
+}
+
+
 
 
 
