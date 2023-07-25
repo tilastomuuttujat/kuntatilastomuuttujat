@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="fi">
+<meta charset="UTF-8">
+
+<head>
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<style>
+/*		
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      color: hsl(0, 0%, 7%);
+      background-color: hsl(0, 0%, 97%);
+      font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+        helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+    }
+*/
+    ::selection {
+      background-color: hsl(0, 0%, 89%);
+    }
+
+    #root {
+      max-width: 48rem;
+      /*margin: 1rem auto;*/
+      padding: 1rem 1.5rem;
+      color: hsl(0, 0%, 14%);
+	  height: 700px;
+      /*background-color: hsl(0, 0%, 100%);*/
+      /*box-shadow: 0 0.1rem 0.2rem hsl(0, 0%, 14%, 0.1);*/
+		overflow-y: scroll;
+    }
+
+    #root > * + * {
+      margin-top: 1em;
+    }
+
+    h1 {
+      font-size: 1.48rem;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    svg {
+     /* max-width: 48rem;*/
+      margin: 1rem auto;
+      color: hsl(0, 0%, 27%);
+      --color-line: hsl(0, 0%, 89%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 0.1rem dotted currentColor;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1em;
+      font-size: 0.9rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .legend-item input {
+      margin-right: 0.5rem;
+    }
+
+    .legend-item span {
+      border-bottom: 0.2rem solid;
+      padding-bottom: 0.1rem;
+    }
+		
+	html {
+		box-sizing: border-box;
+	}
+
+	*,
+	*:before,
+	*:after {
+		box-sizing: inherit;
+	}
+
+	body {
+		font-family: Avenir;
+		padding: 0;
+		margin: 0;
+	}
+
+	a {
+		color: #00787a;
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	.wrap {
+		/*display: flex;*/
+		/*align-items: stretch;*/
+	}
+
+	.left-content {
+		height: 88vh;
+		background: #fff;
+		position: relative;
+		box-shadow: 5px 0px 10px 0px rgba(50, 50, 50, 0.2);
+		position: absolute;
+		z-index: 9999;
+		top: 200px;
+	}
+
+	.left-inner {
+		position: sticky;
+		height: 86vh;
+		overflow-y: scroll;
+	}
+
+	.form-header {
+		display: flex;
+		align-items: center;
+		width: 460px;
+		padding: 30px;
+		box-shadow: 5px 0px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.form-header .logo {
+		width: 32px;
+		height: 32px;
+		background: #dd0f65;
+		margin-right: 20px;
+	}
+
+	.form-header h1 {
+		font-size: 24px;
+		margin: 0;
+		font-weight: 300;
+		white-space: nowrap;
+	}
+
+	.form-wrap {
+		width: 460px;
+		padding: 30px 20px;
+	}
+
+	.form-section {
+		margin-bottom: 40px;
+	}
+
+	.form-section h2 {
+		font-size: 24px;
+		margin: 0 0 30px;
+	}
+
+	.form-row {
+		display: flex;
+		margin-bottom: 20px;
+	}
+
+	.form-field {
+		width: 100%;
+	}
+
+	.form-field label {
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 500;
+		color: #000;
+		margin-bottom: 6px;
+	}
+
+	.form-field .form-helper {
+		font-size: 12px;
+		color: #757475;
+		margin-bottom: 6px;
+	}
+
+	.form-field input {
+		width: 100%;
+		border: 2px solid #ddd;
+		font-size: 16px;
+		font-weight: 300;
+		padding: 12px 16px;
+		border-radius: 4px;
+	}
+
+	.form-image-drop {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 80px;
+		border: 2px dashed #ddd;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+
+	.form-image-drop:hover {
+		border-color: #00787a;
+	}
+
+	.form-field+.form-field {
+		margin-left: 20px;
+	}
+
+	.divider {
+		border-top: 1px solid #868686;
+		border-bottom: 1px solid #868686;
+		margin-bottom: 30px;
+	}
+
+	/* Hide show form */
+	/* The side navigation menu */
+	.slide-in {
+		background: #fff;
+		width: 0px;
+		/* 0 width - change this with JavaScript */
+		z-index: 1;
+		/* Stay on top */
+		transition: 0.5s;
+		/* 0.5 second transition effect to slide in the sidenav */
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.slide-in.open {
+		width: 480px;
+	}
+
+	/* Position and style the close button (top right corner) */
+	.toggle-btn {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		height: 28px;
+		top: 40px;
+		padding: 0 20px;
+		right: -61px;
+		color: #fff;
+		background-color: #00787a;
+		transform: rotate(90deg);
+		border-radius: 6px 6px 0 0;
+		box-shadow: 5px 0px 10px 0px rgba(50, 50, 50, 0.2);
+	}
+
+	.toggle-btn:hover {
+		cursor: pointer;
+	}
+
+	#overlay {
+		display: none;
+		position: fixed;
+		top: 20;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+
+	#toggle-overlay-button {
+		padding: 10px 20px;
+		background-color: #337ab7;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		/*position: absolute;
+      left: 800px;*/
+	}
+
+	.form-dropdown {
+		border-color: #575757;
+		color: #202020;
+		background-color: rgba(248, 248, 248, 0);
+		align: right;
+	}
+
+	table label {
+		font-size: 8px;
+		color: darkgrey;
+	}
+
+	td {
+		height: 10px;
+	}
+
+	tr {
+		line-height: 12px;
+	}
+
+	.barsNumbers {
+		font-family: "PT Sans", sans-serif;
+		font-size: 12px;
+		fill: #777;
+	}
+
+	.textDescription {
+		font-family: "PT Sans", sans-serif;
+		font-size: 14px;
+		fill: #444;
+		cursor: default;
+	}
+
+	.textDescriptionRisk {
+		font-family: "PT Sans", sans-serif;
+		font-size: 14px;
+		fill: #666;
+		cursor: default;
+	}
+
+	.textDescription3 {
+		font-family: "PT Sans", sans-serif;
+		font-size: 14px;
+		fill: #666;
+		cursor: default;
+	}
+
+	.textDescription2 {
+		font-family: "PT Sans", sans-serif;
+		font-size: 11px;
+		fill: #999;
+		cursor: default;
+	}
+
+	.legendTitle {
+		font-family: "Roboto", sans-serif;
+		font-size: 18px;
+		fill: #444;
+		cursor: default;
+	}
+
+	.nodesLabelBack {
+		font-family: "PT Sans", sans-serif;
+		fill: white;
+		font-size: 10px;
+		pointer-events: none;
+		stroke: white;
+		stroke-width: 3px;
+		cursor: default;
+	}
+
+	.nodesLabel {
+		font-family: "PT Sans", sans-serif;
+		fill: #444;
+		font-size: 10px;
+		pointer-events: none;
+		cursor: default;
+	}
+
+	.noCategory {
+		fill: darkslategray;
+		font-size: 20px;
+		font-family: "Roboto";
+	}
+
+	.link {
+		fill: none;
+		stroke: #ccc;
+	}
+
+	.barAxis path,
+	.barAxis line {
+		stroke: #999;
+	}
+
+	.barAxis text {
+		font: 10px sans-serif;
+		fill: #999;
+	}
+
+	.sana {
+		writing-mode: vertical-lr;
+		/* Kääntää tekstin 90 astetta */
+		transform: rotate(180deg);
+		/* Kääntää tekstin toisinpäin */
+		font-size: 50px;
+		color: gray;
+	}
+
+	.slide {
+		display: flex;
+		align-items: center;
+	}
+
+	.slider {
+		width: 530px;
+		text-align: center;
+		overflow: hidden;
+		display: flex;
+		/*lisatty*/
+	}
+
+	.slides {
+		display: flex;
+		align-items: center;
+		/*lisatty*/
+		overflow-x: auto;
+		-ms-scroll-snap-type: x mandatory;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.slides::-webkit-scrollbar-thumb {
+		background: black;
+		border-radius: 10px;
+	}
+
+	.slides::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.slides>div {
+		scroll-snap-align: start;
+		flex-shrink: 0;
+		width: 530px;
+		height: 290px;
+	}
+
+	#svganchor {}
+
+	#canvas {
+		position: relative;
+		background-image: url('elonkeha_tausta.svg');
+		background-size: cover;
+		width: 900px;
+		height: 900px;
+		border: 0px solid #ccc;
+	}
+
+	.circle-group {
+		position: absolute;
+		cursor: move;
+	}
+
+	.circle {
+		position: relative;
+		display: inline-block;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+	}
+
+	.text-field {
+		position: absolute;
+		top: 0px;
+		left: 11px;
+		width: 160px;
+		height: 22px;
+		text-align: center;
+		/*border: solid gray;*/
+	}
+
+	/* ------------------- */
+	/* TEMPLATE        -- */
+	/* ----------------- */
+	@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,300);
+
+	body {
+		height: 100%;
+		background-color: #ebebeb;
+		color: whitesmoke;
+		font-size: 16px;
+		font-family: 'Lato';
+	}
+
+	h1 {
+		font-size: 32px;
+	}
+
+	h2 {
+		font-size: 26px;
+	}
+
+	h3 {
+		font-size: 18px;
+	}
+
+	p {
+		margin: 0 0 15px;
+		line-height: 24px;
+		color: gainsboro;
+	}
+
+	a {
+		color: dodgerblue;
+		text-decoration: none;
+		border-bottom: 1px dotted;
+	}
+
+	a:hover {
+		color: tomato;
+	}
+
+	.container {
+		max-width: 960px;
+		/*height: 100%;*/
+		height: 960px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	/* ------------------- */
+	/* PEN STYLES      -- */
+	/* ----------------- */
+	/* MAKE IT CUTE ----- */
+	.tabs {
+		position: relative;
+		display: flex;
+		min-height: 960px;
+		border-radius: 8px 8px 0 0;
+		overflow: hidden;
+	}
+
+	.tabby-tab {
+		flex: 1;
+	}
+
+	.tabby-tab label {
+		display: block;
+		box-sizing: border-box;
+		/* tab content must clear this */
+		height: 40px;
+		padding: 10px;
+		text-align: center;
+		background: #8d8d8d;
+		cursor: pointer;
+		transition: background 0.5s ease;
+	}
+
+	.tabby-tab label:hover {
+		background: #7d7d7d;
+	}
+
+	.tabby-content {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		/* clear the tab labels */
+		top: 40px;
+		padding: 20px;
+		border-radius: 0 0 8px 8px;
+		background: #ebebeb;
+		transition:
+			opacity 0.8s ease,
+			transform 0.8s ease;
+		/* show/hide */
+		opacity: 0;
+		transform: scale(0.1);
+		transform-origin: top left;
+	}
+
+	.tabby-content img {
+		float: left;
+		margin-right: 20px;
+
+		border-radius: 8px;
+	}
+
+	/* MAKE IT WORK ----- */
+	.tabby-tab [type=radio] {
+		display: none;
+	}
+
+	[type=radio]:checked~label {
+		background: #5d5d5d;
+		z-index: 2;
+	}
+
+	[type=radio]:checked~label~.tabby-content {
+		z-index: 1;
+		/* show/hide */
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	/* BREAKPOINTS ----- */
+	@media screen and (max-width: 767px) {
+		.tabs {
+			min-height: 400px;
+		}
+	}
+
+	@media screen and (max-width: 480px) {
+		.tabs {
+			min-height: 580px;
+		}
+
+		.tabby-tab label {
+			height: 60px;
+		}
+
+		.tabby-content {
+			top: 60px;
+		}
+
+		.tabby-content img {
+			float: none;
+			margin-right: 0;
+			margin-bottom: 20px;
+		}
+	}
+
+	h1 {
+		text-align: left;
+		font-weight: 100;
+		font-size: 40px;
+		color: #e74c3c;
+	}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Itsearviointi</h1>
+		<button id="toggle-overlay-button" onClick="toggleOverlay();">?</button>
+		<div class="tabs">
+			<div class="tabby-tab">
+				<input type="radio" id="tab-1" onclick="kasitteet()" name="tabby-tabs" checked>
+				<label for="tab-1">Valitse käsitteet</label>
+				<div class="tabby-content">
+					<div id="overlay">
+						<iframe id="overlay-iframe" src="info_1.svg" width="100%" height="100%" frameborder="0"></iframe>
+					</div>
+					<div id="wheel" style="color: black;"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-2" onclick="saveCircles()" name="tabby-tabs">
+				<label for="tab-2">Valitut käsitteet</label>
+				<div class="tabby-content">
+					<div id="canvas"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-3" onclick="AnalyzeReds()" name="tabby-tabs">
+				<label for="tab-3">Käsitteiden väliset sidokset</label>
+				<div class="tabby-content">
+					<div id="svganchor" style="width: 100%;height: 100%;background-color: #ebebeb;"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-4" onclick="yhteenveto(1)" name="tabby-tabs">
+				<label for="tab-4">Yhteenveto</label>
+				<div class="tabby-content">
+					<div id="root">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left-content slide-in open" id="sideForm">
+				<div class="left-inner">
+					<div class="form-header">
+						<div class="logo"></div>
+						<h1>Tietojen poiminta ja tallennus</h1>
+					</div>
+					<div class="form-wrap">
+						<form id="hae">
+							<div class="form-section">
+								<div class="form-row">
+									<div class="form-field">
+										<label>Tunnus</label>
+										<input type="text" id="name" placeholder="Anna tunnus" />
+									</div>
+									<div class="form-field">
+										<label>Varmenne</label>
+										<input type="text" id="pin" placeholder="Anna varmenne" />
+									</div>
+									<button type="submit">Hae</button>
+								</div>
+						</form>
+					</div>
+					<div class="divider"></div>
+					<h1>Demografiatiedot</h1>
+					<table>
+						<td>	
+							<form id="dataForm">
+								<table>
+									<tr>
+										<td>
+											<label for="gender">Sukupuoli:</label><br>
+											<select class="form-dropdown" id="gender" name="gender" required>
+												<option value="">Valitse sukupuoli</option>
+												<option selected="selected" value="mies">Mies</option>
+												<option value="nainen">Nainen</option>
+												<option value="muu">Muu</option>
+											</select><br>
+										</td>
+										<td>
+											<label for="age">Ikäryhmä:</label><br>
+											<select class="form-dropdown" id="age" name="age" required>
+												<option value="">Valitse ikäryhmä</option>
+												<option value="18-24">18-24</option>
+												<option value="25-34">25-34</option>
+												<option value="35-44">35-44</option>
+												<option value="45-54">45-54</option>
+												<option selected="selected" value="55-64">55-64</option>
+												<option value="65+">65+</option>
+											</select><br>
+										</td>
+										<td>
+											<label for="activity">Sosioekonominen asema:</label><br>
+											<select class="form-dropdown" id="activity" name="activity" required>
+												<option value="">Valitse ryhmä</option>
+												<option value="johtaja">Johtaja</option>
+												<option value="esihenkilo">Esihenkilö</option>
+												<option value="tyontekija">Työntekijä</option>
+												<option value="yrittaja">Yrittäjä</option>
+												<option value="opiskelija">Opiskelija</option>
+												<option value="elakelainen">Eläkeläinen</option>
+												<option selected="selected" value="tyoton">Työtön</option>
+												<option value="muu">Muu</option>
+											</select><br>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label for="education">Koulutusaste:</label><br>
+											<select class="form-dropdown" id="education" name="education" required>
+												<option value="">Valitse koulutusaste</option>
+												<option selected="selected" value="perus">Perusaste</option>
+												<option value="keski">Keskiaste</option>
+												<option value="korkea">Korkea-aste</option>
+											</select><br>
+										</td>
+										<td>
+											<label for="family">Perhetyyppi:</label><br>
+											<select class="form-dropdown" id="family" name="family" required>
+												<option value="">Valitse perhetyyppi</option>
+												<option value="lapsiperhe">Lapsiperhe</option>
+												<option value="parisuhde">Parisuhde</option>
+												<option value="yksinhuoltaja">Yksinhuoltaja</option>
+												<option selected="selected" value="naimaton">Yksinasuva</option>
+												<option value="muu">Muu</option>
+											</select><br>
+										</td>
+										<td>
+											<label for="income">Kuukausitulot:</label><br>
+											<select class="form-dropdown" id="income" name="income" required>
+												<option value="">Valitse tuloryhmä</option>
+												<option selected="selected" value="alle 1500">alle 1500€</option>
+												<option value="1500-1999">1500-1999€</option>
+												<option value="2000-3499">2000-2999€</option>
+												<option value="3500-4999">3000-4999€</option>
+												<option value="5000-6999">5000-6999€</option>
+												<option value="yli 7000">&gt;7000€</option>
+											</select><br>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td>
+											<label for="location">Hyvinvointialue:</label><br>
+											<select class="form-dropdown" id="location" name="location" value="99" required>
+												<option value="">Valitse hyvinvointialue</option>
+												<option value="01">Itä-Uudenmaan hyvinvointialue</option>
+												<option value="02">Keski-Uudenmaan hyvinvointialue</option>
+												<option value="03">Länsi-Uudenmaan hyvinvointialue</option>
+												<option value="04">Vantaan ja Keravan hyvinvointialue</option>
+												<option value="05">Varsinais-Suomen hyvinvointialue</option>
+												<option value="06">Satakunnan hyvinvointialue</option>
+												<option value="07">Kanta-Hämeen hyvinvointialue</option>
+												<option value="08">Pirkanmaan hyvinvointialue</option>
+												<option value="09">Päijät-Hämeen hyvinvointialue</option>
+												<option value="10">Kymenlaakson hyvinvointialue</option>
+												<option value="11">Etelä-Karjalan hyvinvointialue</option>
+												<option value="12">Etelä-Savon hyvinvointialue</option>
+												<option value="13">Pohjois-Savon hyvinvointialue</option>
+												<option value="14">Pohjois-Karjalan hyvinvointialue</option>
+												<option value="15">Keski-Suomen hyvinvointialue</option>
+												<option value="16">Etelä-Pohjanmaan hyvinvointialue</option>
+												<option value="17">Pohjanmaan hyvinvointialue</option>
+												<option value="18">Keski-Pohjanmaan hyvinvointialue</option>
+												<option value="19">Pohjois-Pohjanmaan hyvinvointialue</option>
+												<option value="20">Kainuun hyvinvointialue</option>
+												<option value="21">Lapin hyvinvointialue</option>
+												<option selected="selected" value="90">Helsingin kaupunki</option>
+												<option value="91">Ahvenanmaa</option>
+											</select><br><br>
+										</td>
+										<td>
+									<tr>
+										<td>
+											<textarea id="message" rows="20" cols="50" style="overflow-y: scroll;"></textarea><br>
+											<button onclick="saveCircles()">Taltioi</button>
+											<button onclick="updateCircles()">Päivitä</button>
+											<button type="submit">Lähetä</button>
+										</td>
+									</tr>
+								</table>
+							</form>
+						</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="toggle-btn"><span onclick="toggleOpen()">Lomake</span></div>
+		</div>
+		<div class="right-content" id="main">
+		</div>
+	</div>
+	</div>
+	<script>
+	function toggleOpen() {
+		var element = document.getElementById("sideForm");
+		element.classList.toggle("open");
+	}
+	var lomakeohje = 0;
+	var ohjeruutu = 0;
+	var taso = "";
+	var snartti = 0;
+
+	function kasitteet() {
+		ohjeruutu = 0;
+	}
+
+	function toggleOverlay() {
+		if(snartti < 1) {
+			overlay.style.display = "block";
+		} else {
+			if(overlay.style.display === "none") {
+				overlay.style.display = "block";
+			} else {
+				overlay.style.display = "none";
+			}
+		}
+		snartti = 1;
+	}
+	document.getElementById("dataForm").addEventListener("submit", function(event) {
+		event.preventDefault(); // Prevent the form from submitting normally
+		var name = document.getElementById("name").value;
+		var pin = document.getElementById("pin").value;
+		var gender = document.getElementById("gender").value;
+		var age = document.getElementById("age").value;
+		var education = document.getElementById("education").value;
+		var activity = document.getElementById("activity").value;
+		var family = document.getElementById("family").value;
+		var income = document.getElementById("income").value;
+		var location = document.getElementById("location").value;
+		var message = document.getElementById("message").value;
+		//var url = "https://script.google.com/macros/s/AKfycbzISlkGPDSELk6nEk6tvn7BdzIOWy2_2cor8xzRDHm7JXug7JjweAGuHrx4i3hs5CmIgQ/exec?callback=loadData";
+		var url = "https://script.google.com/macros/s/AKfycbx0sq4kfUKCH2EXF0gRe1iLKG9-n56aB0EKzEdJG37vio85puv6enGwaEXJ6Vyz9VkI/exec?callback=loadData";
+		var data = {
+			name: name,
+			pin: pin,
+			gender: gender,
+			age: age,
+			education: education,
+			activity: activity,
+			family: family,
+			income: income,
+			location: location,
+			message: message
+		};
+		// Make an AJAX call to Google Script
+		$.ajax({
+			url: url,
+			method: "GET",
+			dataType: "jsonp",
+			data: data,
+			//success: function(response) {console.log(response);},
+			//error: function(error) {console.error(error);}
+		});
+	});
+	// Log the returned data
+	function loadData(response) {
+		console.log(response);
+	}
+
+	function init() {
+		var form = document.getElementById('hae');
+		form.addEventListener('submit', fetchData);
+	}
+
+	function fetchData(event) {
+		event.preventDefault();
+		var name = document.getElementById('name').value;
+		var pin = document.getElementById('pin').value;
+		var url = 'https://docs.google.com/spreadsheets/d/1rS5f0lQMK3OqIGZlyq9WipkuX6XD5txhFboqCq7dQvM/gviz/tq?sheet=Sheet1&headers=1';
+		var query = new google.visualization.Query(url);
+		query.setQuery("select A,B,C,D,E,F,G,H,I,J where A='" + name + "' and B='" + pin + "'");
+		query.send(processSheetsData);
+	}
+
+	function processSheetsData(response) {
+		var array = [];
+		var data = response.getDataTable();
+		var columns = data.getNumberOfColumns();
+		var rows = data.getNumberOfRows();
+		for(var r = 0; r < rows; r++) {
+			var row = {};
+			for(var c = 0; c < columns; c++) {
+				var columnName = data.getColumnLabel(c);
+				row[columnName] = data.getFormattedValue(r, c);
+			}
+			array.push(row);
+		}
+		document.getElementById("name").value = array[0].name;
+		document.getElementById("pin").value = array[0].pin;
+		document.getElementById("gender").value = array[0].gender;
+		document.getElementById("age").value = array[0].age;
+		document.getElementById("activity").value = array[0].activity;
+		document.getElementById("education").value = array[0].education;
+		document.getElementById("family").value = array[0].family;
+		document.getElementById("income").value = array[0].income;
+		document.getElementById("location").value = array[0].location;
+		document.getElementById("message").value = array[0].message;
+
+		if(array[0].message == "") {
+		document.getElementById("name").value = "";
+		document.getElementById("pin").value = "";
+		document.getElementById("gender").value = "";
+		document.getElementById("age").value = "";
+		document.getElementById("activity").value = "";
+		document.getElementById("education").value = "";
+		document.getElementById("family").value = "";
+		document.getElementById("income").value = "";
+		document.getElementById("location").value = "";
+		document.getElementById("message").value = [];	
+		updateCircles();
+	} 
+	}
+
+	google.charts.load('current');
+	google.charts.setOnLoadCallback(init);
+
+		
+
+		
+	const marginTop = 0,
+		marginRight = 0,
+		marginBottom = 0,
+		marginLeft = 0,
+		maxWords = 100,
+		fontFamily = "sans-serif",
+		fontScale = 15,
+		padding = 0,
+		rotate = 0;
+	var dataset = [];
+	var taulukko = [];
+	var info = "";
+	d3.json("https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/flare-2.json").then(data => {
+		partition = data => {
+			const root = d3.hierarchy(data).sum(d => d.size).sort((a, b) => b.value - a.value);
+			return d3.partition().size([2 * Math.PI, root.height + 1])
+				(root);
+		}
+		var color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+		var format = d3.format(",d");
+		var width = 800;
+		var radius = width / 6;
+		var arc = d3.arc().startAngle(d => d.x0).endAngle(d => d.x1).padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005)).padRadius(radius * 1.5).innerRadius(d => d.y0 * radius).outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
+		const root = partition(data);
+		root.each(d => d.current = d);
+		const svg = d3.select("#wheel").append("svg").attr("width", width).attr("height", width);
+		const g = svg.append("g").attr("transform", `translate(${width / 2},${width / 2})`);
+		const path = g.append("g").selectAll("path").data(root.descendants().slice(1)).enter().append("path").attr("fill", d => {
+			while(d.depth > 1) d = d.parent;
+			return color(d.data.name);
+		}).attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0).attr("d", d => arc(d.current)).on("mouseover", mouseover).on("click", clicked);
+		/*
+		    path.append("title")
+		        .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+		*/
+		const label = g.append("g").attr("pointer-events", "none").attr("text-anchor", "middle").style("user-select", "none").selectAll("text").data(root.descendants().slice(1)).enter().append("text").attr("dy", "0.35em").attr("fill-opacity", d => +labelVisible(d.current)).attr("transform", d => labelTransform(d.current)).text(d => d.data.name);
+		const text = info;
+		const textContainer = svg.append("foreignObject").attr("x", 310).attr("y", 310).attr("width", 200).attr("height", 180);
+		const div = textContainer.append("xhtml:div").style("width", "100%").style("height", "100%").style("font-size", "0.7em").style("overflow", "auto").style("word-wrap", "break-word").style("white-space", "normal").html(text);
+		div.selectAll("p").data([text]).enter().append("p").text(function(d) {
+			return d;
+		});
+		const parent = g.append("circle").datum(root).attr("r", radius).attr("fill", "none").attr("pointer-events", "all").on("click", clicked);
+
+		function clicked(p) {
+			if(p.depth < 2) {
+				taso = p.data.name;
+			}
+			if(p.depth < 3) {
+				parent.datum(p.parent || root);
+				root.each(d => d.target = {
+					x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+					x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+					y0: Math.max(0, d.y0 - p.depth),
+					y1: Math.max(0, d.y1 - p.depth)
+				});
+				const t = g.transition().duration(750);
+				path.transition(t).tween("data", d => {
+					const i = d3.interpolate(d.current, d.target);
+					return t => d.current = i(t);
+				}).filter(function(d) {
+					return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+				}).attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0).attrTween("d", d => () => arc(d.current));
+				label.filter(function(d) {
+					return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+				}).transition(t).attr("fill-opacity", d => +labelVisible(d.target)).attrTween("transform", d => () => labelTransform(d.current));
+			} else {
+				const text = d3.select(this);
+				const textColor = text.style("fill");
+				var otherChildName = p.data.name;
+				var otherParentParentName = findParentParentName(data, otherChildName);
+				if(otherParentParentName === taso) {
+					//console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);  
+					textContainer.text(p.data.info);
+					info = p.data.info;
+					if(textColor === "rgb(26, 199, 194)" || textColor === "rgb(110, 64, 170)" || textColor === "rgb(175, 240, 91)" || textColor === "rgb(255, 94, 99)" || textColor === "black") {
+						text.style("fill", "green");
+						const feeling = text.text();
+						console.log("Klikkaus:", "green", p.data.name);
+						lisaaTieto(p.data.x, p.data.y, p.data.name, "green");
+					} else if(textColor === "green") {
+						text.style("fill", "red");
+						const feeling = text.text();
+						console.log("Klikkaus:", "red", p.data.name);
+						lisaaTieto(p.data.x, p.data.y, p.data.name, "red");
+					} else {
+						text.style("fill", "black");
+						const feeling = text.text();
+						console.log("Klikkaus:", "black", p.data.name);
+						lisaaTieto(p.data.x, p.data.y, p.data.name, "black");
+					}
+				}
+			}
+		}
+
+		function mouseover(d) {
+			var otherChildName = d.data.name;
+			var otherParentParentName = findParentParentName(data, otherChildName);
+			if(otherParentParentName === taso) {
+				//console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);  
+				textContainer.text(d.data.info);
+				textContainer.style("line-height", "0.8");
+				textContainer.style("font-size", "0.7em");
+			}
+		}
+
+		function findParentParentName(data, childName, parentParentName = null) {
+			//console.log(data);
+			if(data.children) {
+				for(var i = 0; i < data.children.length; i++) {
+					var parent = data.children[i];
+					if(parent.children) {
+						for(var j = 0; j < parent.children.length; j++) {
+							var child = parent.children[j];
+							if(child.name === childName) {
+								return parentParentName;
+							}
+						}
+					}
+					var parentParent = findParentParentName(parent, childName, parent.name);
+					if(parentParent) {
+						return parentParent;
+					}
+				}
+			}
+			return null;
+		}
+
+		function lisaaTieto(x, y, text, color) {
+			var loytyi = false;
+			for(var i = 0; i < dataset.length; i++) {
+				if(dataset[i].text === text) {
+					dataset[i].color = color;
+					loytyi = true;
+					break;
+				}
+			}
+			if(!loytyi) {
+				dataset.push({
+					x: x,
+					y: y,
+					text: text,
+					color: color
+				});
+			}
+		}
+
+		function arcVisible(d) {
+			return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
+		}
+
+		function labelVisible(d) {
+			return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+		}
+
+		function labelTransform(d) {
+			const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+			const y = (d.y0 + d.y1) / 2 * radius;
+			return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+		}
+	});
+	var lson = JSON.stringify([]);
+	document.getElementById("message").value = lson;
+	var color = d3.scaleOrdinal(d3.schemeAccent);
+	var svg = d3.select("#canvas");
+	svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/elonkeha_tausta.svg')");
+	//var dataset = [];
+	function addCircle(x, y, text, color) {
+		var newCircle = {
+			x: x,
+			y: y,
+			text: text,
+			color: color
+		};
+		dataset.push(newCircle);
+		var circleGroup = svg.append("div").datum(newCircle).attr("class", "circle-group").style("left", function(d) {
+			return d.x + "px";
+		}).style("top", function(d) {
+			return d.y + "px";
+		});
+		circleGroup.append("div").attr("class", "circle").style("background-color", function(d) {
+			return d.color;
+		}).on("click", function(d) {
+			changeColor(d, this);
+		}).on("dblclick", function(d) {
+			removeCircle(circleGroup);
+		});
+		circleGroup.append("textarea").attr("class", "text-field").style("font", "14px Gill Sans")
+			//.style("border", function(d) { return " solid " + d.color; })
+			.text(function(d) {
+				return d.text;
+			}).on("input", function(d) {
+				d.text = this.value;
+				updateCircleText(circleGroup, d.text);
+			});
+		circleGroup.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+	}
+
+	function removeCircle(circleGroup) {
+		var circleData = circleGroup.datum();
+		var index = dataset.indexOf(circleData);
+		if(index > -1) {
+			dataset.splice(index, 1);
+		}
+		circleGroup.remove();
+	}
+
+	function changeColor(circleData, circleElement) {
+		var newColor = color(circleData.color);
+		circleData.color = newColor;
+		d3.select(circleElement).style("background-color", newColor);
+	}
+
+	function updateCircleText(circleGroup, newText) {
+		circleGroup.select(".text-field").property("value", newText);
+	}
+
+	function saveCircles() {
+		ohjeruutu = 1;
+		var json = JSON.stringify(dataset);
+		document.getElementById("message").value = json;
+		updateCircles();
+	}
+
+	function updateCircles() {
+		var json = document.getElementById("message").value;
+		var updateset = JSON.parse(json);
+		dataset = [];
+		d3.selectAll(".circle-group").remove();
+		updateset.forEach(function(d) {
+			console.log(d.x, d.y, d.text, d.color);
+			addCircle(d.x, d.y, d.text, d.color);
+		});
+	}
+
+	function AnalyzeReds() {
+		ohjeruutu = 2;
+		//console.log(dataset);
+		muuttujat = [];
+		for(var i = 0; i < dataset.length; i++) {
+			muuttujat.push(dataset[i].text);
+		}
+		//console.log(muuttujat);
+		d3.selectAll("#svganchor > *").remove();
+		kartta();
+	}
+
+	function kartta() {
+		(function newsQuestConnectivityRisks() {
+			var w = 1200;
+			var h = 900;
+			var padding = [10, 10, 10, 10];
+			var colors = d3.scaleOrdinal().domain([]).range(['#08A789', '#8F53A1', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
+			var svg = d3.select("#svganchor").append("svg").attr("width", w).attr("height", h);
+			var nodesTotal = [];
+			var linksTotal = [];
+			const things = new Object();
+			things.thing = new Array();
+			d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVW3lFxFzmsO61waUKVTSQU9R1RhYjinnTLFcia2MQ2mLw0Wu0tG0HLFvpXLmJAJjG1wjq6Q6ObgWI/pub?gid=1193425325&single=true&output=csv").then(function(apiData) {
+				try {
+					localStorage.setItem("eriarvoisuusvarasto", JSON.stringify({
+						data: d3.csvFormat(apiData),
+						timestamp: currentDate.getTime()
+					}));
+				} catch (error) {};
+				var mapiData = [];
+				for(var i = 0; i < apiData.length; i++) {
+					if(muuttujat.indexOf(apiData[i].source) > -1) mapiData.push(apiData[i]);
+				}
+				apiData = mapiData;
+				for(var i = 0; i < apiData.length; i++) {
+					things.thing.push({
+						id: apiData[i].source,
+						labelText: apiData[i].source
+					});
+					things.thing.push({
+						id: apiData[i].target,
+						labelText: apiData[i].target
+					});
+				}
+				const uniqueArray = things.thing.filter((thing, index) => {
+					const _thing = JSON.stringify(thing);
+					return index === things.thing.findIndex(obj => {
+						return JSON.stringify(obj) === _thing;
+					});
+				});
+				nodesTotal = uniqueArray;
+				linksTotal = apiData;
+			});
+
+			function checkFlag() {
+				if(things.thing.length == 0) {
+					window.setTimeout(checkFlag, 3000);
+				} else {
+					finit();
+				}
+			}
+			checkFlag();
+
+			function finit() {
+				var simulation = d3.forceSimulation().force("link", d3.forceLink().id(function(d) {
+					return d.id;
+				})).force("collide", d3.forceCollide(function(d) {
+					return Math.sqrt(d.radius) * 11
+				})).force("charge", d3.forceManyBody()).force("center", d3.forceCenter(w / 3, h / 2));
+				draw(nodesTotal, linksTotal);
+
+				function draw(nodes, links) {
+					var nodesConnectionsList = nodes.map(function(d) {
+						return d.id
+					});
+					var nodesConnections = [];
+					nodesConnectionsList.forEach(function(d, j) {
+						nodesConnections[j] = {
+							risk: d,
+							connections: []
+						};
+						for(var i = 0; i < links.length; i++) {
+							if(links[i].source == d) {
+								nodesConnections[j].connections.push({
+									connection: links[i].target,
+									connectionsNumber: links[i].value
+								})
+							} else if(links[i].target == d) {
+								nodesConnections[j].connections.push({
+									connection: links[i].source,
+									connectionsNumber: links[i].value
+								})
+							}
+						}
+					});
+					nodes.forEach(function(d) {
+						var thisData = nodesConnections.filter(function(e) {
+							return e.risk == d.id
+						});
+						var sum = d3.sum(thisData[0].connections, function(f) {
+							return f.connectionsNumber
+						});
+						d["radius"] = sum;
+					});
+					var nodeById = d3.map(nodes, function(d) {
+						return d.id;
+					})
+					var bilinks = [];
+					links.forEach(function(link) {
+						var s = link.source = nodeById.get(link.source),
+							t = link.target = nodeById.get(link.target),
+							i = {},
+							val = {
+								lvalue: link.value
+							};
+						nodes.push(i);
+						links.push({
+							source: s,
+							target: i
+						}, {
+							source: i,
+							target: t
+						});
+						if(t.radius > 2) {
+							bilinks.push([s, i, t, val]);
+							//console.log(	s, i, t, val);
+						}
+					});
+					var link = svg.selectAll(".link").data(bilinks).enter().append("path").attr("stroke-width", function(d) {
+						return d[3].lvalue / 1.5 < 1 ? 1 : d[3].lvalue / 1.5;
+					}).attr("class", "link");
+					var node = svg.selectAll(".node").data(nodes.filter(function(d) {
+						if(d.radius > 2) return d.id;
+					})).enter().append("g").attr("class", "node").call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+					var circles = node.append("circle").attr("r", function(d) {
+						return Math.sqrt(d.radius) * 4
+					}).attr("fill", function(d) {
+						if(d.radius > 40) return "#ee1a16";
+						if(d.radius > 9 && d.radius < 40) return "#f3d776";
+						if(d.radius > 5 && d.radius < 9) return "#f32876";
+						if(d.radius < 5) return colors(d.group);
+					});
+					var backText = node.append("text").attr("class", "nodesLabelBack").attr("opacity", function(d) {
+						return d.radius == 0 ? 0 : 1
+					}).attr("dx", function(d) {
+						return Math.sqrt(d.radius) * 4 + 2
+					}).attr("dominant-baseline", function(d) {
+						if(!(d.labelText.split(" ")[1])) {
+							return "central"
+						}
+					}).text(function(d) {
+						return d.labelText.split(" ")[0]
+					}).append("tspan").attr("x", function(d) {
+						return Math.sqrt(d.radius) * 4 + 2
+					}).attr("dy", 10).text(function(d) {
+						return d.labelText.split(" ")[1]
+					});
+					var nodesText = node.append("text").attr("class", "nodesLabel").attr("opacity", function(d) {
+						return d.radius == 0 ? 0 : 1
+					}).attr("dx", function(d) {
+						return Math.sqrt(d.radius) * 4 + 2
+					}).attr("dominant-baseline", function(d) {
+						if(!(d.labelText.split(" ")[1])) {
+							return "central"
+						}
+					}).text(function(d) {
+						return d.labelText.split(" ")[0]
+					}).append("tspan").attr("x", function(d) {
+						return Math.sqrt(d.radius) * 4 + 2
+					}).attr("dy", 10).text(function(d) {
+						return d.labelText.split(" ")[1]
+					});
+					circles.on("mouseover", function(d) {
+						hovered(d);
+					}).on("mouseout", function(d) {
+						hoverOut(d);
+					});
+					link.on("mouseover", function(d) {
+						hoveredLink(d);
+					}).on("mouseout", function(d) {
+						hoverLinkOut(d);
+					});
+					simulation.nodes(nodes).on("tick", ticked);
+					simulation.force("link").links(links);
+					//drawLegend();
+					function ticked() {
+						link.attr("d", positionLink);
+						node.attr("transform", positionNode);
+					}
+
+					function positionLink(d) {
+						return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+					}
+
+					function positionNode(d) {
+						if(d.x < 20) {
+							d.x = 20
+						};
+						if(d.y < 20) {
+							d.y = 20
+						};
+						if(d.x > 1200) {
+							d.x = 1200
+						};
+						if(d.y > 900) {
+							d.y = 900
+						};
+						return "translate(" + d.x + "," + d.y + ")";
+					}
+
+					function hovered(thisData) {
+						//drawRisk(thisData);
+						var thisNodeConnections = nodesConnections.filter(function(d) {
+							return d.risk == thisData.id;
+						});
+						var thisNodeConnectionsList = thisNodeConnections[0].connections.map(function(d) {
+							return d.connection;
+						});
+						thisNodeConnectionsList.push(thisData.id);
+						node.attr("opacity", function(d) {
+							return thisNodeConnectionsList.indexOf(d.id) > -1 ? 1 : 0.1;
+						});
+						link.attr("stroke-opacity", function(d) {
+							return (d[0].id == thisData.id || d[2].id == thisData.id) ? 1 : 0.1;
+						});
+					}
+
+					function hoverOut(thisData) {
+						node.attr("opacity", 1);
+						link.attr("stroke-opacity", 1);
+						//drawLegend();
+					}
+
+					function hoveredLink(thisData) {
+						//drawLink(thisData);
+						link.attr("stroke-opacity", function(d) {
+							return (d[1].index == thisData[1].index) ? 1 : 0.1;
+						});
+						node.attr("opacity", function(d) {
+							return (d.id == thisData[0].id || d.id == thisData[2].id) ? 1 : 0.1;
+						});
+					}
+
+					function hoverLinkOut(thisData) {
+						node.attr("opacity", 1);
+						link.attr("stroke-opacity", 1);
+						//drawLegend();
+					}
+					//end of draw
+				}
+
+				function dragstarted(d) {
+					if(!d3.event.active) simulation.alphaTarget(0.3).restart();
+					d.fx = d.x;
+					d.fy = d.y;
+				}
+
+				function dragged(d) {
+					d.fx = (d3.event.x > 1200) ? 1200 : (d3.event.x < 30) ? 30 : d3.event.x;
+					d.fy = (d3.event.y > 900) ? 900 : (d3.event.y < 30) ? 30 : d3.event.y;
+				}
+
+				function dragended(d) {
+					if(!d3.event.active) simulation.alphaTarget(0);
+					d.fx = null;
+					d.fy = null;
+				}
+				//end of finit
+			}
+			//end of newsQuestConnectivityRisks	
+		}());
+	} //end of kartta
+	function handleDoubleClick() {
+		var mousePos = d3.mouse(this);
+		var x = mousePos[0];
+		var y = mousePos[1];
+		var isCircle = d3.select(d3.event.target).classed("circle");
+		if(!isCircle) {
+			addCircle(x, y, "uusi", "red");
+		}
+	}
+
+	function dragstarted(d) {
+		d3.select(this).raise().classed("active", true);
+	}
+
+	function dragged(d) {
+		d.x = d3.event.x;
+		d.y = d3.event.y;
+		d3.select(this).style("left", d.x + "px").style("top", d.y + "px");
+	}
+
+	function dragended(d) {
+		d3.select(this).classed("active", false);
+	}
+
+		function yhteenveto() {
+		ohjeruutu = 3;
+			
+		var veku = "Male";
+
+const data = [
+  { country: "Yksilöllisyys", values: [{ key: "Male", value: 78.5 }, { key: "Female", value: 83 }] },
+  { country: "Sosiaalisuus", values: [{ key: "Male", value: 70 }, { key: "Female", value: 77.5 }] },
+  { country: "Yhteisöllisyys", values: [{ key: "Male", value: 75.3 }, { key: "Female", value: 81.3 }] },
+  { country: "Terveys", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.6 }] },
+  { country: "Hyvinvointi", values: [{ key: "Male", value: 78.7 }, { key: "Female", value: 83.5 }] },
+  { country: "Toimintakyky", values: [{ key: "Male", value: 74.4 }, { key: "Female", value: 83 }] },
+  { country: "Tavoitteet", values: [{ key: "Male", value: 80.8 }, { key: "Female", value: 84.4 }] },
+  { country: "Mahdollisuudet", values: [{ key: "Male", value: 78.8 }, { key: "Female", value: 83.9 }] },
+  { country: "Haaveet", values: [{ key: "Male", value: 79.6 }, { key: "Female", value: 85.2 }] },
+  { country: "Tiedot", values: [{ key: "Male", value: 79.2 }, { key: "Female", value: 85.3 }] },
+  { country: "Taidot", values: [{ key: "Male", value: 74.7 }, { key: "Female", value: 80.9 }] },
+  { country: "Kyvyt", values: [{ key: "Male", value: 80 }, { key: "Female", value: 84.5 }] },
+  { country: "Tärkeys", values: [{ key: "Male", value: 80.4 }, { key: "Female", value: 84.4 }] },
+  { country: "Järjestys", values: [{ key: "Male", value: 70.6 }, { key: "Female", value: 80 }] },
+  { country: "Ajoitus", values: [{ key: "Male", value: 70.1 }, { key: "Female", value: 80.1 }] },
+  { country: "Työ", values: [{ key: "Male", value: 79.9 }, { key: "Female", value: 84.5 }] },
+  { country: "Koti", values: [{ key: "Male", value: 72.3 }, { key: "Female", value: 79 }] },
+  { country: "Vapaa-aika", values: [{ key: "Male", value: 80.3 }, { key: "Female", value: 84.5 }] },
+  { country: "Arvostukset", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.1 }] },
+  { country: "Uskomukset", values: [{ key: "Male", value: 78.9 }, { key: "Female", value: 83.6 }] },
+  { country: "Kokemukset", values: [{ key: "Male", value: 72.5 }, { key: "Female", value: 80.7 }] },
+  { country: "Kulttuuri", values: [{ key: "Male", value: 78 }, { key: "Female", value: 84.1 }] },
+  { country: "Suku", values: [{ key: "Male", value: 70.4 }, { key: "Female", value: 78.3 }] },
+  { country: "Perhe", values: [{ key: "Male", value: 77.8 }, { key: "Female", value: 83.4 }] },
+];
+
+let sortOrder = {
+  Male: true,
+  Female: true,
+};
+
+const keys = ["Male", "Female"];
+
+const dataValues = keys.reduce((acc, key) => {
+  acc[key] = data.map((d) => d.values.find((v) => v.key === key).value);
+  return acc;
+}, {});
+
+const sortData = () => {
+  data.sort((b, a) => {
+    const aValues = a.values.slice();
+    const bValues = b.values.slice();
+    if (!sortOrder.Male) {
+      aValues.reverse();
+      bValues.reverse();
+    }
+    const aMaleValue = aValues.find((d) => d.key === veku).value;
+    const bMaleValue = bValues.find((d) => d.key === veku).value;
+    return aMaleValue - bMaleValue;
+  });
+};
+
+const dataStats = Object.entries(dataValues).map(([key, values]) => ({
+  key,
+  mean: d3.mean(values),
+  deviation: d3.deviation(values),
+}));
+
+const handleLegendClick = (key) => {
+  sortOrder[key] = !sortOrder[key];
+  updateChart();
+};
+
+const handleCheckboxChange = function () {
+  const key = d3.select(this).attr("id");
+  const isActive = d3.select(this).property("checked");
+  d3.selectAll(`circle[data-key="${key}"]`).style("opacity", isActive ? 1 : 0);
+};
+
+const width = 400;
+const height = 800;
+const inset = 60;
+const strokeDasharray = 3;
+const radius = 5;
+const strokeWidth = 12;
+const fontSizes = {
+  x: 8,
+  y: 8.5,
+};
+
+const margin = {
+  top: 25,
+  bottom: 5,
+  left: 80,
+  right: 10,
+};
+
+const format = d3.format(".2r");
+
+const extent = d3.extent(
+  data.reduce((acc, curr) => [...acc, ...curr.values.reduce((a, c) => [...a, c.value], [])], [])
+);
+
+const colorScale = d3.scaleOrdinal(d3.schemeSet2).domain(["Male", "Female"]);
+
+const xScale = d3.scaleLinear().domain(extent).range([inset, width - inset]).nice();
+
+const yScale = d3.scaleBand().domain(data.map((d) => d.country)).range([0, height]);
+
+const xAxis = d3.axisTop(xScale).tickSize(0).tickPadding(10);
+const yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(10);
+
+const root = d3.select("#root");
+//root.append("h1").text("Yhteenveto");
+root.append("p").html(
+  `<strong style="border-bottom: 0.2rem solid ${colorScale(
+    "Male"
+  )}">Vahvuudet</strong> ja <strong style="border-bottom: 0.2rem solid ${colorScale(
+    "Female"
+  )}">Ihanteet</strong> <button id="jarjestys">Järjestä</button>`
+);
+
+const svg = root
+  .append("svg")
+  .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+
+const group = svg.append("g").attr("transform", `translate(${margin.left} ${margin.top})`);
+
+const groupAxis = group.append("g");
+const groupStats = group.append("g");
+const groupData = group.append("g");
+
+const textAxis = groupAxis.append("text").text("0");
+
+groupAxis
+  .append("line")
+  .attr("stroke", "currentColor")
+  .attr("stroke-dasharray", strokeDasharray)
+  .attr("stroke-linecap", "square")
+  .attr("x2", inset)
+  .attr("transform", "translate(0.5 0.5)");
+
+const groupAxisX = groupAxis.append("g").call(xAxis);
+const groupAxisY = groupAxis.append("g").call(yAxis);
+
+groupAxisY.select("path").remove();
+
+groupAxisY.attr("font-size", fontSizes.y);
+groupAxisX.attr("font-size", fontSizes.x);
+
+const groupGroupAxisX = groupAxis.select("g");
+const textAxisX = groupAxisX.select("text");
+
+textAxis
+  .attr("font-size", groupGroupAxisX.attr("font-size"))
+  .attr("font-family", groupGroupAxisX.attr("font-family"))
+  .attr("text-anchor", groupGroupAxisX.attr("text-anchor"))
+  .attr("y", textAxisX.attr("y"))
+  .attr("dy", textAxisX.attr("dy"))
+  .attr("fill", textAxisX.attr("fill"));
+
+groupAxis.select("line").attr("stroke-width", "0.5");
+groupAxis.select("path").attr("stroke-width", "0.5");
+
+const groupsData = groupData.selectAll("g").data(data).enter().append("g").attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
+
+groupsData.append("path").datum((d) => d.values).attr("fill", "none").attr("stroke", "var(--color-line, currentColor)").attr("stroke-width", strokeWidth).attr("stroke-linecap", "round").attr("d", (d) => `M ${d.map(({ value }) => xScale(value)).join(" 0 ")} 0`);
+
+groupsData.append("text").datum((d) => {
+  const [min, max] = d3.extent(d.values.map((d) => d.value));
+  const gap = max - min;
+  const mid = (min + max) / 2;
+  return { gap, mid };
+}).attr("fill", "currentColor").attr("text-anchor", "middle").attr("font-weight", "700").attr("font-size", strokeWidth - 3).attr("dominant-baseline", "middle").attr("x", (d) => xScale(d.mid)).attr("y", 1).text((d) => format(d.gap));
+
+groupsData.selectAll("circle").data((d) => d.values).enter().append("circle").attr("fill", (d) => colorScale(d.key)).attr("cx", (d) => xScale(d.value)).attr("r", radius);
+
+const groupsStats = groupStats.selectAll("g").data(dataStats).enter().append("g").style("color", (d) => colorScale(d.key));
+
+groupsStats.append("rect").attr("x", (d) => xScale(d.mean - d.deviation / 2)).attr("width", (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)).attr("height", height).attr("fill", "currentColor").attr("fill-opacity", "0.1");
+
+groupsStats.append("path").attr("fill", "none").attr("stroke", "currentColor").attr("stroke-width", "0.75").attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
+
+	
+const updateChart = () => {
+  if (veku === "Male") {
+    veku = "Female";
+  } else {
+    veku = "Male";
+  }
+  sortData();
+
+  const t = d3.transition().duration(750);
+
+  yScale.domain(data.map((d) => d.country));
+
+  groupAxisY.transition(t).call(yAxis);
+
+  const groupsData = groupData.selectAll("g").data(data, (d) => d.country);
+
+  groupsData.exit().transition(t).style("opacity", 0).remove();
+
+  const newGroups = groupsData
+    .enter()
+    .append("g")
+    .attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`)
+    .style("opacity", 0);
+
+  newGroups.append("path");
+  newGroups.append("text");
+  newGroups.selectAll("circle").data((d) => d.values).enter().append("circle");
+
+  groupsData.merge(newGroups).transition(t).attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
+
+  groupsData.selectAll("path").transition(t);
+
+  groupsData
+    .selectAll("circle")
+    .data((d) => d.values)
+    .transition(t)
+    .attr("cx", (d) => xScale(d.value))
+    .attr("r", radius);
+
+  groupsStats
+    .selectAll("rect")
+    .transition(t)
+    .attr("x", (d) => xScale(d.mean - d.deviation / 2))
+    .attr(
+      "width",
+      (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)
+    );
+
+  groupsStats
+    .selectAll("path")
+    .transition(t)
+    .attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
+
+};
+
+updateChart();
+			
+	const button = document.querySelector("#jarjestys");
+
+    // Lisää tapahtumankäsittelijä painikkeelle
+    button.addEventListener("click", updateChart);
+			
+		}
+		
+	svg.on("dblclick", handleDoubleClick);
+	</script>
+</body>
+
+</html>
