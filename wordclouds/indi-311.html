@@ -923,14 +923,22 @@
 		document.getElementById("income").value = array[0].income;
 		document.getElementById("location").value = array[0].location;
 		document.getElementById("message").value = array[0].message;
-/*
+
 		if(array[0].message == "") {
+		document.getElementById("name").value = "";
+		document.getElementById("pin").value = "";
+		document.getElementById("gender").value = "";
+		document.getElementById("age").value = "";
+		document.getElementById("activity").value = "";
+		document.getElementById("education").value = "";
+		document.getElementById("family").value = "";
+		document.getElementById("income").value = "";
+		document.getElementById("location").value = "";
+		document.getElementById("message").value = [];	
 		updateCircles();
-	} else {
-		document.getElementById("message").value = [];
+	} 
 	}
-	}
-*/
+
 	google.charts.load('current');
 	google.charts.setOnLoadCallback(init);
 
