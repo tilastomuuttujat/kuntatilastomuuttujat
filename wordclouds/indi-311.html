@@ -677,11 +677,11 @@
 								<div class="form-row">
 									<div class="form-field">
 										<label>Tunnus</label>
-										<input type="text" id="name" placeholder="Anna tunnus" />
+										<input type="text" id="name" placeholder="Anna tunnus" required/>
 									</div>
 									<div class="form-field">
 										<label>Varmenne</label>
-										<input type="text" id="pin" placeholder="Anna varmenne" />
+										<input type="text" id="pin" placeholder="Anna varmenne" required/>
 									</div>
 									<button type="submit">Hae</button>
 								</div>
@@ -719,13 +719,14 @@
 											<label for="activity">Sosioekonominen asema:</label><br>
 											<select class="form-dropdown" id="activity" name="activity" required>
 												<option value="">Valitse ryhmä</option>
-												<option value="johtaja">Johtaja</option>
+												<option value="johtaja">Johtotehtävät</option>
 												<option value="esihenkilo">Esihenkilö</option>
 												<option value="tyontekija">Työntekijä</option>
 												<option value="yrittaja">Yrittäjä</option>
 												<option value="opiskelija">Opiskelija</option>
 												<option value="elakelainen">Eläkeläinen</option>
-												<option selected="selected" value="tyoton">Työtön</option>
+												<option value="tyoton">Työtön</option>
+												<option selected="selected" value="kuntouttava">Kuntouttava työtoiminta</option>
 												<option value="muu">Muu</option>
 											</select><br>
 										</td>
@@ -760,7 +761,7 @@
 												<option value="2000-3499">2000-2999€</option>
 												<option value="3500-4999">3000-4999€</option>
 												<option value="5000-6999">5000-6999€</option>
-												<option value="yli 7000">&gt;7000€</option>
+												<option value="yli 7000">yli 7000€</option>
 											</select><br>
 										</td>
 									</tr>
@@ -857,7 +858,9 @@
 		var location = document.getElementById("location").value;
 		var message = document.getElementById("message").value;
 		//var url = "https://script.google.com/macros/s/AKfycbzISlkGPDSELk6nEk6tvn7BdzIOWy2_2cor8xzRDHm7JXug7JjweAGuHrx4i3hs5CmIgQ/exec?callback=loadData";
-		var url = "https://script.google.com/macros/s/AKfycbx0sq4kfUKCH2EXF0gRe1iLKG9-n56aB0EKzEdJG37vio85puv6enGwaEXJ6Vyz9VkI/exec?callback=loadData";
+		var url1 = "https://script.google.com/macros/s/AKfycbwYiVruZXifAE_MSQzaA3GMDeH5qZH2w7d9C3P2ed5-LeffUuGxEqIiTpfj95s4wazj4g/exec?callback=loadData";
+		var url = "https://script.google.com/macros/s/AKfycbwwZ1WZmC6fK4oD1bDtv4Gj7yKbQTPaaq2cIW_mAjFr40jRnHlqsdJaVK4_0FpDGJA/exec?callback=loadData";
+		var url0 = "https://script.google.com/macros/s/AKfycbwwZ1WZmC6fK4oD1bDtv4Gj7yKbQTPaaq2cIW_mAjFr40jRnHlqsdJaVK4_0FpDGJA/exec?callback=loadData";
 		var data = {
 			name: name,
 			pin: pin,
@@ -872,12 +875,12 @@
 		};
 		// Make an AJAX call to Google Script
 		$.ajax({
-			url: url,
+			url: url0,
 			method: "GET",
 			dataType: "jsonp",
 			data: data,
-			//success: function(response) {console.log(response);},
-			//error: function(error) {console.error(error);}
+			success: function(response) {console.log(response);},
+			error: function(error) {console.error(error);}
 		});
 	});
 	// Log the returned data
@@ -905,6 +908,8 @@
 		var data = response.getDataTable();
 		var columns = data.getNumberOfColumns();
 		var rows = data.getNumberOfRows();
+		console.log(rows);
+if(rows>0){	
 		for(var r = 0; r < rows; r++) {
 			var row = {};
 			for(var c = 0; c < columns; c++) {
@@ -923,10 +928,9 @@
 		document.getElementById("income").value = array[0].income;
 		document.getElementById("location").value = array[0].location;
 		document.getElementById("message").value = array[0].message;
-
-		if(array[0].message == "") {
-		document.getElementById("name").value = "";
-		document.getElementById("pin").value = "";
+} else {
+		//document.getElementById("name").value = "";
+		//document.getElementById("pin").value = "";
 		document.getElementById("gender").value = "";
 		document.getElementById("age").value = "";
 		document.getElementById("activity").value = "";
@@ -934,9 +938,9 @@
 		document.getElementById("family").value = "";
 		document.getElementById("income").value = "";
 		document.getElementById("location").value = "";
-		document.getElementById("message").value = [];	
-		updateCircles();
+		document.getElementById("message").value = "[]";	
 	} 
+	updateCircles();
 	}
 
 	google.charts.load('current');
