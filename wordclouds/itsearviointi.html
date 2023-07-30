@@ -108,6 +108,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				<input type="radio" id="tab-2" onclick="saveCircles()" name="tabby-tabs">
 				<label for="tab-2">Valitut käsitteet</label>
 				<div class="tabby-content">
+
 					<div id="canvas"></div>
 				</div>
 			</div>
@@ -119,7 +120,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-4" onclick="yhteenveto(1)" name="tabby-tabs">
+				<input type="radio" id="tab-4" onclick="/*yhteenveto(1)*/" name="tabby-tabs">
 				<label for="tab-4">Yhteenveto</label>
 				<div class="tabby-content">
 					<div id="root">
@@ -152,7 +153,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 					</div>
 					<div id="kuittaus1" style="color: black"></div>
 					<div class="divider"></div>
-					<h1>Demografiatiedot</h1>
+					<h1>Taustatiedot</h1>
 					<table>
 						<td>	
 							<form id="dataForm">
@@ -451,6 +452,7 @@ if(rows>0){
 			return d3.partition().size([2 * Math.PI, root.height + 1])
 				(root);
 		}
+		//var color = d3.scaleOrdinal().domain([]).range(['#08A789', '#00AEEF', '#FFEA82', '#F79435', '#00AEEF', '#000000', '#ED1D24', '#CA1111']);
 		var color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
 		var format = d3.format(",d");
 		var width = 800;
@@ -507,10 +509,9 @@ function clicked(p) {
         var otherChildName = p.data.name;
         var otherParentParentName = findParentParentName(data, otherChildName);
         if (otherParentParentName === taso) {
-            //console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);
             textContainer.text(p.data.info);
             info = p.data.info;
-            var alkuperainenVari = text.attr("data-original-color"); // Tallenna alkuperäinen väri data-attribuuttiin
+            var alkuperainenVari = text.attr("data-original-color"); 
             if (textColor === "rgb(26, 199, 194)" || textColor === "rgb(110, 64, 170)" || textColor === "rgb(175, 240, 91)" || textColor === "rgb(255, 94, 99)") {
                 text.style("fill", "green");
                 const feeling = text.text();
@@ -538,7 +539,6 @@ function clicked(p) {
 			var otherChildName = d.data.name;
 			var otherParentParentName = findParentParentName(data, otherChildName);
 			if(otherParentParentName === taso) {
-				//console.log(otherChildName, "ja", otherParentParentName, "ovat samassa parentin parent namessa:", taso);  
 				textContainer.text(d.data.info);
 				textContainer.style("line-height", "0.8");
 				textContainer.style("font-size", "0.7em");
@@ -546,7 +546,6 @@ function clicked(p) {
 		}
 
 		function findParentParentName(data, childName, parentParentName = null) {
-			//console.log(data);
 			if(data.children) {
 				for(var i = 0; i < data.children.length; i++) {
 					var parent = data.children[i];
@@ -567,9 +566,7 @@ function clicked(p) {
 			return null;
 		}
 function lisaaTieto(x, y, text, color) {
-console.log(color);
     if (color != "green" && color != "red") {
-        // Jos väri on musta, poistetaan mahdollinen olemassa oleva tietue
         for (var i = 0; i < dataset.length; i++) {
             if (dataset[i].text === text) {
                 dataset.splice(i, 1);
@@ -598,26 +595,6 @@ console.log(color);
     saveCircles();
 }
 	
-/*
-		function lisaaTieto(x, y, text, color) {
-			var loytyi = false;
-			for(var i = 0; i < dataset.length; i++) {
-				if(dataset[i].text === text) {
-					dataset[i].color = color;
-					loytyi = true;
-					break;
-				}
-			}
-			if(!loytyi) {
-				dataset.push({
-					x: x,
-					y: y,
-					text: text,
-					color: color
-				});
-			}
-		}
-*/
 		function arcVisible(d) {
 			return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
 		}
@@ -637,7 +614,6 @@ console.log(color);
 	var color = d3.scaleOrdinal(d3.schemeAccent);
 	var svg = d3.select("#canvas");
 	svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/elonkeha_tausta.svg')");
-	//var dataset = [];
 	
 	function addCircle(x, y, text, color) {
 		var newCircle = {
@@ -647,7 +623,6 @@ console.log(color);
 			color: color
 		};
 		dataset.push(newCircle);
-		//saveCircles();
 		var circleGroup = svg.append("div").datum(newCircle).attr("class", "circle-group").style("left", function(d) {
 			return d.x + "px";
 		}).style("top", function(d) {
@@ -681,12 +656,19 @@ console.log(color);
 		circleGroup.remove();
 		saveCircles();
 	}
-
+/*
 	function changeColor(circleData, circleElement) {
 		var newColor = color(circleData.color);
 		circleData.color = newColor;
 		d3.select(circleElement).style("background-color", newColor);
 	}
+*/
+    function changeColor(circleData, circleElement) {
+        var newColor = circleData.color === "green" ? "red" : "green";
+        circleData.color = newColor;
+        d3.select(circleElement).style("background-color", newColor);
+    }
+
 
 	function updateCircleText(circleGroup, newText) {
 		circleGroup.select(".text-field").property("value", newText);
@@ -712,12 +694,10 @@ console.log(color);
 
 	function AnalyzeReds() {
 		ohjeruutu = 2;
-		//console.log(dataset);
 		muuttujat = [];
 		for(var i = 0; i < dataset.length; i++) {
 			muuttujat.push(dataset[i].text);
 		}
-		//console.log(muuttujat);
 		d3.selectAll("#svganchor > *").remove();
 		kartta();
 	}

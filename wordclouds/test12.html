@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vuorotellen vaihtuva taulukko</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      width: 50px;
+      height: 50px;
+      border: 1px solid black;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      font-size: 9px;
+    }
+
+    .black {
+      background-color: black;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <table id="myTable">
+    <tr class="header-row">
+      <th id="gender" value="gender">Sukupuoli</th>
+      <th id="age" value="age">Ikäryhmä</th>
+      <th id="education" value="education">Koulutusaste</th>
+      <th id="activity" value="activity">Sosioekonomisuus</th>
+      <th id="family" value="family">Perhetyyppi</th>
+      <th id="income" value="income">Kuukausitulot</th>
+      <th id="location" value="location">Hyvinvointialue</th>
+      <th id="location2" value="location">Hyvinvointialue</th> 
+      <th id="location3" value="location">Hyvinvointialue</th>  
+    </tr>
+    <tr class="data-row">
+      <td value="mies">Mies</td>
+      <td value="18-24">18-24</td>
+      <td value="perusaste">Perusaste</td>
+      <td value="johtava">Johtava asema</td>
+      <td value="lapsiperhe">Lapsiperhe</td>
+      <td value="alle 1500">Alle 1500€</td>
+      <td value="90">Helsinki</td>
+      <td value="09">Päijät-Häme</td>
+      <td value="18">Keski-Pohjanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td value="nainen">Nainen</td>
+      <td value="25-34">25-34</td>
+      <td value="keskiaste">Keskiaste</td>
+      <td value="asiantuntija">Asiantuntija</td>
+      <td value="johtava">Parisuhde</td>
+      <td value="1500-2990">1500-2999</td>
+      <td value="01">Itä-Uusimaa</td>
+      <td value="10">Kymenlaakso</td>
+      <td value="19">Pohjois-Pohjanmaa</td> 
+    </tr>
+    <tr class="data-row">
+      <td value="muu">Muu</td>
+      <td value="35-44">35-44</td>
+      <td value="korkea-aste">Korkea-aste</td>
+      <td value="esihenkilo">Esihenkilö</td>
+      <td value="yksinhuoltaja">Yksinhuoltaja</td>
+      <td value="3000-4499">3000-4499</td>
+      <td value="02">Keski-Uusimaa</td>
+      <td value="11">Etelä-Karjala</td>
+      <td value="20">Kainuu</td> 
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="45-54">45-54</td>
+      <td value="muu">Muu</td>
+      <td value="tyontekija">Työntekijä</td>
+      <td value="yksinasuva">Yksinasuva</td>
+      <td value="4500-5999">4500-5999</td>
+      <td value="03">Länsi-Uusimaa</td>
+      <td value="12">Etelä-Savo</td>
+      <td value="21">Lappi</td> 
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="55-64">55-64</td>
+      <td></td>
+      <td value="yrittaja">Yrittäjä</td>
+      <td value="muu">Muu</td>
+      <td value=yli 6000>yli 6000€</td>
+      <td value="04">Vantaa ja Kerava</td>
+      <td value="13">Pojois-Savo</td>
+      <td value="91">Ahvenanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="yli 65">65+</td>
+      <td></td>
+      <td value="opiskelija">Opiskelija</td>
+      <td></td>
+      <td></td>
+      <td value="05">Varsinais-Suomi</td>
+      <td value="14">Pohjois-Karjala</td>
+    </tr> 
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="elakelainen">Eläkeläinen</td>
+      <td></td>
+      <td></td>
+      <td value="06">Satakunta</td>
+      <td value="15">Keski-Suomi</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="tyoton">Työtön</td>
+      <td></td>
+      <td></td>
+      <td value="07">Kanta-Häme</td>
+      <td value="16">Etelä-Pohjanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="kuntouttava">Kuntouttava työtoiminta</td>
+      <td></td>
+      <td></td>
+      <td value="08">Pirkanmaa</td>
+      <td value="17">Pohjanmaa</td>
+    </tr>   
+  </table>
+
+
+<script>
+  var table = document.getElementById('myTable');
+  var rows = table.getElementsByTagName('tr');
+  var clickCounts = new Array(table.rows[0].cells.length).fill(0); // Alustetaan taulukko, joka sisältää klikkausten määrän jokaiselle solulle
+  var selectClauses = [];
+  var columns = ["gender", "age", "education", "activity", "family", "income", "location", "location", "location"];
+
+  for (var i = 1; i < rows.length; i++) { // Aloita indeksistä 1, jotta otsikkorivi jää huomiotta
+    var cells = rows[i].getElementsByTagName('td');
+    for (var j = 0; j < cells.length; j++) {
+      cells[j].addEventListener('click', function () {
+        var rowIndex = this.parentNode.rowIndex - 1; // Vähennetään 1, koska ensimmäinen rivi on otsikkorivi
+        var cellIndex = Array.prototype.indexOf.call(this.parentNode.children, this);
+
+        if (this.textContent === "") {
+          return;
+        }
+
+        clickCounts[cellIndex]++; // Käytetään oikeaa klikkauslaskuria tälle solulle
+        if (clickCounts[cellIndex] % 2 === 0) {
+          this.style.backgroundColor = 'white';
+        } else {
+          this.style.backgroundColor = '#00efd1';
+        }
+
+        // Päivitä valitut sarakkeet
+        var columnName = columns[cellIndex];
+        var cellValue = this.getAttribute('value');
+
+        var selectClauseIndex = selectClauses.findIndex(item => item.columnName === columnName && item.cellValue === cellValue);
+        if (selectClauseIndex > -1) {
+          selectClauses.splice(selectClauseIndex, 1);
+        }
+
+        if (clickCounts[cellIndex] % 2 !== 0) {
+          selectClauses.push({ columnName, cellValue });
+        }
+
+        generateSelectQuery();
+      });
+    }
+  }
+
+  function generateSelectQuery() {
+    var query = "SELECT ";
+
+    if (selectClauses.length > 0) {
+      for (var i = 0; i < selectClauses.length; i++) {
+        var clause = selectClauses[i];
+        query += clause.columnName;
+
+        if (i < selectClauses.length - 1) {
+          query += ", ";
+        }
+      }
+
+      query += " FROM your_table_name WHERE ";
+
+      for (var i = 0; i < selectClauses.length; i++) {
+        var clause = selectClauses[i];
+        query += clause.columnName + " = '" + clause.cellValue + "'";
+
+        if (i < selectClauses.length - 1) {
+          query += " AND ";
+        }
+      }
+    } else {
+      query += "* FROM your_table_name";
+    }
+
+    console.log(query);
+  }
+</script>
+
+</body>
+</html>
+
+
