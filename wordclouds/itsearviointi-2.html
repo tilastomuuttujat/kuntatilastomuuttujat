@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fi">
+<meta charset="UTF-8">
+
+<head>
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<style>
+::selection{background-color:#e2e2e2}
+#root{max-width:48rem;padding:1rem 1.5rem;color:#232323;height:700px;overflow-y:scroll}
+
+h1{font-size:1.48rem}
+p{line-height:1.5}
+svg{margin:1rem auto;color:#444;--color-line:hsl(0, 0%, 89%)}
+
+
+html{box-sizing:border-box}
+*,:after,:before{box-sizing:inherit}
+body{font-family:Avenir;padding:0;margin:0}
+
+.left-content{height:88vh;background:#fff;position:relative;box-shadow:5px 0 10px 0 rgba(50,50,50,.2);position:absolute;z-index:9999;top:200px}
+.left-inner{position:sticky;height:86vh;overflow-y:scroll}
+.form-header{display:flex;align-items:center;width:460px;padding:30px;box-shadow:5px 0 12px rgba(0,0,0,.12)}
+.form-header .logo{width:32px;height:32px;background:#dd0f65;margin-right:20px}
+.form-header h1{font-size:24px;margin:0;font-weight:300;white-space:nowrap}
+.form-wrap{width:460px;padding:30px 20px}
+.form-section{margin-bottom:40px}
+.form-section h2{font-size:24px;margin:0 0 30px}
+.form-row{display:flex;margin-bottom:20px}
+.form-field{width:100%}
+.form-field label{display:inline-block;font-size:14px;font-weight:500;color:#000;margin-bottom:6px}
+
+.divider{border-top:1px solid #868686;border-bottom:1px solid #868686;margin-bottom:30px}
+.slide-in{background:#fff;width:0;z-index:1;transition:.5s;flex-grow:0;flex-shrink:0}
+.slide-in.open{width:960px}
+.toggle-btn{position:absolute;display:flex;align-items:center;height:28px;top:40px;padding:0 20px;right:-61px;color:#fff;background-color:#00787a;transform:rotate(90deg);border-radius:6px 6px 0 0;box-shadow:5px 0 10px 0 rgba(50,50,50,.2)}
+.toggle-btn:hover{cursor:pointer}#overlay{display:none;position:fixed;top:20;left:200;width:93%;height:80%;background-color:rgba(0,0,0,.8);z-index: 9999}
+#toggle-overlay-button{padding:10px 20px;background-color:#337ab7;color:#fff;border:none;border-radius:5px;cursor:pointer;}
+.form-dropdown{border-color:#575757;color:#202020;background-color:rgba(248,248,248,0);align:right}
+table label{font-size:8px;color:#a9a9a9}
+th{color: grey;height:10px}
+td{color: grey;height:30px}
+tr{line-height:12px}
+.barsNumbers{font-family:"PT Sans",sans-serif;font-size:12px;fill:#777}
+.textDescription{font-family:"PT Sans",sans-serif;font-size:14px;fill:#444;cursor:default}
+.textDescriptionRisk{font-family:"PT Sans",sans-serif;font-size:14px;fill:#666;cursor:default}
+.textDescription3{font-family:"PT Sans",sans-serif;font-size:14px;fill:#666;cursor:default}
+.textDescription2{font-family:"PT Sans",sans-serif;font-size:11px;fill:#999;cursor:default}
+.legendTitle{font-family:Roboto,sans-serif;font-size:18px;fill:#444;cursor:default}
+.nodesLabelBack{font-family:"PT Sans",sans-serif;fill:#fff;font-size:10px;pointer-events:none;stroke:#fff;stroke-width:3px;cursor:default}
+.nodesLabel{font-family:"PT Sans",sans-serif;fill:#444;font-size:10px;pointer-events:none;cursor:default}
+.noCategory{fill:#2f4f4f;font-size:20px;font-family:Roboto}
+.link{fill:none;stroke:#ccc}
+.barAxis line,.barAxis path{stroke:#999}
+.barAxis text{font:10px sans-serif;fill:#999}
+.sana{writing-mode:vertical-lr;transform:rotate(180deg);font-size:50px;color:gray}
+.slide{display:flex;align-items:center}
+.slider{width:530px;text-align:center;overflow:hidden;display:flex}
+.slides{display:flex;align-items:center;overflow-x:auto;-ms-scroll-snap-type:x mandatory;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.slides::-webkit-scrollbar-thumb{background:#000;border-radius:10px}
+.slides::-webkit-scrollbar-track{background:0 0}
+.slides>div{scroll-snap-align:start;flex-shrink:0;width:530px;height:290px}
+#canvas{position:relative;background-image:url(elonkeha_tausta.svg);background-size:cover;width:900px;height:900px;border:0 solid #ccc}
+.circle-group{position:absolute;cursor:move}
+.circle{position:relative;display:inline-block;width:22px;height:22px;border-radius:50%}
+.text-field{position:absolute;top:0;left:11px;width:160px;height:22px;text-align:center}
+body{height:100%;background-color:#ebebeb;color:#f5f5f5;font-size:16px;font-family:Lato}
+h1{font-size:32px}
+h2{font-size:26px}h3{font-size:18px}
+p{margin:0 0 15px;line-height:24px;color:#dcdcdc}
+a{color:#1e90ff;text-decoration:none;border-bottom:1px dotted}
+a:hover{color:tomato}
+.container{max-width:960px;height:960px;margin:0 auto;padding:20px}
+.tabs{position:relative;display:flex;min-height:960px;border-radius:8px 8px 0 0;overflow:hidden}
+.tabby-tab{flex:1}
+.tabby-tab label{display:block;box-sizing:border-box;height:40px;padding:10px;text-align:center;background:#8d8d8d;cursor:pointer;transition:background .5s ease}
+.tabby-tab label:hover{background:#7d7d7d}
+.tabby-content{position:absolute;left:0;bottom:0;right:0;top:40px;padding:20px;border-radius:0 0 8px 8px;background:#ebebeb;transition:opacity .8s ease,transform .8s ease;opacity:0;transform:scale(.1);transform-origin:top left}
+.tabby-content img{float:left;margin-right:20px;border-radius:8px}
+.tabby-tab [type=radio]{display:none}
+[type=radio]:checked~label{background:#5d5d5d;z-index:2}
+[type=radio]:checked~label~.tabby-content{z-index:1;opacity:1;transform:scale(1)}
+@media screen and (max-width:767px){.tabs{min-height:400px}}
+@media screen and (max-width:480px){.tabs{min-height:580px}
+.tabby-tab label{height:60px}
+.tabby-content{top:60px}
+.tabby-content img{float:none;margin-right:0;margin-bottom:20px}}
+h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Itsearviointi</h1>
+		<button id="toggle-overlay-button" onClick="toggleOverlay();">?</button>
+		<div id="overlay">
+		<iframe id="overlay-iframe" src="ohje1.PNG" width="100%" height="100%" frameborder="0"></iframe>
+		</div>
+		<div class="tabs">
+			<div class="tabby-tab">
+				<input type="radio" id="tab-1" onclick="kasitteet()" name="tabby-tabs" checked>
+				<label for="tab-1">Valitse käsitteet</label>
+				<div class="tabby-content">
+					
+					<div id="wheel" style="color: black;"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-2" onclick="" name="tabby-tabs">
+				<label for="tab-2">Valitut käsitteet</label>
+				<div class="tabby-content">
+
+					<div id="canvas"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-3" onclick="" name="tabby-tabs">
+				<label for="tab-3">Käsitteiden väliset sidokset</label>
+				<div class="tabby-content">
+					<div id="svganchor" style="width: 100%;height: 100%;background-color: #ebebeb;"></div>
+				</div>
+			</div>
+			<div class="tabby-tab">
+				<input type="radio" id="tab-4" onclick="/*yhteenveto(1)*/" name="tabby-tabs">
+				<label for="tab-4">Yhteenveto</label>
+				<div class="tabby-content">
+					<div id="root">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left-content slide-in open" id="sideForm">
+				<div class="left-inner">
+					<div class="form-header">
+						<div class="logo"></div>
+						<h1>Tietojen poiminta ja tallennus</h1>
+					</div>
+					<div class="form-wrap">
+						<form id="hae">
+							<div class="form-section">
+								<div class="form-row">
+									<div class="form-field">
+										<label>Tunnus</label>
+										<input type="text" id="name" placeholder="Anna tunnus"/>
+									</div>
+									<div class="form-field">
+										<label>Varmenne</label>
+										<input type="text" id="pin" placeholder="Anna varmenne"/>
+									</div>
+									<button type="submit">Hae</button>
+								</div>
+						</form>
+					</div>
+					<div id="kuittaus1" style="color: black"></div>
+
+
+  <table id="myTable">
+    <tr class="header-row">
+      <th id="D" value="gender">Sukupuoli</th>
+      <th id="E" value="age">Ikäryhmä</th>
+      <th id="education" value="education">Koulutusaste</th>
+      <th id="activity" value="activity">Sosioekonomisuus</th>
+      <th id="family" value="family">Perhetyyppi</th>
+      <th id="income" value="income">Kuukausitulot</th>
+      <th id="location" value="location">Hyvinvointialue</th>
+      <th id="location2" value="location">Hyvinvointialue</th> 
+    </tr>
+    <tr class="data-row">
+      <td value="mies">Mies</td>
+      <td value="18-24">18-24</td>
+      <td value="perus">Perusaste</td>
+      <td value="johtava">Johtava asema</td>
+      <td value="lapsiperhe">Lapsiperhe</td>
+      <td value="alle 1500">Alle 1500€</td>
+      <td value="90">Helsinki</td>
+      <td value="12">Etelä-Savo</td>
+    </tr>
+    <tr class="data-row">
+      <td value="nainen">Nainen</td>
+      <td value="25-34">25-34</td>
+      <td value="keski">Keskiaste</td>
+      <td value="asiantuntija">Asiantuntija</td>
+      <td value="parisuhde">Parisuhde</td>
+      <td value="1500-2990">1500-2999</td>
+      <td value="01">Itä-Uusimaa</td>
+      <td value="13">Pojois-Savo</td> 
+    </tr>
+    <tr class="data-row">
+      <td value="muu">Muu</td>
+      <td value="35-44">35-44</td>
+      <td value="korkea">Korkea-aste</td>
+      <td value="esihenkilo">Esihenkilö</td>
+      <td value="yksinhuoltaja">Yksinhuoltaja</td>
+      <td value="3000-4499">3000-4499</td>
+      <td value="02">Keski-Uusimaa</td>
+      <td value="14">Pohjois-Karjala</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="45-54">45-54</td>
+      <td value="muu">Muu</td>
+      <td value="tyontekija">Työntekijä</td>
+      <td value="yksinasuva">Yksinasuva</td>
+      <td value="4500-5999">4500-5999</td>
+      <td value="03">Länsi-Uusimaa</td>
+      <td value="15">Keski-Suomi</td> 
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="55-64">55-64</td>
+      <td></td>
+      <td value="yrittaja">Yrittäjä</td>
+      <td value="muu">Muu</td>
+      <td value=yli 6000>yli 6000€</td>
+      <td value="04">Vantaa ja Kerava</td>
+      <td value="16">Etelä-Pohjanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td value="yli 65">65+</td>
+      <td></td>
+      <td value="opiskelija">Opiskelija</td>
+      <td></td>
+      <td></td>
+      <td value="05">Varsinais-Suomi</td>
+      <td value="17">Pohjanmaa</td>
+    </tr> 
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="elakelainen">Eläkeläinen</td>
+      <td></td>
+      <td></td>
+      <td value="06">Satakunta</td>
+      <td value="18">Keski-Pohjanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="tyoton">Työtön</td>
+      <td></td>
+      <td></td>
+      <td value="07">Kanta-Häme</td>
+      <td value="19">Pohjois-Pohjanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="kuntouttava">Kuntouttava työtoiminta</td>
+      <td></td>
+      <td></td>
+      <td value="08">Pirkanmaa</td>
+      <td value="20">Kainuu</td> 
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="09">Päijät-Häme</td>
+      <td value="21">Lappi</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="10">Kymenlaakso</td>
+      <td value="91">Ahvenanmaa</td>
+    </tr>
+    <tr class="data-row">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td value="11">Etelä-Karjala</td>
+    </tr>
+  </table>
+
+
+
+
+
+							<td>
+											<textarea id="message" rows="20" cols="50" style="overflow-y: scroll;"></textarea><br>
+											
+										</td>
+									</tr>
+								</table>
+							
+						</td>
+						</tr>
+					</table>
+					<br>
+					<div id="kuittaus" style="color: black"></div>
+
+				</div>
+			</div>
+			<div class="toggle-btn"><span onclick="toggleOpen()">Lomake</span></div>
+		</div>
+		<div class="right-content" id="main">
+		</div>
+	</div>
+	</div>
+	<script>
+	function toggleOpen() {
+		var element = document.getElementById("sideForm");
+		element.classList.toggle("open");
+		//saveCircles();
+	}
+	var lomakeohje = 0;
+	var ohjeruutu = 0;
+	var taso = "";
+	var snartti = 0;
+	var kuitti = 1;
+	var haku = "";
+
+	function kasitteet() {
+		ohjeruutu = 0;
+	}
+
+	function toggleOverlay() {
+		if(snartti < 1) {
+			overlay.style.display = "block";
+		} else {
+			if(overlay.style.display === "none") {
+				overlay.style.display = "block";
+			} else {
+				overlay.style.display = "none";
+			}
+		}
+		snartti = 1;
+	}
+	
+			// add
+		var url1 = "https://script.google.com/macros/s/AKfycbw59U7SsmAqpfFO0yEuE3ndij2XYJhzPG_Wm0gZYUR2QxwPBJFsNPYHnmvDoiFZUbNWJA/exec?callback=loadData";
+
+		
+		// update
+		var url2 = "https://script.google.com/macros/s/AKfycbw59U7SsmAqpfFO0yEuE3ndij2XYJhzPG_Wm0gZYUR2QxwPBJFsNPYHnmvDoiFZUbNWJA/exec?callback=loadData";
+		
+		
+		var url = url1;
+	
+	
+	
+	
+
+
+	function init() {
+		var form = document.getElementById('hae');
+		form.addEventListener('submit', fetchData);
+	}
+
+	function fetchData(event) {
+		event.preventDefault();
+		//var name = document.getElementById('name').value;
+		//var pin = document.getElementById('pin').value;
+		var url = 'https://docs.google.com/spreadsheets/d/1rS5f0lQMK3OqIGZlyq9WipkuX6XD5txhFboqCq7dQvM/gviz/tq?sheet=Sheet1&headers=1';
+		var query = new google.visualization.Query(url);
+
+		console.log(haku);
+		query.setQuery(haku);
+		query.send(processSheetsData);
+	}
+
+	function processSheetsData(response) {
+		var array = [];
+		var data = response.getDataTable();
+		var columns = data.getNumberOfColumns();
+		var rows = data.getNumberOfRows();
+		console.log(rows);
+		
+
+		for(var r = 0; r < rows; r++) {
+			var row = {};
+			for(var c = 0; c < columns; c++) {
+				var columnName = data.getColumnLabel(c);
+				row[columnName] = data.getFormattedValue(r, c);
+			}
+			array.push(row);
+		}
+/*
+if(rows>0){
+console.log(101);
+		//document.getElementById("name").value = array[0].name;	
+		//document.getElementById("pin").value = array[0].pin;
+		document.getElementById("gender").value = array[0].gender;
+		document.getElementById("age").value = array[0].age;
+console.log(102);	
+		document.getElementById("activity").value = array[0].activity;
+		document.getElementById("education").value = array[0].education;
+		document.getElementById("family").value = array[0].family;
+		document.getElementById("income").value = array[0].income;
+		document.getElementById("location").value = array[0].location;
+	
+		document.getElementById("message").value = array[0].message;
+		//document.getElementById('kuittaus1').innerHTML = 'Tiedot haettu ';
+		//document.getElementById('kuittaus').innerHTML = '';
+	} 
+*/	
+	//updateCircles();
+	console.log(array);
+	}
+
+	google.charts.load('current');
+	google.charts.setOnLoadCallback(init);
+		
+
+
+var table = document.getElementById('myTable');
+  var rows = table.getElementsByTagName('tr');
+  var clickCounts = new Array(table.rows[0].cells.length).fill(0); 
+  var selectClauses = [];
+  var columns = ["D", "E", "F", "G", "H", "I", "J", "J"];
+
+  for (var i = 1; i < rows.length; i++) { 
+    var cells = rows[i].getElementsByTagName('td');
+    for (var j = 0; j < cells.length; j++) {
+      cells[j].addEventListener('click', function () {
+        var rowIndex = this.parentNode.rowIndex - 1; 
+        var cellIndex = Array.prototype.indexOf.call(this.parentNode.children, this);
+
+        if (this.textContent === "") {
+          return;
+        }
+
+        clickCounts[cellIndex]++; 
+        if (clickCounts[cellIndex] % 2 === 0) {
+          this.style.backgroundColor = 'white';
+        } else {
+          this.style.backgroundColor = '#1cdfd1';
+        }
+
+        // Päivitä valitut sarakkeet
+        var columnName = columns[cellIndex];
+        var cellValue = this.getAttribute('value');
+
+        var selectClauseIndex = selectClauses.findIndex(item => item.columnName === columnName && item.cellValue === cellValue);
+        if (selectClauseIndex > -1) {
+          selectClauses.splice(selectClauseIndex, 1);
+        }
+
+        if (clickCounts[cellIndex] % 2 !== 0) {
+          selectClauses.push({ columnName, cellValue });
+        }
+
+        generateSelectQuery();
+      });
+    }
+  }
+
+  function generateSelectQuery() {
+    var selectQuery = "SELECT A,B,C,D,E,F,G,H,I,J,K";
+    var whereClause = "";
+
+    if (selectClauses.length > 0) {
+      whereClause += " WHERE ";
+
+      for (var i = 0; i < selectClauses.length; i++) {
+        var clause = selectClauses[i];
+        whereClause += clause.columnName + " = '" + clause.cellValue + "'";
+
+        if (i < selectClauses.length - 1) {
+          whereClause += " AND ";
+        }
+      }
+    }
+
+    haku = selectQuery + whereClause + " ORDER BY A DESC LIMIT 1"; 
+    console.log(haku);
+  }
+</script>
+</body>
+</html>
