@@ -107,7 +107,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-2" onclick="" name="tabby-tabs">
+				<input type="radio" id="tab-2" onclick="valitut()" name="tabby-tabs">
 				<label for="tab-2">Valitut käsitteet</label>
 				<div class="tabby-content">
 
@@ -115,14 +115,14 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-3" onclick="" name="tabby-tabs">
+				<input type="radio" id="tab-3" onclick="sidokset()" name="tabby-tabs">
 				<label for="tab-3">Käsitteiden väliset sidokset</label>
 				<div class="tabby-content">
 					<div id="svganchor" style="width: 100%;height: 100%;background-color: #ebebeb;"></div>
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-4" onclick="/*yhteenveto(1)*/" name="tabby-tabs">
+				<input type="radio" id="tab-4" onclick="yhteenveto()" name="tabby-tabs">
 				<label for="tab-4">Yhteenveto</label>
 				<div class="tabby-content">
 					<div id="root">
@@ -316,7 +316,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	<script>
 	function toggleOpen() {
 		var element = document.getElementById("sideForm");
-		element.classList.toggle("open");
+		element.classList.toggle("open");		
 		//saveCircles();
 	}
 	var lomakeohje = 0;
@@ -327,7 +327,22 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	var haku = "";
 
 	function kasitteet() {
+        document.getElementById('overlay-iframe').src = "info0.PNG";
 		ohjeruutu = 0;
+	}
+
+	//document.getElementById('overlay-iframe').src = "info1.PNG";
+
+	function valitut() {
+	document.getElementById('overlay-iframe').src = "info2.PNG";
+	}
+		
+	function sidokset() {
+        document.getElementById('overlay-iframe').src = "info3.PNG";
+	}
+
+	function yhteenveto() {
+	document.getElementById('overlay-iframe').src = "info4.PNG";
 	}
 
 	function toggleOverlay() {
