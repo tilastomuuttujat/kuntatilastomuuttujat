@@ -19,7 +19,7 @@ html{box-sizing:border-box}
 *,:after,:before{box-sizing:inherit}
 body{font-family:Avenir;padding:0;margin:0}
 
-.left-content{height:88vh;background:#fff;position:relative;box-shadow:5px 0 10px 0 rgba(50,50,50,.2);position:absolute;z-index:9999;top:200px}
+.left-content{height:88vh;background:#fff;position:relative;box-shadow:5px 0 10px 0 rgba(50,50,50,.2);position:absolute;z-index:9000;top:200px}
 .left-inner{position:sticky;height:86vh;overflow-y:scroll}
 .form-header{display:flex;align-items:center;width:460px;padding:30px;box-shadow:5px 0 12px rgba(0,0,0,.12)}
 .form-header .logo{width:32px;height:32px;background:#dd0f65;margin-right:20px}
@@ -35,8 +35,8 @@ body{font-family:Avenir;padding:0;margin:0}
 .slide-in{background:#fff;width:0;z-index:1;transition:.5s;flex-grow:0;flex-shrink:0}
 .slide-in.open{width:460px}
 .toggle-btn{position:absolute;display:flex;align-items:center;height:28px;top:40px;padding:0 20px;right:-61px;color:#fff;background-color:#00787a;transform:rotate(90deg);border-radius:6px 6px 0 0;box-shadow:5px 0 10px 0 rgba(50,50,50,.2)}
-.toggle-btn:hover{cursor:pointer}#overlay{display:none;position:fixed;top:20;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.8)}
-#toggle-overlay-button{padding:10px 20px;background-color:#337ab7;color:#fff;border:none;border-radius:5px;cursor:pointer}
+.toggle-btn:hover{cursor:pointer}#overlay{position:absolute;display:none;top:450;left:450;width:80%;height:80%;z-index:9998}
+#toggle-overlay-button{padding:10px 20px;background-color:#337ab7;color:#fff;border:none;border-radius:5px;cursor:pointer;z-index:9999}
 .form-dropdown{border-color:#575757;color:#202020;background-color:rgba(248,248,248,0);align:right}
 table label{font-size:8px;color:#a9a9a9}
 td{height:10px}
@@ -64,6 +64,7 @@ tr{line-height:12px}
 .circle-group{position:absolute;cursor:move}
 .circle{position:relative;display:inline-block;width:22px;height:22px;border-radius:50%}
 .text-field{position:absolute;top:0;left:11px;width:160px;height:22px;text-align:center}
+.info-field{position:absolute;top:0;left:11px;width:240px;height:240px;text-align:center}
 body{height:100%;background-color:#ebebeb;color:#f5f5f5;font-size:16px;font-family:Lato}
 h1{font-size:32px}
 h2{font-size:26px}h3{font-size:18px}
@@ -93,14 +94,13 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	<div class="container">
 		<h1>Itsearviointi</h1>
 		<button id="toggle-overlay-button" onClick="toggleOverlay();">?</button>
-		<div class="tabs">
+		<div id="overlay"></div>
+		<div class="tabs">	
 			<div class="tabby-tab">
 				<input type="radio" id="tab-1" onclick="kasitteet()" name="tabby-tabs" checked>
 				<label for="tab-1">Valitse käsitteet</label>
 				<div class="tabby-content">
-					<div id="overlay">
-						<iframe id="overlay-iframe" src="ohje1.PNG" width="100%" height="100%" frameborder="0"></iframe>
-					</div>
+					
 					<div id="wheel" style="color: black;"></div>
 				</div>
 			</div>
@@ -286,22 +286,65 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	</div>
 	</div>
 	<script>
+	
+	var tekstit = [{"x":450,"y":40,"area":"1","color":"yellow","text":"LUO OMA TUNNUS JA VARMENNE\n\nTunnuksen ja varmenteen avulla voit tallentaa tietosi myöhempää tarkastelua varten. Testaa ensin etteivät ne ole jo käytössä. Tunnuksen avulla voit esitellä tietojasi myös tukihenkilöillesi.\n\nEsimerkki\nTunnus Eetu Varmenne Reetu \n\nÄLÄ UNOHDA TUNNUKSIASI SILLÄ VAIN SINÄ TIEDÄT NE."},{"x":450,"y":280,"area":"1","color":"yellow","text":"TÄYTÄ TAUSTATIEDOT\n\nTaustatietojen avulla saat tarkimmat tulokset. Taustatiedot ovat tärkeitä myös tutkijoille, sillä niitä voidaan hyödyntää valmennusohjelmien suunnittelussa. Taustatiedoissa kuukausituloilla tarkoitetaan vain sinun tulojasi, riippumatta perheesi koosta.\n\n\nLÄHETÄ LOMAKE KUN OLET KÄYNYT MYÖS MUITA OSIOITA LÄPI."},{"x":450,"y":520,"area":"1","color":"yellow","text":"VALITSE KÄSITTEET\n\nKlikkaa lomakkeen yläkulmassa olevaa lomakepainiketta siirtääksesi ensin lomake hetkiseksi sivuun.\n\nSen jälkeen voit ryhtyä valitsemaan itsellesi merkityksellisiä käsitteitä ryhmistä menneisyys, nykyisyys, tulevaisuus ja ajanhallinta. Valitse kunkin ryhmän ulkokehällä olevista käsitteistä vahvuutesi, klikkaamalla käsitettä kerran, ja puutteesi klikkaamalla käsitettä kaksi kertaa."},
+{"x":617,"y":587,"area":"2","color":"green","text":"KÄSITTEIDEN SELITTEET\n\nNäet keskialueella käsitteiden selitteet vierittämällä hiirtä ulkokehällä käsitteiden päällä, tai valitsemalla käsitteen. Jos et haluakaan valita käsitettä, niin se poistuu valinnasta joka kolmannella klikkauksella. Pääset takaisin päävalintaan klikkaamalla valkoista keskustaa. Käy kaikki neljä aluetta läpi. Jos haluat keskeyttää ja jatkaa toisella kertaa, klikkaa painiketta Lomake ja valitse Lähetä, jolloin voit tallentaa valintasi."},{"x":378,"y":74,"area":"3","color":"green","text":"VALITUT KÄSITTEET\n\nKun olet valinnut mielestäsi kaikki merkitykselliset käsitteet, voit tarkastella niitä aikapyörässä, klikkaamalla ylävalikosta kohtaa Valitut käsitteet. \n\nVoit lisätä myös omia käsitteitäsi tuplaklikkaamalla tyhjää aluetta tai vaihtaa käsitteen väriä klikkaamalla väripainiketta. Voit myös siirrellä käsitteitä, tai poistaa käsitteitä tuplaklikkaamalla väripainiketta."},{"x":428,"y":298,"area":"4","color":"green","text":"HAVANNOI SIJOITTELUA\nJos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},{"x":434,"y":223,"area":"5","color":"green","text":"KÄSITTEIDEN VÄLISET SIDOKSET\nVoit tarkastella myös tekoälyavusteista karttaa käsitteiden välisistä sidoksista vuorovaikutteisesti. Klikkaa ylävalikon kohtaa Käsitteiden väliset sidokset. Valitsemasi käsitteet näkyvät suurina palloina, ja taustakäsitteet keltaisina, pinkkeinä ja vihreinä pallukoina. Keltaiset pallukat toimivat taustalla ohjaavina tekijöinä muita enemmän. Saat tarkemman käsityksen sidoksista klikkaamalla palloja. Taustatekijöiden tarkoituksena on tarjota lisävalaistusta valitsemillesi käsitteille."},{"x":125,"y":207,"area":"6","color":"green","text":"YHTEENVETO\n\nVoit vertailla omaa asemaasi myös suhteessa muihin, klikkaamalla kohtaa Yhteenveto. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Säteiden pituudet kuvaavat vahvuusalueita. Voit rajata mihin kulloinkin vertailet tietojasi. Rajauksessa on hyödynnettty taustatietojen luokitusta. Vertailun avulla voit ehkä löytää kehittämisen arvoisia alueita, jotka myöhemmin parantavat elämänlaatuasi."},{"x":487,"y":449,"area":"7","color":"green","text":"KEHITÄ ITSETUNTEMUSTASI\n\nToivottavasti tämä itsearviointi avasi jo hieman silmiäsi sinulle merkityksellisistä asioista, ja millä tavoin ne vaikuttavat elämänkulkuusi.\nPidä tunnuksesi muistissa, jolloin voit palata tarkastelemaan tietojasi niin usein kuin haluat. Voit esitellä tietojasi myös tukihenkilöillesi.\nHuomaathan, että itsearvoinninssa ei kerätä lainkaan henkilötietoja.\n\nKIITOS OSALLISTUMISESTASI"}];
+	
+	
+	function infoCircle(x, y, text, color) {
+		var newCircle = {
+			x: x,
+			y: y,
+			text: text,
+			color: color
+		};
+		var svg1 = d3.select("#overlay");
+		//dataset.push(newCircle);
+		var circleGroup = svg1.append("div").datum(newCircle).attr("class", "circle-group").style("left", function(d) {
+			return d.x + "px";
+		}).style("top", function(d) {
+			return d.y + "px";
+		});
+		circleGroup.append("div").attr("class", "circle").style("background-color", function(d) {
+			return d.color;
+		}).on("click", function(d) {
+			changeColor(d, this);
+		}).on("dblclick", function(d) {
+			removeCircle(circleGroup);
+		});
+		circleGroup.append("textarea").attr("class", "info-field").style("font", "14px Gill Sans")
+			//.style("border", function(d) { return " solid " + d.color; })
+			.text(function(d) {
+				return d.text;
+			}).on("input", function(d) {
+				d.text = this.value;
+				updateCircleText(circleGroup, d.text);
+				
+			});
+		circleGroup.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+	}
+
+	
+	
 	function toggleOpen() {
 		var element = document.getElementById("sideForm");
 		element.classList.toggle("open");
 		saveCircles();
 	}
 	var lomakeohje = 0;
-	var ohjeruutu = 0;
+	var ohjeruutu = "1";
 	var taso = "";
 	var snartti = 0;
 	var kuitti = 1;
+	
 
 	function kasitteet() {
-		ohjeruutu = 0;
+		ohjeruutu = "1";
 	}
 
 	function toggleOverlay() {
+	
+	
 		if(snartti < 1) {
 			overlay.style.display = "block";
 		} else {
@@ -312,6 +355,16 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 			}
 		}
 		snartti = 1;
+		
+    d3.selectAll("#overlay > *").remove();
+	tekstit.forEach(function(d) {
+	console.log(ohjeruutu);
+	if(d.area == ohjeruutu)
+			infoCircle(d.x, d.y, d.text, d.color);
+		});	
+		
+		
+		
 	}
 	
 			// add
@@ -504,6 +557,7 @@ function clicked(p) {
         }).transition(t).attr("fill-opacity", d => +labelVisible(d.target)).attrTween("transform", d => () => labelTransform(d.current));
 
     } else {
+    ohjeruutu="2";
         const text = d3.select(this);
         const textColor = text.style("fill");
         var otherChildName = p.data.name;
@@ -675,7 +729,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function saveCircles() {
-		ohjeruutu = 1;
+		ohjeruutu = "2";
 		var json = JSON.stringify(dataset);
 		document.getElementById("message").value = json;
 		updateCircles();
@@ -693,7 +747,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function AnalyzeReds() {
-		ohjeruutu = 2;
+		ohjeruutu = "3";
 		muuttujat = [];
 		for(var i = 0; i < dataset.length; i++) {
 			muuttujat.push(dataset[i].text);
@@ -703,6 +757,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function kartta() {
+	ohjeruutu="4";
 		(function newsQuestConnectivityRisks() {
 			var w = 1200;
 			var h = 900;
@@ -988,7 +1043,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 		function yhteenveto() {
-		ohjeruutu = 3;
+		ohjeruutu = "5";
 			
 		var veku = "Male";
 
