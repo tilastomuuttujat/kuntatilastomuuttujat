@@ -327,6 +327,7 @@ document.getElementById("message").value = alkuinfo;
 		}).on("dblclick", function(d) {
 			removeCircle(circleGroup);
 		});
+/*
 		circleGroup.append("textarea").attr("class", "info-field").style("font", "14px Gill Sans")
 			//.style("border", function(d) { return " solid " + d.color; })
 			.html(function(d) {
@@ -336,6 +337,17 @@ document.getElementById("message").value = alkuinfo;
 				updateCircleText(circleGroup, d.text);
 				
 			});
+*/
+		circleGroup.append("textarea")
+  .attr("class", "info-field")
+  .style("font", "14px Gill Sans")
+  .html(function(d) {
+    return d.htmlText; // Muotoillaan HTML-teksti täällä
+  })
+  .on("input", function(d) {
+    d.htmlText = this.value; // Tallennetaan HTML-muotoiltu teksti tähän
+    updateCircleText(circleGroup, d.htmlText); 
+  });
 		circleGroup.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
 	}
 
