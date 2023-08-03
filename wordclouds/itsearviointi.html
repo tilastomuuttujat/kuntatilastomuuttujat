@@ -298,7 +298,12 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 		       {"x":450,"y":40,"area":"5","color":"green","text":"YHTEENVETO\n\nVoit vertailla omaa asemaasi myös suhteessa muihin, klikkaamalla kohtaa Yhteenveto. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Säteiden pituudet kuvaavat vahvuusalueita. Voit rajata mihin kulloinkin vertailet tietojasi. Rajauksessa on hyödynnettty taustatietojen luokitusta. Vertailun avulla voit ehkä löytää kehittämisen arvoisia alueita, jotka myöhemmin parantavat elämänlaatuasi."},
 		       {"x":450,"y":280,"area":"5","color":"green","text":"KEHITÄ ITSETUNTEMUSTASI\n\nToivottavasti tämä itsearviointi avasi jo hieman silmiäsi sinulle merkityksellisistä asioista, ja millä tavoin ne vaikuttavat elämänkulkuusi.\nPidä tunnuksesi muistissa, jolloin voit palata tarkastelemaan tietojasi niin usein kuin haluat. Voit esitellä tietojasi myös tukihenkilöillesi.\nHuomaathan, että itsearvoinninssa ei kerätä lainkaan henkilötietoja.\n\nKIITOS OSALLISTUMISESTASI"}
 		      ];
-	
+
+var alkuinfo = "Tervetuloa itsearvioinnin pariin. Itsearvioinnin tavoitteena on lisätä itsetuntemustasi ja pyrkiä sitä kautta lisäämään elämänlaatuasi.\n\nSivun vasemmassa yläkulmassa on ?-merkki, josta avautuu toimintokohtaisia lisäohjeita. Painike avaa ja sulkee ohjeet vuorotellen.\n\nKuinka käytät itsearvointia\n1. Määritä tunnus ja varmenne ensin\n2. Testaa onko se jo käytössä Hae -painikkeella\n3. Valitse itseäsi koskevat taustatiedot\n4. Siirrä lomake sivuun Lomake -painikkeesta\n5. Tee valinnat alueilla Menneisyys, Nykyisyys, Tulevaisuus ja Ajanhallinta\n6. Näet valintijasi kohdassa Valitut käsitteet\n7. Käsitteiden väliset sidokset näyttää tekoälyavusteisen kuvion, jota voit klikkailla\n8. Yhteenveto sivulla voit tehdä vertailuja";
+
+document.getElementById("message").value = alkuinfo;
+
+		
 	
 	function infoCircle(x, y, text, color) {
 		var newCircle = {
