@@ -7,6 +7,96 @@
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 	<style>
+ul li {
+list-style-type: none;
+font-size: 8pt;
+color: #909090;
+}
+
+#suns {
+    margin: 3rem 0;
+}
+
+#suns1 {
+    margin: 3rem 0;
+}
+
+svg.countrySun {
+    margin-right: 20px;
+}
+
+.countrySun text.countryName {
+    font-size: 14px;
+    fill: #909090;
+}
+
+.sun.center {
+    stroke-width: 2px;
+    fill: #dfdfdf;
+}
+
+.ray {
+    stroke-width: 2px;
+}
+
+.sun.gridline {
+    stroke: #dfdfdf;
+    fill: none;
+    stroke-width: 2px;
+}
+
+.sunLegend {
+    margin-top: 40px;
+}
+
+.sunLegend .legend_explanation {
+    display: inline-block;
+    height: 300px;
+    columns: 2;
+    margin-left: 30px;
+}
+
+.sunLegend .legend_explanation ol {
+    margin: 0;
+}
+
+.sunLegend li {
+    font-size: 14px;
+}
+
+.sunLegend p {
+    font-size: 14px;
+    margin: 0;
+    padding-left: 260px;
+}
+
+.sunLegend p:first-of-type {
+    margin-top: 20px;
+}
+
+#sun_legend {
+    margin-top: 0px;
+    margin-left: 10px;
+}
+
+#sun_legend .legendText {
+    fill: #909090;
+    font-size: 14px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+#sun_legend1 {
+    margin-top: 0px;
+    margin-left: 10px;
+}
+
+#sun_legend1 .legendText {
+    fill: #909090;
+    font-size: 14px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}	
 ::selection{background-color:#e2e2e2}
 #root{max-width:48rem;padding:1rem 1.5rem;color:#232323;height:700px;overflow-y:scroll}
 
@@ -19,7 +109,7 @@ html{box-sizing:border-box}
 *,:after,:before{box-sizing:inherit}
 body{font-family:Avenir;padding:0;margin:0}
 
-.left-content{height:88vh;background:#fff;position:relative;box-shadow:5px 0 10px 0 rgba(50,50,50,.2);position:absolute;z-index:9000;top:200px}
+.left-content{height:88vh;background:#fff;position:relative;box-shadow:5px 0 10px 0 rgba(50,50,50,.2);position:absolute;top:200px}
 .left-inner{position:sticky;height:86vh;overflow-y:scroll}
 .form-header{display:flex;align-items:center;width:460px;padding:30px;box-shadow:5px 0 12px rgba(0,0,0,.12)}
 .form-header .logo{width:32px;height:32px;background:#dd0f65;margin-right:20px}
@@ -34,8 +124,9 @@ body{font-family:Avenir;padding:0;margin:0}
 .divider{border-top:1px solid #868686;border-bottom:1px solid #868686;margin-bottom:30px}
 .slide-in{background:#fff;width:0;z-index:1;transition:.5s;flex-grow:0;flex-shrink:0}
 .slide-in.open{width:460px}
-.toggle-btn{position:absolute;display:flex;align-items:center;height:28px;top:40px;padding:0 20px;right:-61px;color:#fff;background-color:#00787a;transform:rotate(90deg);border-radius:6px 6px 0 0;box-shadow:5px 0 10px 0 rgba(50,50,50,.2)}
-.toggle-btn:hover{cursor:pointer}#overlay{position:absolute;display:none;top:450;left:450;width:80%;height:80%;z-index:9998}
+.toggle-btn{position:absolute;display:flex;align-items:center;z-index:9999;height:28px;top:40px;padding:0 20px;right:-61px;color:#fff;background-color:#00787a;transform:rotate(90deg);border-radius:6px 6px 0 0;box-shadow:5px 0 10px 0 rgba(50,50,50,.2)}
+.toggle-btn:hover{cursor:pointer}
+#overlay{position:absolute;background-color:#f07ab7;display:none;z-index:5000}
 #toggle-overlay-button{padding:10px 20px;background-color:#337ab7;color:#fff;border:none;border-radius:5px;cursor:pointer;z-index:9999}
 .form-dropdown{border-color:#575757;color:#202020;background-color:rgba(248,248,248,0);align:right}
 table label{font-size:8px;color:#a9a9a9}
@@ -64,7 +155,7 @@ tr{line-height:12px}
 .circle-group{position:absolute;cursor:move}
 .circle{position:relative;display:inline-block;width:22px;height:22px;border-radius:50%}
 .text-field{position:absolute;top:0;left:11px;width:160px;height:22px;text-align:center}
-.info-field{position:absolute;top:0;left:11px;width:400px;height:450px;text-align:center}
+.info-field{position:absolute;top:0;left:20px;width:400px;height:450px;text-align:center}
 body{height:100%;background-color:#ebebeb;color:#f5f5f5;font-size:16px;font-family:Lato}
 h1{font-size:32px}
 h2{font-size:26px}h3{font-size:18px}
@@ -120,10 +211,42 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-4" onclick="yhteenveto()" name="tabby-tabs">
+				<input type="radio" id="tab-4" onclick="yhteenveto(yhteen)" name="tabby-tabs">
 				<label for="tab-4">Yhteenveto</label>
 				<div class="tabby-content">
-					<div id="root">
+				<button id="toggle-overlay-button1" style="color:white" onClick="toggleOverlay1();">Vahvuudet</button>
+					<table>
+<tr>
+<td>
+  <svg id="sun_legend"></svg>
+</td>
+<td>
+  <div id="legend_list"></div>
+</td> 
+<td width="150">
+</td>
+<td>
+  <svg id="sun_legend1"></svg>
+</td>
+<td>
+  <div id="legend_list1"></div>
+</td> 
+</tr>
+</table>
+<table>
+<tr>
+<td>
+</td>
+<td>
+  <div id="suns"></div>
+</td>
+<td width="150">
+</td>
+<td>
+  <div id="suns1"></div>
+</td>
+</tr>
+</table>
 					</div>
 				</div>
 			</div>
@@ -279,7 +402,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 
 				</div>
 			</div>
-			<div class="toggle-btn"><span onclick="toggleOpen()">Lomake</span></div>
+			<div id="toggle-btn" class="toggle-btn"><span onclick="toggleOpen()">Lomake</span></div>
 		</div>
 		<div class="right-content" id="main">
 		</div>
@@ -288,15 +411,26 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	<script>
 	
 	var tekstit = [
-		{"x":500,"y":40,"area":"1","color":"yellow","text":"ITSEARVOINTI AUTTAA PARANTAMAAN ITSETUNTEMUSTA\n\nKäsitepohjaisen itsearvioinnin tavoitteena on näillä sivuilla piirtää käyttöösi visuaalisia karttoja, joiden avulla voit helpommin hahmottaa millaiset asiat viime kädessä vaikuttavat elämänlaatuusi ja elämänkulkuusi.Tutkimusten mukaan itsetuntemus voi parantaa elämänlaatua merkittävästi.\n\nTarkoituksena on, että valitset itsellesi merkityksellisiä käsitteitä menneisyydestä, nykyisyydestä, tulevaisuudesta ja ajanhallinnasta. Käsitteet toimivat avaimina kun yrität sanoittaa omaa elämänkulkuasi, maailmankatsomustasi, valintojasi, tarpeitasi ja halujasi.\n\nMerkitse vahvuudet <strong>vihreällä</strong> (klikkaamalla itsellesi merkityksellistä käsitettä kerran) ja puutteet punaisella (klikkaamalla kaksi kertaa). Käsitteen merkitys voi vaihdella eri tilanteissa. Ajatuksena kuitenkin on, että koet sen jollakin tapaa tärkeäksi vahvuudeksi tai tärkeäksi puutteeksi, joten älä valitse käsitteitä joihin et liitä mainittua arvostusta.Esimerkiksi isättömyyden voi kokea puutteeksi, vaikka olisikin jo täysi-ikäinen.\n\nVoit tehdä näitä valintojasi hyvin henkilökohtaisella tasolla, sillä arvioinneista ei kerätä henkilötietoja lainkaa, vaan niiden sijaan kerätään taustatietoja tutkijoiden käyttöön. Pyri olemaan itsellesi mahdollisimman rehellinen, jolloin hyödyt itsearvoinnista enemmän."},
-		{"x":500,"y":490,"area":"1","color":"yellow","text":"ALOITA LUOMALLA OMAT TUNNUKSET\n\nTarvitset tunnuksia jos haluat tarkastella tietojasi myöhemmin, tai esitellä niitä tukihenkilöillesi. Tunnusten avulla voit tehdä itsearvointia myös osissa. Keksi mikä tahansa mieleen tuleva tunnus ja varmenne, ja testaa ettei kukaan muu ole ottanut sitä jo käyttöön. Huomaa myös, ettei ole mitään mahdollisuutta selvittää tunnusta ja varmennetta jälkikäteen, jos satut hukkaamaan ne.\n\nEsimerkki\nTunnus Eetu Varmenne Reetu \n\nÄLÄ UNOHDA TUNNUKSIASI SILLÄ VAIN SINÄ TIEDÄT NE.\n\nTÄYTÄ MYÖS TAUSTATIEDOT\n\nTaustatietojen avulla saat tarkimmat tulokset. Taustatiedot ovat tärkeitä myös tutkijoille, sillä niitä voidaan hyödyntää valmennusohjelmien suunnittelussa. Taustatiedoissa kuukausituloilla tarkoitetaan vain sinun tulojasi, riippumatta perheesi koosta.\n\nLÄHETÄ LOMAKE KUN OLET KÄYNYT MYÖS MUITA OSIOITA LÄPI.\n\n SULJE MYÖS TÄMÄ OHJE, VOIDAKSESI JATKAA, KLIKKAAMALLA ?-MERKKIÄ."},
-		       {"x":500,"y":40,"area":"211","color":"yellow","text":"VALITSE KÄSITTEET\n\nKlikkaa lomakkeen yläkulmassa olevaa lomakepainiketta siirtääksesi ensin lomake hetkiseksi sivuun.\n\nSen jälkeen voit ryhtyä valitsemaan itsellesi merkityksellisiä käsitteitä ryhmistä menneisyys, nykyisyys, tulevaisuus ja ajanhallinta. Valitse kunkin ryhmän ulkokehällä olevista käsitteistä vahvuutesi, klikkaamalla käsitettä kerran, ja puutteesi klikkaamalla käsitettä kaksi kertaa."},
-		       {"x":500,"y":40,"area":"11","color":"green","text":"KÄSITTEIDEN SELITTEET\n\nNäet keskialueella käsitteiden selitteet vierittämällä hiirtä ulkokehällä käsitteiden päällä, tai valitsemalla käsitteen. Jos et haluakaan valita käsitettä, niin se poistuu valinnasta joka kolmannella klikkauksella. Pääset takaisin päävalintaan klikkaamalla valkoista keskustaa. Käy kaikki neljä aluetta läpi. Jos haluat keskeyttää ja jatkaa toisella kertaa, klikkaa painiketta Lomake ja valitse Lähetä, jolloin voit tallentaa valintasi."},
-		       {"x":500,"y":490,"area":"11","color":"green","text":"IKÄVIEN ASIOIDEN MERKINTÄ\n\n• koulukiusaus kohtaan Kokemukset->Koulukaverit\n• päihderiippuvuus Terveys->Raittius\n• ylivelkaantuminen Koti->Taloudellisuus\n• yksinäisyys Sosiaalisuus->Ystävyys\n• rahapelaaminen Mahdollisuudet->Riskinotto\n• eristäytyneisyys Yhteisöllisyys->Yhteenkuuluvuus\n• avuttomuus Yhteisöllisyys->Tukiverkostot\n• taloudellinen ahdinko Koti->Vauraus\n• shoppailu Koti->Säästäväisyys"},
-		       {"x":500,"y":40,"area":"2","color":"green","text":"VALITUT KÄSITTEET\n\nKun olet valinnut mielestäsi kaikki merkitykselliset käsitteet, voit tarkastella niitä aikapyörässä, klikkaamalla ylävalikosta kohtaa Valitut käsitteet. \n\nVoit lisätä myös omia käsitteitäsi tuplaklikkaamalla tyhjää aluetta tai vaihtaa käsitteen väriä klikkaamalla väripainiketta. Voit myös siirrellä käsitteitä, tai poistaa käsitteitä tuplaklikkaamalla väripainiketta."},
-		       {"x":500,"y":490,"area":"2","color":"green","text":"HAVANNOI SIJOITTELUA\nJos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},
+		{"x":500,"y":40,"area":"11","color":"yellow","text":"ITSEARVOINTI AUTTAA PARANTAMAAN ITSETUNTEMUSTA<br><br>Käsitepohjaisen itsearvioinnin tavoitteena näillä sivuilla on piirtää käyttöösi visuaalisia karttoja, joiden avulla voit helpommin hahmottaa millaiset asiat viime kädessä vaikuttavat elämänlaatuusi ja elämänkulkuusi.Tutkimusten mukaan juuri itsetuntemus voi parantaa elämänlaatua merkittävästi.<br><br>Tarkoituksena on, että valitset itsellesi merkityksellisiä käsitteitä menneisyydestä, nykyisyydestä, tulevaisuudesta ja ajanhallinnasta. Käsitteet toimivat avaimina yrittäessäsi sisäistää maailmankatsomustasi, valintojasi, tarpeitasi ja halujasi.<br><br>Merkitse vahvuudet <span style='color:#27ae60'><strong>vihre&auml;ll&auml;</strong></span> (klikkaamalla itsellesi merkityksellistä käsitettä kerran) ja puutteet <strong><span style='color:#e74c3c'>punaisella</span></strong> (klikkaamalla kaksi kertaa). Keskeistä on, että koet käsitteen jollakin tapaa tärkeäksi, olipa se vahvuutesi tai puutteesi. Vältä valitsemasta käsitteitä joihin ei liity arvostusta. Esimerkiksi isään voi liittyä positiivisia tunnelatauksia, vaikka isättömyyden kokemuksiin sinänsä kokisikim merkittäväksi puutteeksi saavutettuaan täysi-ikäisyyden.<br><br>Voit tehdä näitä valintojasi hyvin henkilökohtaisella tasolla, sillä arvioinneista ei kerätä lainkaan henkilötietoja, mutta niiden sijaan kaivataan taustatietoja tutkijoiden käyttöön. Pyri olemaan itsellesi mahdollisimman rehellinen, jolloin hyödyt itsearvoinnista enemmän."},
+		{"x":500,"y":490,"area":"11","color":"yellow","text":"ALOITA LUOMALLA OMAT TUNNUKSET<br><br>Tarvitset tunnuksia jos haluat tarkastella tietojasi myöhemmin, tai esitellä niitä tukihenkilöillesi. Tunnusten avulla voit tehdä itsearvointia myös osissa. Keksi mikä tahansa mieleen tuleva tunnus ja varmenne, ja testaa ettei kukaan muu ole ottanut sitä jo käyttöön. Huomaa myös, ettei ole mitään mahdollisuutta selvittää tunnusta ja varmennetta jälkikäteen, jos satut hukkaamaan ne.<br><br>Esimerkki<br><strong>Tunnus</strong> Eetu <strong>Varmenne</strong> Reetu<br><br>ÄLÄ UNOHDA TUNNUKSIASI SILLÄ VAIN SINÄ TIEDÄT NE.<br><br>TÄYTÄ MYÖS TAUSTATIEDOT<br><br>Taustatietojen avulla saat tarkimmat tulokset. Taustatiedot ovat tärkeitä myös tutkijoille, sillä niitä voidaan hyödyntää valmennusohjelmien suunnittelussa. Taustatiedoissa kuukausituloilla tarkoitetaan vain sinun tulojasi, riippumatta perheesi koosta.<br><br>LÄHETÄ LOMAKE KUN OLET KÄYNYT MYÖS MUITA OSIOITA LÄPI.<br><br><strong><span style='color:#e74c3c'>Et voi jatkaa ennen kuin suljet tämät ohjeen klikkaamalla ?-merkkiä uudelleen.</strong></span>"},
+		
+		       {"x":500,"y":40,"area":"1","color":"green","text":"IKÄVIEN ASIOIDEN MERKINTÄ<br><br>Puutteet voi nähdä myös saavuttamattomina ihanteina, jolloin niitä vastaava käsite voidaan merkitä punaisella<br><table width='400'><tr style='background-color:#eee' align='left'><td>Koulukiusaus-></td><td>Menneisyys</td><td>Kokemukset</td><td>Koulukaverit</td></tr><tr align='left'><td>Päihderiippuvuus-></td><td>Nykyisyys</td><td>Terveys</td><td>Raittius</td></tr><tr style='background-color:#eee' align='left'><td>Ylivelkaantuminen-></td><td>Ajanhallinta</td><td>Koti</td><td>Taloudellisuus</td></tr><tr align='left'><td>Yksinäisyys-></td><td>Nykyisyys</td><td>Sosiaalisuus</td><td>Ystävyys</td></tr><tr style='background-color:#eee' align='left'><td>Rahapelaaminen-></td><td>Tulevisuus</td><td>Mahdollisuudet</td><td>Riskinotto</td></tr><tr align='left'><td>Eristäytyneisyys-></td><td>Nykyisyys</td><td>Yhteisöllisyys</td><td>Yhteenkuuluvuus</td></tr><tr style='background-color:#eee' align='left'><td>Avuttomuus-></td><td>Nykyisyys</td><td>Toimintakyky</td><td>Tukiverkostot</td></tr><tr align='left'><td>Talousahdinko-></td><td>Nykyisyys<td>Yksilöllisyys</td><td>Selviytyminen</td></tr><tr style='background-color:#eee' align='left'><td>Shoppailu-></td><td>Nykyisyys</td><td>Hyvinvointi</td><td>Tyytyväisyys</td></tr></table>"},
+		       {"x":500,"y":490,"area":"1","color":"green","text":"VALITUT KÄSITTEET\n\nKun olet valinnut mielestäsi kaikki merkitykselliset käsitteet, voit tarkastella niitä aikapyörässä, klikkaamalla ylävalikosta kohtaa Valitut käsitteet. \n\nVoit lisätä myös omia käsitteitäsi tuplaklikkaamalla tyhjää aluetta tai vaihtaa käsitteen väriä klikkaamalla väripainiketta. Voit myös siirrellä käsitteitä, tai poistaa käsitteitä tuplaklikkaamalla väripainiketta."}, 
+
+		
+		
+		       {"x":500,"y":40,"area":"0","color":"yellow","text":"VALITSE KÄSITTEET\n\nKlikkaa lomakkeen yläkulmassa olevaa lomakepainiketta siirtääksesi ensin lomake hetkiseksi sivuun.\n\nSen jälkeen voit ryhtyä valitsemaan itsellesi merkityksellisiä käsitteitä ryhmistä menneisyys, nykyisyys, tulevaisuus ja ajanhallinta. Valitse kunkin ryhmän ulkokehällä olevista käsitteistä vahvuutesi, klikkaamalla käsitettä kerran, ja puutteesi klikkaamalla käsitettä kaksi kertaa."},
+		       {"x":500,"y":40,"area":"0","color":"green","text":"KÄSITTEIDEN SELITTEET\n\nNäet keskialueella käsitteiden selitteet vierittämällä hiirtä ulkokehällä käsitteiden päällä, tai valitsemalla käsitteen. Jos et haluakaan valita käsitettä, niin se poistuu valinnasta joka kolmannella klikkauksella. Pääset takaisin päävalintaan klikkaamalla valkoista keskustaa. Käy kaikki neljä aluetta läpi. Jos haluat keskeyttää ja jatkaa toisella kertaa, klikkaa painiketta Lomake ja valitse Lähetä, jolloin voit tallentaa valintasi."},
+
+
+
+{"x":500,"y":40,"area":"2","color":"green","text":"Itsearviointia positiivisuuden kautta<br><br>Positiivinen itsearviointi auttaa rakentamaan vahvempaa itsetuntoa ja itseluottamusta. Kun keskitytään positiivisiin puoliin, se voi lisätä motivaatiota ja inspiroida jatkamaan pyrkimyksiä tavoitteiden saavuttamiseksi. Lisäksi se voi auttaa luomaan myönteisen asenteen itseä ja ympäristöä kohtaan, mikä vaikuttaa hyvinvointiin ja henkiseen tasapainoon. On tärkeää huomata, että positiivinen itsearviointi ei ole itsekehuskelua tai ylimielisyyttä. Se on lempeää ja rehellistä suhtautumista itseen, jossa tunnistetaan oma arvo ja kyvykkyys, samalla kun ymmärretään, että jokaisella on omat vahvuutensa ja kehittämisen alueensa."},
+
+
+
+{"x":500,"y":490,"area":"2","color":"green","text":"HAVANNOI SIJOITTELUA<br><br>Jos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},
 		       {"x":500,"y":40,"area":"4","color":"green","text":"KÄSITTEIDEN VÄLISET SIDOKSET\nVoit tarkastella myös tekoälyavusteista karttaa käsitteiden välisistä sidoksista vuorovaikutteisesti. Klikkaa ylävalikon kohtaa Käsitteiden väliset sidokset. Valitsemasi käsitteet näkyvät suurina palloina, ja taustakäsitteet keltaisina, pinkkeinä ja vihreinä pallukoina. Keltaiset pallukat toimivat taustalla ohjaavina tekijöinä muita enemmän. Saat tarkemman käsityksen sidoksista klikkaamalla palloja. Taustatekijöiden tarkoituksena on tarjota lisävalaistusta valitsemillesi käsitteille."},
-		       {"x":500,"y":40,"area":"5","color":"green","text":"YHTEENVETO\n\nVoit vertailla omaa asemaasi myös suhteessa muihin, klikkaamalla kohtaa Yhteenveto. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Säteiden pituudet kuvaavat vahvuusalueita. Voit rajata mihin kulloinkin vertailet tietojasi. Rajauksessa on hyödynnettty taustatietojen luokitusta. Vertailun avulla voit ehkä löytää kehittämisen arvoisia alueita, jotka myöhemmin parantavat elämänlaatuasi."},
+		       {"x":500,"y":40,"area":"5","color":"green","text":"YHTEENVETO<br><br>Yhteenvetosivulla voit vertailla omaa asemaasi suhteessa muihin. Säteiden pituudet kuvaavat voimakkuutta. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Vasemmanpuoleinen sädekehä, elämänkulku, kuvaa ihmisen elämän eri vaiheita, kokemuksia ja kehitystä ajan myötä. Se korostaa elämän matkaa syntymästä kuolemaan ja sisältää kaikki ne käsitteet, jotka liittyvät ihmisen yksilöllisyyteen, suhteisiin, tavoitteisiin ja kokemuksiin elämän eri vaiheissa. Oikeanpuoleinen sädejehä, elämänlaatu, liittyy ihmisen kokemukselliseen hyvinvointiin ja tyytyväisyyteen elämän eri osa-alueilla. Se heijastaa ihmisen terveyttä, toimintakykyä, tietoja, taitoja ja tyytyväisyyttä työhön, kotiin, vapaa-aikaan, kulttuuriin, sukuun ja perheeseen."},
 		       {"x":500,"y":490,"area":"5","color":"green","text":"KEHITÄ ITSETUNTEMUSTASI\n\nToivottavasti tämä itsearviointi avasi jo hieman silmiäsi sinulle merkityksellisistä asioista, ja millä tavoin ne vaikuttavat elämänkulkuusi.\nPidä tunnuksesi muistissa, jolloin voit palata tarkastelemaan tietojasi niin usein kuin haluat. Voit esitellä tietojasi myös tukihenkilöillesi.\nHuomaathan, että itsearvoinninssa ei kerätä lainkaan henkilötietoja.\n\nKIITOS OSALLISTUMISESTASI"}
 		      ];
 
@@ -304,8 +438,6 @@ var alkuinfo = "Tervetuloa itsearvioinnin pariin. Itsearvioinnin tavoitteena on 
 
 document.getElementById("message").value = alkuinfo;
 
-		
-	
 	function infoCircle(x, y, text, color) {
 		var newCircle = {
 			x: x,
@@ -320,86 +452,91 @@ document.getElementById("message").value = alkuinfo;
 		}).style("top", function(d) {
 			return d.y + "px";
 		});
-		circleGroup.append("div").attr("class", "circle").style("background-color", function(d) {
-			return d.color;
-		}).on("click", function(d) {
-			changeColor(d, this);
-		}).on("dblclick", function(d) {
-			removeCircle(circleGroup);
-		});
 
-		circleGroup.append("textarea").attr("class", "info-field").style("font", "14px Gill Sans")
-			//.style("border", function(d) { return " solid " + d.color; })
-			.text(function(d) {
-				return d.text;
-			}).on("input", function(d) {
-				d.text = this.value;
-				updateCircleText(circleGroup, d.text);	
-			});
-/*
-		circleGroup.append("textarea").attr("class", "info-field").style("font", "14px Gill Sans")
-  .text(function(d) {
-    return d.htmlText; // Muotoillaan HTML-teksti täällä
-  })
-  .on("input", function(d) {
-    d.htmlText = this.value; // Tallennetaan HTML-muotoiltu teksti tähän
-    updateCircleText(circleGroup, d.htmlText); 
-  });
-*/
-		circleGroup.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+	circleGroup.append("xhtml:div")
+   .attr("class", "info-field")
+   .style("font", "14px Gill Sans")
+   .style("color", "gray")
+   .style("background-color","white")
+   .html(function(d) { return d.text; });
 	}
 
-	
-	
+
+
+
+
+
 	function toggleOpen() {
-		if (document.getElementsByClassName("toggle") == "open") {
-			ohjeruutu="1";
-		} else {
-                        ohjeruutu="11";
-		}
-			
-		var element = document.getElementById("sideForm");
-		element.classList.toggle("open");
+
+document.getElementById("toggle-overlay-button").style.backgroundColor = "#337ab7";
+overlay.style.display = "none";
+lomakeohje = 1 - lomakeohje;
+			console.log(lomakeohje);
+	var element = document.getElementById("sideForm");
+	    element.classList.toggle("open");
 		saveCircles();
 	}
-	var lomakeohje = 0;
-	var ohjeruutu = "1";
+	var lomakeohje = "1";
+	var ruutuohje = "1";
+	var ohjeruutu = "11";
 	var taso = "";
 	var snartti = 0;
 	var kuitti = 1;
+	var yhteen="green";
 	
-
+	document.getElementById("toggle-overlay-button1").textContent = "Vahvuudet";
+	document.getElementById("toggle-overlay-button1").style.backgroundColor = "green";
+	
 	function kasitteet() {
-		ohjeruutu = "11";
+		ruutuohje = "1";
 	}
 
-	function toggleOverlay() {
 	
+	function toggleOverlay1() {
+	if(yhteen === "green") {
+	yhteen = "red";
+	document.getElementById("toggle-overlay-button1").textContent = "Puutteet";
+	document.getElementById("toggle-overlay-button1").style.backgroundColor = "red";
+	} else {
+	document.getElementById("toggle-overlay-button1").textContent = "Vahvuudet";
+	document.getElementById("toggle-overlay-button1").style.backgroundColor = "green";
+	yhteen = "green";
+	}
+	yhteenveto(yhteen);
+	}
+	function toggleOverlay() {
 	
 		if(snartti < 1) {
 			overlay.style.display = "block";
 			document.getElementById("toggle-overlay-button").style.backgroundColor = "red";
+			//var lomakeohje = "1";
 		} else {
 			if(overlay.style.display === "none") {
 			document.getElementById("toggle-overlay-button").style.backgroundColor = "#337ab7";
 				overlay.style.display = "block";
 				document.getElementById("toggle-overlay-button").style.backgroundColor = "red";
+				//var lomakeohje = "1";
 			} else {
 				overlay.style.display = "none";
 				document.getElementById("toggle-overlay-button").style.backgroundColor = "#337ab7";
+				//var lomakeohje = "0";
 			}
 		}
 		snartti = 1;
-		
+		if(lomakeohje === "11") {
+		ohjeruutu = ruutuohje+lomakeohje;
+		} else {
+		ohjeruutu = ruutuohje;
+		}
+		console.log(ruutuohje,lomakeohje,ohjeruutu);
     d3.selectAll("#overlay > *").remove();
 	tekstit.forEach(function(d) {
-	console.log(ohjeruutu);
+	
+	//console.log(ohjeruutu);
 	if(d.area == ohjeruutu)
 			infoCircle(d.x, d.y, d.text, d.color);
 		});	
-		
-		
-		
+				
 	}
 	
 			// add
@@ -592,7 +729,9 @@ function clicked(p) {
         }).transition(t).attr("fill-opacity", d => +labelVisible(d.target)).attrTween("transform", d => () => labelTransform(d.current));
 
     } else {
-    ohjeruutu="2";
+    ruutuohje="0";
+    document.getElementById("toggle-overlay-button").style.backgroundColor = "#337ab7";
+overlay.style.display = "none";
         const text = d3.select(this);
         const textColor = text.style("fill");
         var otherChildName = p.data.name;
@@ -764,7 +903,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function saveCircles() {
-		ohjeruutu = "2";
+		ruutuohje = "2";
 		var json = JSON.stringify(dataset);
 		document.getElementById("message").value = json;
 		updateCircles();
@@ -779,10 +918,11 @@ function lisaaTieto(x, y, text, color) {
 			console.log(d.x, d.y, d.text, d.color);
 			addCircle(d.x, d.y, d.text, d.color);
 		});
+		console.log(updateset);
 	}
 
 	function AnalyzeReds() {
-		ohjeruutu = "3";
+		ruutuohje = "3";
 		muuttujat = [];
 		for(var i = 0; i < dataset.length; i++) {
 			muuttujat.push(dataset[i].text);
@@ -792,7 +932,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function kartta() {
-	ohjeruutu="4";
+	ruutuohje="4";
 		(function newsQuestConnectivityRisks() {
 			var w = 1200;
 			var h = 900;
@@ -1077,249 +1217,447 @@ function lisaaTieto(x, y, text, color) {
 		d3.select(this).classed("active", false);
 	}
 
-		function yhteenveto() {
-		ohjeruutu = "5";
+function yhteenveto(vari) {
+		ruutuohje = "5";
+		
 			
-		var veku = "Male";
+    (function() {
+      var margin = { top: 20, right: 10, bottom: 10, left: 10 },
+        width = 140,
+        height = 140,
+        r = 8;
 
-const data = [
-  { country: "Yksilöllisyys", values: [{ key: "Male", value: 78.5 }, { key: "Female", value: 83 }] },
-  { country: "Sosiaalisuus", values: [{ key: "Male", value: 70 }, { key: "Female", value: 77.5 }] },
-  { country: "Yhteisöllisyys", values: [{ key: "Male", value: 75.3 }, { key: "Female", value: 81.3 }] },
-  { country: "Terveys", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.6 }] },
-  { country: "Hyvinvointi", values: [{ key: "Male", value: 78.7 }, { key: "Female", value: 83.5 }] },
-  { country: "Toimintakyky", values: [{ key: "Male", value: 74.4 }, { key: "Female", value: 83 }] },
-  { country: "Tavoitteet", values: [{ key: "Male", value: 80.8 }, { key: "Female", value: 84.4 }] },
-  { country: "Mahdollisuudet", values: [{ key: "Male", value: 78.8 }, { key: "Female", value: 83.9 }] },
-  { country: "Haaveet", values: [{ key: "Male", value: 79.6 }, { key: "Female", value: 85.2 }] },
-  { country: "Tiedot", values: [{ key: "Male", value: 79.2 }, { key: "Female", value: 85.3 }] },
-  { country: "Taidot", values: [{ key: "Male", value: 74.7 }, { key: "Female", value: 80.9 }] },
-  { country: "Kyvyt", values: [{ key: "Male", value: 80 }, { key: "Female", value: 84.5 }] },
-  { country: "Tärkeys", values: [{ key: "Male", value: 80.4 }, { key: "Female", value: 84.4 }] },
-  { country: "Järjestys", values: [{ key: "Male", value: 70.6 }, { key: "Female", value: 80 }] },
-  { country: "Ajoitus", values: [{ key: "Male", value: 70.1 }, { key: "Female", value: 80.1 }] },
-  { country: "Työ", values: [{ key: "Male", value: 79.9 }, { key: "Female", value: 84.5 }] },
-  { country: "Koti", values: [{ key: "Male", value: 72.3 }, { key: "Female", value: 79 }] },
-  { country: "Vapaa-aika", values: [{ key: "Male", value: 80.3 }, { key: "Female", value: 84.5 }] },
-  { country: "Arvostukset", values: [{ key: "Male", value: 79.7 }, { key: "Female", value: 83.1 }] },
-  { country: "Uskomukset", values: [{ key: "Male", value: 78.9 }, { key: "Female", value: 83.6 }] },
-  { country: "Kokemukset", values: [{ key: "Male", value: 72.5 }, { key: "Female", value: 80.7 }] },
-  { country: "Kulttuuri", values: [{ key: "Male", value: 78 }, { key: "Female", value: 84.1 }] },
-  { country: "Suku", values: [{ key: "Male", value: 70.4 }, { key: "Female", value: 78.3 }] },
-  { country: "Perhe", values: [{ key: "Male", value: 77.8 }, { key: "Female", value: 83.4 }] },
-];
+      var vars = {
+      kokemukset: "Kokemukset",
+      yksilollisyys: "Yksilöllisyys",
+      sosiaalisuus: "Sosiaalisuus",
+      yhteisollisyys: "Yhteisöllisyys",
+      tavoitteet: "Tavoitteet",
+      haaveet: "Haaveet",
+      mahdollisuudet: "Mahdollisuudet",
+      tarkeys: "Tärkeys",
+      jarjestys: "Järjestys",
+      ajoitus: "Ajoitus",
+      arvostukset: "Arvostukset",
+      uskomukset: "Uskomukset"
+      };
+      
+      var mars = {
+      perhe: "Perhe",
+      terveys: "Terveys",
+      hyvinvointi: "Hyvinvointi",
+      toimintakyky: "Toimintakyky",
+      taidot: "Taidot",
+      tiedot: "Tiedot",
+      kyvyt: "Kyvyt",
+      tyo: "Työ",
+      koti: "Koti",
+      vapaa: "Vapaa-aika",
+      kulttuuri: "Kulttuuri",
+      suku: "Suku"
+      };
 
-let sortOrder = {
-  Male: true,
-  Female: true,
-};
+var data1 = [];
+var tiedot = dataset;
+/*
+var tiedot = [
+{"x":279,"y":10,"text":"Vastarakkaus","color":"green"},{"x":280,"y":60,"text":"Koulukaverit","color":"red"},{"x":280,"y":85,"text":"Ensirakkaus","color":"green"},{"x":200,"y":300,"text":"Perinteellisyys","color":"red"},{"x":232,"y":352,"text":"Vanhoillisuus","color":"red"},{"x":350,"y":300,"text":"Sisaruus","color":"red"},{"x":350,"y":225,"text":"Äiti","color":"red"},{"x":-15,"y":440,"text":"Tasavertaisuus","color":"green"},{"x":360,"y":345,"text":"Oikeudenmukaisuus","color":"green"},{"x":-20,"y":120,"text":"Henkisyys","color":"green"},{"x":458,"y":34,"text":"Avarakatseisuus","color":"green"},{"x":632,"y":60,"text":"Itsetuntemus","color":"green"},{"x":458,"y":112,"text":"Yksinolo","color":"green"},{"x":705,"y":161,"text":"Empaattisuus","color":"green"},{"x":450,"y":334,"text":"Mielenrauha","color":"green"},{"x":450,"y":209,"text":"Rauhallisuus","color":"green"},{"x":570,"y":420,"text":"Kiitollisuus","color":"green"},{"x":570,"y":345,"text":"Tyytyväisyys","color":"green"},{"x":600,"y":435,"text":"Jaksavuus","color":"red"},{"x":600,"y":485,"text":"Liikkuvuus","color":"red"},{"x":725,"y":365,"text":"Vastuullisuus","color":"green"},{"x":450,"y":425,"text":"Kasvu","color":"green"},{"x":725,"y":475,"text":"Kärsivällisyys","color":"green"},{"x":725,"y":525,"text":"Pitkäjännitteisyys","color":"green"},{"x":635,"y":735,"text":"Luovuus","color":"green"},{"x":635,"y":810,"text":"Riskinotto","color":"red"},{"x":550,"y":675,"text":"Päättelykyky","color":"green"},{"x":550,"y":750,"text":"Ymmärrys","color":"green"},{"x":630,"y":575,"text":"Koulutus","color":"red"},{"x":725,"y":650,"text":"Intohimo","color":"green"},{"x":340,"y":575,"text":"Luotettavuus","color":"green"},{"x":340,"y":625,"text":"Ongelmanratkaisu","color":"green"},{"x":165,"y":625,"text":"Säästäväisyys","color":"green"},{"x":165,"y":675,"text":"Taloudellisuus","color":"green"},{"x":165,"y":650,"text":"Siisteys","color":"red"},{"x":0,"y":475,"text":"Ulkoilevuus","color":"red"},{"x":279,"y":37,"text":"Seksuaalisuus","color":"red"}];
+*/      
+var ydata = [
+{"country_name":"Sukupuoli","top_country":"2","metric":"perhe","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"terveys","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"hyvinvointi","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"toimintakyky","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"taidot","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"tiedot","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"kyvyt","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"tyo","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"koti","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"vapaa","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"kulttuuri","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"suku","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"perhe","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"terveys","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"hyvinvointi","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"toimintakyky","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"taidot","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"tiedot","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"kyvyt","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"tyo","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"koti","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"vapaa","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"kulttuuri","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"suku","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"perhe","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"terveys","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"hyvinvointi","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"toimintakyky","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"taidot","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"tiedot","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"kyvyt","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"tyo","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"koti","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"vapaa","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"kulttuuri","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"suku","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"perhe","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"terveys","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"hyvinvointi","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"toimintakyky","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"taidot","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"tiedot","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"kyvyt","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"tyo","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"koti","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"vapaa","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"kulttuuri","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"suku","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"perhe","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"terveys","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"hyvinvointi","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"toimintakyky","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"taidot","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"tiedot","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"kyvyt","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"tyo","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"koti","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"vapaa","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"kulttuuri","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"suku","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"perhe","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"terveys","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"hyvinvointi","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"toimintakyky","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"taidot","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"tiedot","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"kyvyt","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"tyo","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"koti","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"vapaa","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"kulttuuri","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"suku","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"perhe","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"terveys","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"hyvinvointi","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"toimintakyky","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"taidot","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"tiedot","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"kyvyt","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"tyo","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"koti","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"vapaa","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"kulttuuri","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"suku","percentile":0}];
 
-const keys = ["Male", "Female"];
 
-const dataValues = keys.reduce((acc, key) => {
-  acc[key] = data.map((d) => d.values.find((v) => v.key === key).value);
-  return acc;
-}, {});
+var xdata = [
+{"country_name":"Sukupuoli","top_country":"2","metric":"sosiaalisuus","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"yhteisollisyys","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"tavoitteet","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"haaveet","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"mahdollisuudet","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"tarkeys","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"jarjestys","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"ajoitus","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"arvostukset","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"uskomukset","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"kokemukset","percentile":0},{"country_name":"Sukupuoli","top_country":"2","metric":"yksilollisyys","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"sosiaalisuus","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"yhteisollisyys","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"tavoitteet","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"haaveet","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"mahdollisuudet","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"tarkeys","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"jarjestys","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"ajoitus","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"arvostukset","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"uskomukset","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"kokemukset","percentile":0},{"country_name":"Ikäryhmä","top_country":"0","metric":"yksilollisyys","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"sosiaalisuus","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"yhteisollisyys","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"tavoitteet","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"haaveet","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"mahdollisuudet","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"tarkeys","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"jarjestys","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"ajoitus","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"arvostukset","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"uskomukset","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"kokemukset","percentile":0},{"country_name":"Toiminta","top_country":"2","metric":"yksilollisyys","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"sosiaalisuus","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"yhteisollisyys","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"tavoitteet","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"haaveet","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"mahdollisuudet","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"tarkeys","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"jarjestys","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"ajoitus","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"arvostukset","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"uskomukset","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"kokemukset","percentile":0},{"country_name":"Koulutus","top_country":"2","metric":"yksilollisyys","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"sosiaalisuus","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"yhteisollisyys","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"tavoitteet","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"haaveet","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"mahdollisuudet","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"tarkeys","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"jarjestys","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"ajoitus","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"arvostukset","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"uskomukset","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"kokemukset","percentile":0},{"country_name":"Asumismuoto","top_country":"0","metric":"yksilollisyys","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"sosiaalisuus","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"yhteisollisyys","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"tavoitteet","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"haaveet","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"mahdollisuudet","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"tarkeys","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"jarjestys","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"ajoitus","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"arvostukset","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"uskomukset","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"kokemukset","percentile":0},{"country_name":"Kuukausitulot","top_country":"2","metric":"yksilollisyys","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"sosiaalisuus","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"yhteisollisyys","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"tavoitteet","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"haaveet","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"mahdollisuudet","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"tarkeys","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"jarjestys","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"ajoitus","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"arvostukset","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"uskomukset","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"kokemukset","percentile":0},{"country_name":"Hyvinvointialue","top_country":"0","metric":"yksilollisyys","percentile":0}];
 
-const sortData = () => {
-  data.sort((b, a) => {
-    const aValues = a.values.slice();
-    const bValues = b.values.slice();
-    if (!sortOrder.Male) {
-      aValues.reverse();
-      bValues.reverse();
-    }
-    const aMaleValue = aValues.find((d) => d.key === veku).value;
-    const bMaleValue = bValues.find((d) => d.key === veku).value;
-    return aMaleValue - bMaleValue;
-  });
-};
+    var zdata = [
+{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Aikataulutus"},{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Ajankohtaisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Itsekontrolli"},{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Keskittyvyys"},{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Oikea-aikaisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Ajoitus","Muuttuja":"Täsmällisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Delegoivuus"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Itsekuri"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Järjestelmällisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Priorisointi"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Strategisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Suunnitelmallisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Tarpeellisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Järjestys","Muuttuja":"Valikoivuus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Kätevyys"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Lapset"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Lemmikit"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Puhtaus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Puoliso"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Rutiininomaisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Säästäväisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Siisteys"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Taloudellisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Uskollisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Vauraus"},{"Luokka":"Ajanhallinta","Ryhma":"Koti","Muuttuja":"Viihtyvyys"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Hygienisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Hyödyllisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Kutsumus"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Tarpeet"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Vaikuttaminen"},{"Luokka":"Ajanhallinta","Ryhma":"Tärkeys","Muuttuja":"Vakaus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Aikaansaavuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Asiantuntemus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Johtajuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Luotettavuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Noudattavuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Ongelmanratkaisu"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Säännöllisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Sitoutuvuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Soveltuvuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Suorituskykyisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Tehokkuus"},{"Luokka":"Ajanhallinta","Ryhma":"Työ","Muuttuja":"Yhteistyökykyisyys"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Harrastavuus"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Monipuolisuus"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Rentoutuvuus"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Ulkoilevuus"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Viihdyttävyys"},{"Luokka":"Ajanhallinta","Ryhma":"Vapaa-aika","Muuttuja":"Virkistäytyvyys"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Arvostus"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Eettisyys"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Esteettisyys"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Kunnioitus"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Puolustus"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Rehellisyys"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Saavutukset"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Tasa-arvoisuus"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Tasavertaisuus"},{"Luokka":"Menneisyys","Ryhma":"Arvostukset","Muuttuja":"Vapaus"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Elämykset"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Ensirakkaus"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Koulukaverit"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Muistot"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Opettajat"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Seksuaalisuus"},{"Luokka":"Menneisyys","Ryhma":"Kokemukset","Muuttuja":"Vastarakkaus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Aatteellisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Hyväksyvyys"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Ideologisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Isänmaallisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Kansallismielisyys"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Moraalisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Oikeudenmukaisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Omatunto"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Poliittisuus"},{"Luokka":"Menneisyys","Ryhma":"Kulttuuri","Muuttuja":"Sallivuus"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Äiti"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Isä"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Läheisyys"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Sisaruus"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Väkivallattomuus"},{"Luokka":"Menneisyys","Ryhma":"Perhe","Muuttuja":"Vanhemmat"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Appivanhemmat"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Isovanhemmat"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Perinteellisyys"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Serkut"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Sovinnaisuus"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Sukulaisuus"},{"Luokka":"Menneisyys","Ryhma":"Suku","Muuttuja":"Vanhoillisuus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Anteeksiantavuus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Armollisuus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Elämänkatsomus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Hengellisyys"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Henkisyys"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Kohtalonomaisuus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Tieteellisyys"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Uskonnollisuus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Vakaumus"},{"Luokka":"Menneisyys","Ryhma":"Uskomukset","Muuttuja":"Yliluonnollisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Ikä"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Iloisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Itsemyötätunto"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Kiitollisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Luontosuhde"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Onnellisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Tasapainoisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Turvallisuus"},{"Luokka":"Nykyisyys","Ryhma":"Hyvinvointi","Muuttuja":"Tyytyväisyys"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Avoimuus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Avunsaanti"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Empaattisuus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Huumorintaju"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Kuunteleminen"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Läsnäolo"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Luottamus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Vastaanottavuus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Vastavuoroisuus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Vuorovaikutus"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Ystävällisyys"},{"Luokka":"Nykyisyys","Ryhma":"Sosiaalisuus","Muuttuja":"Ystävyys"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Elämänhallinta"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Itsetunto"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Levollisuus"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Liikunnallisuus"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Mielenrauha"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Mielenterveys"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Raittius"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Rauhallisuus"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Stressinhallinta"},{"Luokka":"Nykyisyys","Ryhma":"Terveys","Muuttuja":"Terveellisyys"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Aktiivisuus"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Arjenhallinta"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Energisyys"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Esteettömyys"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Jaksavuus"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Kestävyys"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Liikkuvuus"},{"Luokka":"Nykyisyys","Ryhma":"Toimintakyky","Muuttuja":"Omatoimisuus"},{"Luokka":"Nykyisyys","Ryhma":"Yhteisöllisyys","Muuttuja":"Osallistuvuus"},{"Luokka":"Nykyisyys","Ryhma":"Yhteisöllisyys","Muuttuja":"Tukiverkostot"},{"Luokka":"Nykyisyys","Ryhma":"Yhteisöllisyys","Muuttuja":"Vastuullisuus"},{"Luokka":"Nykyisyys","Ryhma":"Yhteisöllisyys","Muuttuja":"Verkostoituvuus"},{"Luokka":"Nykyisyys","Ryhma":"Yhteisöllisyys","Muuttuja":"Yhteenkuuluvuus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Avarakatseisuus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Eheys"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Itsearvostus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Itsehyväksyntä"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Itseluottamus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Itsenäisyys"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Itsetuntemus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Käytännöllisyys"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Myönteisyys"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Positiivisuus"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Selviytyminen"},{"Luokka":"Nykyisyys","Ryhma":"Yksilöllisyys","Muuttuja":"Yksinolo"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Inspiraatio"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Intohimo"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Toiveikkuus"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Unelmoivuus"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Usko"},{"Luokka":"Tulevaisuus","Ryhma":"Haaveet","Muuttuja":"Visio"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Kasvu"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Menestyvyys"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Motivaatio"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Oma-aloitteisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Oppimishalu"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Oppimiskyky"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Päätöksenteko"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Pystyvyys"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Selkeys"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Sisukkuus"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Taitavuus"},{"Luokka":"Tulevaisuus","Ryhma":"Kyvyt","Muuttuja":"Tarkkuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Aloitteellisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Innostuvuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Innovatiivisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Intuitio"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Itsevarmuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Luovuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Merkitys"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Oivaltavuus"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Riskinotto"},{"Luokka":"Tulevaisuus","Ryhma":"Mahdollisuudet","Muuttuja":"Rohkeus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Ennakoivuus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Huolellisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Itsehillintä"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Itseohjautuvuus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Joustavuus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Kehittyvyys"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Koulutus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Sopeutuvuus"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Uppoutuminen"},{"Luokka":"Tulevaisuus","Ryhma":"Taidot","Muuttuja":"Uteliaisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Haasteellisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Kärsivällisyys"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Päämäärätietoisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Pitkäjännitteisyys"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Realistisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Saavutettavuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Sitkeys"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Tahto"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Tarkoitus"},{"Luokka":"Tulevaisuus","Ryhma":"Tavoitteet","Muuttuja":"Tavoitteellisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Älykkyys"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Analyyttisyys"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Harkitsevuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Kriittisyys"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Loogisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Omaksuvuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Päättelykyky"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Rationaalisuus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Viisaus"},{"Luokka":"Tulevaisuus","Ryhma":"Tiedot","Muuttuja":"Ymmärrys"}
+    ];
 
-const dataStats = Object.entries(dataValues).map(([key, values]) => ({
-  key,
-  mean: d3.mean(values),
-  deviation: d3.deviation(values),
-}));
+      var length = d3.scaleLinear().domain([0, 100]).range([r, width / 2 - margin["top"]]);
+      var rotationDegree = d3.scalePoint().domain(Object.keys(vars)).range([0, 2 * Math.PI - Math.PI / 6]);
+      var rotationDegree1 = d3.scalePoint().domain(Object.keys(mars)).range([0, 2 * Math.PI - Math.PI / 6]);
+      var colorScale = d3.scaleOrdinal().domain([0, 1, 2]).range(["#5cbdfd", "#ff0025", "#f21488"]);
 
-const handleLegendClick = (key) => {
-  sortOrder[key] = !sortOrder[key];
-  updateChart();
-};
+      var legendData = [
+      { country_name: "legend", name: "Tavoitteet", metric: "yksilollisyys", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Haaveet", metric: "sosiaalisuus", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Mahdollisuudet", metric: "yhteisollisyys", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Tärkeys", metric: "tavoitteet", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Järjestys", metric: "haaveet", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Ajoitus", metric: "mahdollisuudet", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Arvostukset", metric: "tarkeys", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Uskomukset", metric: "jarjestys", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Kokemukset", metric: "ajoitus", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Yksilöllisyys", metric: "arvostukset", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Sosiaalisuus", metric: "uskomukset", percentile: 0, top_country: "0" },
+      { country_name: "legend", name: "Yhteisöllisyys", metric: "kokemukset", percentile: 0, top_country: "0" }
+      ];
+      
+      var legendData1 = [
+      { country_name: "legend1", name: "Taidot", metric: "terveys", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Tiedot", metric: "hyvinvointi", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Kyvyt", metric: "toimintakyky", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Työ", metric: "taidot", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Koti", metric: "tiedot", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Vapaa-aika", metric: "kyvyt", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Kulttuuri", metric: "tyo", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Suku", metric: "koti", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Perhe", metric: "vapaa", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Terveys", metric: "kulttuuri", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Hyvinvointi", metric: "suku", percentile: 0, top_country: "2" },
+      { country_name: "legend1", name: "Toimintakyky", metric: "perhe", percentile: 0, top_country: "2" }
+      ];
+      
+      
+d3.selectAll("#sun_legend > *").remove();
+d3.selectAll("#sun_legend1 > *").remove();
+d3.selectAll("#legend_list > *").remove();
+d3.selectAll("#legend_list1 > *").remove();
+d3.selectAll("#suns > *").remove();
+d3.selectAll("#suns1 > *").remove();
+      
+var summa = d3.sum(tiedot, function(d) { return 1; });
 
-const handleCheckboxChange = function () {
-  const key = d3.select(this).attr("id");
-  const isActive = d3.select(this).property("checked");
-  d3.selectAll(`circle[data-key="${key}"]`).style("opacity", isActive ? 1 : 0);
-};
+    tiedot.forEach(function(datum) {
+      zdata.forEach(function(data) {
+        if (datum.text === data.Muuttuja && datum.color === vari) {
+          datum.text = data.Muuttuja;
+          //datum.color = "red"; 
+          
+          legendData.forEach(function(legend) {
+            if (legend.name === data.Ryhma) {
+              legend.percentile += 1; 
+            }
+          });
+          
+          legendData1.forEach(function(legend1) {
+            if (legend1.name === data.Ryhma) {
+              legend1.percentile += 1; 
+            }
+          });
+        }
+      });
+    });
 
-const width = 400;
-const height = 800;
-const inset = 60;
-const strokeDasharray = 3;
-const radius = 5;
-const strokeWidth = 12;
-const fontSizes = {
-  x: 8,
-  y: 8.5,
-};
+    // Päivitetään "legendData" taulukon prosenttiosuudet
+    legendData.forEach(function(d) {
+      d.percentile = (d.percentile / summa) * 2000;
+    });
+    
+    legendData1.forEach(function(d) {
+      d.percentile = (d.percentile / summa) * 2000;
+    });
 
-const margin = {
-  top: 25,
-  bottom: 5,
-  left: 80,
-  right: 10,
-};
+    console.log(tiedot);
+    console.log(legendData);
+    console.log(legendData1);
 
-const format = d3.format(".2r");
+      
+      
+      
+      
+      
 
-const extent = d3.extent(
-  data.reduce((acc, curr) => [...acc, ...curr.values.reduce((a, c) => [...a, c.value], [])], [])
-);
+      data = xdata;
+      data1 = ydata;
+        data.sort(function(x, y) { return d3.ascending(x.country_name, y.country_name); });
+        var nested_data = d3.nest().key(function(d) { return d.country_name; }).entries(data.filter(function(d) { return !isNaN(d.percentile); }));
+        
+        data1.sort(function(x, y) { return d3.ascending(x.country_name, y.country_name); });
+        var nested_data1 = d3.nest().key(function(d) { return d.country_name; }).entries(data1.filter(function(d) { return !isNaN(d.percentile); }));
 
-const colorScale = d3.scaleOrdinal(d3.schemeSet2).domain(["Male", "Female"]);
+      function drawLegend(data) {
+        var svg = d3.select("#sun_legend")
+          .attr("width", 200)
+          .attr("height", 200)
+          .append("g");
 
-const xScale = d3.scaleLinear().domain(extent).range([inset, width - inset]).nice();
+        svg.selectAll(".ray")
+        .data(legendData)
+        .enter()
+        .append("line")
+        .attr("class", "sun ray")
+        .attr("x1", 100)
+        .attr("y1", 100)
+        .attr("x2", function(d) {
+          return length(d.percentile) * Math.cos(rotationDegree(d.metric)) + 100;
+        })
+        .attr("y2", function(d) {
+          return length(d.percentile) * Math.sin(rotationDegree(d.metric)) + 100;
+        })
+        .style("stroke", function(d) {
+          return colorScale(d.top_country);
+        });
+        
+        svg.selectAll(".legendText")
+          .data(legendData)
+          .enter()
+          .append("text")
+          .attr("class", "legendText")
+          .attr("x", function(d, i) { return (i >= 5 && i <= 9) ? 95 * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100 : 93 * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100; })
+          .attr("y", function(d, i) { return (i >= 5 && i <= 9) ? 95 * Math.sin(rotationDegree(d.metric) - Math.PI/2) + 100 : 93 * Math.sin(rotationDegree(d.metric) - Math.PI/2) + 100; })
+          .text(function(d, i) { return i + 1; });
 
-const yScale = d3.scaleBand().domain(data.map((d) => d.country)).range([0, height]);
+var legendList = d3.select("#legend_list")
+    .append("ul")
+    .attr("class", "legendList");
 
-const xAxis = d3.axisTop(xScale).tickSize(0).tickPadding(10);
-const yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(10);
-
-const root = d3.select("#root");
-//root.append("h1").text("Yhteenveto");
-root.append("p").html(
-  `<strong style="border-bottom: 0.2rem solid ${colorScale(
-    "Male"
-  )}">Vahvuudet</strong> ja <strong style="border-bottom: 0.2rem solid ${colorScale(
-    "Female"
-  )}">Ihanteet</strong> <button id="jarjestys">Järjestä</button>`
-);
-
-const svg = root
-  .append("svg")
-  .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
-
-const group = svg.append("g").attr("transform", `translate(${margin.left} ${margin.top})`);
-
-const groupAxis = group.append("g");
-const groupStats = group.append("g");
-const groupData = group.append("g");
-
-const textAxis = groupAxis.append("text").text("0");
-
-groupAxis
-  .append("line")
-  .attr("stroke", "currentColor")
-  .attr("stroke-dasharray", strokeDasharray)
-  .attr("stroke-linecap", "square")
-  .attr("x2", inset)
-  .attr("transform", "translate(0.5 0.5)");
-
-const groupAxisX = groupAxis.append("g").call(xAxis);
-const groupAxisY = groupAxis.append("g").call(yAxis);
-
-groupAxisY.select("path").remove();
-
-groupAxisY.attr("font-size", fontSizes.y);
-groupAxisX.attr("font-size", fontSizes.x);
-
-const groupGroupAxisX = groupAxis.select("g");
-const textAxisX = groupAxisX.select("text");
-
-textAxis
-  .attr("font-size", groupGroupAxisX.attr("font-size"))
-  .attr("font-family", groupGroupAxisX.attr("font-family"))
-  .attr("text-anchor", groupGroupAxisX.attr("text-anchor"))
-  .attr("y", textAxisX.attr("y"))
-  .attr("dy", textAxisX.attr("dy"))
-  .attr("fill", textAxisX.attr("fill"));
-
-groupAxis.select("line").attr("stroke-width", "0.5");
-groupAxis.select("path").attr("stroke-width", "0.5");
-
-const groupsData = groupData.selectAll("g").data(data).enter().append("g").attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
-
-groupsData.append("path").datum((d) => d.values).attr("fill", "none").attr("stroke", "var(--color-line, currentColor)").attr("stroke-width", strokeWidth).attr("stroke-linecap", "round").attr("d", (d) => `M ${d.map(({ value }) => xScale(value)).join(" 0 ")} 0`);
-
-groupsData.append("text").datum((d) => {
-  const [min, max] = d3.extent(d.values.map((d) => d.value));
-  const gap = max - min;
-  const mid = (min + max) / 2;
-  return { gap, mid };
-}).attr("fill", "currentColor").attr("text-anchor", "middle").attr("font-weight", "700").attr("font-size", strokeWidth - 3).attr("dominant-baseline", "middle").attr("x", (d) => xScale(d.mid)).attr("y", 1).text((d) => format(d.gap));
-
-groupsData.selectAll("circle").data((d) => d.values).enter().append("circle").attr("fill", (d) => colorScale(d.key)).attr("cx", (d) => xScale(d.value)).attr("r", radius);
-
-const groupsStats = groupStats.selectAll("g").data(dataStats).enter().append("g").style("color", (d) => colorScale(d.key));
-
-groupsStats.append("rect").attr("x", (d) => xScale(d.mean - d.deviation / 2)).attr("width", (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)).attr("height", height).attr("fill", "currentColor").attr("fill-opacity", "0.1");
-
-groupsStats.append("path").attr("fill", "none").attr("stroke", "currentColor").attr("stroke-width", "0.75").attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
-
-	
-const updateChart = () => {
-  if (veku === "Male") {
-    veku = "Female";
-  } else {
-    veku = "Male";
-  }
-  sortData();
-
-  const t = d3.transition().duration(750);
-
-  yScale.domain(data.map((d) => d.country));
-
-  groupAxisY.transition(t).call(yAxis);
-
-  const groupsData = groupData.selectAll("g").data(data, (d) => d.country);
-
-  groupsData.exit().transition(t).style("opacity", 0).remove();
-
-  const newGroups = groupsData
+  svg.selectAll(".legendText")
+    .data(data)
     .enter()
-    .append("g")
-    .attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`)
-    .style("opacity", 0);
+    .append("text")
+    .attr("class", "legendText")
+    .attr("x", function(d, i) {
+      return (i >= 5 && i <= 9) ? rayLength * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100 + textOffset : rayLength * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100 - textOffset;
+    })
+    .attr("y", function(d, i) {
+      return rayLength * Math.sin(rotationDegree(d.metric) - Math.PI/2) + 100;
+    })
+    .text(function(d, i) { return i + 1 + "-" +vars[d.metric]; });
 
-  newGroups.append("path");
-  newGroups.append("text");
-  newGroups.selectAll("circle").data((d) => d.values).enter().append("circle");
+  // Lisää tekstit luetteloon
+  legendList.selectAll("li")
+    .data(data)
+    .enter()
+    .append("li")
+    .text(function(d, i) { return i + 1 + "-" +vars[d.metric]; });
 
-  groupsData.merge(newGroups).transition(t).attr("transform", (d) => `translate(0 ${yScale(d.country) + yScale.bandwidth() / 2})`);
+        svg.append("circle")
+          .attr("class", "sun center")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 20)
+          .style("stroke", "#fff");
 
-  groupsData.selectAll("path").transition(t);
+        // add "grid" lines
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 35);
 
-  groupsData
-    .selectAll("circle")
-    .data((d) => d.values)
-    .transition(t)
-    .attr("cx", (d) => xScale(d.value))
-    .attr("r", radius);
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 50);
 
-  groupsStats
-    .selectAll("rect")
-    .transition(t)
-    .attr("x", (d) => xScale(d.mean - d.deviation / 2))
-    .attr(
-      "width",
-      (d) => xScale(d.mean + d.deviation / 2) - xScale(d.mean - d.deviation / 2)
-    );
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 65);
+      }
+      
+      function drawLegend1(legendData1) {
+        var svg = d3.select("#sun_legend1")
+          .attr("width", 200)
+          .attr("height", 200)
+          .append("g");
 
-  groupsStats
-    .selectAll("path")
-    .transition(t)
-    .attr("d", (d) => `M ${xScale(d.mean)} 0 V ${height}`);
+        svg.selectAll(".ray")
+        .data(legendData1)
+        .enter()
+        .append("line")
+        .attr("class", "sun ray")
+        .attr("x1", 100)
+        .attr("y1", 100)
+        .attr("x2", function(d) {
+          return length(d.percentile) * Math.cos(rotationDegree1(d.metric)) + 100;
+        })
+        .attr("y2", function(d) {
+          return length(d.percentile) * Math.sin(rotationDegree1(d.metric)) + 100;
+        })
+        .style("stroke", function(d) {
+          return colorScale(d.top_country);
+        });        
 
-};
+        svg.selectAll(".legendText")
+          .data(legendData1)
+          .enter()
+          .append("text")
+          .attr("class", "legendText")
+          .attr("x", function(d, i) { return (i >= 5 && i <= 9) ? 95 * Math.cos(rotationDegree1(d.metric) - Math.PI/2) + 100 : 93 * Math.cos(rotationDegree1(d.metric) - Math.PI/2) + 100; })
+          .attr("y", function(d, i) { return (i >= 5 && i <= 9) ? 95 * Math.sin(rotationDegree1(d.metric) - Math.PI/2) + 100 : 93 * Math.sin(rotationDegree1(d.metric) - Math.PI/2) + 100; })
+          .text(function(d, i) { return i + 1; });      
+      
+var legendList1 = d3.select("#legend_list1")
+    .append("ul")
+    .attr("class", "legendList");
 
-updateChart();
+  svg.selectAll(".legendText")
+    .data(legendData1)
+    .enter()
+    .append("text")
+    .attr("class", "legendText")
+    .attr("x", function(d, i) {
+      return (i >= 5 && i <= 9) ? rayLength * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100 + textOffset : rayLength * Math.cos(rotationDegree(d.metric) - Math.PI/2) + 100 - textOffset;
+    })
+    .attr("y", function(d, i) {
+      return rayLength * Math.sin(rotationDegree(d.metric) - Math.PI/2) + 100;
+    })
+    .text(function(d, i) { return i + 1 + "-" +mars[d.metric]; });
+
+  // Lisää tekstit luetteloon
+  legendList1.selectAll("li")
+    .data(legendData1)
+    .enter()
+    .append("li")
+    .text(function(d, i) { return i + 1 + "-" +mars[d.metric]; });
+
+        svg.append("circle")
+          .attr("class", "sun center")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 20)
+          .style("stroke", "#fff");
+
+        // add "grid" lines
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 35);
+
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 50);
+
+        svg.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", 100)
+          .attr("cy", 100)
+          .attr("r", 65);
+      }
+
+      function makeSuns(data) {
+        var svg = d3.select("#suns").selectAll("svg")
+          .data(data)
+          .enter()
+          .append("svg")
+          .attr("class", "countrySun")
+          .attr("width", width)
+          .attr("height", height + margin["top"] + margin["bottom"]);
+
+        var suns = svg.append("g")
+          .attr("transform", "translate(0," + margin["top"] + ")");
+
+        suns.selectAll(".ray")
+          .data(function(d) { return d.values; })
+          .enter()
+          .append("line")
+          .attr("class", "sun ray")
+          .attr("x1", width / 2)
+          .attr("y1", height / 2)
+          .attr("x2", function(d) { return length(d.percentile) * Math.cos(rotationDegree(d.metric) - Math.PI/2) + (width/2); })
+          .attr("y2", function(d) { return length(d.percentile) * Math.sin(rotationDegree(d.metric) - Math.PI/2) + (height/2); })
+          .style("stroke", function(d) { return colorScale(d.top_country); });
+
+        suns.append("circle")
+          .attr("class", "sun center")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", r)
+          .style("stroke", function(d) { return colorScale(d.values[0].top_country); });
+
+        // add "grid" lines
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(25));
+
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(50));
+
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(75));
+
+        svg.append("text")
+          .attr("class", "countryName")
+          .attr("x", width / 2)
+          .attr("y", 15)
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.key; });
+      }
+      
+      function makeSuns1(data1) {
+        var svg = d3.select("#suns1").selectAll("svg")
+          .data(data1)
+          .enter()
+          .append("svg")
+          .attr("class", "countrySun")
+          .attr("width", width)
+          .attr("height", height + margin["top"] + margin["bottom"]);
+
+        var suns = svg.append("g")
+          .attr("transform", "translate(0," + margin["top"] + ")");
+
+        suns.selectAll(".ray")
+          .data(function(d) { return d.values; })
+          .enter()
+          .append("line")
+          .attr("class", "sun ray")
+          .attr("x1", width / 2)
+          .attr("y1", height / 2)
+          .attr("x2", function(d) { return length(d.percentile) * Math.cos(rotationDegree1(d.metric) - Math.PI/2) + (width/2); })
+          .attr("y2", function(d) { return length(d.percentile) * Math.sin(rotationDegree1(d.metric) - Math.PI/2) + (height/2); })
+          .style("stroke", function(d) { return colorScale(d.top_country); });
+
+        suns.append("circle")
+          .attr("class", "sun center")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", r)
+          .style("stroke", function(d) { return colorScale(d.values[0].top_country); });
+
+        // add "grid" lines
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(25));
+
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(50));
+
+        suns.append("circle")
+          .attr("class", "sun gridline")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", length(75));
+
+        svg.append("text")
+          .attr("class", "countryName")
+          .attr("x", width / 2)
+          .attr("y", 15)
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.key; });
+      }
+    
+        drawLegend(legendData);
+        drawLegend1(legendData1);
+        makeSuns(nested_data);
+        makeSuns1(nested_data1);
+      
+    })();
 			
-	const button = document.querySelector("#jarjestys");
+}
 
-    // Lisää tapahtumankäsittelijä painikkeelle
-    button.addEventListener("click", updateChart);
-			
-		}
+
+
 document.getElementById("message").value = alkuinfo;		
 	svg.on("dblclick", handleDoubleClick);
 	</script>
