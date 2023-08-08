@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<style>
+#videoHolder {
+	position: relative;
+	padding-top: 25px;
+	height: 0;
+	text-align: center;
+	margin: 0 auto;
+	width: 566px;
+}
+
+#myVideo,
+.thumbs {
+	width: 566px;
+	height: 354px;
+	outline: none;
+}
+.thumb {
+	width: 15%;
+	display: inline-block;
+	border: 1px solid #919191;
+	text-transform: uppercase;
+	line-height: 30px;
+	background-size: 100% auto;
+	cursor: pointer;
+	font-size: 80%;
+}
+</style>
+</head>
+<body>
+
+	<div id="videoHolder">
+		<video id="myVideo" controls poster="https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/taustakuva.svg">
+			<source id="mp4" src="https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa1.mp4" type="video/mp4">
+	
+		</video>
+		<div class="thumbs">
+			<div class="thumb" onclick="playVid('one')">one</div>
+			<div class="thumb" onclick="playVid('two')">two</div>
+			<div class="thumb" onclick="playVid('three')">three</div>
+			<div class="thumb" onclick="playVid('four')">four</div>
+			<div class="thumb" onclick="playVid('five')">five</div>
+		</div>
+	</div>
+
+  <script>
+  var myMp4 = document.getElementById("mp4"),
+	myVid = document.getElementById("myVideo"),
+	mp4Url = "";
+
+function playVid(ID) {
+	switch (ID) {
+		case "one":
+			mp4Url = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa1.mp4";
+			break;
+		case "two":
+			mp4Url = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa2.mp4";
+			break;
+		case "three":
+			mp4Url = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa3.mp4";
+			break;
+		case "four":
+			mp4Url = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa4.mp4";
+			break;
+			mp5Url = "https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/osa5.mp4";
+			break;
+	}
+	myMp4.setAttribute("src", mp4Url);
+	myVid.load();
+	myVid.play();
+	myVid.poster = "";
+}
+  </script>
+</body>
+</html>
