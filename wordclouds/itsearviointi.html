@@ -211,8 +211,8 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				</div>
 			</div>
 			<div class="tabby-tab">
-				<input type="radio" id="tab-4" onclick="yhteenveto(yhteen)" name="tabby-tabs">
-				<label for="tab-4">Yhteenveto</label>
+				<input type="radio" id="tab-4" onclick="vertailu(yhteen)" name="tabby-tabs">
+				<label for="tab-4">Vertailu</label>
 				<div class="tabby-content">
 				<button id="toggle-overlay-button1" style="color:white" onClick="toggleOverlay1();">Vahvuudet</button>
 					<table>
@@ -448,11 +448,11 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 
 {"x":500,"y":490,"area":"2","color":"green","text":"HAVANNOI SIJOITTELUA<br><br>Jos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},
 		       {"x":500,"y":40,"area":"4","color":"green","text":"KÄSITTEIDEN VÄLISET SIDOKSET\nVoit tarkastella myös tekoälyavusteista karttaa käsitteiden välisistä sidoksista vuorovaikutteisesti. Klikkaa ylävalikon kohtaa Käsitteiden väliset sidokset. Valitsemasi käsitteet näkyvät suurina palloina, ja taustakäsitteet keltaisina, pinkkeinä ja vihreinä pallukoina. Keltaiset pallukat toimivat taustalla ohjaavina tekijöinä muita enemmän. Saat tarkemman käsityksen sidoksista klikkaamalla palloja. Taustatekijöiden tarkoituksena on tarjota lisävalaistusta valitsemillesi käsitteille."},
-		       {"x":500,"y":40,"area":"5","color":"green","text":"YHTEENVETO<br><br>Yhteenvetosivulla voit vertailla omaa asemaasi suhteessa muihin. Säteiden pituudet kuvaavat voimakkuutta. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Vasemmanpuoleinen sädekehä, elämänkulku, kuvaa ihmisen elämän eri vaiheita, kokemuksia ja kehitystä ajan myötä. Se korostaa elämän matkaa syntymästä kuolemaan ja sisältää kaikki ne käsitteet, jotka liittyvät ihmisen yksilöllisyyteen, suhteisiin, tavoitteisiin ja kokemuksiin elämän eri vaiheissa. Oikeanpuoleinen sädejehä, elämänlaatu, liittyy ihmisen kokemukselliseen hyvinvointiin ja tyytyväisyyteen elämän eri osa-alueilla. Se heijastaa ihmisen terveyttä, toimintakykyä, tietoja, taitoja ja tyytyväisyyttä työhön, kotiin, vapaa-aikaan, kulttuuriin, sukuun ja perheeseen."},
+		       {"x":500,"y":40,"area":"5","color":"green","text":"VERTAILU<br><br>Voit vertailla asemaasi suhteessa muihin. Säteiden pituudet kuvaavat voimakkuutta. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Vasemmanpuoleinen sädekehä, elämänkulku, kuvaa ihmisen elämän eri vaiheita, kokemuksia ja kehitystä ajan myötä. Se korostaa elämän matkaa syntymästä kuolemaan ja sisältää kaikki ne käsitteet, jotka liittyvät ihmisen yksilöllisyyteen, suhteisiin, tavoitteisiin ja kokemuksiin elämän eri vaiheissa. Oikeanpuoleinen sädekehä, elämänlaatu, liittyy ihmisen kokemukselliseen hyvinvointiin ja tyytyväisyyteen elämän eri osa-alueilla. Se heijastaa ihmisen terveyttä, toimintakykyä, tietoja, taitoja ja tyytyväisyyttä työhön, kotiin, vapaa-aikaan, kulttuuriin, sukuun ja perheeseen."},
 		       {"x":500,"y":490,"area":"5","color":"green","text":"KEHITÄ ITSETUNTEMUSTASI\n\nToivottavasti tämä itsearviointi avasi jo hieman silmiäsi sinulle merkityksellisistä asioista, ja millä tavoin ne vaikuttavat elämänkulkuusi.\nPidä tunnuksesi muistissa, jolloin voit palata tarkastelemaan tietojasi niin usein kuin haluat. Voit esitellä tietojasi myös tukihenkilöillesi.\nHuomaathan, että itsearvoinninssa ei kerätä lainkaan henkilötietoja.\n\nKIITOS OSALLISTUMISESTASI"}
 		      ];
 
-var alkuinfo = "Tervetuloa itsearvioinnin pariin. Itsearvioinnin tavoitteena on lisätä itsetuntemusta ja sitä kautta pyrkiä lisäämään elämänlaatua.\n\nSivun vasemmassa yläkulmassa on ?-merkki, josta avautuu kunkin vaiheen toimintokohtaisia lisäohjeita. Painike avaa ja sulkee ohjeet vuorotellen.\n\nNäin käytät itsearvointia\n1. Määritä ensin tunnus ja varmenne jos haluat hyödyntää tietojasi myöhemmin. Testaa ovatko ne jo käytössä Hae -painikkeella.\n2. Valitse itseäsi koskevat taustatiedot\n3. Siirrä lomake sivuun Lomake -painikkeesta\n4. Valitse itsellesi merkityksellisiä käsitteitä ryhmistä Menneisyys, Nykyisyys, Tulevaisuus ja Ajanhallinta\n5. Näet valintijasi kohdassa Valitut käsitteet\n6. Käsitteiden väliset sidokset näyttää vuorovaikutteisen kuvion, jota voit klikkailla\n7. Kohdassa yhteenveto voit vertailla valintojasi";
+var alkuinfo = "Tervetuloa itsearvioinnin pariin. Itsearvioinnin tavoitteena on lisätä itsetuntemusta ja sitä kautta pyrkiä lisäämään elämänlaatua.\n\nSivun vasemmassa yläkulmassa on ?-merkki, josta avautuu kunkin vaiheen toimintokohtaisia lisäohjeita. Painike avaa ja sulkee ohjeet vuorotellen.\n\nNäin käytät itsearvointia\n1. Määritä ensin tunnus ja varmenne jos haluat hyödyntää tietojasi myöhemmin. Testaa ovatko ne jo käytössä Hae -painikkeella.\n2. Valitse itseäsi koskevat taustatiedot\n3. Siirrä lomake sivuun Lomake -painikkeesta\n4. Valitse itsellesi merkityksellisiä käsitteitä ryhmistä Menneisyys, Nykyisyys, Tulevaisuus ja Ajanhallinta\n5. Näet valintijasi kohdassa Valitut käsitteet\n6. Käsitteiden väliset sidokset näyttää vuorovaikutteisen kuvion, jota voit klikkailla\n7. Kohdassa vertailu voit vertailla valintojasi";
 
 document.getElementById("message").value = alkuinfo;
 
@@ -520,7 +520,7 @@ lomakeohje = 1 - lomakeohje;
 	document.getElementById("toggle-overlay-button1").style.backgroundColor = "green";
 	yhteen = "green";
 	}
-	yhteenveto(yhteen);
+	vertailu(yhteen);
 	}
 	
 	
@@ -1237,7 +1237,7 @@ function lisaaTieto(x, y, text, color) {
 		d3.select(this).classed("active", false);
 	}
 
-function yhteenveto(vari) {
+function vertailu(vari) {
 		ruutuohje = "5";
 		
 			
