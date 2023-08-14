@@ -248,6 +248,7 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 	font-size: 16px;
 	cursor: pointer;
 }
+
 	</style>
 </head>
 
@@ -277,6 +278,8 @@ h1{text-align:left;font-weight:100;font-size:40px;color:#e74c3c}
 				<div class="tabby-content">
 					
 					<div id="wheel" style="color: black;"></div>
+					<div id="textContainer"></div>
+
 				</div>
 			</div>
 			<div class="tabby-tab">
@@ -550,24 +553,24 @@ function closeFloatingVideo() {
 }
 
 	var tekstit = [
-		{"x":500,"y":40,"area":"11","color":"yellow","text":"ITSEARVOINTI AUTTAA PARANTAMAAN ITSETUNTEMUSTA<br><br>Käsitepohjaisen itsearvioinnin tavoitteena on kuvata visuaalisesti, millaiset asiat viime kädessä vaikuttavat elämänlaatuusi ja elämänkulkuusi.Tutkimusten mukaan itsetuntemus voi parantaa elämänlaatua merkittävästi.<br><br>Tarkoituksena on, että valitset itsellesi merkityksellisiä käsitteitä menneisyydestä, nykyisyydestä, tulevaisuudesta ja ajanhallinnasta. Käsitteet toimivat avaimina yrittäessäsi sisäistää maailmankatsomustasi, valintojasi, halujasi ja tarpeitasi.<br><br>Merkitse vahvuudet <span style='color:#27ae60'><strong>vihre&auml;ll&auml;</strong></span> (klikkaamalla itsellesi merkityksellistä käsitettä kerran) ja puutteet <strong><span style='color:#e74c3c'>punaisella</span></strong> (klikkaamalla kaksi kertaa). Valitse vain sellaiset käsitteet jotka koet tärkeäksi, olipa kyseessä vahvuutesi tai puutteesi. Vältä valitsemasta käsitteitä joihin et liitä juurikaan arvostusta. Esimerkiksi isään tai isättömyyteen voi liittyä vahvoja tunnelatauksia. <br><br>Voit tehdä näitä valintojasi hyvin henkilökohtaisella tasolla, sillä arvioinneista ei kerätä lainkaan henkilötietoja, ja taustatietojakin ensisijaisesti tutkijoiden käyttöön. Pyri olemaan itsellesi mahdollisimman rehellinen, jolloin hyödyt itsearvoinnista enemmän."},
-		{"x":500,"y":490,"area":"11","color":"yellow","text":"ALOITA LUOMALLA OMAT TUNNUKSET<br><br>Tarvitset tunnuksia jos haluat tarkastella tietojasi myöhemmin, tai esitellä tietojasi tukihenkilöillesi. Tunnusten avulla voit tehdä itsearvointia myös osissa. Keksi mikä tahansa mieleen tuleva tunnus ja varmenne. Testaa myös etteivät ne ole jo käytössä. Kadonneita tunnuksia ei voi millään palauttaa. <br><br>Esimerkki<br><strong>Tunnus</strong> Eetu <strong>Varmenne</strong> Reetu<br><br>ÄLÄ HUKKAA TUNNUKSIASI SILLÄ VAIN SINÄ TIEDÄT NE.<br><br>TÄYTÄ MYÖS TAUSTATIEDOT<br><br>Taustatietojen avulla saat tarkimmat tulokset. Taustatiedot ovat tärkeitä tutkijoille. Taustatietoja voidaan hyödyntää myös valmennusohjelmien suunnittelussa. Taustatiedoissa kuukausituloilla tarkoitetaan vain sinun tulojasi, riippumatta perheesi koosta.<br><br>LÄHETÄ LOMAKE VASTA SITEEN KUN OLET KÄYNYT MYÖS VALINTOJA LÄPI.<br><br><strong><span style='color:#e74c3c'>Voi sulkea tämän ohjeen klikkaamalla ?-merkkiä uudelleen.</strong></span>"},
+		{"x":500,"y":40,"area":"11","color":"yellow","text":"ITSEARVOINTI AUTTAA PARANTAMAAN ITSETUNTEMUSTA<br><br>Käsitepohjaisen itsearvioinnin tavoitteena on kuvata visuaalisesti, millaiset asiat viime kädessä vaikuttavat elämänlaatuusi ja elämänkulkuusi.Tutkimusten mukaan itsetuntemus voi parantaa elämänlaatua merkittävästi.<br><br>Tarkoituksena on, että valitset itsellesi merkityksellisiä käsitteitä menneisyydestä, nykyisyydestä, tulevaisuudesta ja ajanhallinnasta. Käsitteet toimivat avaimina pohtiessasi maailmankatsomustasi, valintojasi, halujasi ja tarpeitasi.<br><br>Merkitse vahvuudet <span style='color:#27ae60'><strong>vihre&auml;ll&auml;</strong></span> (klikkaamalla itsellesi merkityksellistä käsitettä kerran) ja puutteet <strong><span style='color:#e74c3c'>punaisella</span></strong> (klikkaamalla kaksi kertaa). Valitse vain sellaiset käsitteet jotka koet tärkeäksi, olipa kyseessä vahvuutesi tai puutteesi. <br><br>Voit tehdä näitä valintojasi hyvin henkilökohtaisella tasolla, sillä arvioinneista ei kerätä lainkaan henkilötietoja. Taustatietoja kerätään tutkimuskäyttöön. Pyri olemaan itsellesi mahdollisimman rehellinen, jolloin hyödyt itsearvoinnista enemmän."},
+		{"x":500,"y":490,"area":"11","color":"yellow","text":"ALOITA LUOMALLA OMAT TUNNUKSET<br><br>Tarvitset tunnuksia jos haluat tarkastella tietojasi myöhemmin, tai esitellä niitä tukihenkilöillesi. Tunnusten avulla voit tehdä itsearvointia myös osissa. Voit käyttää mitä tahansa mieleen tulevaa tunnusta ja varmennetta. Testaa haulla etteivät ne ole jo käytössä. Kadonneita tunnuksia ei voi millään palauttaa. <br><br>Esimerkki<br><strong>Tunnus</strong> Eetu <strong>Varmenne</strong> Reetu<br><br>ÄLÄ HUKKAA TUNNUKSIASI SILLÄ VAIN SINÄ TIEDÄT NE.<br><br>TÄYTÄ MYÖS TAUSTATIEDOT<br><br>Taustatietojen avulla saat tarkimmat tulokset. Taustatiedot ovat tärkeitä tutkijoille. Taustatietoja voidaan hyödyntää myös valmennusohjelmien suunnittelussa. Taustatiedoissa kuukausituloilla tarkoitetaan vain sinun tulojasi, riippumatta perheesi koosta.<br><br>LÄHETÄ LOMAKE VASTA SITTEN KUN OLET TEHNYT MYÖS VALINTOJA.<br><br><strong><span style='color:#e74c3c'>Voi sulkea tämän ohjeen klikkaamalla ?-merkkiä uudelleen.</strong></span>"},
 		
-		       {"x":500,"y":40,"area":"1","color":"green","text":"IKÄVIEN ASIOIDEN MERKINTÄ<br><br>Puutteet voi rinnastaa myös saavuttamattomiin ihanteisiin, jolloin niitä vastaava käsite merkitään punaisella<br><table width='400'><tr style='background-color:#eee' align='left'><td>Koulukiusaus-></td><td>Menneisyys</td><td>Kokemukset</td><td>Koulukaverit</td></tr><tr align='left'><td>Päihderiippuvuus-></td><td>Nykyisyys</td><td>Terveys</td><td>Raittius</td></tr><tr style='background-color:#eee' align='left'><td>Ylivelkaantuminen-></td><td>Ajanhallinta</td><td>Koti</td><td>Taloudellisuus</td></tr><tr align='left'><td>Yksinäisyys-></td><td>Nykyisyys</td><td>Sosiaalisuus</td><td>Ystävyys</td></tr><tr style='background-color:#eee' align='left'><td>Rahapelaaminen-></td><td>Tulevisuus</td><td>Mahdollisuudet</td><td>Riskinotto</td></tr><tr align='left'><td>Eristäytyneisyys-></td><td>Nykyisyys</td><td>Yhteisöllisyys</td><td>Yhteenkuuluvuus</td></tr><tr style='background-color:#eee' align='left'><td>Avuttomuus-></td><td>Nykyisyys</td><td>Toimintakyky</td><td>Tukiverkostot</td></tr><tr align='left'><td>Talousahdinko-></td><td>Nykyisyys<td>Yksilöllisyys</td><td>Selviytyminen</td></tr><tr style='background-color:#eee' align='left'><td>Shoppailu-></td><td>Nykyisyys</td><td>Hyvinvointi</td><td>Tyytyväisyys</td></tr></table>"},
+		       {"x":500,"y":490,"area":"20","color":"green","text":"IKÄVIEN ASIOIDEN MERKINTÄ<br><br>Puutteet voi rinnastaa myös saavuttamattomiin ihanteisiin, jolloin niitä vastaava käsite merkitään punaisella<br><table width='400'><tr style='background-color:#eee' align='left'><td>Koulukiusaus-></td><td>Menneisyys</td><td>Kokemukset</td><td>Koulukaverit</td></tr><tr align='left'><td>Päihderiippuvuus-></td><td>Nykyisyys</td><td>Terveys</td><td>Raittius</td></tr><tr style='background-color:#eee' align='left'><td>Ylivelkaantuminen-></td><td>Ajanhallinta</td><td>Koti</td><td>Taloudellisuus</td></tr><tr align='left'><td>Yksinäisyys-></td><td>Nykyisyys</td><td>Sosiaalisuus</td><td>Ystävyys</td></tr><tr style='background-color:#eee' align='left'><td>Rahapelaaminen-></td><td>Tulevisuus</td><td>Mahdollisuudet</td><td>Riskinotto</td></tr><tr align='left'><td>Eristäytyneisyys-></td><td>Nykyisyys</td><td>Yhteisöllisyys</td><td>Yhteenkuuluvuus</td></tr><tr style='background-color:#eee' align='left'><td>Avuttomuus-></td><td>Nykyisyys</td><td>Toimintakyky</td><td>Tukiverkostot</td></tr><tr align='left'><td>Talousahdinko-></td><td>Nykyisyys<td>Yksilöllisyys</td><td>Selviytyminen</td></tr><tr style='background-color:#eee' align='left'><td>Shoppailu-></td><td>Nykyisyys</td><td>Hyvinvointi</td><td>Tyytyväisyys</td></tr></table>"},
 		       {"x":500,"y":490,"area":"1","color":"green","text":"VALITUT KÄSITTEET\n\nKun olet valinnut mielestäsi kaikki merkitykselliset käsitteet, voit tarkastella niitä aikapyörässä, klikkaamalla ylävalikosta kohtaa Valitut käsitteet. \n\nVoit lisätä myös omia käsitteitäsi tuplaklikkaamalla tyhjää aluetta tai vaihtaa käsitteen väriä klikkaamalla väripainiketta. Voit myös siirrellä käsitteitä, tai poistaa käsitteitä tuplaklikkaamalla väripainiketta."}, 
 
 		
 		
 		       {"x":500,"y":40,"area":"0","color":"yellow","text":"VALITSE KÄSITTEET\n\nKlikkaa lomakkeen yläkulmassa olevaa lomakepainiketta siirtääksesi ensin lomake hetkiseksi sivuun.\n\nSen jälkeen voit ryhtyä valitsemaan itsellesi merkityksellisiä käsitteitä ryhmistä menneisyys, nykyisyys, tulevaisuus ja ajanhallinta. Valitse kunkin ryhmän ulkokehällä olevista käsitteistä vahvuutesi, klikkaamalla käsitettä kerran, ja puutteesi klikkaamalla käsitettä kaksi kertaa."},
-		       {"x":500,"y":40,"area":"0","color":"green","text":"KÄSITTEIDEN SELITTEET\n\nNäet keskialueella käsitteiden selitteet vierittämällä hiirtä ulkokehällä käsitteiden päällä, tai valitsemalla käsitteen. Jos et haluakaan valita käsitettä, niin se poistuu valinnasta joka kolmannella klikkauksella. Pääset takaisin päävalintaan klikkaamalla valkoista keskustaa. Käy kaikki neljä aluetta läpi. Jos haluat keskeyttää ja jatkaa toisella kertaa, klikkaa painiketta Lomake ja valitse Lähetä, jolloin voit tallentaa valintasi."},
+		       {"x":500,"y":40,"area":"20","color":"green","text":"KÄSITTEIDEN SELITTEET\n\nNäet keskialueella käsitteiden selitteet vierittämällä hiirtä ulkokehällä käsitteiden päällä, tai valitsemalla käsitteen. Jos et haluakaan valita käsitettä, niin se poistuu valinnasta joka kolmannella klikkauksella. Pääset takaisin päävalintaan klikkaamalla valkoista keskustaa. Käy kaikki neljä aluetta läpi. Jos haluat keskeyttää ja jatkaa toisella kertaa, klikkaa painiketta Lomake ja valitse Lähetä, jolloin voit tallentaa valintasi."},
 
 
 
-{"x":500,"y":40,"area":"2","color":"green","text":"Itsearviointia positiivisuuden kautta<br><br>Positiivinen itsearviointi auttaa rakentamaan vahvempaa itsetuntoa ja itseluottamusta. Kun keskitytään positiivisiin puoliin, se voi lisätä motivaatiota ja inspiroida jatkamaan pyrkimyksiä tavoitteiden saavuttamiseksi. Lisäksi se voi auttaa luomaan myönteisen asenteen itseä ja ympäristöä kohtaan, mikä vaikuttaa hyvinvointiin ja henkiseen tasapainoon. On tärkeää huomata, että positiivinen itsearviointi ei ole itsekehuskelua tai ylimielisyyttä. Se on lempeää ja rehellistä suhtautumista itseen, jossa tunnistetaan oma arvo ja kyvykkyys, samalla kun ymmärretään, että jokaisella on omat vahvuutensa ja kehittämisen alueensa."},
+{"x":500,"y":40,"area":"2","color":"green","text":"Itsearviointia positiivisuuden kautta<br><br>Positiivinen itsearviointi auttaa rakentamaan vahvempaa itsetuntoa ja itseluottamusta. Lisäksi se voi auttaa luomaan myönteisen asenteen itseä ja ympäristöä kohtaan, mikä vaikuttaa hyvinvointiin ja henkiseen tasapainoon. On tärkeää huomata, että positiivinen itsearviointi ei ole itsekehuskelua tai ylimielisyyttä. Se on lempeää ja rehellistä suhtautumista itseen, jossa tunnistetaan oma arvo ja kyvykkyys, samalla kun ymmärretään, että jokaisella on omat vahvuutensa ja kehittämisen alueensa."},
 
 
 
-{"x":500,"y":490,"area":"2","color":"green","text":"HAVANNOI SIJOITTELUA<br><br>Jos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},
+{"x":500,"y":40,"area":"30","color":"green","text":"HAVANNOI SIJOITTELUA<br><br>Jos olet valinnut käsitteesi huolella, tulisi sinun nähdä itsellesi merkitykselliset asiat samassa kuviossa. Tarkastele värillisten pallojen osuutta eri vyöhykkeillä. Rakenna jonkinlainen tarina käsitteiden ympärille. Mieti selittääkö jokin käsite myöhempiä valintojasi. Pohdi kuinka paljon elät ajanhermolla, nykyisyydessä, menneisyydessä vai tulevaisuudessa. Ovatko vihreät vai punaiset pallot enemmistönä. Jos et ole vielä tallentanut tietojasi, klikkaa Lomake -painiketta ja valitse Lähetä."},
 		       {"x":500,"y":40,"area":"4","color":"green","text":"KÄSITTEIDEN VÄLISET SIDOKSET\nVoit tarkastella myös tekoälyavusteista karttaa käsitteiden välisistä sidoksista vuorovaikutteisesti. Klikkaa ylävalikon kohtaa Käsitteiden väliset sidokset. Valitsemasi käsitteet näkyvät suurina palloina, ja taustakäsitteet keltaisina, pinkkeinä ja vihreinä pallukoina. Keltaiset pallukat toimivat taustalla ohjaavina tekijöinä muita enemmän. Saat tarkemman käsityksen sidoksista klikkaamalla palloja. Taustatekijöiden tarkoituksena on tarjota lisävalaistusta valitsemillesi käsitteille."},
 		       {"x":500,"y":40,"area":"5","color":"green","text":"VERTAILU<br><br>Voit vertailla asemaasi suhteessa muihin. Säteiden pituudet kuvaavat voimakkuutta. Kaksi suurempaa kehää kuvaavat valintojesi pohjalta olevia ryhmiä. Vasemmanpuoleinen sädekehä, elämänkulku, kuvaa ihmisen elämän eri vaiheita, kokemuksia ja kehitystä ajan myötä. Se korostaa elämän matkaa syntymästä kuolemaan ja sisältää kaikki ne käsitteet, jotka liittyvät ihmisen yksilöllisyyteen, suhteisiin, tavoitteisiin ja kokemuksiin elämän eri vaiheissa. Oikeanpuoleinen sädekehä, elämänlaatu, liittyy ihmisen kokemukselliseen hyvinvointiin ja tyytyväisyyteen elämän eri osa-alueilla. Se heijastaa ihmisen terveyttä, toimintakykyä, tietoja, taitoja ja tyytyväisyyttä työhön, kotiin, vapaa-aikaan, kulttuuriin, sukuun ja perheeseen."},
 		       {"x":500,"y":490,"area":"5","color":"green","text":"KEHITÄ ITSETUNTEMUSTASI\n\nToivottavasti tämä itsearviointi avasi jo hieman silmiäsi sinulle merkityksellisistä asioista, ja millä tavoin ne vaikuttavat elämänkulkuusi.\nPidä tunnuksesi muistissa, jolloin voit palata tarkastelemaan tietojasi niin usein kuin haluat. Voit esitellä tietojasi myös tukihenkilöillesi.\nHuomaathan, että itsearvoinninssa ei kerätä lainkaan henkilötietoja.\n\nKIITOS OSALLISTUMISESTASI"}
@@ -599,11 +602,6 @@ document.getElementById("message").value = alkuinfo;
    .style("background-color","white")
    .html(function(d) { return d.text; });
 	}
-
-
-
-
-
 
 	function toggleOpen() {
 
@@ -913,7 +911,6 @@ overlay.style.display = "none";
 				textContainer.style("font-size", "0.7em");
 			}
 		}
-
 		function findParentParentName(data, childName, parentParentName = null) {
 			if(data.children) {
 				for(var i = 0; i < data.children.length; i++) {
@@ -1044,7 +1041,7 @@ function lisaaTieto(x, y, text, color) {
 	}
 
 	function saveCircles() {
-		ruutuohje = "2";
+		ruutuohje = "30";
 		var json = JSON.stringify(dataset);
 		document.getElementById("message").value = json;
 		updateCircles();
