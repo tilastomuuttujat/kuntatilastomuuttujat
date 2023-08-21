@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+/* Määritä luokat halutuille väreille */
+.green {
+  fill: green;
+  background-color: green;
+  border-color: green;
+}
+
+.red {
+  fill: red;
+  background-color: red;
+  border-color: red;
+}
+
+.black {
+  fill: black;
+  background-color: white;
+  border-color: black;
+}
+</style>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+  
+  
+  
+  const backgroundColor = "blue "; // Alusta taustaväri tähän
+  const originalBackgroundColor = backgroundColor;
+  const colorBody = "#6dc62c";
+const colorAnapana = "#6d302c";
+const colorFeeling = "#6d30dc";
+const colorMind = "#cdbe2c";
+const colorMindObject = "#6d302c";
+const colorJhanas = "#6d302c"; 
+
+    const width = 900;
+
+    const svg = d3
+      .create("svg")
+      .attr("viewBox", [-width / 2, -width / 2, width, width]);
+
+    const fontName = "Cormorant SC";
+
+    const text = svg
+      .append("text")
+      .style("font-weight", "bold")
+      .style("fill", "grey")
+      .attr("font-family", "Cormorant SC")
+      .attr("font-size", 15)
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em");
+
+    function createRing(data, type, index) {
+      const {
+        cx = 0,
+        cy = 0,
+        r = 100,
+        innerR = 20,
+        padAngle = 0,
+        color = "black",
+        strokeWidth = 2,
+        fontSize = 12,
+        letterSpace = 0,
+        fade = 0,
+        opacity = 1,
+        radial = false,
+      } = data;
+
+      const arc = d3
+        .arc()
+        .innerRadius(r)
+        .outerRadius(r + innerR)
+        .padAngle((Math.PI / 180) * padAngle)
+        .startAngle((d) => (Math.PI / 180) * d.startAngle)
+        .endAngle((d) => (Math.PI / 180) * d.endAngle);
+
+const g = svg
+    .append("g")
+    .attr("class", "arcLabel")
+    .attr("id", `ring-${index}`) // Luo yksilöllinen id
+    .attr("transform", `translate(${cx}, ${cy})`);
+
+g.selectAll("path")
+    .data(data.data)
+    .enter()
+    .append("path")
+    .style("stroke", color)
+    .style("stroke-width", strokeWidth)
+    .style("fill", color)
+    .style("fill-opacity", opacity)
+    .attr("d", arc);
+
+
+
+g.selectAll("text")
+    .data(data.data)
+    .enter()
+    .append("text")
+    .attr("dy", "0.35em")
+    .attr("transform", (d) => labelTransform(d, r, innerR, type))
+    .style("font-size", fontSize)
+    .style("text-anchor", "middle")
+    .text((d) => d.text);
+
+  // ...
+
+  return g;
+  }
+    
+
+    function labelTransform(d, r, innerR, type) {
+    
+    if(type===1) {
+      const x = (d.endAngle + d.startAngle) / 2 - 90;
+      return `rotate(${x}) translate(${r + innerR / 2},0) rotate(${
+        x < 180 - 90 ? 0 : 180
+      })`;
+    } else {
+
+  const x = (d.endAngle + d.startAngle) / 2;
+  const y = -(r + innerR / 2); // Offset the text slightly inward
+  
+  const rotation = x < 180 ? -90 : 90; // Rotate left side text 90 degrees
+  return `rotate(${x - 0}) translate(${y}, 0) rotate(${rotation})`;
+  }
+}
+
+const rings5 = [
+{
+  r: 270,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 10,
+  color: colorJhanas,
+  fade: 10,
+  opacity: 0.1,
+  data: [
+    {text: "Nykyisyys",startAngle: 0,endAngle: (360 / 4) * 1},
+    {text: "Tulevaisuus",startAngle: (360 / 4) * 1,endAngle: (360 / 4) * 2},
+    {text: "Ajanhallinta",startAngle: (360 / 4) * 2,endAngle: (360 / 4) * 3},
+    {text: "Menneisyys",startAngle: (360 / 4) * 3,endAngle: (360 / 4) * 4}
+    ]
+}
+];
+
+const rings4 = [
+{
+  r: 410,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 15,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.4,
+  data: [
+    {text: "Yksilöllisyys",color: colorBody,startAngle: 0,endAngle: (360 / 12) * 1},
+    {text: "Sosiaalisuus",color: colorBody,startAngle: (360 / 12) * 1,endAngle: (360 / 12) * 2},
+    {text: "Yhteisöllisyys",color: colorBody,startAngle: (360 / 12) * 2,endAngle: (360 / 12) * 3},
+    {text: "Tavoitteet",color: colorBody,startAngle: (360 / 12) * 3,endAngle: (360 / 12) * 4},
+    {text: "Haaveet",color: colorBody,startAngle: (360 / 12) * 4,endAngle: (360 / 12) * 5},
+    {text: "Mahdollisuudet",color: colorFeeling,startAngle: (360 / 12) * 5,endAngle: (360 / 12) * 6},
+    {text: "Tärkeys",color: colorMind,startAngle: (360 / 12) * 6,endAngle: (360 / 12) * 7},
+    {text: "Järjestys",color: colorMindObject,startAngle: (360 / 12) * 7,endAngle: (360 / 12) * 8},
+    {text: "Ajoitus",color: colorMindObject,startAngle: (360 / 12) * 8,endAngle: (360 / 12) * 9},
+    {text: "Arvostukset",color: colorMindObject,startAngle: (360 / 12) * 9,endAngle: (360 / 12) * 10},
+    {text: "Uskomukset",color: colorMindObject,startAngle: (360 / 12) * 10,endAngle: (360 / 12) * 11},
+    {text: "Kokemukset",color: colorMindObject,startAngle: (360 / 12) * 11,endAngle: (360 / 12) * 12}
+    ]
+}
+];
+
+  const rings3 = [
+  {
+  r: 100,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 10,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.4,
+  letterSpace: 0,
+  data: [
+    {text: "Olosuhteet",startAngle: (360 / 4) * 0,endAngle: (360 / 4) * 1,color: colorBody},
+    {text: "Voimavarat",startAngle: (360 / 4) * 1,endAngle: (360 / 4) * 2,color: colorFeeling},
+    {text: "Ympäristö",startAngle: (360 / 4) * 2,endAngle: (360 / 4) * 3,color: colorMind},
+    {text: "Lähtökohdat",startAngle: (360 / 4) * 3,endAngle: (360 / 4) * 4,color: colorMindObject}
+    ]
+}
+];   
+
+  const rings2 = [
+  {
+  r: 240,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 15,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.4,
+  data: [
+    {text: "Kulttuuri",color: colorBody,startAngle: 0,endAngle: (360 / 12) * 1},
+    {text: "Suku",color: colorBody,startAngle: (360 / 12) * 1,endAngle: (360 / 12) * 2},
+    {text: "Perhe",color: colorBody,startAngle: (360 / 12) * 2,endAngle: (360 / 12) * 3},
+    {text: "Terveys",color: colorBody,startAngle: (360 / 12) * 3,endAngle: (360 / 12) * 4},
+    {text: "Hyvinvointi",color: colorBody,startAngle: (360 / 12) * 4,endAngle: (360 / 12) * 5},
+    {text: "Toimintakyky",color: colorFeeling,startAngle: (360 / 12) * 5,endAngle: (360 / 12) * 6},
+    {text: "Taidot",color: colorMind,startAngle: (360 / 12) * 6,endAngle: (360 / 12) * 7},
+    {text: "Tiedot",color: colorMindObject,startAngle: (360 / 12) * 7,endAngle: (360 / 12) * 8},
+    {text: "Kyvyt",color: colorMindObject,startAngle: (360 / 12) * 8,endAngle: (360 / 12) * 9},
+    {text: "Työ",color: colorMindObject,startAngle: (360 / 12) * 9,endAngle: (360 / 12) * 10},
+    {text: "Koti",color: colorMindObject,startAngle: (360 / 12) * 10,endAngle: (360 / 12) * 11},
+    {text: "Vapaa-aika",color: colorMindObject,startAngle: (360 / 12) * 11,endAngle: (360 / 12) * 12}
+    ]
+}
+];
+
+const rings1 = [
+      {
+  r: 130,
+  innerR: 105,
+  padAngle: 0,
+  fontSize: 12,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.1,
+  radial: true,
+
+  data: [
+  {text: "a1",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/8)},
+  {text: "a2",color: colorBody,startAngle: (360/12)*0+(360/12/8),endAngle: (360/12)*0+(360/12/8)*2},
+  {text: "a3",color: colorBody,startAngle: (360/12)*0+(360/12/8)*2,endAngle: (360/12)*0+(360/12/8)*3},
+  {text: "a4",color: colorBody,startAngle: (360/12)*0+(360/12/8)*3,endAngle: (360/12)*0+(360/12/8)*4},
+  {text: "a5",color: colorBody,startAngle: (360/12)*0+(360/12/8)*4,endAngle: (360/12)*0+(360/12/8)*5},
+  {text: "a6",color: colorBody,startAngle: (360/12)*0+(360/12/8)*5,endAngle: (360/12)*0+(360/12/8)*6},
+  {text: "a7",color: colorBody,startAngle: (360/12)*0+(360/12/8)*6,endAngle: (360/12)*0+(360/12/8)*7},
+  {text: "a8",color: colorBody,startAngle: (360/12)*0+(360/12/8)*7,endAngle: (360/12)*1}
+  ]
+}
+];
+
+const rings0 = [
+{
+  r: 300,
+  innerR: 105,
+  padAngle: 0,
+  fontSize: 12,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.1,
+  radial: true,
+
+  data: [
+  {text: "a1",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/12)},
+  {text: "a2",color: colorBody,startAngle: (360/12)*0+(360/12/12),endAngle: (360/12)*0+(360/12/12)*2},
+  {text: "a3",color: colorBody,startAngle: (360/12)*0+(360/12/12)*2,endAngle: (360/12)*0+(360/12/12)*3},
+  {text: "a4",color: colorBody,startAngle: (360/12)*0+(360/12/12)*3,endAngle: (360/12)*0+(360/12/12)*4},
+  {text: "a5",color: colorBody,startAngle: (360/12)*0+(360/12/12)*4,endAngle: (360/12)*0+(360/12/12)*5},
+  {text: "a6",color: colorBody,startAngle: (360/12)*0+(360/12/12)*5,endAngle: (360/12)*0+(360/12/12)*6},
+  {text: "a7",color: colorBody,startAngle: (360/12)*0+(360/12/12)*6,endAngle: (360/12)*0+(360/12/12)*7},
+  {text: "a8",color: colorBody,startAngle: (360/12)*0+(360/12/12)*7,endAngle: (360/12)*0+(360/12/12)*8},
+  {text: "a9",color: colorBody,startAngle: (360/12)*0+(360/12/12)*8,endAngle: (360/12)*0+(360/12/12)*9},
+  {text: "a10",color: colorBody,startAngle: (360/12)*0+(360/12/12)*9,endAngle: (360/12)*0+(360/12/12)*10},
+  {text: "a11",color: colorBody,startAngle: (360/12)*0+(360/12/12)*10,endAngle: (360/12)*0+(360/12/12)*11},  
+  {text: "a12",color: colorBody,startAngle: (360/12)*0+(360/12/12)*11,endAngle: (360/12)*1}
+  ]
+}
+];
+
+
+    // Loop through the rings and create them
+    for (const ringData of rings0) {
+      createRing(ringData, 1);
+    }
+     
+    for (const ringData of rings1) {
+      createRing(ringData, 1);
+    }
+    
+    for (const ringData of rings2) {
+      createRing(ringData, 2);
+    }
+
+    for (const ringData of rings3) {
+      createRing(ringData, 2);
+    }
+    
+    for (const ringData of rings4) {
+      createRing(ringData, 2);
+    }
+    
+    for (const ringData of rings5) {
+      createRing(ringData, 2);
+    }
+    // Append the created SVG to the body of the HTML document
+    document.body.appendChild(svg.node());
+
+const ringGElements = [];
+    for (let i = 0; i < rings0.length; i++) {
+      const ringG = createRing(rings0[i], 1, i);
+      ringGElements.push(ringG);
+    }
+
+    // Käsittele klikkaukset erikseen jokaiselle renkaalle
+ringGElements.forEach((ringG, index) => {
+  ringG.on("click", function () {
+    const clickedRing = d3.select(this);
+    toggleColors(clickedRing, index);
+  });
+});
+
+// ...
+
+function toggleColors(ringElement, index) {
+  const textElements = ringElement.selectAll("text");
+  const pathElements = ringElement.selectAll("path");
+
+  const currentColor = textElements.nodes()[index].style.fill;
+  const newColor = currentColor === "green" ? "red" : "green";
+
+  textElements.nodes()[index].style.fill = newColor;
+  pathElements.nodes()[index].style.stroke = newColor;
+  pathElements.nodes()[index].style.fill = newColor;
+}
+
+
+
+
+
+</script>
+</body>
+</html>
