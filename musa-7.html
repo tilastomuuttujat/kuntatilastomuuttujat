@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3.js Ring Diagram</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+  
+const colorBody = "#6d302c";
+const colorAnapana = "#6d302c";
+const colorFeeling = "#6d302c";
+const colorMind = "#6d302c";
+const colorMindObject = "#6d302c";
+const colorJhanas = "#6d302c"; 
+
+const terveys = "#d839a8";
+
+
+    const width = 900;
+
+    const svg = d3
+      .create("svg")
+      .attr("viewBox", [-width / 2, -width / 2, width, width]);
+svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/betatestaus_1.svg')");
+    const fontName = "Cormorant SC";
+
+    const text = svg
+      .append("text")
+      .style("font-weight", "bold")
+      .style("fill", "grey")
+      .attr("font-family", "Cormorant SC")
+      .attr("font-size", 15)
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em");
+
+    function createRing(data, type) {
+      const {
+        cx = 0,
+        cy = 0,
+        r = 100,
+        innerR = 20,
+        padAngle = 0,
+        color = "black",
+        strokeWidth = 2,
+        fontSize = 12,
+        letterSpace = 0,
+        fade = 0,
+        opacity = 1,
+        radial = false,
+      } = data;
+
+      const arc = d3
+        .arc()
+        .innerRadius(r)
+        .outerRadius(r + innerR)
+        .padAngle((Math.PI / 180) * padAngle)
+        .startAngle((d) => (Math.PI / 180) * d.startAngle)
+        .endAngle((d) => (Math.PI / 180) * d.endAngle);
+
+      const g = svg
+        .append("g")
+        .attr("class", "arcLabel")
+        .attr("transform", `translate(${cx}, ${cy})`);
+
+      g.selectAll("path")
+        .data(data.data)
+        .enter()
+        .append("path")
+        .style("stroke", data.data.color)
+        .style("stroke-width", strokeWidth)
+        .style("fill", data.data.color)
+        .style("fill-opacity", opacity)
+        .attr("d", arc);
+        
+      g.selectAll("text")
+        .data(data.data)
+        .enter()
+        .append("text")
+        .attr("dy", "0.35em")
+        .attr("transform", (d) => labelTransform(d, r, innerR, type))
+        .style("font-size", fontSize)
+        .style("fill", "black")
+        .style("text-anchor", "middle")
+        .text((d) => d.text);
+
+      // Additional label or text rendering logic can be added here
+    }
+
+    function labelTransform(d, r, innerR, type) {
+    
+    if(type===1) {
+      const x = (d.endAngle + d.startAngle) / 2 - 90;
+      return `rotate(${x}) translate(${r + innerR / 2},0) rotate(${
+        x < 180 - 90 ? 0 : 180
+      })`;
+    } else {
+
+  const x = (d.endAngle + d.startAngle) / 2;
+  const y = -(r + innerR / 2); // Offset the text slightly inward
+  
+  const rotation = x < 180 ? -90 : 90; // Rotate left side text 90 degrees
+  return `rotate(${x - 0}) translate(${y}, 0) rotate(${rotation})`;
+  }
+}
+
+const rings5 = [
+{
+  r: 270,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 10,
+  color: colorJhanas,
+  fade: 10,
+  opacity: 0.1,
+  data: [
+    {text: "Menneisyys",startAngle: 0,endAngle: (360 / 4) * 1},
+    {text: "Nykyisyys",startAngle: (360 / 4) * 1,endAngle: (360 / 4) * 2},
+    {text: "Tulevaisuus",startAngle: (360 / 4) * 2,endAngle: (360 / 4) * 3},
+    {text: "Ajanhallinta",startAngle: (360 / 4) * 3,endAngle: (360 / 4) * 4}
+    ]
+}
+];
+
+const rings4 = [
+{
+  r: 410,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 15,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.4,
+  data: [
+    {text: "Arvostukset",color: colorBody,startAngle: 0,endAngle: (360 / 12) * 1},
+    {text: "Uskomukset",color: colorBody,startAngle: (360 / 12) * 1,endAngle: (360 / 12) * 2},
+    {text: "Kokemukset",color: colorBody,startAngle: (360 / 12) * 2,endAngle: (360 / 12) * 3},
+    {text: "Yksilöllisyys",color: colorBody,startAngle: (360 / 12) * 3,endAngle: (360 / 12) * 4},
+    {text: "Sosiaalisuus",color: colorBody,startAngle: (360 / 12) * 4,endAngle: (360 / 12) * 5},
+    {text: "Yhteisöllisyys",color: colorFeeling,startAngle: (360 / 12) * 5,endAngle: (360 / 12) * 6},
+    {text: "Tavoitteet",color: colorMind,startAngle: (360 / 12) * 6,endAngle: (360 / 12) * 7},
+    {text: "Haaveet",color: colorMindObject,startAngle: (360 / 12) * 7,endAngle: (360 / 12) * 8},
+    {text: "Mahdollisuudet",color: colorMindObject,startAngle: (360 / 12) * 8,endAngle: (360 / 12) * 9},
+    {text: "Tärkeys",color: colorMindObject,startAngle: (360 / 12) * 9,endAngle: (360 / 12) * 10},
+    {text: "Järjestys",color: colorMindObject,startAngle: (360 / 12) * 10,endAngle: (360 / 12) * 11},
+    {text: "Ajoitus",color: colorMindObject,startAngle: (360 / 12) * 11,endAngle: (360 / 12) * 12}
+    ]
+}
+];
+
+  const rings3 = [
+  {
+  r: 100,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 10,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.4,
+  letterSpace: 0,
+  data: [
+    {text: "Lähtökohdat",startAngle: (360 / 4) * 0,endAngle: (360 / 4) * 1,color: colorBody},
+    {text: "Olosuhteet",startAngle: (360 / 4) * 1,endAngle: (360 / 4) * 2,color: colorFeeling},
+    {text: "Voimavarat",startAngle: (360 / 4) * 2,endAngle: (360 / 4) * 3,color: colorMind},
+    {text: "Ympäristö",startAngle: (360 / 4) * 3,endAngle: (360 / 4) * 4,color: colorMindObject}
+    ]
+}
+];   
+
+  const rings2 = [
+  {
+  r: 240,
+  innerR: 25,
+  padAngle: 0,
+  fontSize: 15,
+  color: terveys,
+  fade: 10,
+  opacity: 0.4,
+  data: [
+    {text: "Kulttuuri",color: colorBody,startAngle: 0,endAngle: (360 / 12) * 1},
+    {text: "Suku",color: colorBody,startAngle: (360 / 12) * 1,endAngle: (360 / 12) * 2},
+    {text: "Perhe",color: colorBody,startAngle: (360 / 12) * 2,endAngle: (360 / 12) * 3},
+    {text: "Terveys",color: terveys,startAngle: (360 / 12) * 3,endAngle: (360 / 12) * 4},
+    {text: "Hyvinvointi",color: colorBody,startAngle: (360 / 12) * 4,endAngle: (360 / 12) * 5},
+    {text: "Toimintakyky",color: colorFeeling,startAngle: (360 / 12) * 5,endAngle: (360 / 12) * 6},
+    {text: "Taidot",color: colorMind,startAngle: (360 / 12) * 6,endAngle: (360 / 12) * 7},
+    {text: "Tiedot",color: colorMindObject,startAngle: (360 / 12) * 7,endAngle: (360 / 12) * 8},
+    {text: "Kyvyt",color: colorMindObject,startAngle: (360 / 12) * 8,endAngle: (360 / 12) * 9},
+    {text: "Työ",color: colorMindObject,startAngle: (360 / 12) * 9,endAngle: (360 / 12) * 10},
+    {text: "Koti",color: colorMindObject,startAngle: (360 / 12) * 10,endAngle: (360 / 12) * 11},
+    {text: "Vapaa-aika",color: colorMindObject,startAngle: (360 / 12) * 11,endAngle: (360 / 12) * 12}
+    ]
+}
+];
+
+const rings1 = [
+      {
+  r: 90,
+  innerR: 105,
+  padAngle: 0,
+  fontSize: 12,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.1,
+  radial: true,
+
+  data: [
+  {text: "a1",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/8)},
+  {text: "a2",color: colorBody,startAngle: (360/12)*0+(360/12/8),endAngle: (360/12)*0+(360/12/8)*2},
+  {text: "a3",color: colorBody,startAngle: (360/12)*0+(360/12/8)*2,endAngle: (360/12)*0+(360/12/8)*3},
+  {text: "a4",color: colorBody,startAngle: (360/12)*0+(360/12/8)*3,endAngle: (360/12)*0+(360/12/8)*4},
+  {text: "a5",color: colorBody,startAngle: (360/12)*0+(360/12/8)*4,endAngle: (360/12)*0+(360/12/8)*5},
+  {text: "a6",color: colorBody,startAngle: (360/12)*0+(360/12/8)*5,endAngle: (360/12)*0+(360/12/8)*6},
+  {text: "a7",color: colorBody,startAngle: (360/12)*0+(360/12/8)*6,endAngle: (360/12)*0+(360/12/8)*7},
+  {text: "a8",color: colorBody,startAngle: (360/12)*0+(360/12/8)*7,endAngle: (360/12)*1},
+  {text: "b1",color: colorBody,startAngle: (360/12)*1,endAngle: (360/12)*1+(360/12/8)},
+  {text: "b2",color: colorBody,startAngle: (360/12)*1+(360/12/8),endAngle: (360/12)*1+(360/12/8)*2},
+  {text: "b3",color: colorBody,startAngle: (360/12)*1+(360/12/8)*2,endAngle: (360/12)*1+(360/12/8)*3},
+  {text: "b4",color: colorBody,startAngle: (360/12)*1+(360/12/8)*3,endAngle: (360/12)*1+(360/12/8)*4},
+  {text: "b5",color: colorBody,startAngle: (360/12)*1+(360/12/8)*4,endAngle: (360/12)*1+(360/12/8)*5},
+  {text: "b6",color: colorBody,startAngle: (360/12)*1+(360/12/8)*5,endAngle: (360/12)*1+(360/12/8)*6},
+  {text: "b7",color: colorBody,startAngle: (360/12)*1+(360/12/8)*6,endAngle: (360/12)*1+(360/12/8)*7},
+  {text: "b8",color: colorBody,startAngle: (360/12)*1+(360/12/8)*7,endAngle: (360/12)*2},
+  {text: "c1",color: colorBody,startAngle: (360/12)*2,endAngle: (360/12)*2+(360/12/8)},
+  {text: "c2",color: colorBody,startAngle: (360/12)*2+(360/12/8),endAngle: (360/12)*2+(360/12/8)*2},
+  {text: "c3",color: colorBody,startAngle: (360/12)*2+(360/12/8)*2,endAngle: (360/12)*2+(360/12/8)*3},
+  {text: "c4",color: colorBody,startAngle: (360/12)*2+(360/12/8)*3,endAngle: (360/12)*2+(360/12/8)*4},
+  {text: "c5",color: colorBody,startAngle: (360/12)*2+(360/12/8)*4,endAngle: (360/12)*2+(360/12/8)*5},
+  {text: "c6",color: colorBody,startAngle: (360/12)*2+(360/12/8)*5,endAngle: (360/12)*2+(360/12/8)*6},
+  {text: "c7",color: colorBody,startAngle: (360/12)*2+(360/12/8)*6,endAngle: (360/12)*2+(360/12/8)*7},
+  {text: "c8",color: colorBody,startAngle: (360/12)*2+(360/12/8)*7,endAngle: (360/12)*3},
+  {text: "d1",color: colorBody,startAngle: (360/12)*3,endAngle: (360/12)*3+(360/12/8)},
+  {text: "d2",color: colorBody,startAngle: (360/12)*3+(360/12/8),endAngle: (360/12)*3+(360/12/8)*2},
+  {text: "d3",color: colorBody,startAngle: (360/12)*3+(360/12/8)*2,endAngle: (360/12)*3+(360/12/8)*3},
+  {text: "d4",color: colorBody,startAngle: (360/12)*3+(360/12/8)*3,endAngle: (360/12)*3+(360/12/8)*4},
+  {text: "d5",color: colorBody,startAngle: (360/12)*3+(360/12/8)*4,endAngle: (360/12)*3+(360/12/8)*5},
+  {text: "d6",color: colorBody,startAngle: (360/12)*3+(360/12/8)*5,endAngle: (360/12)*3+(360/12/8)*6},
+  {text: "d7",color: colorBody,startAngle: (360/12)*3+(360/12/8)*6,endAngle: (360/12)*3+(360/12/8)*7},
+  {text: "d8",color: colorBody,startAngle: (360/12)*3+(360/12/8)*7,endAngle: (360/12)*4},
+  {text: "e1",color: colorBody,startAngle: (360/12)*4,endAngle: (360/12)*4+(360/12/8)},
+  {text: "e2",color: colorBody,startAngle: (360/12)*4+(360/12/8),endAngle: (360/12)*4+(360/12/8)*2},
+  {text: "e3",color: colorBody,startAngle: (360/12)*4+(360/12/8)*2,endAngle: (360/12)*4+(360/12/8)*3},
+  {text: "e4",color: colorBody,startAngle: (360/12)*4+(360/12/8)*3,endAngle: (360/12)*4+(360/12/8)*4},
+  {text: "e5",color: colorBody,startAngle: (360/12)*4+(360/12/8)*4,endAngle: (360/12)*4+(360/12/8)*5},
+  {text: "e6",color: colorBody,startAngle: (360/12)*4+(360/12/8)*5,endAngle: (360/12)*4+(360/12/8)*6},
+  {text: "e7",color: colorBody,startAngle: (360/12)*4+(360/12/8)*6,endAngle: (360/12)*4+(360/12/8)*7},
+  {text: "e8",color: colorBody,startAngle: (360/12)*4+(360/12/8)*7,endAngle: (360/12)*5},
+  {text: "f1",color: colorBody,startAngle: (360/12)*5,endAngle: (360/12)*5+(360/12/8)},
+  {text: "f2",color: colorBody,startAngle: (360/12)*5+(360/12/8),endAngle: (360/12)*5+(360/12/8)*2},
+  {text: "f3",color: colorBody,startAngle: (360/12)*5+(360/12/8)*2,endAngle: (360/12)*5+(360/12/8)*3},
+  {text: "f4",color: colorBody,startAngle: (360/12)*5+(360/12/8)*3,endAngle: (360/12)*5+(360/12/8)*4},
+  {text: "f5",color: colorBody,startAngle: (360/12)*5+(360/12/8)*4,endAngle: (360/12)*5+(360/12/8)*5},
+  {text: "f6",color: colorBody,startAngle: (360/12)*5+(360/12/8)*5,endAngle: (360/12)*5+(360/12/8)*6},
+  {text: "f7",color: colorBody,startAngle: (360/12)*5+(360/12/8)*6,endAngle: (360/12)*5+(360/12/8)*7},
+  {text: "f8",color: colorBody,startAngle: (360/12)*5+(360/12/8)*7,endAngle: (360/12)*6},
+  {text: "g1",color: colorBody,startAngle: (360/12)*6,endAngle: (360/12)*6+(360/12/8)},
+  {text: "g2",color: colorBody,startAngle: (360/12)*6+(360/12/8),endAngle: (360/12)*6+(360/12/8)*2},
+  {text: "g3",color: colorBody,startAngle: (360/12)*6+(360/12/8)*2,endAngle: (360/12)*6+(360/12/8)*3},
+  {text: "g4",color: colorBody,startAngle: (360/12)*6+(360/12/8)*3,endAngle: (360/12)*6+(360/12/8)*4},
+  {text: "g5",color: colorBody,startAngle: (360/12)*6+(360/12/8)*4,endAngle: (360/12)*6+(360/12/8)*5},
+  {text: "g6",color: colorBody,startAngle: (360/12)*6+(360/12/8)*5,endAngle: (360/12)*6+(360/12/8)*6},
+  {text: "g7",color: colorBody,startAngle: (360/12)*6+(360/12/8)*6,endAngle: (360/12)*6+(360/12/8)*7},
+  {text: "g8",color: colorBody,startAngle: (360/12)*6+(360/12/8)*7,endAngle: (360/12)*7},
+  {text: "h1",color: colorBody,startAngle: (360/12)*7,endAngle: (360/12)*7+(360/12/8)},
+  {text: "h2",color: colorBody,startAngle: (360/12)*7+(360/12/8),endAngle: (360/12)*7+(360/12/8)*2},
+  {text: "h3",color: colorBody,startAngle: (360/12)*7+(360/12/8)*2,endAngle: (360/12)*7+(360/12/8)*3},
+  {text: "h4",color: colorBody,startAngle: (360/12)*7+(360/12/8)*3,endAngle: (360/12)*7+(360/12/8)*4},
+  {text: "h5",color: colorBody,startAngle: (360/12)*7+(360/12/8)*4,endAngle: (360/12)*7+(360/12/8)*5},
+  {text: "h6",color: colorBody,startAngle: (360/12)*7+(360/12/8)*5,endAngle: (360/12)*7+(360/12/8)*6},
+  {text: "h7",color: colorBody,startAngle: (360/12)*7+(360/12/8)*6,endAngle: (360/12)*7+(360/12/8)*7},
+  {text: "h8",color: colorBody,startAngle: (360/12)*7+(360/12/8)*7,endAngle: (360/12)*8},
+  {text: "i1",color: colorBody,startAngle: (360/12)*8,endAngle: (360/12)*8+(360/12/8)},
+  {text: "i2",color: colorBody,startAngle: (360/12)*8+(360/12/8),endAngle: (360/12)*8+(360/12/8)*2},
+  {text: "i3",color: colorBody,startAngle: (360/12)*8+(360/12/8)*2,endAngle: (360/12)*8+(360/12/8)*3},
+  {text: "i4",color: colorBody,startAngle: (360/12)*8+(360/12/8)*3,endAngle: (360/12)*8+(360/12/8)*4},
+  {text: "i5",color: colorBody,startAngle: (360/12)*8+(360/12/8)*4,endAngle: (360/12)*8+(360/12/8)*5},
+  {text: "i6",color: colorBody,startAngle: (360/12)*8+(360/12/8)*5,endAngle: (360/12)*8+(360/12/8)*6},
+  {text: "i7",color: colorBody,startAngle: (360/12)*8+(360/12/8)*6,endAngle: (360/12)*8+(360/12/8)*7},
+  {text: "i8",color: colorBody,startAngle: (360/12)*8+(360/12/8)*7,endAngle: (360/12)*9},
+  {text: "j1",color: colorBody,startAngle: (360/12)*9,endAngle: (360/12)*9+(360/12/8)},
+  {text: "j2",color: colorBody,startAngle: (360/12)*9+(360/12/8),endAngle: (360/12)*9+(360/12/8)*2},
+  {text: "j3",color: colorBody,startAngle: (360/12)*9+(360/12/8)*2,endAngle: (360/12)*9+(360/12/8)*3},
+  {text: "j4",color: colorBody,startAngle: (360/12)*9+(360/12/8)*3,endAngle: (360/12)*9+(360/12/8)*4},
+  {text: "j5",color: colorBody,startAngle: (360/12)*9+(360/12/8)*4,endAngle: (360/12)*9+(360/12/8)*5},
+  {text: "j6",color: colorBody,startAngle: (360/12)*9+(360/12/8)*5,endAngle: (360/12)*9+(360/12/8)*6},
+  {text: "j7",color: colorBody,startAngle: (360/12)*9+(360/12/8)*6,endAngle: (360/12)*9+(360/12/8)*7},
+  {text: "j8",color: colorBody,startAngle: (360/12)*9+(360/12/8)*7,endAngle: (360/12)*10},
+  {text: "k1",color: colorBody,startAngle: (360/12)*10,endAngle: (360/12)*10+(360/12/8)},
+  {text: "k2",color: colorBody,startAngle: (360/12)*10+(360/12/8),endAngle: (360/12)*10+(360/12/8)*2},
+  {text: "k3",color: colorBody,startAngle: (360/12)*10+(360/12/8)*2,endAngle: (360/12)*10+(360/12/8)*3},
+  {text: "k4",color: colorBody,startAngle: (360/12)*10+(360/12/8)*3,endAngle: (360/12)*10+(360/12/8)*4},
+  {text: "k5",color: colorBody,startAngle: (360/12)*10+(360/12/8)*4,endAngle: (360/12)*10+(360/12/8)*5},
+  {text: "k6",color: colorBody,startAngle: (360/12)*10+(360/12/8)*5,endAngle: (360/12)*10+(360/12/8)*6},
+  {text: "k7",color: colorBody,startAngle: (360/12)*10+(360/12/8)*6,endAngle: (360/12)*10+(360/12/8)*7},
+  {text: "k8",color: colorBody,startAngle: (360/12)*10+(360/12/8)*7,endAngle: (360/12)*11},
+  {text: "l1",color: colorBody,startAngle: (360/12)*11,endAngle: (360/12)*11+(360/12/8)},
+  {text: "l2",color: colorBody,startAngle: (360/12)*11+(360/12/8),endAngle: (360/12)*11+(360/12/8)*2},
+  {text: "l3",color: colorBody,startAngle: (360/12)*11+(360/12/8)*2,endAngle: (360/12)*11+(360/12/8)*3},
+  {text: "l4",color: colorBody,startAngle: (360/12)*11+(360/12/8)*3,endAngle: (360/12)*11+(360/12/8)*4},
+  {text: "l5",color: colorBody,startAngle: (360/12)*11+(360/12/8)*4,endAngle: (360/12)*11+(360/12/8)*5},
+  {text: "l6",color: colorBody,startAngle: (360/12)*11+(360/12/8)*5,endAngle: (360/12)*11+(360/12/8)*6},
+  {text: "l7",color: colorBody,startAngle: (360/12)*11+(360/12/8)*6,endAngle: (360/12)*11+(360/12/8)*7},
+  {text: "l8",color: colorBody,startAngle: (360/12)*11+(360/12/8)*7,endAngle: (360/12)*12}
+  ]
+}
+];
+
+const rings0 = [
+{
+  r: 240,
+  innerR: 105,
+  padAngle: 0,
+  fontSize: 12,
+  color: colorAnapana,
+  fade: 10,
+  opacity: 0.1,
+  radial: true,
+
+  data: [
+  {text: "a1",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/12)},
+  {text: "a2",color: colorBody,startAngle: (360/12)*0+(360/12/12),endAngle: (360/12)*0+(360/12/12)*2},
+  {text: "a3",color: colorBody,startAngle: (360/12)*0+(360/12/12)*2,endAngle: (360/12)*0+(360/12/12)*3},
+  {text: "a4",color: colorBody,startAngle: (360/12)*0+(360/12/12)*3,endAngle: (360/12)*0+(360/12/12)*4},
+  {text: "a5",color: colorBody,startAngle: (360/12)*0+(360/12/12)*4,endAngle: (360/12)*0+(360/12/12)*5},
+  {text: "a6",color: colorBody,startAngle: (360/12)*0+(360/12/12)*5,endAngle: (360/12)*0+(360/12/12)*6},
+  {text: "a7",color: colorBody,startAngle: (360/12)*0+(360/12/12)*6,endAngle: (360/12)*0+(360/12/12)*7},
+  {text: "a8",color: colorBody,startAngle: (360/12)*0+(360/12/12)*7,endAngle: (360/12)*0+(360/12/12)*8},
+  {text: "a9",color: colorBody,startAngle: (360/12)*0+(360/12/12)*8,endAngle: (360/12)*0+(360/12/12)*9},
+  {text: "a10",color: colorBody,startAngle: (360/12)*0+(360/12/12)*9,endAngle: (360/12)*0+(360/12/12)*10},
+  {text: "a11",color: colorBody,startAngle: (360/12)*0+(360/12/12)*10,endAngle: (360/12)*0+(360/12/12)*11},  
+  {text: "a12",color: colorBody,startAngle: (360/12)*0+(360/12/12)*11,endAngle: (360/12)*1},  
+  {text: "b1",color: colorBody,startAngle: (360/12)*1,endAngle: (360/12)*1+(360/12/12)},
+  {text: "b2",color: colorBody,startAngle: (360/12)*1+(360/12/12),endAngle: (360/12)*1+(360/12/12)*2},
+  {text: "b3",color: colorBody,startAngle: (360/12)*1+(360/12/12)*2,endAngle: (360/12)*1+(360/12/12)*3},
+  {text: "b4",color: colorBody,startAngle: (360/12)*1+(360/12/12)*3,endAngle: (360/12)*1+(360/12/12)*4},
+  {text: "b5",color: colorBody,startAngle: (360/12)*1+(360/12/12)*4,endAngle: (360/12)*1+(360/12/12)*5},
+  {text: "b6",color: colorBody,startAngle: (360/12)*1+(360/12/12)*5,endAngle: (360/12)*1+(360/12/12)*6},
+  {text: "b7",color: colorBody,startAngle: (360/12)*1+(360/12/12)*6,endAngle: (360/12)*1+(360/12/12)*7},
+  {text: "b8",color: colorBody,startAngle: (360/12)*1+(360/12/12)*7,endAngle: (360/12)*1+(360/12/12)*8},
+  {text: "b9",color: colorBody,startAngle: (360/12)*1+(360/12/12)*8,endAngle: (360/12)*1+(360/12/12)*9},
+  {text: "b10",color: colorBody,startAngle: (360/12)*1+(360/12/12)*9,endAngle: (360/12)*1+(360/12/12)*10},
+  {text: "b11",color: colorBody,startAngle: (360/12)*1+(360/12/12)*10,endAngle: (360/12)*1+(360/12/12)*11},  
+  {text: "b12",color: colorBody,startAngle: (360/12)*1+(360/12/12)*11,endAngle: (360/12)*2},
+  {text: "c1",color: colorBody,startAngle: (360/12)*2,endAngle: (360/12)*2+(360/12/12)},
+  {text: "c2",color: colorBody,startAngle: (360/12)*2+(360/12/12),endAngle: (360/12)*2+(360/12/12)*2},
+  {text: "c3",color: colorBody,startAngle: (360/12)*2+(360/12/12)*2,endAngle: (360/12)*2+(360/12/12)*3},
+  {text: "c4",color: colorBody,startAngle: (360/12)*2+(360/12/12)*3,endAngle: (360/12)*2+(360/12/12)*4},
+  {text: "c5",color: colorBody,startAngle: (360/12)*2+(360/12/12)*4,endAngle: (360/12)*2+(360/12/12)*5},
+  {text: "c6",color: colorBody,startAngle: (360/12)*2+(360/12/12)*5,endAngle: (360/12)*2+(360/12/12)*6},
+  {text: "c7",color: colorBody,startAngle: (360/12)*2+(360/12/12)*6,endAngle: (360/12)*2+(360/12/12)*7},
+  {text: "c8",color: colorBody,startAngle: (360/12)*2+(360/12/12)*7,endAngle: (360/12)*2+(360/12/12)*8},
+  {text: "c9",color: colorBody,startAngle: (360/12)*2+(360/12/12)*8,endAngle: (360/12)*2+(360/12/12)*9},
+  {text: "c10",color: colorBody,startAngle: (360/12)*2+(360/12/12)*9,endAngle: (360/12)*2+(360/12/12)*10},
+  {text: "c11",color: colorBody,startAngle: (360/12)*2+(360/12/12)*10,endAngle: (360/12)*2+(360/12/12)*11},  
+  {text: "c12",color: colorBody,startAngle: (360/12)*2+(360/12/12)*11,endAngle: (360/12)*3},
+  {text: "d1",color: colorBody,startAngle: (360/12)*3,endAngle: (360/12)*3+(360/12/12)},
+  {text: "d2",color: colorBody,startAngle: (360/12)*3+(360/12/12),endAngle: (360/12)*3+(360/12/12)*2},
+  {text: "d3",color: colorBody,startAngle: (360/12)*3+(360/12/12)*2,endAngle: (360/12)*3+(360/12/12)*3},
+  {text: "d4",color: colorBody,startAngle: (360/12)*3+(360/12/12)*3,endAngle: (360/12)*3+(360/12/12)*4},
+  {text: "d5",color: colorBody,startAngle: (360/12)*3+(360/12/12)*4,endAngle: (360/12)*3+(360/12/12)*5},
+  {text: "d6",color: colorBody,startAngle: (360/12)*3+(360/12/12)*5,endAngle: (360/12)*3+(360/12/12)*6},
+  {text: "d7",color: colorBody,startAngle: (360/12)*3+(360/12/12)*6,endAngle: (360/12)*3+(360/12/12)*7},
+  {text: "d8",color: colorBody,startAngle: (360/12)*3+(360/12/12)*7,endAngle: (360/12)*3+(360/12/12)*8},
+  {text: "d9",color: colorBody,startAngle: (360/12)*3+(360/12/12)*8,endAngle: (360/12)*3+(360/12/12)*9},
+  {text: "d10",color: colorBody,startAngle: (360/12)*3+(360/12/12)*9,endAngle: (360/12)*3+(360/12/12)*10},
+  {text: "d11",color: colorBody,startAngle: (360/12)*3+(360/12/12)*10,endAngle: (360/12)*3+(360/12/12)*11},  
+  {text: "d12",color: colorBody,startAngle: (360/12)*3+(360/12/12)*11,endAngle: (360/12)*4},  
+  {text: "e1",color: colorBody,startAngle: (360/12)*4,endAngle: (360/12)*4+(360/12/12)},
+  {text: "e2",color: colorBody,startAngle: (360/12)*4+(360/12/12),endAngle: (360/12)*4+(360/12/12)*2},
+  {text: "e3",color: colorBody,startAngle: (360/12)*4+(360/12/12)*2,endAngle: (360/12)*4+(360/12/12)*3},
+  {text: "e4",color: colorBody,startAngle: (360/12)*4+(360/12/12)*3,endAngle: (360/12)*4+(360/12/12)*4},
+  {text: "e5",color: colorBody,startAngle: (360/12)*4+(360/12/12)*4,endAngle: (360/12)*4+(360/12/12)*5},
+  {text: "e6",color: colorBody,startAngle: (360/12)*4+(360/12/12)*5,endAngle: (360/12)*4+(360/12/12)*6},
+  {text: "e7",color: colorBody,startAngle: (360/12)*4+(360/12/12)*6,endAngle: (360/12)*4+(360/12/12)*7},
+  {text: "e8",color: colorBody,startAngle: (360/12)*4+(360/12/12)*7,endAngle: (360/12)*4+(360/12/12)*8},
+  {text: "e9",color: colorBody,startAngle: (360/12)*4+(360/12/12)*8,endAngle: (360/12)*4+(360/12/12)*9},
+  {text: "e10",color: colorBody,startAngle: (360/12)*4+(360/12/12)*9,endAngle: (360/12)*4+(360/12/12)*10},
+  {text: "e11",color: colorBody,startAngle: (360/12)*4+(360/12/12)*10,endAngle: (360/12)*4+(360/12/12)*11},  
+  {text: "e12",color: colorBody,startAngle: (360/12)*4+(360/12/12)*11,endAngle: (360/12)*5},
+  {text: "f1",color: colorBody,startAngle: (360/12)*5,endAngle: (360/12)*5+(360/12/12)},
+  {text: "f2",color: colorBody,startAngle: (360/12)*5+(360/12/12),endAngle: (360/12)*5+(360/12/12)*2},
+  {text: "f3",color: colorBody,startAngle: (360/12)*5+(360/12/12)*2,endAngle: (360/12)*5+(360/12/12)*3},
+  {text: "f4",color: colorBody,startAngle: (360/12)*5+(360/12/12)*3,endAngle: (360/12)*5+(360/12/12)*4},
+  {text: "f5",color: colorBody,startAngle: (360/12)*5+(360/12/12)*4,endAngle: (360/12)*5+(360/12/12)*5},
+  {text: "f6",color: colorBody,startAngle: (360/12)*5+(360/12/12)*5,endAngle: (360/12)*5+(360/12/12)*6},
+  {text: "f7",color: colorBody,startAngle: (360/12)*5+(360/12/12)*6,endAngle: (360/12)*5+(360/12/12)*7},
+  {text: "f8",color: colorBody,startAngle: (360/12)*5+(360/12/12)*7,endAngle: (360/12)*5+(360/12/12)*8},
+  {text: "f9",color: colorBody,startAngle: (360/12)*5+(360/12/12)*8,endAngle: (360/12)*5+(360/12/12)*9},
+  {text: "f10",color: colorBody,startAngle: (360/12)*5+(360/12/12)*9,endAngle: (360/12)*5+(360/12/12)*10},
+  {text: "f11",color: colorBody,startAngle: (360/12)*5+(360/12/12)*10,endAngle: (360/12)*5+(360/12/12)*11},  
+  {text: "f12",color: colorBody,startAngle: (360/12)*5+(360/12/12)*11,endAngle: (360/12)*6},
+  {text: "g1",color: colorBody,startAngle: (360/12)*6,endAngle: (360/12)*6+(360/12/12)},
+  {text: "g2",color: colorBody,startAngle: (360/12)*6+(360/12/12),endAngle: (360/12)*6+(360/12/12)*2},
+  {text: "g3",color: colorBody,startAngle: (360/12)*6+(360/12/12)*2,endAngle: (360/12)*6+(360/12/12)*3},
+  {text: "g4",color: colorBody,startAngle: (360/12)*6+(360/12/12)*3,endAngle: (360/12)*6+(360/12/12)*4},
+  {text: "g5",color: colorBody,startAngle: (360/12)*6+(360/12/12)*4,endAngle: (360/12)*6+(360/12/12)*5},
+  {text: "g6",color: colorBody,startAngle: (360/12)*6+(360/12/12)*5,endAngle: (360/12)*6+(360/12/12)*6},
+  {text: "g7",color: colorBody,startAngle: (360/12)*6+(360/12/12)*6,endAngle: (360/12)*6+(360/12/12)*7},
+  {text: "g8",color: colorBody,startAngle: (360/12)*6+(360/12/12)*7,endAngle: (360/12)*6+(360/12/12)*8},
+  {text: "g9",color: colorBody,startAngle: (360/12)*6+(360/12/12)*8,endAngle: (360/12)*6+(360/12/12)*9},
+  {text: "g10",color: colorBody,startAngle: (360/12)*6+(360/12/12)*9,endAngle: (360/12)*6+(360/12/12)*10},
+  {text: "g11",color: colorBody,startAngle: (360/12)*6+(360/12/12)*10,endAngle: (360/12)*6+(360/12/12)*11},  
+  {text: "g12",color: colorBody,startAngle: (360/12)*6+(360/12/12)*11,endAngle: (360/12)*7},  
+  {text: "h1",color: colorBody,startAngle: (360/12)*7,endAngle: (360/12)*7+(360/12/12)},
+  {text: "h2",color: colorBody,startAngle: (360/12)*7+(360/12/12),endAngle: (360/12)*7+(360/12/12)*2},
+  {text: "h3",color: colorBody,startAngle: (360/12)*7+(360/12/12)*2,endAngle: (360/12)*7+(360/12/12)*3},
+  {text: "h4",color: colorBody,startAngle: (360/12)*7+(360/12/12)*3,endAngle: (360/12)*7+(360/12/12)*4},
+  {text: "h5",color: colorBody,startAngle: (360/12)*7+(360/12/12)*4,endAngle: (360/12)*7+(360/12/12)*5},
+  {text: "h6",color: colorBody,startAngle: (360/12)*7+(360/12/12)*5,endAngle: (360/12)*7+(360/12/12)*6},
+  {text: "h7",color: colorBody,startAngle: (360/12)*7+(360/12/12)*6,endAngle: (360/12)*7+(360/12/12)*7},
+  {text: "h8",color: colorBody,startAngle: (360/12)*7+(360/12/12)*7,endAngle: (360/12)*7+(360/12/12)*8},
+  {text: "h9",color: colorBody,startAngle: (360/12)*7+(360/12/12)*8,endAngle: (360/12)*7+(360/12/12)*9},
+  {text: "h10",color: colorBody,startAngle: (360/12)*7+(360/12/12)*9,endAngle: (360/12)*7+(360/12/12)*10},
+  {text: "h11",color: colorBody,startAngle: (360/12)*7+(360/12/12)*10,endAngle: (360/12)*7+(360/12/12)*11},  
+  {text: "h12",color: colorBody,startAngle: (360/12)*7+(360/12/12)*11,endAngle: (360/12)*8},
+  {text: "i1",color: colorBody,startAngle: (360/12)*8,endAngle: (360/12)*8+(360/12/12)},
+  {text: "i2",color: colorBody,startAngle: (360/12)*8+(360/12/12),endAngle: (360/12)*8+(360/12/12)*2},
+  {text: "i3",color: colorBody,startAngle: (360/12)*8+(360/12/12)*2,endAngle: (360/12)*8+(360/12/12)*3},
+  {text: "i4",color: colorBody,startAngle: (360/12)*8+(360/12/12)*3,endAngle: (360/12)*8+(360/12/12)*4},
+  {text: "i5",color: colorBody,startAngle: (360/12)*8+(360/12/12)*4,endAngle: (360/12)*8+(360/12/12)*5},
+  {text: "i6",color: colorBody,startAngle: (360/12)*8+(360/12/12)*5,endAngle: (360/12)*8+(360/12/12)*6},
+  {text: "i7",color: colorBody,startAngle: (360/12)*8+(360/12/12)*6,endAngle: (360/12)*8+(360/12/12)*7},
+  {text: "i8",color: colorBody,startAngle: (360/12)*8+(360/12/12)*7,endAngle: (360/12)*8+(360/12/12)*8},
+  {text: "i9",color: colorBody,startAngle: (360/12)*8+(360/12/12)*8,endAngle: (360/12)*8+(360/12/12)*9},
+  {text: "i10",color: colorBody,startAngle: (360/12)*8+(360/12/12)*9,endAngle: (360/12)*8+(360/12/12)*10},
+  {text: "i11",color: colorBody,startAngle: (360/12)*8+(360/12/12)*10,endAngle: (360/12)*8+(360/12/12)*11},  
+  {text: "i12",color: colorBody,startAngle: (360/12)*8+(360/12/12)*11,endAngle: (360/12)*9},
+  {text: "j1",color: colorBody,startAngle: (360/12)*9,endAngle: (360/12)*9+(360/12/12)},
+  {text: "j2",color: colorBody,startAngle: (360/12)*9+(360/12/12),endAngle: (360/12)*9+(360/12/12)*2},
+  {text: "j3",color: colorBody,startAngle: (360/12)*9+(360/12/12)*2,endAngle: (360/12)*9+(360/12/12)*3},
+  {text: "j4",color: colorBody,startAngle: (360/12)*9+(360/12/12)*3,endAngle: (360/12)*9+(360/12/12)*4},
+  {text: "j5",color: colorBody,startAngle: (360/12)*9+(360/12/12)*4,endAngle: (360/12)*9+(360/12/12)*5},
+  {text: "j6",color: colorBody,startAngle: (360/12)*9+(360/12/12)*5,endAngle: (360/12)*9+(360/12/12)*6},
+  {text: "j7",color: colorBody,startAngle: (360/12)*9+(360/12/12)*6,endAngle: (360/12)*9+(360/12/12)*7},
+  {text: "j8",color: colorBody,startAngle: (360/12)*9+(360/12/12)*7,endAngle: (360/12)*9+(360/12/12)*8},
+  {text: "j9",color: colorBody,startAngle: (360/12)*9+(360/12/12)*8,endAngle: (360/12)*9+(360/12/12)*9},
+  {text: "j10",color: colorBody,startAngle: (360/12)*9+(360/12/12)*9,endAngle: (360/12)*9+(360/12/12)*10},
+  {text: "j11",color: colorBody,startAngle: (360/12)*9+(360/12/12)*10,endAngle: (360/12)*9+(360/12/12)*11},  
+  {text: "j12",color: colorBody,startAngle: (360/12)*9+(360/12/12)*11,endAngle: (360/12)*10},  
+  {text: "k1",color: colorBody,startAngle: (360/12)*10,endAngle: (360/12)*10+(360/12/12)},
+  {text: "k2",color: colorBody,startAngle: (360/12)*10+(360/12/12),endAngle: (360/12)*10+(360/12/12)*2},
+  {text: "k3",color: colorBody,startAngle: (360/12)*10+(360/12/12)*2,endAngle: (360/12)*10+(360/12/12)*3},
+  {text: "k4",color: colorBody,startAngle: (360/12)*10+(360/12/12)*3,endAngle: (360/12)*10+(360/12/12)*4},
+  {text: "k5",color: colorBody,startAngle: (360/12)*10+(360/12/12)*4,endAngle: (360/12)*10+(360/12/12)*5},
+  {text: "k6",color: colorBody,startAngle: (360/12)*10+(360/12/12)*5,endAngle: (360/12)*10+(360/12/12)*6},
+  {text: "k7",color: colorBody,startAngle: (360/12)*10+(360/12/12)*6,endAngle: (360/12)*10+(360/12/12)*7},
+  {text: "k8",color: colorBody,startAngle: (360/12)*10+(360/12/12)*7,endAngle: (360/12)*10+(360/12/12)*8},
+  {text: "k9",color: colorBody,startAngle: (360/12)*10+(360/12/12)*8,endAngle: (360/12)*10+(360/12/12)*9},
+  {text: "k10",color: colorBody,startAngle: (360/12)*10+(360/12/12)*9,endAngle: (360/12)*10+(360/12/12)*10},
+  {text: "k11",color: colorBody,startAngle: (360/12)*10+(360/12/12)*10,endAngle: (360/12)*10+(360/12/12)*11},  
+  {text: "k12",color: colorBody,startAngle: (360/12)*10+(360/12/12)*11,endAngle: (360/12)*11},
+  {text: "l1",color: colorBody,startAngle: (360/12)*11,endAngle: (360/12)*11+(360/12/12)},
+  {text: "l2",color: colorBody,startAngle: (360/12)*11+(360/12/12),endAngle: (360/12)*11+(360/12/12)*2},
+  {text: "l3",color: colorBody,startAngle: (360/12)*11+(360/12/12)*2,endAngle: (360/12)*11+(360/12/12)*3},
+  {text: "l4",color: colorBody,startAngle: (360/12)*11+(360/12/12)*3,endAngle: (360/12)*11+(360/12/12)*4},
+  {text: "l5",color: colorBody,startAngle: (360/12)*11+(360/12/12)*4,endAngle: (360/12)*11+(360/12/12)*5},
+  {text: "l6",color: colorBody,startAngle: (360/12)*11+(360/12/12)*5,endAngle: (360/12)*11+(360/12/12)*6},
+  {text: "l7",color: colorBody,startAngle: (360/12)*11+(360/12/12)*6,endAngle: (360/12)*11+(360/12/12)*7},
+  {text: "l8",color: colorBody,startAngle: (360/12)*11+(360/12/12)*7,endAngle: (360/12)*11+(360/12/12)*8},
+  {text: "l9",color: colorBody,startAngle: (360/12)*11+(360/12/12)*8,endAngle: (360/12)*11+(360/12/12)*9},
+  {text: "l10",color: colorBody,startAngle: (360/12)*11+(360/12/12)*9,endAngle: (360/12)*11+(360/12/12)*10},
+  {text: "l11",color: colorBody,startAngle: (360/12)*11+(360/12/12)*10,endAngle: (360/12)*11+(360/12/12)*11},  
+  {text: "l12",color: colorBody,startAngle: (360/12)*11+(360/12/12)*11,endAngle: (360/12)*12}
+  ]
+}
+];
+
+
+    // Loop through the rings and create them
+    for (const ringData of rings0) {
+      createRing(ringData, 1);
+    }
+     
+    for (const ringData of rings1) {
+      createRing(ringData, 1);
+    }
+    
+    for (const ringData of rings2) {
+      //createRing(ringData, 2);
+    }
+
+    for (const ringData of rings3) {
+      //createRing(ringData, 2);
+    }
+    
+    for (const ringData of rings4) {
+      //createRing(ringData, 2);
+    }
+    
+    for (const ringData of rings5) {
+      //createRing(ringData, 2);
+    }
+
+    document.body.appendChild(svg.node());
+
+    const rings0Element = svg.selectAll(".arcLabel").filter((d, i) => i === 0);
+    rings0Element.selectAll("text").on("click", function () {
+      toggleColors(this, rings0Element, 0);
+    });
+
+    const rings1Element = svg.selectAll(".arcLabel").filter((d, i) => i === 1);
+    rings1Element.selectAll("text").on("click", function () {
+      toggleColors(this, rings1Element, 1);
+    });
+
+    function toggleColors(textElement, ringElement, type) {
+    
+      const clickedText = d3.select(textElement);
+      const clickedPath = ringElement.selectAll("path");
+      const currentColor = clickedText.style("fill");
+      let newColor = "black";
+
+      if (currentColor === "black") {
+        newColor = "green";
+      } else if (currentColor === "green") {
+        newColor = "red";
+      }
+
+      const targetText = clickedText["_groups"][0][0]["__data__"]["text"];
+      clickedText.style("fill", newColor);
+      clickedText.style("stroke", newColor);
+      clickedText.style("background-color", newColor);
+
+      const textElements = ringElement.selectAll("text")
+      const pathElements = ringElement.selectAll("path");
+      
+      textElements.style("fill", function() {
+        return this === clickedText.node() ? newColor : "black";
+      });
+      
+      if(type===0) {
+      for (let i = 0; i < rings0[0].data.length; i++) {
+      if(rings0[0].data[i]["text"] === targetText) {
+      //console.log(rings0[0].data[i]["text"],targetText);
+      pathElements.nodes()[i].style.stroke = newColor;
+      pathElements.nodes()[i].style.fill = newColor;
+      }
+      }
+      } else {
+      for (let j = 0; j < rings1[0].data.length; j++) {
+      if(rings1[0].data[j]["text"] === targetText) {
+      //console.log(rings1[0].data[i]["text"],targetText);
+      pathElements.nodes()[j].style.stroke = newColor;
+      pathElements.nodes()[j].style.fill = newColor;
+      }
+      }
+      }
+}        
+  </script>
+</body>
+</html>
