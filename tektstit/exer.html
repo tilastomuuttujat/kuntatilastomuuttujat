@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    .background {
+      fill: #201e1f;
+    }
+    path,
+    circle {
+      fill: none;
+      stroke: black;
+      stroke-width: 0.025;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .word-line {
+      stroke: #db93b1;
+    }
+    .dot {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 2;
+      stroke: none;
+    }
+    .word, .dot-label {
+      text-anchor: middle;
+      text-transform: uppercase;
+      font-size: 0.1pt;
+      font-family: "Work Sans", Alice, "DM Serif Display", "Archivo Narrow", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+      fill: #588760;
+    }
+    .dot-label {
+      font-size: 0.05pt;
+    }
+    .dot, .dot-label {
+      fill: #6aaa75;
+    }
+    .start {
+      stroke: none;
+      fill: none;
+    }
+    .border {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 1;
+      fill: none;
+      stroke: none;
+      stroke-dasharray: 1 2;
+    }
+    .info {
+      font-family: Menlo, Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+<textarea id="textArea" rows="5" cols="50">Tässä on esimerkki tekstistä.</textarea>
+<div id="visualization"></div>
+
+<script>
+function drawVisualization() {
+  const text = document.getElementById("textArea").value;
+  const sentences = text.split("\n").map(sentence => sentence.split(" ").filter(word => word));
+  const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+  const svgWidth = 800;
+  const maxHeight = window.outerHeight - 250;
+  const margin = {
+    left: 0.2,
+    right: 0.2,
+    top: 0.3,
+    bottom: -0.1,
+  };
+  const w = 1.25;
+  const h = 1.6;
+  const maxLength = Math.max(...sentences.map(sentence => sentence.length));
+  const ar = (w * maxLength + margin.left + margin.right) / (h * sentences.length + margin.top + margin.bottom);
+  let svgHeight = svgWidth / ar;
+  if (svgHeight > maxHeight) {
+    svgHeight = maxHeight;
+  }
+
+  const svg = d3.select("#visualization")
+    .html("") // Tyhjentää aiemman sisällön
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr("viewBox", `-${margin.left} -${margin.top} ${w * maxLength + margin.left + margin.right} ${h * sentences.length + margin.top + margin.bottom}`);
+
+  svg.append("rect")
+    //.attr("class", "background")
+    .attr("x", `-${margin.left}`)
+    .attr("y", `-${margin.top}`)
+    .attr("width", `${w * maxLength + margin.left + margin.right}`)
+    .attr("height", `${h * sentences.length + margin.top + margin.bottom}`);
+
+  sentences.forEach((sentence, j) => {
+    sentence.forEach((word, i) => {
+      Array.from(alphabet).forEach(char => {
+        const cx = w * i + w / 2 + 0.5 * Math.cos(j * (Math.PI / 6));
+        const cy = h * j + 0.5 + 0.5 * Math.sin(j * (Math.PI / 6));
+        svg.append("circle")
+          .attr("class", "dot")
+          .attr("cx", cx)
+          .attr("cy", cy)
+          .attr("r", 0.01);
+      });
+    });
+
+    sentence.forEach((word, i) => {
+      Array.from(alphabet).forEach(char => {
+        const cx = w * i + w / 2 + (0.5 + 0.06) * Math.cos(j * (Math.PI / 6));
+        const cy = h * j + 0.5 + (0.5 + 0.06) * Math.sin(j * (Math.PI / 6));
+        const a = 90 + (j * 30);
+        svg.append("text")
+          .attr("class", "dot-label")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("transform", `translate(${cx}, ${cy}) rotate(${a})`)
+          .text(char);
+      });
+    });
+
+    sentence.forEach((word, i) => {
+      const cx = w * i + w / 2;
+      const cy = h * j + 0.5;
+      svg.append("text")
+        .attr("class", "word")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("x", cx)
+        .attr("y", cy + 0.5 + 0.4 * (h - 1))
+        .text(word);
+    });
+
+    sentence.forEach((word, i) => {
+      const cx = w * i + w / 2;
+      const cy = h * j + 0.5;
+      svg.append("circle")
+        .attr("class", "border")
+        .attr("cx", cx)
+        .attr("cy", cy)
+        .attr("r", 0.5);
+    });
+
+    sentence.forEach((word, i) => {
+      const cx = w * i + w / 2;
+      const cy = h * j + 0.5;
+      const x1 = cx - w / 2;
+      const x2 = cx + w / 2;
+      const y = cy;
+      svg.append("path")
+        .attr("class", "word-line")
+        .attr("d", `M ${x1} ${y} L ${x2} ${y}`);
+    });
+  });
+}
+
+// Kutsutaan drawVisualization-funktiota aina kun teksti muuttuu
+document.getElementById("textArea").addEventListener("input", drawVisualization);
+
+// Ensimmäinen piirtokerta
+drawVisualization();
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+
+        path, circle {
+            /*stroke: black;*/
+            stroke-width: 0.025;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .word-line {
+            stroke: #db93b1;
+        }
+        .dot {
+            vector-effect: non-scaling-stroke;
+            stroke-width: 2;
+            stroke: none;
+        }
+        .word, .dot-label {
+            text-anchor: middle;
+            text-transform: uppercase;
+            font-size: 0.1pt;
+            font-family: "Work Sans", Alice, "DM Serif Display", "Archivo Narrow", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+            fill: #588760;
+        }
+        .dot-label {
+            font-size: 0.05pt;
+        }
+        .dot, .dot-label {
+            fill: #6aaa75;
+        }
+        .start {
+            stroke: none;
+            fill: none;
+        }
+        .border {
+            vector-effect: non-scaling-stroke;
+            stroke-width: 1;
+            fill: none;
+            stroke: none;
+            stroke-dasharray: 1 2;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="textInput" rows="5" cols="50">The detail of the pattern is movement</textarea>
+    <br>
+    <button onclick="drawPattern()">Draw</button>
+    <br>
+    <svg id="svgCanvas"></svg>
+    <script>
+        const svgWidth = 800;
+        const svgHeight = 800;
+        const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+
+        const svg = d3.select("#svgCanvas")
+            .attr("width", svgWidth)
+            .attr("height", svgHeight);
+
+        svg.append("rect")
+           /* .attr("class", "background")*/
+            .attr("width", svgWidth)
+            .attr("height", svgHeight);
+
+        const w = 1.25;
+        const h = 1.6;
+
+        function drawPattern() {
+            const textValue = document.getElementById("textInput").value;
+            const sentences = textValue.toLowerCase().split("\n").map((line) => line.split(" ").filter((word) => word));
+
+            sentences.forEach((sentence, j) => {
+                sentence.forEach((word, i) => {
+                    const cx = w * i + w / 2;
+                    const cy = h * j + 0.5;
+                    const radius = 0.5;
+                    const wordLength = word.length;
+
+                    // Piirrä kehä
+                    svg.append("circle")
+                        .attr("class", "border")
+                        .attr("cx", cx)
+                        .attr("cy", cy)
+                        .attr("r", radius);
+
+                    // Piirrä yhdistävät viivat
+                    svg.append("path")
+                        .attr("class", "word-line")
+                        .attr("d", `M ${cx - w / 2} ${cy} L ${cx + w / 2} ${cy}`);
+
+                    // Piirrä aloituskirjain
+                    const startChar = word[0].toLowerCase();
+                    const startIndex = alphabet.indexOf(startChar);
+                    const angle = (startIndex / 26) * 360;
+                    const startX = cx + (radius + 0.1) * Math.cos((angle * Math.PI) / 180);
+                    const startY = cy + (radius + 0.1) * Math.sin((angle * Math.PI) / 180);
+
+                    svg.append("circle")
+                        .attr("class", "start")
+                        .attr("cx", startX)
+                        .attr("cy", startY)
+                        .attr("r", 1);
+
+                    // Piirrä kirjaimet
+                    word.split("").forEach((char, charIndex) => {
+                        const charAngle = (startIndex + charIndex) * (360 / 26);
+                        const charX = cx + (radius + 0.15) * Math.cos((charAngle * Math.PI) / 180);
+                        const charY = cy + (radius + 0.15) * Math.sin((charAngle * Math.PI) / 180);
+
+                        // Piirrä kirjain
+                        svg.append("text")
+                            .attr("class", "dot-label")
+                            .attr("text-anchor", "middle")
+                            .attr("alignment-baseline", "middle")
+                            .attr("transform", `translate(${charX}, ${charY})`)
+                            .text(char);
+                    });
+
+                    // Piirrä sana
+                    svg.append("text")
+                        .attr("class", "word")
+                        .attr("text-anchor", "middle")
+                        .attr("alignment-baseline", "middle")
+                        .attr("x", cx)
+                        .attr("y", cy + 0.5 + 0.4 * (h - 1))
+                        .text(word);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

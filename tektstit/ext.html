@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    .background {
+      fill: #201e1f;
+    }
+    path,
+    circle {
+      fill: none;
+      stroke: black;
+      stroke-width: 0.025;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .word-line {
+      stroke: #db93b1;
+    }
+    .dot {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 2;
+      stroke: none;
+    }
+    .word,
+    .dot-label {
+      text-anchor: middle;
+      text-transform: uppercase;
+      font-size: 0.1pt;
+      font-family: "Work Sans", Alice, "DM Serif Display", "Archivo Narrow", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+      fill: #588760;
+    }
+    .dot-label {
+      font-size: 0.05pt;
+    }
+    .dot,
+    .dot-label {
+      fill: #6aaa75;
+    }
+    .start {
+      stroke: none;
+      fill: none;
+    }
+    .border {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 1;
+      fill: none;
+      stroke: none;
+      stroke-dasharray: 1 2;
+    }
+    .info {
+      font-family: Menlo, Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+    function passage(Inputs) {
+      return Inputs.textarea({
+        label: "Text",
+        value: "The detail of the pattern is movement",
+        rows: 5,
+      });
+    }
+
+    function big(Inputs) {
+      return Inputs.range([5, 35], {
+        value: 18,
+        label: "top letter spacing (degrees)",
+        step: 1,
+      });
+    }
+
+    function maxHeight(Inputs) {
+      return Inputs.range([400, 2000], {
+        label: "max height",
+        value: window.outerHeight - 250,
+        step: 1,
+      });
+    }
+
+    function alphabet() {
+      return "abcdefghijklmnopqrstuvwxyzåäö";
+    }
+
+    function coordinates(char, big) {
+      const small = (360 - 8 * big) / 18;
+      const angle = new Map();
+      for (let i = 0; i < alphabet().length; i++) {
+        if (i <= 8) {
+          angle.set(alphabet().charAt(i), -90 + (i - 4) * big);
+        } else {
+          angle.set(
+            alphabet().charAt(i),
+            angle.get("i") + (i - 8) * small
+          );
+        }
+      }
+      const coords = new Map();
+      for (let i = 0; i < alphabet().length; i++) {
+        const x = (angle.get(alphabet().charAt(i)) * Math.PI) / 180;
+        coords.set(alphabet().charAt(i), [Math.cos(x), Math.sin(x), x]);
+      }
+      return coords[char];
+    }
+
+    function sentences(passage) {
+      return passage
+        .replace(/[\p{P}$+<=>^`|~0-9]/gu, "")
+        .toLowerCase()
+        .split("\n")
+        .map((d) => d.split(" ").filter((d) => d));
+    }
+
+    function makeWordPath(coordinates, d3) {
+      return function makeWordPath(cx, cy, word) {
+        const result = [];
+        for (let character of word) {
+          let [x, y] = coordinates.get(character);
+          result.push([cx + 0.5 * x, cy + 0.5 * y]);
+        }
+        return d3.line()(result);
+      };
+    }
+
+    // Define the width, height, and sentences variables
+    const width = 800; // Define the desired width
+    const height = 600; // Define the desired height
+    const text = passage().value; // Use the 'value' property to get the passage text
+    const sentencesArray = sentences(text); // Call the sentences function with the passage text
+
+    let svgWidth = width;
+    const spacing = 0.0;
+    const margin = {
+      left: 0.2,
+      right: 0.2,
+      top: 0.3,
+      bottom: -0.1,
+    };
+    const w = 1.25;
+    const h = 1.6;
+    const maxHeightValue = maxHeight().value;
+
+    const maxLength = Math.max(
+      ...sentencesArray.map((d) => d.length)
+    );
+    const ar =
+      (w * maxLength + margin.left + margin.right) /
+      (h * sentencesArray.length + margin.top + margin.bottom);
+    let svgHeight = svgWidth / ar;
+
+    if (svgHeight > maxHeightValue) {
+      svgHeight = maxHeightValue;
+      svgWidth = svgHeight * ar;
+    }
+
+    const svg = d3
+      .create("svg:svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight)
+      .attr(
+        "viewBox",
+        `-${margin.left} -${margin.top} ${w * maxLength + margin.left + margin.right} ${h * sentencesArray.length + margin.top + margin.bottom}`
+      );
+
+    svg
+      .append("rect")
+      .attr("class", "background")
+      .attr("x", `-${margin.left}`)
+      .attr("y", `-${margin.top}`)
+      .attr("width", `${w * maxLength + margin.left + margin.right}`)
+      .attr("height", `${h * sentencesArray.length + margin.top + margin.bottom}`);
+
+    sentencesArray.forEach(function (sentence, j) {
+      sentence.forEach(function (word, i) {
+        Array.from(alphabet()).forEach(function (char) {
+          const cx = w * i + w / 2 + 0.5 * coordinates(char, big().value)[0];
+          const cy = h * j + 0.5 + 0.5 * coordinates(char, big().value)[1];
+          svg
+            .append("circle")
+            .attr("class", "dot")
+            .attr("cx", cx)
+            .attr("cy", cy)
+            .attr("r", 0.01);
+        });
+      });
+
+      sentence.forEach(function (word, i) {
+        Array.from(alphabet()).forEach(function (char) {
+          const cx = w * i + w / 2 + (0.5 + 0.06) * coordinates(char, big().value)[0];
+          const cy = h * j + 0.5 + (0.5 + 0.06) * coordinates(char, big().value)[1];
+          const a = 90 + (coordinates(char, big().value)[2] * 180) / Math.PI;
+          svg
+            .append("text")
+            .attr("class", "dot-label")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr("transform", `translate(${cx}, ${cy}) rotate(${a})`)
+            .text(char);
+        });
+      });
+
+      sentence.forEach(function (word, i) {
+        const cx = w * i + w / 2;
+        const cy = h * j + 0.5;
+        svg
+          .append("text")
+          .attr("class", "word")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("x", cx)
+          .attr("y", cy + 0.5 + 0.4 * (h - 1))
+          .text(word);
+      });
+
+      sentence.forEach(function (word, i) {
+        const cx = w * i + w / 2;
+        const cy = h * j + 0.5;
+        svg
+          .append("circle")
+          .attr("class", "border")
+          .attr("cx", cx)
+          .attr("cy", cy)
+          .attr("r", 0.5);
+      });
+
+      sentence.forEach(function (word, i) {
+        const cx = w * i + w / 2;
+        const cy = h * j + 0.5;
+        svg
+          .append("path")
+          .attr("class", "word-line")
+          .attr("d", makeWordPath(cx, cy, word));
+      });
+    });
+
+    // Lisää muut koodin osat ja toiminnot tarpeen mukaan
+
+    // Liitä SVG-elementti sivulle
+    document.body.appendChild(svg.node());
+  </script>
+</body>
+</html>

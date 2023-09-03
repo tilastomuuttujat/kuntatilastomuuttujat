@@ -1,0 +1,14 @@
+{
+  "name": "@stringertheory/the-image-of-language",
+  "main": "8d23b5a5b02ad812@1451.js",
+  "version": "1451.0.0",
+  "homepage": "https://observablehq.com/@stringertheory/the-image-of-language",
+  "author": {
+    "name": "Mike Stringer",
+    "url": "https://observablehq.com/@stringertheory"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

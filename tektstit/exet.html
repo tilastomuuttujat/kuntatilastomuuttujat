@@ -1,0 +1,145 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    .background {
+      fill: #efd41f;
+    }
+    path, circle {
+      /*fill: none;*/
+      stroke: black;
+      stroke-width: 0.025;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .word-line {
+      stroke: #db93b1;
+    }
+    .dot {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 2;
+      stroke: none;
+    }
+    .word, .dot-label {
+      text-anchor: middle;
+      text-transform: uppercase;
+      font-size: 0.1pt;
+      font-family: "Work Sans", Alice, "DM Serif Display", "Archivo Narrow", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+      fill: #588760;
+    }
+    .dot-label {
+      font-size: 0.05pt;
+    }
+    .dot, .dot-label {
+      fill: #6aaa75;
+    }
+    .start {
+      stroke: none;
+      fill: none;
+    }
+    .border {
+      vector-effect: non-scaling-stroke;
+      stroke-width: 1;
+      fill: none;
+      stroke: none;
+      stroke-dasharray: 1 2;
+    }
+    .info {
+      font-family: Menlo, Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+<svg></svg>
+<script>
+const textValue = "The detail of the pattern is movement";
+const svgWidth = 800;
+const svgHeight = 800;
+const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+const sentences = textValue.toLowerCase().split("\n").map((line) => line.split(" ").filter((word) => word));
+
+const svg = d3.select("body")
+  .append("svg")
+  .attr("width", svgWidth)
+  .attr("height", svgHeight)
+  .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+
+svg.append("rect")
+  .attr("class", "background")
+  .attr("width", svgWidth)
+  .attr("height", svgHeight);
+
+const w = 1.25;
+const h = 1.6;
+const maxLength = Math.max(...sentences.map((d) => d.length));
+
+function drawPattern(sentence, j) {
+  sentence.forEach((word, i) => {
+    const cx = w * i + w / 2;
+    const cy = h * j + 0.5;
+    const radius = 0.5;
+    const wordLength = word.length;
+
+    // Draw border
+    svg.append("circle")
+      .attr("class", "border")
+      .attr("cx", cx)
+      .attr("cy", cy)
+      .attr("r", radius);
+
+    // Draw connecting lines
+    svg.append("path")
+      .attr("class", "word-line")
+      .attr("d", `M ${cx - w / 2} ${cy} L ${cx + w / 2} ${cy}`);
+
+    // Draw start symbol
+    const startChar = word[0].toLowerCase();
+    const startIndex = alphabet.indexOf(startChar);
+    const angle = (startIndex / 26) * 360;
+    const startX = cx + (radius + 0.1) * Math.cos((angle * Math.PI) / 180);
+    const startY = cy + (radius + 0.1) * Math.sin((angle * Math.PI) / 180);
+
+    svg.append("circle")
+      .attr("class", "start")
+      .attr("cx", startX)
+      .attr("cy", startY)
+      .attr("r", 1);
+
+    // Draw letters
+    word.split("").forEach((char, charIndex) => {
+      const charAngle = (startIndex + charIndex) * (360 / 26);
+      const charX = cx + (radius + 0.15) * Math.cos((charAngle * Math.PI) / 180);
+      const charY = cy + (radius + 0.15) * Math.sin((charAngle * Math.PI) / 180);
+
+      // Draw letter
+      svg.append("text")
+        .attr("class", "dot-label")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("transform", `translate(${charX}, ${charY})`)
+        .text(char);
+    });
+
+    // Draw word
+    svg.append("text")
+      .attr("class", "word")
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline", "middle")
+      .attr("x", cx)
+      .attr("y", cy + 0.5 + 0.4 * (h - 1))
+      .text(word);
+  });
+}
+
+sentences.forEach((sentence, j) => {
+  drawPattern(sentence, j);
+});
+
+</script>
+</body>
+</html>

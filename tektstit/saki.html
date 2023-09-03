@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <svg width="800" height="400"></svg>
+
+  <script>
+    const svg = d3.select("svg");
+
+    const centerX = 200;
+    const centerY = 200;
+    const outerRadius = 100;
+    const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+    const words = ["example", "sentence", "another"];
+
+    const angleStep = (2 * Math.PI) / alphabet.length;
+
+    for (let k = 0; k < words.length; k++) {
+      const word = words[k];
+      const wordLength = word.length;
+      const offsetX = k * 200;
+
+      for (let i = 0; i < alphabet.length; i++) {
+        const char = alphabet[i];
+        const angle = i * angleStep;
+
+        const charX = centerX + offsetX + outerRadius * Math.cos(angle);
+        const charY = centerY + outerRadius * Math.sin(angle);
+
+        svg.append("circle")
+          .attr("cx", charX)
+          .attr("cy", charY)
+          .attr("r", 5)
+          .attr("fill", "black");
+
+        const labelX = charX + 15 * Math.cos(angle);
+        const labelY = charY + 15 * Math.sin(angle);
+
+        svg.append("text")
+          .attr("x", labelX)
+          .attr("y", labelY)
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("fill", "black")
+          .text(char);
+      }
+
+      for (let j = 0; j < wordLength; j++) {
+        const char = word[j].toLowerCase();
+        const charIndex = alphabet.indexOf(char);
+        const angle = charIndex * angleStep;
+
+        const charX = centerX + offsetX + outerRadius * Math.cos(angle);
+        const charY = centerY + outerRadius * Math.sin(angle);
+
+        svg.append("circle")
+          .attr("cx", charX)
+          .attr("cy", charY)
+          .attr("r", 5)
+          .attr("fill", "red");
+
+        if (j < wordLength - 1) {
+          const nextChar = word[j + 1].toLowerCase();
+          const nextCharIndex = alphabet.indexOf(nextChar);
+          const nextAngle = nextCharIndex * angleStep;
+
+          const nextCharX = centerX + offsetX + outerRadius * Math.cos(nextAngle);
+          const nextCharY = centerY + outerRadius * Math.sin(nextAngle);
+
+          svg.append("line")
+            .attr("x1", charX)
+            .attr("y1", charY)
+            .attr("x2", nextCharX)
+            .attr("y2", nextCharY)
+            .attr("stroke", "red");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <svg width="400" height="400"></svg>
+
+  <script>
+    const svg = d3.select("svg");
+
+    const centerX = 200;
+    const centerY = 200;
+    const outerRadius = 100;
+    const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+
+    const angleStep = (2 * Math.PI) / alphabet.length;
+
+    // Piirrä kehä, joka sisältää kaikki aakkoset ja niiden pisteet
+    for (let i = 0; i < alphabet.length; i++) {
+      const char = alphabet[i];
+      const angle = i * angleStep;
+
+      // Piirrä kirjain kehän ympärille
+      const charX = centerX + outerRadius * Math.cos(angle);
+      const charY = centerY + outerRadius * Math.sin(angle);
+
+      svg.append("circle")
+        .attr("cx", charX)
+        .attr("cy", charY)
+        .attr("r", 5)
+        .attr("fill", "black");
+
+      // Lisää kirjain pisteiden rinnalle
+      const labelX = charX + 15 * Math.cos(angle); // Säädä etäisyyttä kirjaimen ja pisteen välillä
+      const labelY = charY + 15 * Math.sin(angle); // Säädä etäisyyttä kirjaimen ja pisteen välillä
+
+      svg.append("text")
+        .attr("x", labelX)
+        .attr("y", labelY)
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("fill", "black")
+        .text(char);
+    }
+
+    // Piirrä sana ja viiva aakkosten mukaan
+    const word = "example";
+    const wordLength = word.length;
+
+    for (let j = 0; j < wordLength; j++) {
+      const char = word[j].toLowerCase();
+      const charIndex = alphabet.indexOf(char);
+      const angle = charIndex * angleStep;
+
+      // Piirrä piste kehän sisäpuolelle
+      const charX = centerX + outerRadius * Math.cos(angle);
+      const charY = centerY + outerRadius * Math.sin(angle);
+
+      svg.append("circle")
+        .attr("cx", charX)
+        .attr("cy", charY)
+        .attr("r", 5)
+        .attr("fill", "red"); // Voit muuttaa värin haluamaksesi
+
+      // Piirrä viiva edellisestä kirjaimesta seuraavaan kirjaimeen
+      if (j < wordLength - 1) {
+        const nextChar = word[j + 1].toLowerCase();
+        const nextCharIndex = alphabet.indexOf(nextChar);
+        const nextAngle = nextCharIndex * angleStep;
+
+        const nextCharX = centerX + outerRadius * Math.cos(nextAngle);
+        const nextCharY = centerY + outerRadius * Math.sin(nextAngle);
+
+        svg.append("line")
+          .attr("x1", charX)
+          .attr("y1", charY)
+          .attr("x2", nextCharX)
+          .attr("y2", nextCharY)
+          .attr("stroke", "red"); // Voit muuttaa värin haluamaksesi
+      }
+    }
+  </script>
+</body>
+</html>
