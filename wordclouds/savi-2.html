@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+<style>
+  .background {
+    fill: #201e1f;
+  }
+  path, circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.025;
+    /*vector-effect: non-scaling-stroke;*/
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .word-line {
+    stroke: #db93b1;
+  }
+  .dot {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 2;
+    stroke: none;
+  }
+  .word, .dot-label {
+    text-anchor: middle;
+    text-transform: uppercase;
+    font-size: 0.1pt;
+    font-family: "Work Sans", Alice, "DM Serif Display", "Archivo Narrow", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+    fill: #588760;
+  }
+  .dot-label {
+    font-size: 0.05pt;
+  }
+  .dot, .dot-label {
+    fill: #6aaa75;
+    text-transform: uppercase;
+    font-size: 5pt;
+  }
+  .start {
+    stroke: none;
+    fill: none;
+  }
+  .border {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1;
+    fill: none;
+    stroke: none;
+    stroke-dasharray: 1 2;
+  }
+  .info {
+    font-family: Menlo, Consolas, monospace;
+  }
+  #visualization {
+  background-color: black;
+  }
+</style>
+</head>
+<body>
+<textarea id="textArea" rows="5" cols="50">Vastarakkaus Koulukaverit Seksuaalisuus Kiitollisuus Kärsivällisyys Analyyttisyys</textarea>
+<button onClick="piirra()">Piirrä</button>
+  <div id="visualization"></div>
+
+  <script>
+    const svgWidth = 1000;
+    const svgHeight = 200;
+
+function piirra() {
+      const svg = d3.select("#visualization")
+    .html("") // Tyhjentää aiemman sisällön
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+
+    const centerX = 100;
+    const centerY = 100;
+    const outerRadius = 50;
+    const alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+      const text = document.getElementById("textArea").value;
+  const sentences = text.split("\n").map(sentence => sentence.split(" ").filter(word => word));
+  const sentences1 = text.split(" ").filter(word => word);
+  const words = sentences1;
+  console.log(sentences1);
+    //const words = ["example", "sentence", "another", "neither", "awesome"];
+
+    const angleStep = (2 * Math.PI) / alphabet.length;
+    const horizontalSpacing = 50; 
+
+    for (let k = 0; k < words.length; k++) {
+      const word = words[k];
+      const wordLength = word.length;
+      const offsetX = k * (outerRadius * 2 + horizontalSpacing); 
+
+      for (let i = 0; i < alphabet.length; i++) {
+        const char = alphabet[i];
+        const angle = i * angleStep;
+
+        const charX = centerX + offsetX + outerRadius * Math.cos(angle);
+        const charY = centerY + outerRadius * Math.sin(angle);
+
+        svg.append("circle")
+          .attr("class", "dot")
+          .attr("cx", charX)
+          .attr("cy", charY)
+          .attr("r", 1)
+          .attr("fill", "black");
+
+        const labelX = charX + 15 * Math.cos(angle);
+        const labelY = charY + 15 * Math.sin(angle);
+
+        svg.append("text")
+          .attr("class", "dot")
+          .attr("x", labelX)
+          .attr("y", labelY)
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("fill", "black")
+          .text(char);
+      }
+
+      for (let j = 0; j < wordLength; j++) {
+        const char = word[j].toLowerCase();
+        const charIndex = alphabet.indexOf(char);
+        const angle = charIndex * angleStep;
+
+        const charX = centerX + offsetX + outerRadius * Math.cos(angle);
+        const charY = centerY + outerRadius * Math.sin(angle);
+
+        svg.append("circle")
+          .attr("cx", charX)
+          .attr("cy", charY)
+          .attr("r", 5)
+          .attr("fill", "red");
+
+        if (j < wordLength - 1) {
+          const nextChar = word[j + 1].toLowerCase();
+          const nextCharIndex = alphabet.indexOf(nextChar);
+          const nextAngle = nextCharIndex * angleStep;
+
+          const nextCharX = centerX + offsetX + outerRadius * Math.cos(nextAngle);
+          const nextCharY = centerY + outerRadius * Math.sin(nextAngle);
+
+          svg.append("line")
+            .attr("x1", charX)
+            .attr("y1", charY)
+            .attr("x2", nextCharX)
+            .attr("y2", nextCharY)
+            .attr("class", "word-line")
+            .attr("stroke-width", 3);
+            //.attr("stroke", "red");
+        }
+      }
+    }
+    
+    }
+  </script>
+</body>
+</html>
