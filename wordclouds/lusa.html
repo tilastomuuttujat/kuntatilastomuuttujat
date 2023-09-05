@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+text {
+    padding: 2px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+text[style*="background-color"] {
+    color: white; 
+} 
+
+#painike {
+position:absolute;
+left:100px;
+top:100px;
+background:white;
+  display:block;
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  border: 1px solid red;
+}
+</style>
+</head>
+<body>
+<button id="painike" onClick="varitys()">Rajaa</button>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+var haku = [{"x":280,"y":60,"text":"Koulukaverit","color":"red"},{"x":280,"y":85,"text":"Ensirakkaus","color":"green"},{"x":200,"y":300,"text":"Perinteellisyys","color":"red"},{"x":232,"y":352.40625,"text":"Vanhoillisuus","color":"red"},{"x":350,"y":300,"text":"Sisaruus","color":"red"},{"x":350,"y":225,"text":"Äiti","color":"red"},{"x":-15,"y":440,"text":"Tasavertaisuus","color":"green"},{"x":360,"y":345,"text":"Oikeudenmukaisuus","color":"green"},{"x":458,"y":34,"text":"Avarakatseisuus","color":"green"},{"x":632,"y":60,"text":"Itsetuntemus","color":"green"},{"x":458,"y":112,"text":"Yksinolo","color":"green"},{"x":705,"y":161,"text":"Empaattisuus","color":"green"},{"x":463,"y":196,"text":"Rauhallisuus","color":"green"},{"x":600,"y":435,"text":"Jaksavuus","color":"red"},{"x":600,"y":485,"text":"Liikkuvuus","color":"red"},{"x":725,"y":365,"text":"Vastuullisuus","color":"green"},{"x":725,"y":475,"text":"Kärsivällisyys","color":"green"},{"x":635,"y":735,"text":"Luovuus","color":"green"},{"x":635,"y":810,"text":"Riskinotto","color":"red"},{"x":550,"y":675,"text":"Päättelykyky","color":"green"},{"x":630,"y":575,"text":"Koulutus","color":"red"},{"x":725,"y":650,"text":"Intohimo","color":"green"},{"x":340,"y":575,"text":"Luotettavuus","color":"green"},{"x":340,"y":625,"text":"Ongelmanratkaisu","color":"green"},{"x":165,"y":625,"text":"Säästäväisyys","color":"green"},{"x":165,"y":675,"text":"Taloudellisuus","color":"green"},{"x":165,"y":650,"text":"Siisteys","color":"red"},{"x":0,"y":475,"text":"Ulkoilevuus","color":"red"},{"x":279,"y":37,"text":"Seksuaalisuus","color":"red"}]; 
+  
+const colorBody = "#000000";
+const colorAnapana = "#6d302c";
+const colorFeeling = "#6d302c";
+const colorMind = "#6d302c";
+const colorMindObject = "#6d302c";
+const colorJhanas = "#6d302c"; 
+
+const terveys = "#d839a8";
+
+
+    const width = 900;
+
+    const svg = d3
+      .create("svg")
+      .attr("viewBox", [-width / 2, -width / 2, width, width]);
+svg.style("background-image", "url('https://tilastomuuttujat.github.io/kuntatilastomuuttujat/wordclouds/betatestaus_1.svg')");
+    const fontName = "Cormorant SC";
+
+    const text = svg
+      .append("text")
+      .style("font-weight", "bold")
+      .style("fill", "grey")
+      .attr("font-family", "Cormorant SC")
+      .attr("font-size", 15)
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em");
+
+    function createRing(data, type) {
+      const {
+        cx = 0,
+        cy = 0,
+        r = 100,
+        innerR = 20,
+        padAngle = 0,
+        color = "black",
+        strokeWidth = 1,
+        fontSize = 12,
+        letterSpace = 0,
+        fade = 0,
+        opacity = 1,
+        radial = false,
+      } = data;
+
+      const arc = d3
+        .arc()
+        .innerRadius(r)
+        .outerRadius(r + innerR)
+        .padAngle((Math.PI / 180) * padAngle)
+        .startAngle((d) => (Math.PI / 180) * d.startAngle)
+        .endAngle((d) => (Math.PI / 180) * d.endAngle);
+
+      const g = svg
+        .append("g")
+        .attr("class", "arcLabel")
+        .attr("transform", `translate(${cx}, ${cy})`);
+
+g.selectAll("path")
+  .data(data.data)
+  .enter()
+  .append("path")
+  .style("stroke", (d) => {
+    if (d.color === "green" || d.color === "red") {
+      return d.color;
+    } else {
+      return "none";
+    }
+  })
+  .style("stroke-width", strokeWidth)
+  .style("fill", (d) => {
+    if (d.color === "green" || d.color === "red") {
+      return d.color;
+    } else {
+      return "none";
+    }
+  })
+  .style("fill-opacity", opacity)
+  .attr("d", arc);
+        
+      g.selectAll("text")
+        .data(data.data)
+        .enter()
+        .append("text")
+        .attr("dy", "0.35em")
+        .attr("transform", (d) => labelTransform(d, r, innerR, type))
+        .style("font-size", fontSize)
+        .style("fill", (d) => d.color)
+        .style("text-anchor", "middle")
+        .text((d) => d.text);
+    }
+
+    function labelTransform(d, r, innerR, type) {
+      if (type === 1) {
+        const x = (d.endAngle + d.startAngle) / 2 - 90;
+        return `rotate(${x}) translate(${r + innerR / 2},0) rotate(${
+          x < 180 - 90 ? 0 : 180
+        })`;
+      } else {
+        const x = (d.endAngle + d.startAngle) / 2;
+        const y = -(r + innerR / 2); // Offset the text slightly inward
+        const rotation = x < 180 ? -90 : 90; // Rotate left side text 90 degrees
+        return `rotate(${x - 0}) translate(${y}, 0) rotate(${rotation})`;
+      }
+    }
+
+const rings1 = [
+  {
+    r: 75,
+    innerR: 100,
+    padAngle: 0,
+    fontSize: 12,
+    color: colorAnapana,
+    fade: 10,
+    opacity: 0.1,
+    radial: true,
+
+    data: [
+  {text: "Terveellisyys",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/8)},
+  {text: "Stressinhallinta",color: colorBody,startAngle: (360/12)*0+(360/12/8),endAngle: (360/12)*0+(360/12/8)*2},
+  {text: "Rauhallisuus",color: colorBody,startAngle: (360/12)*0+(360/12/8)*2,endAngle: (360/12)*0+(360/12/8)*3},
+  {text: "Raittius",color: colorBody,startAngle: (360/12)*0+(360/12/8)*3,endAngle: (360/12)*0+(360/12/8)*4},
+  {text: "Mielenterveys",color: colorBody,startAngle: (360/12)*0+(360/12/8)*4,endAngle: (360/12)*0+(360/12/8)*5},
+  {text: "Mielenrauha",color: colorBody,startAngle: (360/12)*0+(360/12/8)*5,endAngle: (360/12)*0+(360/12/8)*6},
+  {text: "Liikunnallisuus",color: colorBody,startAngle: (360/12)*0+(360/12/8)*6,endAngle: (360/12)*0+(360/12/8)*7},
+  {text: "Levollisuus",color: colorBody,startAngle: (360/12)*0+(360/12/8)*7,endAngle: (360/12)*1},
+  {text: "Ikä",color: colorBody,startAngle: (360/12)*1,endAngle: (360/12)*1+(360/12/8)},
+  {text: "Iloisuus",color: colorBody,startAngle: (360/12)*1+(360/12/8),endAngle: (360/12)*1+(360/12/8)*2},
+  {text: "Itsemyötätunto",color: colorBody,startAngle: (360/12)*1+(360/12/8)*2,endAngle: (360/12)*1+(360/12/8)*3},
+  {text: "Kiitollisuus",color: colorBody,startAngle: (360/12)*1+(360/12/8)*3,endAngle: (360/12)*1+(360/12/8)*4},
+  {text: "Luontosuhde",color: colorBody,startAngle: (360/12)*1+(360/12/8)*4,endAngle: (360/12)*1+(360/12/8)*5},
+  {text: "Onnellisuus",color: colorBody,startAngle: (360/12)*1+(360/12/8)*5,endAngle: (360/12)*1+(360/12/8)*6},
+  {text: "Tasapainoisuus",color: colorBody,startAngle: (360/12)*1+(360/12/8)*6,endAngle: (360/12)*1+(360/12/8)*7},
+  {text: "Tyytyväisyys",color: colorBody,startAngle: (360/12)*1+(360/12/8)*7,endAngle: (360/12)*2},
+  {text: "Aktiivisuus",color: colorBody,startAngle: (360/12)*2,endAngle: (360/12)*2+(360/12/8)},
+  {text: "Arjenhallinta",color: colorBody,startAngle: (360/12)*2+(360/12/8),endAngle: (360/12)*2+(360/12/8)*2},
+  {text: "Energisyys",color: colorBody,startAngle: (360/12)*2+(360/12/8)*2,endAngle: (360/12)*2+(360/12/8)*3},
+  {text: "Esteettömyys",color: colorBody,startAngle: (360/12)*2+(360/12/8)*3,endAngle: (360/12)*2+(360/12/8)*4},
+  {text: "Jaksavuus",color: colorBody,startAngle: (360/12)*2+(360/12/8)*4,endAngle: (360/12)*2+(360/12/8)*5},
+  {text: "Kestävyys",color: colorBody,startAngle: (360/12)*2+(360/12/8)*5,endAngle: (360/12)*2+(360/12/8)*6},
+  {text: "Liikkuvuus",color: colorBody,startAngle: (360/12)*2+(360/12/8)*6,endAngle: (360/12)*2+(360/12/8)*7},
+  {text: "Omatoimisuus",color: colorBody,startAngle: (360/12)*2+(360/12/8)*7,endAngle: (360/12)*3},
+  {text: "Itsehillintä",color: colorBody,startAngle: (360/12)*3,endAngle: (360/12)*3+(360/12/8)},
+  {text: "Itseohjautuvuus",color: colorBody,startAngle: (360/12)*3+(360/12/8),endAngle: (360/12)*3+(360/12/8)*2},
+  {text: "Joustavuus",color: colorBody,startAngle: (360/12)*3+(360/12/8)*2,endAngle: (360/12)*3+(360/12/8)*3},
+  {text: "Kehittyvyys",color: colorBody,startAngle: (360/12)*3+(360/12/8)*3,endAngle: (360/12)*3+(360/12/8)*4},
+  {text: "Oppimishalu",color: colorBody,startAngle: (360/12)*3+(360/12/8)*4,endAngle: (360/12)*3+(360/12/8)*5},
+  {text: "Sopeutuvuus",color: colorBody,startAngle: (360/12)*3+(360/12/8)*5,endAngle: (360/12)*3+(360/12/8)*6},
+  {text: "Uppoutuminen",color: colorBody,startAngle: (360/12)*3+(360/12/8)*6,endAngle: (360/12)*3+(360/12/8)*7},
+  {text: "Uteliaisuus",color: colorBody,startAngle: (360/12)*3+(360/12/8)*7,endAngle: (360/12)*4},
+  {text: "Älykkyys",color: colorBody,startAngle: (360/12)*4,endAngle: (360/12)*4+(360/12/8)},
+  {text: "Analyyttisyys",color: colorBody,startAngle: (360/12)*4+(360/12/8),endAngle: (360/12)*4+(360/12/8)*2},
+  {text: "Harkitsevuus",color: colorBody,startAngle: (360/12)*4+(360/12/8)*2,endAngle: (360/12)*4+(360/12/8)*3},
+  {text: "Loogisuus",color: colorBody,startAngle: (360/12)*4+(360/12/8)*3,endAngle: (360/12)*4+(360/12/8)*4},
+  {text: "Omaksuvuus",color: colorBody,startAngle: (360/12)*4+(360/12/8)*4,endAngle: (360/12)*4+(360/12/8)*5},
+  {text: "Päättelykyky",color: colorBody,startAngle: (360/12)*4+(360/12/8)*5,endAngle: (360/12)*4+(360/12/8)*6},
+  {text: "Viisaus",color: colorBody,startAngle: (360/12)*4+(360/12/8)*6,endAngle: (360/12)*4+(360/12/8)*7},
+  {text: "Ymmärrys",color: colorBody,startAngle: (360/12)*4+(360/12/8)*7,endAngle: (360/12)*5},
+  {text: "Motivaatio",color: colorBody,startAngle: (360/12)*5,endAngle: (360/12)*5+(360/12/8)},
+  {text: "Oma-aloitteisuus",color: colorBody,startAngle: (360/12)*5+(360/12/8),endAngle: (360/12)*5+(360/12/8)*2},
+  {text: "Päätöksenteko",color: colorBody,startAngle: (360/12)*5+(360/12/8)*2,endAngle: (360/12)*5+(360/12/8)*3},
+  {text: "Oppimiskyky",color: colorBody,startAngle: (360/12)*5+(360/12/8)*3,endAngle: (360/12)*5+(360/12/8)*4},
+  {text: "Selkeys",color: colorBody,startAngle: (360/12)*5+(360/12/8)*4,endAngle: (360/12)*5+(360/12/8)*5},
+  {text: "Sisukkuus",color: colorBody,startAngle: (360/12)*5+(360/12/8)*5,endAngle: (360/12)*5+(360/12/8)*6},
+  {text: "Taitavuus",color: colorBody,startAngle: (360/12)*5+(360/12/8)*6,endAngle: (360/12)*5+(360/12/8)*7},
+  {text: "Tarkkuus",color: colorBody,startAngle: (360/12)*5+(360/12/8)*7,endAngle: (360/12)*6},
+  {text: "Asiantuntemus",color: colorBody,startAngle: (360/12)*6,endAngle: (360/12)*6+(360/12/8)},
+  {text: "Johtajuus",color: colorBody,startAngle: (360/12)*6+(360/12/8),endAngle: (360/12)*6+(360/12/8)*2},
+  {text: "Luotettavuus",color: colorBody,startAngle: (360/12)*6+(360/12/8)*2,endAngle: (360/12)*6+(360/12/8)*3},
+  {text: "Ongelmanratkaisu",color: colorBody,startAngle: (360/12)*6+(360/12/8)*3,endAngle: (360/12)*6+(360/12/8)*4},
+  {text: "Sitoutuvuus",color: colorBody,startAngle: (360/12)*6+(360/12/8)*4,endAngle: (360/12)*6+(360/12/8)*5},
+  {text: "Soveltuvuus",color: colorBody,startAngle: (360/12)*6+(360/12/8)*5,endAngle: (360/12)*6+(360/12/8)*6},
+  {text: "Tehokkuus",color: colorBody,startAngle: (360/12)*6+(360/12/8)*6,endAngle: (360/12)*6+(360/12/8)*7},
+  {text: "Yhteistyökykyisyys",color: colorBody,startAngle: (360/12)*6+(360/12/8)*7,endAngle: (360/12)*7},
+  {text: "Käytännöllisyys",color: colorBody,startAngle: (360/12)*7,endAngle: (360/12)*7+(360/12/8)},
+  {text: "Lemmikit",color: colorBody,startAngle: (360/12)*7+(360/12/8),endAngle: (360/12)*7+(360/12/8)*2},
+  {text: "Säästäväisyys",color: colorBody,startAngle: (360/12)*7+(360/12/8)*2,endAngle: (360/12)*7+(360/12/8)*3},
+  {text: "Siisteys",color: colorBody,startAngle: (360/12)*7+(360/12/8)*3,endAngle: (360/12)*7+(360/12/8)*4},
+  {text: "Taloudellisuus",color: colorBody,startAngle: (360/12)*7+(360/12/8)*4,endAngle: (360/12)*7+(360/12/8)*5},
+  {text: "Uskollisuus",color: colorBody,startAngle: (360/12)*7+(360/12/8)*5,endAngle: (360/12)*7+(360/12/8)*6},
+  {text: "Vauraus",color: colorBody,startAngle: (360/12)*7+(360/12/8)*6,endAngle: (360/12)*7+(360/12/8)*7},
+  {text: "Viivhtyvyys",color: colorBody,startAngle: (360/12)*7+(360/12/8)*7,endAngle: (360/12)*8},
+  {text: "Harrastavuus",color: colorBody,startAngle: (360/12)*8,endAngle: (360/12)*8+(360/12/8)},
+  {text: "Monipuolisuus",color: colorBody,startAngle: (360/12)*8+(360/12/8),endAngle: (360/12)*8+(360/12/8)*2},
+  {text: "Rentoutuvuus",color: colorBody,startAngle: (360/12)*8+(360/12/8)*2,endAngle: (360/12)*8+(360/12/8)*3},
+  {text: "Ulkoilevuus",color: colorBody,startAngle: (360/12)*8+(360/12/8)*3,endAngle: (360/12)*8+(360/12/8)*4},
+  {text: "Viihteellisyys",color: colorBody,startAngle: (360/12)*8+(360/12/8)*4,endAngle: (360/12)*8+(360/12/8)*5},
+  {text: "Virkistävyys",color: colorBody,startAngle: (360/12)*8+(360/12/8)*5,endAngle: (360/12)*8+(360/12/8)*6},
+  {text: "i7",color: colorBody,startAngle: (360/12)*8+(360/12/8)*6,endAngle: (360/12)*8+(360/12/8)*7},
+  {text: "i8",color: colorBody,startAngle: (360/12)*8+(360/12/8)*7,endAngle: (360/12)*9},
+  {text: "Suvaisevuus",color: colorBody,startAngle: (360/12)*9,endAngle: (360/12)*9+(360/12/8)},
+  {text: "Hyväksyvyys",color: colorBody,startAngle: (360/12)*9+(360/12/8),endAngle: (360/12)*9+(360/12/8)*2},
+  {text: "Ideologisuus",color: colorBody,startAngle: (360/12)*9+(360/12/8)*2,endAngle: (360/12)*9+(360/12/8)*3},
+  {text: "Isänmaallisuus",color: colorBody,startAngle: (360/12)*9+(360/12/8)*3,endAngle: (360/12)*9+(360/12/8)*4},
+  {text: "Kansallismielisyys",color: colorBody,startAngle: (360/12)*9+(360/12/8)*4,endAngle: (360/12)*9+(360/12/8)*5},
+  {text: "Moraalisuus",color: colorBody,startAngle: (360/12)*9+(360/12/8)*5,endAngle: (360/12)*9+(360/12/8)*6},
+  {text: "Poliittisuus",color: colorBody,startAngle: (360/12)*9+(360/12/8)*6,endAngle: (360/12)*9+(360/12/8)*7},
+  {text: "Sallivuus",color: colorBody,startAngle: (360/12)*9+(360/12/8)*7,endAngle: (360/12)*10},
+  {text: "Vanhoillisuus",color: colorBody,startAngle: (360/12)*10,endAngle: (360/12)*10+(360/12/8)},
+  {text: "Sukulaisuus",color: colorBody,startAngle: (360/12)*10+(360/12/8),endAngle: (360/12)*10+(360/12/8)*2},
+  {text: "Sovinnaisuus",color: colorBody,startAngle: (360/12)*10+(360/12/8)*2,endAngle: (360/12)*10+(360/12/8)*3},
+  {text: "Serkut",color: colorBody,startAngle: (360/12)*10+(360/12/8)*3,endAngle: (360/12)*10+(360/12/8)*4},
+  {text: "Perinteellisyys",color: colorBody,startAngle: (360/12)*10+(360/12/8)*4,endAngle: (360/12)*10+(360/12/8)*5},
+  {text: "Isovanhemmat",color: colorBody,startAngle: (360/12)*10+(360/12/8)*5,endAngle: (360/12)*10+(360/12/8)*6},
+  {text: "Appivanhemmat ",color: colorBody,startAngle: (360/12)*10+(360/12/8)*6,endAngle: (360/12)*10+(360/12/8)*7},
+  {text: "k8",color: colorBody,startAngle: (360/12)*10+(360/12/8)*7,endAngle: (360/12)*11},
+  {text: "Vanhemmat",color: colorBody,startAngle: (360/12)*11,endAngle: (360/12)*11+(360/12/8)},
+  {text: "Väkivallattomuus",color: colorBody,startAngle: (360/12)*11+(360/12/8),endAngle: (360/12)*11+(360/12/8)*2},
+  {text: "Sisaruus",color: colorBody,startAngle: (360/12)*11+(360/12/8)*2,endAngle: (360/12)*11+(360/12/8)*3},
+  {text: "Läheisyys",color: colorBody,startAngle: (360/12)*11+(360/12/8)*3,endAngle: (360/12)*11+(360/12/8)*4},
+  {text: "Isä",color: colorBody,startAngle: (360/12)*11+(360/12/8)*4,endAngle: (360/12)*11+(360/12/8)*5},
+  {text: "Hyväksyntä",color: colorBody,startAngle: (360/12)*11+(360/12/8)*5,endAngle: (360/12)*11+(360/12/8)*6},
+  {text: "Äiti",color: colorBody,startAngle: (360/12)*11+(360/12/8)*6,endAngle: (360/12)*11+(360/12/8)*7},
+  {text: "l8",color: colorBody,startAngle: (360/12)*11+(360/12/8)*7,endAngle: (360/12)*12}
+    ]
+  }
+];
+
+const rings0 = [
+  {
+    r: 205,
+    innerR: 105,
+    padAngle: 0,
+    fontSize: 12,
+    //color: colorAnapana,
+    fade: 10,
+    opacity: 0.1,
+    radial: true,
+
+    data: [
+  {text: "Avarakatseisuus",color: colorBody,startAngle: (360/12)*0,endAngle: (360/12)*0+(360/12/12)},
+  {text: "Itsearvostus",color: colorBody,startAngle: (360/12)*0+(360/12/12),endAngle: (360/12)*0+(360/12/12)*2},
+  {text: "Itsehyväksyntä",color: colorBody,startAngle: (360/12)*0+(360/12/12)*2,endAngle: (360/12)*0+(360/12/12)*3},
+  {text: "Itseluottamus",color: colorBody,startAngle: (360/12)*0+(360/12/12)*3,endAngle: (360/12)*0+(360/12/12)*4},
+  {text: "Itsenäisyys",color: colorBody,startAngle: (360/12)*0+(360/12/12)*4,endAngle: (360/12)*0+(360/12/12)*5},
+  {text: "Itsetuntemus",color: colorBody,startAngle: (360/12)*0+(360/12/12)*5,endAngle: (360/12)*0+(360/12/12)*6},
+  {text: "Myönteisyys",color: colorBody,startAngle: (360/12)*0+(360/12/12)*6,endAngle: (360/12)*0+(360/12/12)*7},
+  {text: "Positiivisuus",color: colorBody,startAngle: (360/12)*0+(360/12/12)*7,endAngle: (360/12)*0+(360/12/12)*8},
+  {text: "Selviytyminen",color: colorBody,startAngle: (360/12)*0+(360/12/12)*8,endAngle: (360/12)*0+(360/12/12)*9},
+  {text: "Yksinolo",color: colorBody,startAngle: (360/12)*0+(360/12/12)*9,endAngle: (360/12)*0+(360/12/12)*10},
+  {text: "a11",color: colorBody,startAngle: (360/12)*0+(360/12/12)*10,endAngle: (360/12)*0+(360/12/12)*11},  
+  {text: "a12",color: colorBody,startAngle: (360/12)*0+(360/12/12)*11,endAngle: (360/12)*1},  
+  {text: "Avoimuus",color: colorBody,startAngle: (360/12)*1,endAngle: (360/12)*1+(360/12/12)},
+  {text: "Avuliaisuus",color: colorBody,startAngle: (360/12)*1+(360/12/12),endAngle: (360/12)*1+(360/12/12)*2},
+  {text: "Empaattisuus",color: colorBody,startAngle: (360/12)*1+(360/12/12)*2,endAngle: (360/12)*1+(360/12/12)*3},
+  {text: "Huumorintaju",color: colorBody,startAngle: (360/12)*1+(360/12/12)*3,endAngle: (360/12)*1+(360/12/12)*4},
+  {text: "Kuunteleminen",color: colorBody,startAngle: (360/12)*1+(360/12/12)*4,endAngle: (360/12)*1+(360/12/12)*5},
+  {text: "Läsnäolo",color: colorBody,startAngle: (360/12)*1+(360/12/12)*5,endAngle: (360/12)*1+(360/12/12)*6},
+  {text: "Luottamus",color: colorBody,startAngle: (360/12)*1+(360/12/12)*6,endAngle: (360/12)*1+(360/12/12)*7},
+  {text: "Vastaanottavuus",color: colorBody,startAngle: (360/12)*1+(360/12/12)*7,endAngle: (360/12)*1+(360/12/12)*8},
+  {text: "Vastavuoroisuus",color: colorBody,startAngle: (360/12)*1+(360/12/12)*8,endAngle: (360/12)*1+(360/12/12)*9},
+  {text: "Vuorovaikutus",color: colorBody,startAngle: (360/12)*1+(360/12/12)*9,endAngle: (360/12)*1+(360/12/12)*10},
+  {text: "Ystävällisyys",color: colorBody,startAngle: (360/12)*1+(360/12/12)*10,endAngle: (360/12)*1+(360/12/12)*11},  
+  {text: "Ystävyys",color: colorBody,startAngle: (360/12)*1+(360/12/12)*11,endAngle: (360/12)*2},
+  {text: "Yhteenkuuluvuus",color: colorBody,startAngle: (360/12)*2,endAngle: (360/12)*2+(360/12/12)},
+  {text: "Vertaistuki",color: colorBody,startAngle: (360/12)*2+(360/12/12),endAngle: (360/12)*2+(360/12/12)*2},
+  {text: "Verkostoituvuus",color: colorBody,startAngle: (360/12)*2+(360/12/12)*2,endAngle: (360/12)*2+(360/12/12)*3},
+  {text: "Vastuullisuus",color: colorBody,startAngle: (360/12)*2+(360/12/12)*3,endAngle: (360/12)*2+(360/12/12)*4},
+  {text: "Osallistuvuus",color: colorBody,startAngle: (360/12)*2+(360/12/12)*4,endAngle: (360/12)*2+(360/12/12)*5},
+  {text: "Tukiverkostot",color: colorBody,startAngle: (360/12)*2+(360/12/12)*5,endAngle: (360/12)*2+(360/12/12)*6},
+  {text: "c7",color: colorBody,startAngle: (360/12)*2+(360/12/12)*6,endAngle: (360/12)*2+(360/12/12)*7},
+  {text: "c8",color: colorBody,startAngle: (360/12)*2+(360/12/12)*7,endAngle: (360/12)*2+(360/12/12)*8},
+  {text: "c9",color: colorBody,startAngle: (360/12)*2+(360/12/12)*8,endAngle: (360/12)*2+(360/12/12)*9},
+  {text: "c10",color: colorBody,startAngle: (360/12)*2+(360/12/12)*9,endAngle: (360/12)*2+(360/12/12)*10},
+  {text: "c11",color: colorBody,startAngle: (360/12)*2+(360/12/12)*10,endAngle: (360/12)*2+(360/12/12)*11},  
+  {text: "c12",color: colorBody,startAngle: (360/12)*2+(360/12/12)*11,endAngle: (360/12)*3},
+  {text: "Haasteellisuus",color: colorBody,startAngle: (360/12)*3,endAngle: (360/12)*3+(360/12/12)},
+  {text: "Kärsivällisyys",color: colorBody,startAngle: (360/12)*3+(360/12/12),endAngle: (360/12)*3+(360/12/12)*2},
+  {text: "Päämäärätietoisuus",color: colorBody,startAngle: (360/12)*3+(360/12/12)*2,endAngle: (360/12)*3+(360/12/12)*3},
+  {text: "Pitkäjännitteisyys",color: colorBody,startAngle: (360/12)*3+(360/12/12)*3,endAngle: (360/12)*3+(360/12/12)*4},
+  {text: "Realistisuus",color: colorBody,startAngle: (360/12)*3+(360/12/12)*4,endAngle: (360/12)*3+(360/12/12)*5},
+  {text: "Tahto",color: colorBody,startAngle: (360/12)*3+(360/12/12)*5,endAngle: (360/12)*3+(360/12/12)*6},
+  {text: "Tarkoitus",color: colorBody,startAngle: (360/12)*3+(360/12/12)*6,endAngle: (360/12)*3+(360/12/12)*7},
+  {text: "Tavoitteellisuus",color: colorBody,startAngle: (360/12)*3+(360/12/12)*7,endAngle: (360/12)*3+(360/12/12)*8},
+  {text: "Sitkeys",color: colorBody,startAngle: (360/12)*3+(360/12/12)*8,endAngle: (360/12)*3+(360/12/12)*9},
+  {text: "d10",color: colorBody,startAngle: (360/12)*3+(360/12/12)*9,endAngle: (360/12)*3+(360/12/12)*10},
+  {text: "d11",color: colorBody,startAngle: (360/12)*3+(360/12/12)*10,endAngle: (360/12)*3+(360/12/12)*11},  
+  {text: "d12",color: colorBody,startAngle: (360/12)*3+(360/12/12)*11,endAngle: (360/12)*4},  
+  {text: "Haaveet",color: colorBody,startAngle: (360/12)*4,endAngle: (360/12)*4+(360/12/12)},
+  {text: "Inspiraatio",color: colorBody,startAngle: (360/12)*4+(360/12/12),endAngle: (360/12)*4+(360/12/12)*2},
+  {text: "Intohimo",color: colorBody,startAngle: (360/12)*4+(360/12/12)*2,endAngle: (360/12)*4+(360/12/12)*3},
+  {text: "Toiveikkuus",color: colorBody,startAngle: (360/12)*4+(360/12/12)*3,endAngle: (360/12)*4+(360/12/12)*4},
+  {text: "Unelmoivuus",color: colorBody,startAngle: (360/12)*4+(360/12/12)*4,endAngle: (360/12)*4+(360/12/12)*5},
+  {text: "Usko",color: colorBody,startAngle: (360/12)*4+(360/12/12)*5,endAngle: (360/12)*4+(360/12/12)*6},
+  {text: "Visio",color: colorBody,startAngle: (360/12)*4+(360/12/12)*6,endAngle: (360/12)*4+(360/12/12)*7},
+  {text: "e8",color: colorBody,startAngle: (360/12)*4+(360/12/12)*7,endAngle: (360/12)*4+(360/12/12)*8},
+  {text: "e9",color: colorBody,startAngle: (360/12)*4+(360/12/12)*8,endAngle: (360/12)*4+(360/12/12)*9},
+  {text: "e10",color: colorBody,startAngle: (360/12)*4+(360/12/12)*9,endAngle: (360/12)*4+(360/12/12)*10},
+  {text: "e11",color: colorBody,startAngle: (360/12)*4+(360/12/12)*10,endAngle: (360/12)*4+(360/12/12)*11},  
+  {text: "e12",color: colorBody,startAngle: (360/12)*4+(360/12/12)*11,endAngle: (360/12)*5},
+  {text: "Aloitteellisuus",color: colorBody,startAngle: (360/12)*5,endAngle: (360/12)*5+(360/12/12)},
+  {text: "Innostuvuus",color: colorBody,startAngle: (360/12)*5+(360/12/12),endAngle: (360/12)*5+(360/12/12)*2},
+  {text: "Innovatiivisuus",color: colorBody,startAngle: (360/12)*5+(360/12/12)*2,endAngle: (360/12)*5+(360/12/12)*3},
+  {text: "Intuitio",color: colorBody,startAngle: (360/12)*5+(360/12/12)*3,endAngle: (360/12)*5+(360/12/12)*4},
+  {text: "Itsevarmuus",color: colorBody,startAngle: (360/12)*5+(360/12/12)*4,endAngle: (360/12)*5+(360/12/12)*5},
+  {text: "Luovuus",color: colorBody,startAngle: (360/12)*5+(360/12/12)*5,endAngle: (360/12)*5+(360/12/12)*6},
+  {text: "Oivaltavuus",color: colorBody,startAngle: (360/12)*5+(360/12/12)*6,endAngle: (360/12)*5+(360/12/12)*7},
+  {text: "Riskinotto",color: colorBody,startAngle: (360/12)*5+(360/12/12)*7,endAngle: (360/12)*5+(360/12/12)*8},
+  {text: "Rohkeus",color: colorBody,startAngle: (360/12)*5+(360/12/12)*8,endAngle: (360/12)*5+(360/12/12)*9},
+  {text: "f10",color: colorBody,startAngle: (360/12)*5+(360/12/12)*9,endAngle: (360/12)*5+(360/12/12)*10},
+  {text: "f11",color: colorBody,startAngle: (360/12)*5+(360/12/12)*10,endAngle: (360/12)*5+(360/12/12)*11},  
+  {text: "f12",color: colorBody,startAngle: (360/12)*5+(360/12/12)*11,endAngle: (360/12)*6},
+  {text: "Puhtaus",color: colorBody,startAngle: (360/12)*6,endAngle: (360/12)*6+(360/12/12)},
+  {text: "Hygieenisyys",color: colorBody,startAngle: (360/12)*6+(360/12/12),endAngle: (360/12)*6+(360/12/12)*2},
+  {text: "Hyödyllisyys",color: colorBody,startAngle: (360/12)*6+(360/12/12)*2,endAngle: (360/12)*6+(360/12/12)*3},
+  {text: "Kutsumus",color: colorBody,startAngle: (360/12)*6+(360/12/12)*3,endAngle: (360/12)*6+(360/12/12)*4},
+  {text: "Tarpeet",color: colorBody,startAngle: (360/12)*6+(360/12/12)*4,endAngle: (360/12)*6+(360/12/12)*5},
+  {text: "Vaikuttavuus",color: colorBody,startAngle: (360/12)*6+(360/12/12)*5,endAngle: (360/12)*6+(360/12/12)*6},
+  {text: "Vakaus",color: colorBody,startAngle: (360/12)*6+(360/12/12)*6,endAngle: (360/12)*6+(360/12/12)*7},
+  {text: "g8",color: colorBody,startAngle: (360/12)*6+(360/12/12)*7,endAngle: (360/12)*6+(360/12/12)*8},
+  {text: "g9",color: colorBody,startAngle: (360/12)*6+(360/12/12)*8,endAngle: (360/12)*6+(360/12/12)*9},
+  {text: "g10",color: colorBody,startAngle: (360/12)*6+(360/12/12)*9,endAngle: (360/12)*6+(360/12/12)*10},
+  {text: "g11",color: colorBody,startAngle: (360/12)*6+(360/12/12)*10,endAngle: (360/12)*6+(360/12/12)*11},  
+  {text: "g12",color: colorBody,startAngle: (360/12)*6+(360/12/12)*11,endAngle: (360/12)*7},  
+  {text: "Delegoivuus",color: colorBody,startAngle: (360/12)*7,endAngle: (360/12)*7+(360/12/12)},
+  {text: "Itsekuri",color: colorBody,startAngle: (360/12)*7+(360/12/12),endAngle: (360/12)*7+(360/12/12)*2},
+  {text: "Järjestelmällisyys",color: colorBody,startAngle: (360/12)*7+(360/12/12)*2,endAngle: (360/12)*7+(360/12/12)*3},
+  {text: "Priorisoivuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*3,endAngle: (360/12)*7+(360/12/12)*4},
+  {text: "Strategisuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*4,endAngle: (360/12)*7+(360/12/12)*5},
+  {text: "Suunnitelmallisuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*5,endAngle: (360/12)*7+(360/12/12)*6},
+  {text: "Tarpeellisuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*6,endAngle: (360/12)*7+(360/12/12)*7},
+  {text: "Valikoivuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*7,endAngle: (360/12)*7+(360/12/12)*8},
+  {text: "Huolellisuus",color: colorBody,startAngle: (360/12)*7+(360/12/12)*8,endAngle: (360/12)*7+(360/12/12)*9},
+  {text: "h10",color: colorBody,startAngle: (360/12)*7+(360/12/12)*9,endAngle: (360/12)*7+(360/12/12)*10},
+  {text: "h11",color: colorBody,startAngle: (360/12)*7+(360/12/12)*10,endAngle: (360/12)*7+(360/12/12)*11},  
+  {text: "h12",color: colorBody,startAngle: (360/12)*7+(360/12/12)*11,endAngle: (360/12)*8},
+  {text: "Ajankohtaisuuus",color: colorBody,startAngle: (360/12)*8,endAngle: (360/12)*8+(360/12/12)},
+  {text: "Ennakoivuus",color: colorBody,startAngle: (360/12)*8+(360/12/12),endAngle: (360/12)*8+(360/12/12)*2},
+  {text: "Itsekontrolli",color: colorBody,startAngle: (360/12)*8+(360/12/12)*2,endAngle: (360/12)*8+(360/12/12)*3},
+  {text: "Keskittyvyys",color: colorBody,startAngle: (360/12)*8+(360/12/12)*3,endAngle: (360/12)*8+(360/12/12)*4},
+  {text: "Oikea-aikaisuus",color: colorBody,startAngle: (360/12)*8+(360/12/12)*4,endAngle: (360/12)*8+(360/12/12)*5},
+  {text: "Säännöllisyys",color: colorBody,startAngle: (360/12)*8+(360/12/12)*5,endAngle: (360/12)*8+(360/12/12)*6},
+  {text: "Täsmällisyys",color: colorBody,startAngle: (360/12)*8+(360/12/12)*6,endAngle: (360/12)*8+(360/12/12)*7},
+  {text: "i8",color: colorBody,startAngle: (360/12)*8+(360/12/12)*7,endAngle: (360/12)*8+(360/12/12)*8},
+  {text: "i9",color: colorBody,startAngle: (360/12)*8+(360/12/12)*8,endAngle: (360/12)*8+(360/12/12)*9},
+  {text: "i10",color: colorBody,startAngle: (360/12)*8+(360/12/12)*9,endAngle: (360/12)*8+(360/12/12)*10},
+  {text: "i11",color: colorBody,startAngle: (360/12)*8+(360/12/12)*10,endAngle: (360/12)*8+(360/12/12)*11},  
+  {text: "i12",color: colorBody,startAngle: (360/12)*8+(360/12/12)*11,endAngle: (360/12)*9},
+  {text: "Eettisyys",color: colorBody,startAngle: (360/12)*9,endAngle: (360/12)*9+(360/12/12)},
+  {text: "Esteettisyys",color: colorBody,startAngle: (360/12)*9+(360/12/12),endAngle: (360/12)*9+(360/12/12)*2},
+  {text: "Kunnioitus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*2,endAngle: (360/12)*9+(360/12/12)*3},
+  {text: "Oikeudenmukaisuus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*3,endAngle: (360/12)*9+(360/12/12)*4},
+  {text: "Rehellisyys",color: colorBody,startAngle: (360/12)*9+(360/12/12)*4,endAngle: (360/12)*9+(360/12/12)*5},
+  {text: "Saavutukset",color: colorBody,startAngle: (360/12)*9+(360/12/12)*5,endAngle: (360/12)*9+(360/12/12)*6},
+  {text: "Tasa-arvoisuus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*6,endAngle: (360/12)*9+(360/12/12)*7},
+  {text: "Tasavertaisuus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*7,endAngle: (360/12)*9+(360/12/12)*8},
+  {text: "Turvallisuus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*8,endAngle: (360/12)*9+(360/12/12)*9},
+  {text: "Vapaus",color: colorBody,startAngle: (360/12)*9+(360/12/12)*9,endAngle: (360/12)*9+(360/12/12)*10},
+  {text: "Omatunto",color: colorBody,startAngle: (360/12)*9+(360/12/12)*10,endAngle: (360/12)*9+(360/12/12)*11},  
+  {text: "j12",color: colorBody,startAngle: (360/12)*9+(360/12/12)*11,endAngle: (360/12)*10},  
+  {text: "Yliluonnollisuus",color: colorBody,startAngle: (360/12)*10,endAngle: (360/12)*10+(360/12/12)},
+  {text: "Vakaumuksellisuus",color: colorBody,startAngle: (360/12)*10+(360/12/12),endAngle: (360/12)*10+(360/12/12)*2},
+  {text: "Onnekkuus",color: colorBody,startAngle: (360/12)*10+(360/12/12)*2,endAngle: (360/12)*10+(360/12/12)*3},
+  {text: "Siunaus",color: colorBody,startAngle: (360/12)*10+(360/12/12)*3,endAngle: (360/12)*10+(360/12/12)*4},
+  {text: "Kohtalonomaisuus",color: colorBody,startAngle: (360/12)*10+(360/12/12)*4,endAngle: (360/12)*10+(360/12/12)*5},
+  {text: "Henkisyys",color: colorBody,startAngle: (360/12)*10+(360/12/12)*5,endAngle: (360/12)*10+(360/12/12)*6},
+  {text: "Hengellisyys",color: colorBody,startAngle: (360/12)*10+(360/12/12)*6,endAngle: (360/12)*10+(360/12/12)*7},
+  {text: "Armollisuus",color: colorBody,startAngle: (360/12)*10+(360/12/12)*7,endAngle: (360/12)*10+(360/12/12)*8},
+  {text: "Anteeksiantavuus",color: colorBody,startAngle: (360/12)*10+(360/12/12)*8,endAngle: (360/12)*10+(360/12/12)*9},
+  {text: "k10",color: colorBody,startAngle: (360/12)*10+(360/12/12)*9,endAngle: (360/12)*10+(360/12/12)*10},
+  {text: "k11",color: colorBody,startAngle: (360/12)*10+(360/12/12)*10,endAngle: (360/12)*10+(360/12/12)*11},  
+  {text: "k12",color: colorBody,startAngle: (360/12)*10+(360/12/12)*11,endAngle: (360/12)*11},
+  {text: "Vastarakkaus",color: colorBody,startAngle: (360/12)*11,endAngle: (360/12)*11+(360/12/12)},
+  {text: "Seksuaalisuus",color: colorBody,startAngle: (360/12)*11+(360/12/12),endAngle: (360/12)*11+(360/12/12)*2},
+  {text: "Opettajat",color: colorBody,startAngle: (360/12)*11+(360/12/12)*2,endAngle: (360/12)*11+(360/12/12)*3},
+  {text: "Koulukaverit",color: colorBody,startAngle: (360/12)*11+(360/12/12)*3,endAngle: (360/12)*11+(360/12/12)*4},
+  {text: "Ensirakkaus",color: colorBody,startAngle: (360/12)*11+(360/12/12)*4,endAngle: (360/12)*11+(360/12/12)*5},
+  {text: "l6",color: colorBody,startAngle: (360/12)*11+(360/12/12)*5,endAngle: (360/12)*11+(360/12/12)*6},
+  {text: "l7",color: colorBody,startAngle: (360/12)*11+(360/12/12)*6,endAngle: (360/12)*11+(360/12/12)*7},
+  {text: "l8",color: colorBody,startAngle: (360/12)*11+(360/12/12)*7,endAngle: (360/12)*11+(360/12/12)*8},
+  {text: "l9",color: colorBody,startAngle: (360/12)*11+(360/12/12)*8,endAngle: (360/12)*11+(360/12/12)*9},
+  {text: "l10",color: colorBody,startAngle: (360/12)*11+(360/12/12)*9,endAngle: (360/12)*11+(360/12/12)*10},
+  {text: "l11",color: colorBody,startAngle: (360/12)*11+(360/12/12)*10,endAngle: (360/12)*11+(360/12/12)*11},  
+  {text: "l12",color: colorBody,startAngle: (360/12)*11+(360/12/12)*11,endAngle: (360/12)*12}
+    ]
+  }
+];
+
+// Lisätään värimuutos haku-taulukon perusteella
+for (const ring of rings0) {
+  for (const segment of ring.data) {
+    for (const item of haku) {
+      if (segment.text === item.text) {
+        segment.color = item.color;
+      }
+    }
+  }
+}
+
+for (const ring of rings1) {
+  for (const segment of ring.data) {
+    for (const item of haku) {
+      if (segment.text === item.text) {
+        segment.color = item.color;
+      }
+    }
+  }
+}
+
+
+    // Loop through the rings and create them
+    for (const ringData of rings0) {
+      createRing(ringData, 1);
+    }
+     
+    for (const ringData of rings1) {
+      createRing(ringData, 1);
+    }
+
+    document.body.appendChild(svg.node());
+
+    const rings0Element = svg.selectAll(".arcLabel").filter((d, i) => i === 0);
+    rings0Element.selectAll("text").on("click", function () {
+    console.log(rings0Element);
+      toggleColors(this, rings0Element, 0);
+    });
+
+    const rings1Element = svg.selectAll(".arcLabel").filter((d, i) => i === 1);
+    rings1Element.selectAll("text").on("click", function () {
+      toggleColors(this, rings1Element, 1);
+    });
+
+function toggleColors(textElement, ringElement, type) {
+  const clickedText = d3.select(textElement);
+  const clickedPath = ringElement.selectAll("path");
+  const currentColor = clickedText.style("fill");
+  let newColor = "black";
+
+  if (currentColor === "black") {
+    newColor = "green";
+  } else if (currentColor === "green") {
+    newColor = "red";
+  }
+
+  const targetText = clickedText["_groups"][0][0]["__data__"]["text"];
+  
+  const textElements = ringElement.selectAll("text");
+  const pathElements = ringElement.selectAll("path");
+
+  textElements.style("fill", function() {
+    return this === clickedText.node() ? newColor : d3.select(this).style("fill");
+  });
+  
+  if (type === 0) {
+    for (let i = 0; i < rings0[0].data.length; i++) {
+      if (rings0[0].data[i]["text"] === targetText) {
+        pathElements.nodes()[i].style.stroke = newColor;
+        pathElements.nodes()[i].style.fill = newColor;
+        
+        if (newColor === "black") {
+          pathElements.nodes()[i].style.stroke = "";
+        }
+      }
+    }
+  } else {
+    for (let j = 0; j < rings1[0].data.length; j++) {
+      if (rings1[0].data[j]["text"] === targetText) {
+        pathElements.nodes()[j].style.stroke = newColor;
+        pathElements.nodes()[j].style.fill = newColor;
+        
+        if (newColor === "black") {
+          pathElements.nodes()[j].style.stroke = "";
+        }
+      }
+    }
+  }
+}
+
+    let textVisibility = "both"; 
+    let clickCount = 0;
+    
+function varitys() {
+      clickCount++;
+
+      if (clickCount > 3) {
+        clickCount = 0;
+        textVisibility = "both"; 
+      } else if (clickCount === 3) {
+        textVisibility = "greenred"; 
+      } else if (textVisibility === "both") {
+        textVisibility = "green"; 
+      } else if (textVisibility === "green") {
+        textVisibility = "red"; 
+      } else if (textVisibility === "red") {
+        textVisibility = "all"; 
+      } else {
+        textVisibility = "both"; 
+      }
+      updateTextVisibility();
+    }
+
+    function updateTextVisibility() {
+      const textElements = svg.selectAll("text");
+      const pathElements = svg.selectAll("path");
+
+      textElements.style("display", function(d) {
+        const textColor = d3.select(this).style("fill");
+
+        if (
+          (textVisibility === "green" && textColor === "green") ||
+          (textVisibility === "red" && textColor === "red") ||
+          textVisibility === "both" ||
+          (textVisibility === "greenred" && (textColor === "green" || textColor === "red"))
+        ) {
+          return "block";
+        } else {
+          return "none";
+        }
+      });
+      
+      pathElements.style("display", function(d) {
+        const pathColor = d3.select(this).style("fill");
+        
+        if (
+            (textVisibility === "green" && pathColor === "green") ||
+            (textVisibility === "red" && pathColor === "red") ||
+            textVisibility === "both" ||
+            (textVisibility === "greenred" && (pathColor === "green" || pathColor === "red"))
+        ) {
+            return "block";
+        } else {
+            return "none";
+        }
+    }); 
+    }
+updateTextVisibility();        
+  </script>
+</body>
+</html>
