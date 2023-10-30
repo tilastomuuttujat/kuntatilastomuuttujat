@@ -1,0 +1,35 @@
+{
+  "name": "world",
+  "children": [
+    {
+      "name": "Viihteellinen",
+      "color": "#f58321",
+      "children": [
+        {"name": "Ruokaresepti", "weight": 14.5, "code": "CN"},
+        {"name": "Runo&proosa", "weight": 8.2, "code": "JP"},
+        {"name": "Arvostelu", "weight": 5.5, "code": "IN"},
+        {"name": "Sarjakuva", "weight": 2.7, "code": "KR"},
+        {"name": "Viihde", "weight": 3.6, "code": "RU"},
+        {"name": "Tiedeartikkeli", "weight": 8.2, "code": "ID"}
+      ]
+    },
+    {
+      "name": "Työtoiminta",
+      "color": "#ef1621",
+      "children": [
+        {"name": "Informaatio", "weight": 12.7, "code": "US"},
+        {"name": "Ohjeistus", "weight": 7.3, "code": "CA"},
+        {"name": "Tarina", "weight": 13.6, "code": "MX"}
+      ]
+    },
+    {
+      "name": "Asiapitoinen",
+      "color": "#77bc45",
+      "children": [
+        {"name": "Ajankohtaista", "weight": 12.7, "code": "DE"},
+        {"name": "Haastattelu", "weight": 6.4, "code": "UK"},
+        {"name": "Elämänhallinta", "weight": 4.5, "code": "FR"}
+      ]
+    }
+  ]
+}
