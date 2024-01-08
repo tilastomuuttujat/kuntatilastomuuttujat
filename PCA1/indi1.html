@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - D3 Racing Bars</title>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans:400,700&display=swap");
+
+
+body {
+  border-top: 4px solid #dc0000;
+  background: repeating-linear-gradient(
+      -45deg,
+      #181618 0px,
+      #181618 8px,
+      #141314 0px,
+      #141314 16px
+    ),
+    #141314;
+  color: #edeced;
+  font-family: "Josefin Sans", sans-serif;
+}
+/* center the visualization horizontally */
+.viz {
+  margin: 1.5rem auto;
+  width: 90vw;
+  max-width: 700px;
+  background: #010001;
+  padding: 1.5rem 2rem;
+}
+
+
+
+
+</style>
+</head>
+<body>
+  <div class="viz">
+    <!-- Display the current year -->
+    <div id="currentYearDisplay"></div>
+    <!-- Add the slider for changing the year -->
+    <input type="range" id="yearSlider" min="0" max="16" step="1" value="0">
+  </div>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+
+    let currentYear = 0; // To keep track of the current year
+
+    // Function to update the visualization based on the selected year
+    function updateYear() {
+      const selectedYear = +document.getElementById('yearSlider').value;
+      currentYear = selectedYear;
+      document.getElementById('currentYearDisplay').innerText = `Current Year: ${currentYear + 2000}`;
+      
+    }
+
+    // Attach the updateYear function to the slider's input event
+    document.getElementById('yearSlider').addEventListener('input', updateYear);
+
+    // Function to automatically progress the slider
+    function autoProgressSlider() {
+      currentYear++;
+      if (currentYear > 16) {
+        currentYear = 0;
+      }
+      document.getElementById('yearSlider').value = currentYear;
+      updateYear(); // Update the visualization
+    }
+
+    // Set an interval for automatic progression
+    const intervalId = setInterval(autoProgressSlider, 2000); // Adjust the interval as needed
+
+    // Initial update to show the first year's data
+    updateYear();
+  </script>
+</body>
+</html>
