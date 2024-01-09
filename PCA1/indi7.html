@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - D3 Racing Bars</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:400,700&display=swap");
+
+    body {
+      border-top: 4px solid #dc0000;
+      background: repeating-linear-gradient(
+          -45deg,
+          #181618 0px,
+          #181618 8px,
+          #141314 0px,
+          #141314 16px
+        ),
+        #141314;
+      color: #edeced;
+      font-family: "Josefin Sans", sans-serif;
+    }
+
+    /* center the visualization horizontally */
+    .viz {
+      margin: 1.5rem auto;
+      width: 90vw;
+      max-width: 700px;
+      background: #010001;
+      padding: 1.5rem 2rem;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="viz">
+    <!-- Display the current year -->
+    <div id="currentYearDisplay"></div>
+    <!-- Add the slider for changing the year -->
+    <input type="range" id="yearSlider" min="0" max="35" step="1" value="0">
+  </div>
+
+  <!-- SVG-elementti -->
+  <svg id="mapSvg" width="1850" height="3220"></svg>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+
+const tyopaikatData = [
+{ vuosi: 1987, sukupuoli: 'M', sektori: 'Y',mk01:217270,mk02:61097,mk04:33918,mk05:20932,mk06:61102,mk07:30518,mk08:26155,mk09:17677,mk10:16342,mk11:28672,mk12:16369,mk13:28801,mk14:22027,mk15:24263,mk16:7243,mk17:32666,mk18:8050,mk19:14659},
+{ vuosi: 1988, sukupuoli: 'M', sektori: 'Y',mk01:219361,mk02:62903,mk04:34135,mk05:20699,mk06:62712,mk07:31910,mk08:26000,mk09:18022,mk10:17505,mk11:29262,mk12:16969,mk13:29616,mk14:22397,mk15:24491,mk16:6929,mk17:34800,mk18:8396,mk19:15143},
+    ];
+
+    const varisavyt = [10, 30, 50, 70, 90, 110, 130, 150, 170, 190];
+
+    const vdata = [
+      { id: 'mk01', color: 'rgb(10, 182, 252)' },
+      { id: 'mk02', color: 'rgb(30, 182, 252)' },
+      { id: 'mk04', color: 'rgb(50, 182, 252)' },
+      { id: 'mk05', color: 'rgb(70, 182, 252)' },
+      { id: 'mk06', color: 'rgb(80, 182, 252)' },
+      { id: 'mk07', color: 'rgb(10, 182, 252)' },
+      { id: 'mk08', color: 'rgb(10, 182, 252)' },
+      { id: 'mk09', color: 'rgb(10, 182, 252)' },
+      { id: 'mk10', color: 'rgb(10, 182, 252)' },
+      { id: 'mk11', color: 'rgb(10, 182, 252)' },
+      { id: 'mk12', color: 'rgb(10, 182, 252)' },
+      { id: 'mk13', color: 'rgb(10, 182, 252)' },
+      { id: 'mk14', color: 'rgb(10, 182, 252)' },
+      { id: 'mk15', color: 'rgb(10, 182, 252)' },
+      { id: 'mk16', color: 'rgb(10, 182, 252)' },
+      { id: 'mk17', color: 'rgb(10, 182, 252)' },
+      { id: 'mk18', color: 'rgb(10, 182, 252)' },
+      { id: 'mk19', color: 'rgb(10, 182, 252)' },
+      { id: 'isuomi', color: 'blue' },
+      { id: 'lsuomi', color: 'red' },
+      { id: 'psuomi', color: 'green' },
+      { id: 'osuomi', color: 'yellow' },
+      { id: 'esuomi', color: 'yellow' }, 
+      // ... Lisää tarvittaessa muita taulukon tietoja
+    ];
+
+    let currentYear = 0; // Seurataan nykyistä vuotta
+
+    // SVG-elementti
+    const svg = d3.select("#mapSvg");
+
+    // Luo taulukot SVG:ssä
+    svg.selectAll("polygon")
+      .data(vdata)
+      .enter().append("polygon")
+        .attr("id", d => d.id)
+        .attr("class", "polygon")
+        .attr("points", d => calculatePoints(d.id))
+        .style("fill", d => d.color)
+        .style("stroke", "#636347")
+        .style("stroke-width", 2.8347);
+
+    // Funktio, joka laskee taulukon pisteet id:n perusteella
+    function calculatePoints(id) {
+      // Lisää tarvittaessa pisteet kaikille id:ille
+      switch (id) {
+	  case 'mk01':
+	    return "955.1,2951.6 963.6,2959.6 991.8,2950.9 1000.3,2952.3 1013.7,2942.9 1014.4,2956.6 1034.3,2952.3 1047,2963.7 1060.2,2956.6 1061.7,2942.5 1061.4,2942.4 1077.7,2950.2 1085.7,2970.3 1095.2,2970.6 1100.5,2983.6 1114.1,2984.9 1120.3,2972.9 1130.8,2973.6 1137,2989.9 1123.6,2990.3 1102.9,3012 1101.6,3035.2 1100.8,3035.2 1084.7,3051 1077.2,3050.7 1072,3039.5 1062.1,3040.1 1063.2,3054.7 1057.9,3063.2 1051.9,3063.6 1046.8,3052.2 1035.9,3041 1020.4,3026.2 1019,3034.3 1028.5,3047.1 1031.2,3057.6 1040.5,3074.2 1034.9,3076.6 1027.3,3072.9 1022.4,3074.6 1023.3,3087.1 1018.2,3089.1 1009.9,3071.9 1005.7,3075.4 1010.3,3090.3 1006.1,3095.8 997.9,3090.6 990.5,3098.6 985.5,3097.7 972.9,3082 968.9,3067.4 953,3069.2 952.6,3082.4 946.5,3090 922.2,3090.6 908.6,3094.4 908.6,3095.4 902.9,3096.9 900.7,3103.9 892.9,3114.4 882.2,3111.1 883.8,3123.6 873,3132.8 870.9,3121.1 866.2,3128.6 852,3128.4 842,3121.6 815.2,3131 810,3125.8 807.9,3130.9 807.9,3140.8 778.6,3177.7 769,3176.9 782,3160 776,3156.5 769,3162.5 764.3,3162.5 765.2,3143.3 743.2,3155.5 712.9,3156.2 676.2,3171.9 658.1,3173.6 660.7,3182.9 654.2,3187.8 641.7,3185.1 625.7,3188.5 618,3182.9 605.9,3181.4 595.9,3192.4 595.9,3199.6 583,3210.6 558,3210.4 537.2,3219 530.3,3210.3 536.8,3203 564.4,3193.2 570,3186.5 572.6,3167.2 567.9,3159.8 562.3,3164.4 561.8,3180.2 557.1,3184.8 539.4,3181.7 529.7,3168.9 532.1,3157.1 543.3,3156.6 552.3,3161.3 556.5,3125.9 556.2,3125.9 581.5,3125.4 600.3,3105.7 609.9,3113.4 638.5,3099.2 654.5,3106.7 653.4,3072.5 668.3,3067.4 671.3,3047.6 681.2,3046.6 678,3027.4 667.8,3023.2 669.1,3009.5 692.3,3006.3 703.4,2981.5 697.9,2972.1 702.7,2965.1 748.4,2973 754,2985.5 764.8,2977.2 775.9,2982.5 778.6,2992.8 806.6,2987.4 805.3,2973 813.2,2962.4 830.8,2965 870.6,2956.8 886.9,2962.5 897.3,2943.6 886.4,2939.9 896.4,2917.2 907.1,2914.8 927.6,2939.6 943.4,2923 948.1,2927.2 955.1,2952.6";
+	  case 'mk02':
+	    return "563.6,2825.1 548,2819.8 546,2846.8 521.1,2839.9 497.5,2847.1 502.7,2853.6 476.3,2860.6 457.3,2857 441.5,2871.3 435.9,2863.1 409.1,2860.5 398.6,2831.1 387.2,2820.8 366.2,2835.9 365.1,2810 352.1,2819.8 340.9,2820.7 329.7,2804.9 325.2,2798.2 316.9,2802.8 321.3,2826.6 332.2,2837.9 329.9,2845.7 323.1,2840.3 316.7,2827.3 309.4,2827.8 305.5,2831.8 312,2838.7 311.6,2846.5 298.3,2849.2 299.1,2854.9 314.3,2864.1 312.7,2869.1 309.5,2871.3 307.7,2876.7 310.1,2885.9 310.6,2899 315.7,2907.1 315.4,2925 326.4,2953.8 340.7,2966.4 345,2985 356.2,2984 361.1,2962.5 381.3,2951.7 388,2954.8 381.2,2972.5 373.3,2971.8 366,2982 365.2,2990 381.9,2985.9 403.1,2985.2 411.1,2993 410.7,3000.9 403.3,3000.5 400.1,3004.5 411,3014.4 419.8,3008.8 423.3,3011.5 421.6,3032.5 429.7,3033 439.6,3042.4 477.2,3035.1 482.8,3030.3 491.8,3037.1 477.1,3060.6 477.1,3070.2 492.8,3069.9 502.6,3078.8 525.6,3072 561,3044.6 566.6,3053.9 558.1,3064.2 537.2,3089.7 541.2,3110.8 547.9,3114.8 557,3120.3 556.5,3124.9 581.5,3124.4 600.3,3104.7 609.9,3112.4 638.5,3098.2 654.5,3105.7 653.4,3071.5 668.3,3066.4 671.3,3046.6 681.2,3045.6 678,3026.4 667.8,3022.2 669.1,3008.5 692.3,3005.3 703.4,2980.5 697.9,2971.1 702.7,2964.1 671.3,2953.7 635.8,2926.5 616.6,2936.1 591.3,2923.1 590.5,2911.1 597.3,2905.1 589.1,2895.4 590.5,2881.5 605.1,2878.6 613.2,2859.6 601,2852.3 601.1,2844.5 593.3,2845.5 594.6,2835 575.3,2838.8";
+  	  default:
+        return "";
+      }
+    }
+
+    // Funktio visualisoinnin päivittämiseksi valitun vuoden perusteella
+    function updateYear() {
+      const selectedYear = +document.getElementById('yearSlider').value;
+      currentYear = selectedYear;
+      document.getElementById('currentYearDisplay').innerText = `Current Year: ${currentYear + 1987}`;
+
+      // Päivitä kartta tässä käyttäen valittua vuotta ja työpaikkatietoja
+      const currentData = tyopaikatData.find(item => item.vuosi === currentYear + 1987);
+      const stableData = tyopaikatData.find(item => item.vuosi === 1987);
+      
+      if (currentData) {
+        for (const key in currentData) {
+          if (key !== 'vuosi' && key !== 'sukupuoli' && key !== 'sektori') {
+            //const colorIndex = Math.floor((currentData[key] - stableData[key])/stableData[key]*10); // Jaa työpaikat 10 lohkoon
+            const colorIndex = Math.floor((currentData[key] - stableData[key])/stableData[key]*100); // Jaa työpaikat 10 
+            console.log(colorIndex);
+            const rgbColor = `rgb(${varisavyt[colorIndex]}, 182, 252)`;
+            const index = vdata.findIndex(item => item.id === key);
+            //console.log(index);
+            if (index !== -1) {
+              vdata[index].color = rgbColor;
+            }
+          }
+        }
+        updateMap(); // Päivitä kartta
+        console.log(vdata);
+      }
+    }
+
+    // Liitä updateYear-funktio sliderin input-tapahtumaan
+    document.getElementById('yearSlider').addEventListener('input', updateYear);
+
+    // Aseta intervali automaattiselle etenemiselle
+    const intervalId = setInterval(autoProgressSlider, 2000); // Säädä intervalia tarpeen mukaan
+
+    // Alustava päivitys näyttämään ensimmäisen vuoden tiedot
+    updateYear();
+
+    // Automaattisen etenemisen funktio
+    function autoProgressSlider() {
+      currentYear++;
+      if (currentYear > 35) { // Tämä muutos vastaa vuosien määrää työpaikatData-taulukossa
+        currentYear = 0;
+      }
+      document.getElementById('yearSlider').value = currentYear;
+      updateYear(); // Päivitä visualisointi
+    }
+
+    // Lisätty funktio kartan päivittämiseksi
+    function updateMap() {
+      svg.selectAll(".polygon")
+        .data(vdata)
+        .style("fill", d => d.color);
+    }
+  </script>
+</body>
+</html>
