@@ -88,7 +88,8 @@ Lähde: Tilastokeskus työssäkäynti
      
       <td width="80">
         <div class="viz">
-    <div id="currentYearDisplay"></div>
+    <button id="playPauseButton">Pysäytä</button>
+	<div id="currentYearDisplay"></div>
     <input type="range" id="yearSlider" min="0" max="35" step="1" value="0">
   </div>
   <ul class="legend">
@@ -157,6 +158,8 @@ Lähde: Tilastokeskus työssäkäynti
 
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
+  //const intervalId = setInterval(autoProgressSlider, 500);
+  intervalId = setInterval(autoProgressSlider, 500);
     const vdata = [
       { id: 'mk01', color: 'rgb(10, 80, 252)' },
 	  { id: 'mk02', color: 'rgb(30, 80, 252)' },
@@ -562,6 +565,7 @@ Lähde: Tilastokeskus työssäkäynti
     };
 
     let currentYear = 0;
+	let isPlaying = true; // Lisätty muuttuja automaattisen etenemisen tilan seuraamiseksi
     const svg = d3.select("#mapSvg");
 
     svg.selectAll("polygon")
@@ -650,7 +654,7 @@ Lähde: Tilastokeskus työssäkäynti
 
     function updateYear() {
       const selectedYear = +d3.select('#yearSlider').node().value;
-      currentYear = selectedYear;
+	  currentYear = selectedYear;
       d3.select('#currentYearDisplay').text(`Vuosi: ${currentYear + 1987}`);
       d3.select('#currentYearDisplay1').text(`${currentYear + 1987}`);
 
@@ -698,7 +702,22 @@ Lähde: Tilastokeskus työssäkäynti
     d3.select('#yearSlider').on('input', updateYear);
     d3.selectAll('input[name="dataset"]').on('change', updateYear);
 
-    const intervalId = setInterval(autoProgressSlider, 500);
+    
+
+d3.select("#playPauseButton").on("click", function () {
+      isPlaying = !isPlaying; // Vaihdetaan automaattisen etenemisen tilaa
+      d3.select(this).text(isPlaying ? "Pysäytä" : "Etene");
+      if (isPlaying) {
+        // Käynnistetään automaattinen eteneminen, jos tila on "Play"
+        intervalId = setInterval(autoProgressSlider, 500);
+      } else {
+        // Pysäytetään automaattinen eteneminen, jos tila on "Pause"
+        clearInterval(intervalId);
+      }
+    });
+
+
+
     updateYear();
 
     function autoProgressSlider() {
