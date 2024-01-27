@@ -101,10 +101,10 @@ var svg = d3.select("#svgs").append("svg")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
 //Read the data
-d3.csv("data_IC-51.csv").then(function(data) {
+d3.csv("data_IC-511.csv").then(function(data) {
     // Add X axis --> it is a date format
     const x = d3.scaleLinear()
-      .domain([1991,2021])
+      .domain([16,26])
       .range([ 0, width ]);
       
     svg.append("g")
@@ -114,7 +114,7 @@ d3.csv("data_IC-51.csv").then(function(data) {
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([-10,10])
+      .domain([30,180])
       .range([ height, 0 ]);
       
     svg.append("g")
