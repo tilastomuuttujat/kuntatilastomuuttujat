@@ -101,7 +101,7 @@ var svg = d3.select("#svgs").append("svg")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
 //Read the data
-d3.csv("data_IC-101.csv").then(function(data) {
+d3.csv("testi1.csv").then(function(data) {
     // Add X axis --> it is a date format
     const x = d3.scaleLinear()
       .domain([2006,2023])
