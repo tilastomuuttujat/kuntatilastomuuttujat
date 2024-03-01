@@ -104,7 +104,7 @@ var svg = d3.select("#svgs").append("svg")
 d3.csv("data_IC-101.csv").then(function(data) {
     // Add X axis --> it is a date format
     const x = d3.scaleLinear()
-      .domain([1996,2021])
+      .domain([2006,2023])
       .range([ 0, width ]);
       
     svg.append("g")
@@ -114,7 +114,7 @@ d3.csv("data_IC-101.csv").then(function(data) {
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([-80,200])
+      .domain(0,100000])
       .range([ height, 0 ]);
       
     svg.append("g")
